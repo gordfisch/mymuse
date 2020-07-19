@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- this is a phing build file -->
+<project name="MyMuseJ4" basedir="." default="copy_to_mymusenew">
+        <property name="myversion" value="4.2" override="true" />
+
+        <!--property name="test" value="/var/www/html/mymuse/joomla" override="true" / -->
+        <!-- property name="testadmincomp"
+                value="/var/www/html/mymuse/joomla/administrator/components/com_mymuse"
+                override="true" / -->
+        <property name="test" value="/var/www/html/mymuseJ4/joomla" override="true" />
+        <property name="testadmincomp"
+                value="/var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse"
+                override="true" />
+        <property name="src" value="${project.basedir}" override="true" />
+
+
+        <fileset dir="./site" id="site_files">
+                <include name="**" />
+        </fileset>
+        <fileset dir="./administrator" id="admin_files">
+                <include name="**" />
+        </fileset>
+        
+
+        <fileset dir="${src}" id="allfiles">
+                <include name="administrator/*" />
+                <include name="site/*" />
+                <include name="mymuse.xml" />
+        </fileset>
+    
+
+
+ 
+        <!-- Copy Target -->
+        <target name="copy_to_mymusenew" description="copy target">
+                <echo>Copying files from working dir to mymuse...
+                </echo>
+            
+                <copy todir="${test}/components/com_mymuse">
+                      <fileset refid="site_files" />
+                </copy>
+                <copy todir="${test}/administrator/components/com_mymuse">
+                       <fileset refid="admin_files" />
+                </copy>
+            
+    
+
+        </target>
+</project>
