@@ -1244,23 +1244,18 @@ INSERT IGNORE INTO `#__mymuse_state` (`id`, `country_id`, `state_name`, `state_3
 CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '',
-  `name` varchar(255) NOT NULL DEFAULT '',
   `alias` varchar(255) NOT NULL DEFAULT '',
-  `scope` varchar(50) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `checked_out` int(11) unsigned NULL DEFAULT '0',
+  `checked_out_time` datetime NULL DEFAULT '0000-00-00 00:00:00',
   `ordering` int(11) NOT NULL DEFAULT '0',
   `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `count` int(11) NOT NULL DEFAULT '0',
   `params` text NOT NULL,
   `currency` varchar(16) DEFAULT NULL,
-  `version` varchar(64) NOT NULL,
   `metadesc` varchar(1024) NOT NULL DEFAULT '',
   `metakey` varchar(1024) NOT NULL DEFAULT '',
   `metadata` varchar(2048) NOT NULL DEFAULT '',
-  `my_catid` smallint(11) NOT NULL,
   `state` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1270,8 +1265,8 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
 -- 
 
 
-INSERT IGNORE INTO `#__mymuse_store` (`id`, `title`, `name`, `alias`, `scope`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `count`, `params`, `currency`, `version`, `metadesc`, `metakey`, `metadata`, `my_catid`, `state`) VALUES
-(1, 'MyMuse Store', '', 'mymuse', 'store', '<p>MyMuse Store Description</p>', 0, 0, '0000-00-00 00:00:00', 1, 0, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"123 King Gordon","address_2":"","city":"Rockville","province":"Maryland","country":"US","zip":"20850","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_formats":["mp3"],"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymusetest35\\/images\\/A_MyMuseDownloads","my_preview_dir":"images\\/A_MyMusePreviews","my_download_dir_format":"0","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_price_by_product":"0","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '3.3.0', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 49, 1);
+INSERT IGNORE INTO `#__mymuse_store` (`id`, `title`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `params`, `currency`, `metadesc`, `metakey`, `metadata`, `state`) VALUES
+(1, 'MyMuse Store', 'mymuse-store', '<p>MyMuse Store Description</p>', 1, 0, '0000-00-00 00:00:00', 1, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"123 King Gordon","address_2":"","city":"Rockville","province":"Maryland","country":"US","zip":"20850","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_formats":["mp3"],"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymuseJ4\\/joomla\\/images\\/A_MyMuseDownloads","my_preview_dir":"images\\/A_MyMusePreviews","my_download_dir_format":"0","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_price_by_product":"0","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 1);
 
 -- --------------------------------------------------------
 
@@ -1290,8 +1285,8 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_tax_rate` (
   `tax_format` set('RATE','AMOUNT') NOT NULL DEFAULT 'RATE',
   `compounded` char(1) NOT NULL DEFAULT '0',
   `ordering` tinyint(2) DEFAULT '99',
-  `checked_out` int(11) NOT NULL,
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `checked_out` int(10) UNSIGNED DEFAULT NULL,
+  `checked_out_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- 

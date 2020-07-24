@@ -40,6 +40,8 @@
 		<menu view="mymuse">COM_MYMUSE</menu>
 		<submenu>
 			<menu link="option=com_mymuse">COM_MYMUSE</menu>
+			<menu link="option=com_mymuse&amp;view=store&amp;task=store.edit&amp;id=1" view="store" 
+				alt="Mymuse/Store">COM_MYMUSE_STORE</menu>
 			<menu link="option=com_mymuse&amp;view=taxrates" view="taxrates" 
 				alt="Mymuse/Taxrates">COM_MYMUSE_TAXRATES</menu>
 		</submenu>
@@ -60,7 +62,13 @@
 		</languages>
 	</administration>  
 	
-   
+   <files folder="site">
+   	<filename>log.txt</filename>
+   	<folder>assets</folder>
+   	<folder>src</folder>
+   	<folder>tmpl</folder>
+   	
+   </files>
     <!-- Runs on install/uninstall/update -->
 	
 	<!-- Plugins -->

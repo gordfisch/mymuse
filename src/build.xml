@@ -27,7 +27,7 @@
                 <include name="site/*" />
                 <include name="mymuse.xml" />
         </fileset>
-    
+        
 
 
  
@@ -42,7 +42,17 @@
                 <copy todir="${test}/administrator/components/com_mymuse">
                        <fileset refid="admin_files" />
                 </copy>
-            
+                
+                <!--  languages -->
+
+                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                        
+                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                        
+                <copy file="${src}/site/language/en-GB/en-GB.com_mymuse.ini"
+                        todir="${test}/language/en-GB" />
     
 
         </target>

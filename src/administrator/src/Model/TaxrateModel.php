@@ -24,7 +24,7 @@ use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
  *
  * @since  1.6
  */
-class taxrateModel extends AdminModel
+class TaxrateModel extends AdminModel
 {
 	use VersionableModelTrait;
 
@@ -34,7 +34,7 @@ class taxrateModel extends AdminModel
 	 * @var    string
 	 * @since  1.6
 	 */
-	protected $text_prefix = 'COM_MYMUS_TAXRATE';
+	protected $text_prefix = 'COM_MYMUSE_TAXRATE';
 
 	/**
 	 * The type alias for this content type.
@@ -151,7 +151,7 @@ class taxrateModel extends AdminModel
 				$db = $this->getDbo();
 				$query = $db->getQuery(true)
 					->select('MAX(' . $db->quoteName('ordering') . ')')
-					->from($db->quoteName('#__tax_rate'));
+					->from($db->quoteName('#__mymuse_tax_rate'));
 
 				$db->setQuery($query);
 				$max = $db->loadResult();
@@ -161,6 +161,7 @@ class taxrateModel extends AdminModel
 		}
 
 	}
+
 
 
 }

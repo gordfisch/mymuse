@@ -182,7 +182,7 @@ class TaxratesModel extends ListModel
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-                $query->where('()');
+                $query->where("tax_name LIKE $search");
 			}
 		}
 
@@ -192,6 +192,50 @@ class TaxratesModel extends ListModel
         if ($orderCol && $orderDirn) {
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
+		//echo($query->__toString()); exit;
 		return $query;
 	}
+
+		/**
+		 * Method to change the published state of one or more records.
+		 *
+		 * @param   array    &$pks   A list of the primary keys to change.
+		 * @param   integer  $value  The value of the published state.
+		 *
+		 * @return  boolean  True on success.
+		 *
+		 * @since   4.0.0
+		 */
+		public function publish(&$pks, $value = 1) {
+
+			$db = $this->getDbo();
+			$query = $db->getQuery(true);
+
+			$query->update('`#__mymuse_tax_rate`');
+			$query->set('published = ' . $value);
+			$query->where('id IN (' . implode(',', $pks). ')');
+			$db->setQuery($query);
+			$db->execute();
+		}
+
+
+		/**
+		 * Method to delete of one or more records.
+		 *
+		 * @param   array    &$pks   A list of the primary keys to change.
+		 *
+		 * @return  boolean  True on success.
+		 *
+		 * @since   4.0.0
+		 */
+		public function delete(&$pks) {
+
+			$db = $this->getDbo();
+			$query = $db->getQuery(true);
+
+			$query->delete('`#__mymuse_tax_rate`');
+			$query->where('id IN (' . implode(',', $pks). ')');
+			$db->setQuery($query);
+			$db->execute();
+		}
 }

@@ -6,9 +6,15 @@ if  [[ $1 = "webdriver" ]]; then
     cd joomla
     ./bin/chromedriver --url-base=/wd/hub &
 elif  [[ $1 = "phing" ]]; then
-    echo "Doing the phing thing"
-    cd src
-    phing
+	if  [[ $2 = "watch" ]]; then
+		echo "Doing the phing thing. Will watch your dir for changes"
+	    cd src
+	    ./rerun phing
+	else
+    	echo "Doing the phing thing."
+    	cd src
+    	.phing
+    fi
 elif  [[ $1 = "component" ]]; then
     echo "Make the component"
     ./make_component.sh
@@ -37,7 +43,7 @@ elif  [[ $1 = "all" ]]; then
 	php vendor/bin/codecept --steps run reports
 	php vendor/bin/codecept --steps run storage
 else
-	echo "What no options? webdriver, phing, component or test [sub-test] or test reports"
+	echo "What no options? webdriver, phing, phing watch, component or test [sub-test] or test reports"
 	echo "sub-tests: AdminLoginCest, MyMuseBasicCest, MyMuseEeStockCest, MyMuseGgShippingCest, "
 	echo "MyMuseJjFormatCest, MyMuseModuleCest, MyMuseOtherViewsCest, MyMuseUninstallCest"
 fi

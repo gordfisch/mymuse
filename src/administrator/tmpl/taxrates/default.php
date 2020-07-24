@@ -70,10 +70,10 @@ if ($saveOrder && !empty($this->items))
 					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TITLE', 'a.tax_name', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
-					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_COUNTRY', 'a.country', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_COUNTRY_LABEL', 'a.country', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
-					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_PROVINCE', 'a.province', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_PROVINCE_LABEL', 'a.province', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
 					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_RATE_LABEL', 'a.tax_rate', $listDirn, $listOrder); ?>
@@ -126,8 +126,9 @@ if ($saveOrder && !empty($this->items))
 							value="<?php echo $item->ordering; ?>" class="width-20 text-area-order hidden">
 					<?php endif; ?>
 				</td>
+
 				<td class="text-center">
-					<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'mymuse.', $canChange); ?>
+					<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'taxrates.', $canChange); ?>
 				</td>
 				<th scope="row">
 					<div class="break-word">

@@ -147,16 +147,6 @@ class HtmlView extends BaseHtmlView
 			$childBar->publish('taxrates.publish', 'JTOOLBAR_PUBLISH', true);
 			$childBar->unpublish('taxrates.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
-			// Add a batch button
-			if ($user->authorise('core.create', 'com_mymuse')
-				&& $user->authorise('core.edit', 'com_mymuse')
-				&& $user->authorise('core.edit.state', 'com_mymuse'))
-			{
-				$childBar->popupButton('batch')
-					->text('JTOOLBAR_BATCH')
-					->selector('collapseModal')
-					->listCheck(true);
-			}
 
 			if ($canDo->get('core.delete'))
 			{

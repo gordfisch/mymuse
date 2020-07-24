@@ -32,24 +32,12 @@
 			validate="options"
 			>
 			<option value="">JGLOBAL_SORT_BY</option>
-			<option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
-			<option value="a.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
-			<option value="a.state ASC">JSTATUS_ASC</option>
-			<option value="a.state DESC">JSTATUS_DESC</option>
-			<option value="a.name ASC">JGLOBAL_NAME_ASC</option>
-			<option value="a.name DESC">JGLOBAL_NAME_DESC</option>
-			<option value="category_title ASC">JCATEGORY_ASC</option>
-			<option value="category_title DESC">JCATEGORY_DESC</option>
-			<option value="a.sticky ASC">COM_MYMUSE_HEADING_STICKY_ASC</option>
-			<option value="a.sticky DESC">COM_MYMUSE_HEADING_STICKY_DESC</option>
-			<option value="client_name ASC">COM_MYMUSE_HEADING_CLIENT_ASC</option>
-			<option value="client_name DESC">COM_MYMUSE_HEADING_CLIENT_DESC</option>
-			<option value="impmade ASC">COM_MYMUSE_HEADING_IMPRESSIONS_ASC</option>
-			<option value="impmade DESC">COM_MYMUSE_HEADING_IMPRESSIONS_DESC</option>
-			<option value="clicks ASC">COM_MYMUSE_HEADING_CLICKS_ASC</option>
-			<option value="clicks DESC">COM_MYMUSE_HEADING_CLICKS_DESC</option>
-			<option value="a.language ASC" requires="multilanguage">JGRID_HEADING_LANGUAGE_ASC</option>
-			<option value="a.language DESC" requires="multilanguage">JGRID_HEADING_LANGUAGE_DESC</option>
+			<option value="a.tax_name ASC">MYMUSE_TAX_NAME_LABEL</option>
+			<option value="a.tax_name DESC">MYMUSE_TAX_NAME_DESCENDING</option>
+			<option value="a.province ASC">MYMUSE_TAX_PROVINCE_LABEL</option>
+			<option value="a.province DESC">MYMUSE_TAX_PROVINCE_DESCENDING</option>
+			<option value="a.country ASC">MYMUSE_TAX_COUNTRY_LABEL</option>
+			<option value="a.country DESC">MYMUSE_TAX_COUNTRY_DESCENDING</option>
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>

@@ -71,6 +71,10 @@ class TaxrateTable extends Table implements VersionableTableInterface
 	 */
 	public function store($updateNulls = true)
 	{
+		if (is_null($this->checked_out))
+		{
+			$this->checked_out = 0;
+		}
 
 		return parent::store($updateNulls);
 	}

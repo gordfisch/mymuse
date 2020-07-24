@@ -70,7 +70,8 @@ $this->item->name = $this->item->tax_name;
 
 		<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 	</div>
-
+	<?php echo $this->form->getInput('checked_out'); ?>
+	<?php echo $this->form->getInput('checked_out_time'); ?>
 	<input type="hidden" name="task" value="">
 	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

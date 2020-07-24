@@ -12,9 +12,15 @@ namespace Joomla\Component\Mymuse\Administrator\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
+
+
+define('TAX_REGEX',"[\'-\/\s\\\]");
+
+
 
 /**
  * MyMuse component helper.
@@ -24,6 +30,7 @@ use Joomla\Registry\Registry;
 class MymuseHelper extends ContentHelper
 {
 
+	
 	/**
 	 * params from store and component
 	 *
@@ -54,6 +61,20 @@ class MymuseHelper extends ContentHelper
 	
 	);
 
+	/**
+	 * For debugging
+	 * 
+	 * @param $var
+	 * @return string
+	 * 
+	 * 
+	 */
+	public static function print_pre($var){
+		echo "<pre>";
+		print_r($var);
+		echo "</pre>";
+		return true;
+	}
 
 	/**
 	 * Configure the Linkbar.
@@ -156,7 +177,7 @@ class MymuseHelper extends ContentHelper
 	 * 
 	 * @param object  The Store Object
 	 * 
-	 * @return mixed JRegistry object or false
+	 * @return mixed Registry object or false
 	 *
 	 * @since   5.0.0
 	 */
@@ -165,7 +186,7 @@ class MymuseHelper extends ContentHelper
 		if(!self::$_params || $new){
 
 			if(!$store){
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 				$db->setQuery($query);
 				$store = $db->loadObject();
@@ -235,7 +256,7 @@ class MymuseHelper extends ContentHelper
 	 */
 	static function getStore($id=1)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = "SELECT * from `#__mymuse_store` WHERE id='$id'";
 		$db->setQuery($query);
 		$store = $db->loadObject();
@@ -255,7 +276,7 @@ class MymuseHelper extends ContentHelper
 	 */
 	static function returnURL()
 	{
-		$input 		= JFactory::getApplication()->input;
+		$input 		= Factory::getApplication()->input;
 		$url 		= JURI::base(true);
 		$option     = $input->get( 'option', '' );
 		$task       = $input->get( 'task', '' );
@@ -304,15 +325,15 @@ class MymuseHelper extends ContentHelper
 
 		if(!$code){
 			jimport( 'joomla.html.parameter' );
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 			$db->setQuery($query);
 			$store = $db->loadObject();
-			$params = new JRegistry($store->params);
+			$params = new Registry($store->params);
 			$code = $params->get('currency');
 
 		}
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = "SELECT * from #__mymuse_currency WHERE currency_code = '".$code."'";
 
 		$db->setQuery($query);
@@ -412,7 +433,7 @@ class MymuseHelper extends ContentHelper
 	 */
 	
 	public function logPayment($payment){
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		include_once(JPATH_ADMINISTRATOR.DS."components".DS."com_mymuse".DS."tables".DS."orderpayment.php");
 		$table = new MymuseTableorderpayment($db);
 		
@@ -448,7 +469,7 @@ class MymuseHelper extends ContentHelper
 	
 	static function getArtistAlias($id,$parent=0){
 		
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		if(!$parent){ //not the parent, find the parent
 			
 			$query = "SELECT parentid from #__mymuse_product
@@ -496,7 +517,7 @@ class MymuseHelper extends ContentHelper
 	function getArtistId($id,$parent=0){
 
 		
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		if(!$parent){ //not the parent, find the parent
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
@@ -533,7 +554,7 @@ class MymuseHelper extends ContentHelper
 	
 	static function getAlbumAlias($id,$parent=0){
 		
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		if(!$parent){ //not the parent, find the parent
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
@@ -666,7 +687,7 @@ class MymuseHelper extends ContentHelper
 	 */
 	static function getStatusName($code){
 		
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$q = "SELECT name FROM #__mymuse_order_status WHERE ";
 		$q .= "code = '".$code."' ";
 		$db->setQuery($q);
@@ -770,7 +791,7 @@ class MymuseHelper extends ContentHelper
 		if(!$id){
 			return false;
 		}
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$q = "SELECT product_in_stock from #__mymuse_product WHERE id=$id";
 		$db->setQuery($q);
@@ -926,7 +947,7 @@ class MymuseHelper extends ContentHelper
 		}
 
 		$id = (int)$id;
-		$db = JFactory::getDbo ();
+		$db = Factory::getDbo ();
 
 		$q = 'SELECT `' . $db->escape ($fld) . '` AS fld FROM `#__mymuse_country` WHERE id = ' . (int)$id;
 		$db->setQuery ($q);
@@ -958,7 +979,7 @@ class MymuseHelper extends ContentHelper
 				$fieldname = 'country_name';
 			}
 		}
-		$db = JFactory::getDbo ();
+		$db = Factory::getDbo ();
 		$q = 'SELECT `id` FROM `#__mymuse_country` WHERE `' . $fieldname . '` = "' . $db->escape ($name) . '"';
 
 		$db->setQuery ($q);
@@ -981,7 +1002,7 @@ class MymuseHelper extends ContentHelper
 		if (empty($id)) {
 			return '';
 		}
-		$db = JFactory::getDbo ();
+		$db = Factory::getDbo ();
 		$q = 'SELECT ' . $db->escape ($fld) . ' AS fld FROM `#__mymuse_state` WHERE id = "' . (int)$id . '"';
 		$db->setQuery ($q);
 		$r = $db->loadObject ();
@@ -1003,7 +1024,7 @@ class MymuseHelper extends ContentHelper
 		if (empty($name)) {
 			return 0;
 		}
-		$db = JFactory::getDbo ();
+		$db = Factory::getDbo ();
 		if (strlen ($name) === 2) {
 			$fieldname = 'state_2_code';
 		} else {
