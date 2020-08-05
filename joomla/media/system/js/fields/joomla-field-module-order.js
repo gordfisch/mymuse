@@ -76,7 +76,7 @@ customElements.define('joomla-field-module-order', class extends HTMLElement {
       }
 
       selectNode.appendChild(node);
-      i++;
+      i += 1;
     }
 
     this.innerHTML = '';
@@ -100,7 +100,7 @@ customElements.define('joomla-field-module-order', class extends HTMLElement {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
 
-      onSuccess(response, xhr) {
+      onSuccess(response) {
         if (response) {
           response = JSON.parse(response);
           /** Check if everything is OK * */

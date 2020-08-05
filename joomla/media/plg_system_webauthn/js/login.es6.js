@@ -78,8 +78,13 @@ window.Joomla = window.Joomla || {};
 
 
   const lookForField = (outerElement, fieldSelector) => {
-    const elElement = outerElement.parentElement;
     let elInput = null;
+
+    if (!outerElement) {
+      return elInput;
+    }
+
+    const elElement = outerElement.parentElement;
 
     if (elElement.nodeName === 'FORM') {
       elInput = findField(elElement, fieldSelector);
@@ -247,19 +252,18 @@ window.Joomla = window.Joomla || {};
       }
     });
     return false;
-  };
+  }; // Initialization. Runs on DOM content loaded since this script is always loaded deferred.
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const loginButtons = [].slice.call(document.querySelectorAll('.plg_system_webauthn_login_button'));
 
-    if (loginButtons.length) {
-      loginButtons.forEach(button => {
-        button.addEventListener('click', ({
-          currentTarget
-        }) => {
-          Joomla.plgSystemWebauthnLogin(currentTarget.getAttribute('data-random-form'), currentTarget.getAttribute('data-random-url'));
-        });
+  const loginButtons = [].slice.call(document.querySelectorAll('.plg_system_webauthn_login_button'));
+
+  if (loginButtons.length) {
+    loginButtons.forEach(button => {
+      button.addEventListener('click', ({
+        currentTarget
+      }) => {
+        Joomla.plgSystemWebauthnLogin(currentTarget.getAttribute('data-webauthn-form'), currentTarget.getAttribute('data-webauthn-url'));
       });
-    }
-  });
-})(window, Joomla);
+    });
+  }
+})(Joomla, document);

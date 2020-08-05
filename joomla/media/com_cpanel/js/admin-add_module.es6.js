@@ -53,7 +53,11 @@ Joomla = window.Joomla || {};
             }, 1500);
             const iframe = document.querySelector('#moduleDashboardAddModal iframe');
             const content = iframe.contentDocument || iframe.contentWindow.document;
-            content.querySelector(clickTarget).click();
+            const targetBtn = content.querySelector(clickTarget);
+
+            if (targetBtn) {
+              targetBtn.click();
+            }
           }
         });
       });

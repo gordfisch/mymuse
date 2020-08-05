@@ -112,6 +112,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               elem.addEventListener('keyup', function () {
                 self.linkedOptions(key);
               });
+              elem.addEventListener('click', function () {
+                self.linkedOptions(key);
+              });
             });
           }
         });
@@ -241,14 +244,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     // Check is it subform, then wee need to fix some "showon" config
     if (target.classList.contains('subform-repeatable-group')) {
       var elements = [].slice.call(target.querySelectorAll('[data-showon]'));
-      var baseName = target.getAttribute('data-baseName');
-      var group = target.getAttribute('data-group');
-      var search = new RegExp("\\[".concat(baseName, "\\]\\[").concat(baseName, "X\\]"), 'g');
-      var replace = "[".concat(baseName, "][").concat(group, "]"); // Fix showon field names in a current group
+      var search = new RegExp("\\[".concat(target.dataset.baseName, "X\\]"), 'g');
+      var replace = "[".concat(target.dataset.group, "]"); // Fix showon field names in a current group
 
       elements.forEach(function (element) {
-        var showon = element.getAttribute('data-showon').replace(search, replace);
-        element.setAttribute('data-showon', showon);
+        var showon = element.dataset.showon.replace(search, replace);
+        element.dataset.showon = showon;
       });
     } // eslint-disable-next-line no-new
 

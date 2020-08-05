@@ -67,19 +67,19 @@ if ($saveOrder && !empty($this->items))
 					<?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col">
-					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TITLE', 'a.tax_name', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('searchtools.sort', 'COM_MYMUSE_TITLE', 'a.tax_name', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
-					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_COUNTRY_LABEL', 'a.country', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('searchtools.sort', 'COM_MYMUSE_TAX_COUNTRY_LABEL', 'a.country', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
-					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_PROVINCE_LABEL', 'a.province', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('searchtools.sort', 'COM_MYMUSE_TAX_PROVINCE_LABEL', 'a.province', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
-					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_RATE_LABEL', 'a.tax_rate', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('searchtools.sort', 'COM_MYMUSE_TAX_RATE_LABEL', 'a.tax_rate', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
-					<?php echo HTMLHelper::_('searchtools.sort', 'MYMUSE_TAX_APPLIES_TO_LABEL', 'a.tax_applies_to', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('searchtools.sort', 'COM_MYMUSE_TAX_APPLIES_TO_LABEL', 'a.tax_applies_to', $listDirn, $listOrder); ?>
 				</th>
 
 				<?php if (Multilanguage::isEnabled()) : ?>
@@ -101,7 +101,7 @@ if ($saveOrder && !empty($this->items))
 			$canCheckin	= $user->authorise('core.manage',		'com_mymuse');
 			$canChange	= $user->authorise('core.edit.state',	'com_mymuse');
 			?>
-			<tr class="row<?php echo $i % 2; ?>" data-dragable-group="<?php echo $item->catid; ?>">
+			<tr class="row<?php echo $i % 2; ?>" >
 				<td class="text-center">
 					<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 				</td>

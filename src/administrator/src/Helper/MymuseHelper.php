@@ -16,6 +16,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Object\CMSObject;
+
 
 
 define('TAX_REGEX',"[\'-\/\s\\\]");
@@ -75,6 +77,8 @@ class MymuseHelper extends ContentHelper
 		echo "</pre>";
 		return true;
 	}
+
+
 
 	/**
 	 * Configure the Linkbar.

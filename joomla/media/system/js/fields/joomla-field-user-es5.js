@@ -142,7 +142,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       key: "setValue",
       value: function setValue(value, name) {
         this.input.setAttribute('value', value);
-        this.inputName.setAttribute('value', name || value);
+        this.inputName.setAttribute('value', name || value); // trigger change event
+
+        this.input.dispatchEvent(new Event('change'));
       }
     }, {
       key: "url",

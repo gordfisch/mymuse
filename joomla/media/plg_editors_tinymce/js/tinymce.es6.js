@@ -24,7 +24,20 @@
       const editors = [].slice.call(container.querySelectorAll('.js-editor-tinymce'));
       editors.forEach(editor => {
         const currentEditor = editor.querySelector('textarea');
-        Joomla.JoomlaTinyMCE.setupEditor(currentEditor, pluginOptions);
+        const toggleButton = editor.querySelector('.js-tiny-toggler-button'); // Setup the editor
+
+        Joomla.JoomlaTinyMCE.setupEditor(currentEditor, pluginOptions); // Setup the toggle button
+
+        if (toggleButton) {
+          toggleButton.removeAttribute('disabled');
+          toggleButton.addEventListener('click', () => {
+            if (Joomla.editors.instances[currentEditor.id].instance.isHidden()) {
+              Joomla.editors.instances[currentEditor.id].instance.show();
+            } else {
+              Joomla.editors.instances[currentEditor.id].instance.hide();
+            }
+          });
+        }
       });
     },
 
@@ -112,7 +125,16 @@
         options.setup = editor => {
           editor.settings.readonly = readOnlyMode;
         };
-      } // Create a new instance
+      } // We'll take over the onSubmit event
+
+
+      options.init_instance_callback = editor => {
+        editor.on('submit', () => {
+          if (editor.isHidden()) {
+            editor.show();
+          }
+        }, true);
+      }; // Create a new instance
       // eslint-disable-next-line no-undef
 
 
@@ -132,18 +154,8 @@
         disable: disabled => Joomla.editors.instances[element.id].instance.setMode(disabled ? 'readonly' : 'design'),
         // Some extra instance dependent
         id: element.id,
-        instance: ed,
-        onSave: () => {
-          if (Joomla.editors.instances[element.id].instance.isHidden()) {
-            Joomla.editors.instances[element.id].instance.show();
-          }
-
-          return '';
-        }
+        instance: ed
       };
-      /** On save * */
-
-      document.getElementById(ed.id).form.addEventListener('submit', () => Joomla.editors.instances[ed.targetElm.id].onSave());
     }
   };
   /**

@@ -56,7 +56,7 @@ if ($saveOrder && !empty($this->items))
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
 				<th width="40%">
-					<?php echo JHtml::_('grid.sort',  'MYMUSE_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort',  'COM_MYMUSE_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
                 <?php if (isset($this->items[0]->state)) { ?>
 				<th width="5%">
@@ -87,7 +87,7 @@ if ($saveOrder && !empty($this->items))
 			$canCheckin	= $user->authorise('core.manage',		'com_mymuse');
 			$canChange	= $user->authorise('core.edit.state',	'com_mymuse');
 			?>
-			<tr class="row<?php echo $i % 2; ?>" data-dragable-group="<?php echo $item->catid; ?>">
+			<tr class="row<?php echo $i % 2; ?>" >
 				<td class="text-center">
 					<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 				</td>

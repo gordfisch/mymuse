@@ -42,7 +42,7 @@ class StoreModel extends AdminModel
 	 * @var    string
 	 * @since  3.2
 	 */
-	public $typeAlias = 'com_mymusestore';
+	public $typeAlias = 'com_mymuse.store';
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
@@ -108,6 +108,8 @@ class StoreModel extends AdminModel
 				$filters     = (array) $app->getUserState('com_mymuse.stores.filter');
 			}
 		}
+		
+		
 
 		$this->preprocessData('com_mymuse.store', $data);
 

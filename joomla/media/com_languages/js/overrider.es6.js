@@ -20,6 +20,7 @@
       this.spinner = document.getElementById('overrider-spinner');
       this.spinnerBtn = document.getElementById('overrider-spinner-btn');
       this.moreResults = document.getElementById('more-results');
+      this.moreResultsButton = document.getElementById('more-results-button');
       this.resultsContainer = document.getElementById('results-container');
       this.refreshStatus = document.getElementById('refresh-status');
     }
@@ -136,7 +137,11 @@
               // If there are more results than the sent ones
               // display the more link
               this.states.more = response.data.more;
+              this.moreResultsButton.disabled = false;
               this.moreResults.classList.add('show');
+            } else {
+              this.moreResultsButton.disabled = true;
+              this.moreResults.classList.remove('show');
             }
           }
 
@@ -145,6 +150,7 @@
         },
         onError: () => {
           alert(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
+          this.moreResultsButton.disabled = true;
           this.moreResults.classList.remove('show');
           this.resultsContainer.classList.remove('show');
         }
@@ -174,19 +180,19 @@
 
       results.forEach((item, index) => {
         const a = document.createElement('a');
-        a.setAttribute('onclick', `Joomla.overrider.selectString(${this.states.counter + index});`);
+        a.setAttribute('onclick', `Joomla.overrider.selectString(${this.states.counter}${index});`);
         a.setAttribute('href', '#');
         a.classList.add('list-group-item');
         a.classList.add('list-group-item-action');
         a.classList.add('flex-column');
         a.classList.add('align-items-start');
         const key = document.createElement('div');
-        key.setAttribute('id', `override_key${this.states.counter + index}`);
+        key.setAttribute('id', `override_key${this.states.counter}${index}`);
         key.setAttribute('title', item.file);
         key.classList.add('result-key');
         key.innerHTML = item.constant;
         const string = document.createElement('div');
-        string.setAttribute('id', `override_string${this.states.counter + index}`);
+        string.setAttribute('id', `override_string${this.states.counter}${index}`);
         string.classList.add('result-string');
         string.innerHTML = item.string;
         a.appendChild(key);

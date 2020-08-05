@@ -24,6 +24,9 @@ use Psr\Container\ContainerInterface;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Component\Router\RouterServiceTrait;
+use Joomla\CMS\Factory;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * Component class for com_mymuse
@@ -53,6 +56,15 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 	{
 		$this->getRegistry()->register('mymuseadministrator', new AdministratorService);
 		$this->getRegistry()->register('mymuseicon', new Icon($container->get(SiteApplication::class)));
+
+		$res = Factory::getApplication()->triggerEvent('onMymuseGetStorage', array('com_mymuse'));
+		if(isset($res[0]) && is_object($res[0])){
+			$GLOBALS['mymuseStorage'] = $res[0];
+		}else{
+			//no plugin. load the default storage class
+			$GLOBALS['mymuseStorage'] = new MymuseStorage();
+		}
+		MyMuseHelper::setParam('storage', $GLOBALS['mymuseStorage']->type);
 	}
 
 	/**

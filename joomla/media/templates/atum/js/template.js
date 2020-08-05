@@ -228,6 +228,8 @@
 
 
   function setDesktop() {
+    var sidebarNav = doc.querySelector('.sidebar-nav');
+    var subhead = doc.querySelector('.subhead');
     var sidebarWrapper = doc.querySelector('.sidebar-wrapper');
 
     if (!sidebarWrapper) {
@@ -236,6 +238,8 @@
       changeLogo();
     }
 
+    if (sidebarNav) sidebarNav.classList.remove('collapse');
+    if (subhead) subhead.classList.remove('collapse');
     toggleArrowIcon('top');
   }
   /**

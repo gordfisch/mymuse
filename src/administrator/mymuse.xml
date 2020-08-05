@@ -44,6 +44,8 @@
 				alt="Mymuse/Store">COM_MYMUSE_STORE</menu>
 			<menu link="option=com_mymuse&amp;view=taxrates" view="taxrates" 
 				alt="Mymuse/Taxrates">COM_MYMUSE_TAXRATES</menu>
+			<menu link="option=com_mymuse&amp;view=shoppergroups" view="shoppergroups" 
+				alt="Mymuse/Shoppergroups">COM_MYMUSE_SHOPPERGROUPS</menu>
 		</submenu>
 		<files folder="administrator">
 			<filename>mymuse.xml</filename>

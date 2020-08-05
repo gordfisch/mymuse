@@ -25,8 +25,8 @@
           <field
                 name="title"
                 type="text"
-                label="MYMUSE_TITLE_LABEL"
-                description="MYMUSE_TITLE_DESC"
+                label="COM_MYMUSE_TITLE_LABEL"
+                description="COM_MYMUSE_TITLE_DESC"
                 class="inputbox"
                 size="60"
                 required="true"
@@ -35,8 +35,8 @@
           <field 
                 name="alias" 
                 type="text" 
-                label="MYMUSE_ALIAS_LABEL"
-                description="MYMUSE_ALIAS_DESC" 
+                label="COM_MYMUSE_ALIAS_LABEL"
+                description="COM_MYMUSE_ALIAS_DESC" 
                 class="inputbox" size="45" />
                 
 
@@ -45,8 +45,8 @@
                 name="description" 
                 type="editor" 
                 class="inputbox"
-                label="MYMUSE_STORE_DESC_LABEL" 
-                description="MYMUSE_STORE_DESC_DESC"
+                label="COM_MYMUSE_STORE_DESC_LABEL" 
+                description="COM_MYMUSE_STORE_DESC_DESC"
                 buttons="true" 
                 filter="JComponentHelper::filterText"
                 asset_id="com_mymuse"
@@ -87,12 +87,12 @@
     </fieldset>
     
     <fields name="params">
-      <fieldset name="contact" label="MYMUSE_CONTACTS_LABEL">
+      <fieldset name="contact" label="COM_MYMUSE_CONTACTS_LABEL">
             <field
                 name="contact_first_name"
                 type="text"
-                label="MYMUSE_CONTACT_FIRST_NAME_LABEL"
-                description="MYMUSE_CONTACT_FIRST_NAME_DESC"
+                label="COM_MYMUSE_CONTACT_FIRST_NAME_LABEL"
+                description="COM_MYMUSE_CONTACT_FIRST_NAME_DESC"
                 class="inputbox"
                 size="40"
                 required="true"
@@ -100,8 +100,8 @@
              <field
                 name="contact_last_name"
                 type="text"
-                label="MYMUSE_CONTACT_LAST_NAME_LABEL"
-                description="MYMUSE_CONTACT_LAST_NAME_DESC"
+                label="COM_MYMUSE_CONTACT_LAST_NAME_LABEL"
+                description="COM_MYMUSE_CONTACT_LAST_NAME_DESC"
                 class="inputbox"
                 size="40"
                 required="true"
@@ -109,16 +109,16 @@
              <field
                 name="contact_title"
                 type="text"
-                label="MYMUSE_CONTACT_TITLE_LABEL"
-                description="MYMUSE_CONTACT_TITLE_DESC"
+                label="COM_MYMUSE_CONTACT_TITLE_LABEL"
+                description="COM_MYMUSE_CONTACT_TITLE_DESC"
                 class="inputbox"
                 size="40"
               />
               <field
                 name="contact_email"
                 type="text"
-                label="MYMUSE_CONTACT_EMAIL_LABEL"
-                description="MYMUSE_CONTACT_EMAIL_DESC"
+                label="COM_MYMUSE_CONTACT_EMAIL_LABEL"
+                description="COM_MYMUSE_CONTACT_EMAIL_DESC"
                 class="inputbox"
                 size="40"
                 required="true"
@@ -127,32 +127,32 @@
                <field
                 name="phone"
                 type="text"
-                label="MYMUSE_CONTACT_PHONE_LABEL"
-                description="MYMUSE_CONTACT_PHONE_DESC"
+                label="COM_MYMUSE_CONTACT_PHONE_LABEL"
+                description="COM_MYMUSE_CONTACT_PHONE_DESC"
                 class="inputbox"
                 size="40"
                />
                <field
                 name="fax"
                 type="text"
-                label="MYMUSE_CONTACT_FAX_LABEL"
-                description="MYMUSE_CONTACT_FAX_DESC"
+                label="COM_MYMUSE_CONTACT_FAX_LABEL"
+                description="COM_MYMUSE_CONTACT_FAX_DESC"
                 class="inputbox"
                 size="40"
                />
                <field
                 name="twitter_handle"
                 type="text"
-                label="MYMUSE_TWITTER_HANDLE_LABEL"
-                description="MYMUSE_TWITTER_HANDLE_DESC"
+                label="COM_MYMUSE_TWITTER_HANDLE_LABEL"
+                description="COM_MYMUSE_TWITTER_HANDLE_DESC"
                 class="inputbox"
                 size="40"
                />
                <field
                 name="currency"
                 type="sql"
-                label="MYMUSE_CURRENCY_LABEL"
-                description="MYMUSE_CURRENCY_DESC"
+                label="COM_MYMUSE_CURRENCY_LABEL"
+                description="COM_MYMUSE_CURRENCY_DESC"
                 class="inputbox"
                 query="SELECT currency_code, CONCAT(currency_name,' ',symbol) AS currency FROM #__mymuse_currency"
                 key_field="currency_code"
@@ -162,52 +162,52 @@
                <field
                 name="store_thumb_image"
                 type="media"
-                label="MYMUSE_SMALL_LOGO_LABEL"
-                description="MYMUSE_SMALL_LOGO_DESC"
+                label="COM_MYMUSE_SMALL_LOGO_LABEL"
+                description="COM_MYMUSE_SMALL_LOGO_DESC"
 
                 directory=""
 
                />
                
             </fieldset>
-            <fieldset name="contact2" label="MYMUSE_CONTACTS2_LABEL">
+            <fieldset name="contact2" label="COM_MYMUSE_CONTACTS2_LABEL">
                 <field
                 name="address_1"
                 type="text"
-                label="MYMUSE_CONTACT_ADDRESS_1_LABEL"
-                description="MYMUSE_CONTACT_ADDRESS_1_DESC"
+                label="COM_MYMUSE_CONTACT_ADDRESS_1_LABEL"
+                description="COM_MYMUSE_CONTACT_ADDRESS_1_DESC"
                 class="inputbox"
                 size="40"
                />
                <field
                 name="address_2"
                 type="text"
-                label="MYMUSE_CONTACT_ADDRESS_2_LABEL"
-                description="MYMUSE_CONTACT_ADDRESS_2_DESC"
+                label="COM_MYMUSE_CONTACT_ADDRESS_2_LABEL"
+                description="COM_MYMUSE_CONTACT_ADDRESS_2_DESC"
                 class="inputbox"
                 size="40"
                />
                <field
                 name="city"
                 type="text"
-                label="MYMUSE_CONTACT_CITY_LABEL"
-                description="MYMUSE_CONTACT_CITY_DESC"
+                label="COM_MYMUSE_CONTACT_CITY_LABEL"
+                description="COM_MYMUSE_CONTACT_CITY_DESC"
                 class="inputbox"
                 size="40"
                />
                <field
                 name="province"
                 type="text"
-                label="MYMUSE_CONTACT_STATE_LABEL"
-                description="MYMUSE_CONTACT_STATE_DESC"
+                label="COM_MYMUSE_CONTACT_STATE_LABEL"
+                description="COM_MYMUSE_CONTACT_STATE_DESC"
                 class="inputbox"
                 size="40"
                />
                <field
                 name="country"
                 type="sql"
-                label="MYMUSE_CONTACT_COUNTRY_LABEL"
-                description="MYMUSE_CONTACT_COUNTRY_DESC"
+                label="COM_MYMUSE_CONTACT_COUNTRY_LABEL"
+                description="COM_MYMUSE_CONTACT_COUNTRY_DESC"
                 class="inputbox"
                 query="SELECT country_2_code,  country_name AS country FROM #__mymuse_country"
                 key_field="country_2_code"
@@ -217,8 +217,8 @@
                <field
                 name="zip"
                 type="text"
-                label="MYMUSE_ZIP_LABEL"
-                description="MYMUSE_ZIP_DESC"
+                label="COM_MYMUSE_ZIP_LABEL"
+                description="COM_MYMUSE_ZIP_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -227,22 +227,22 @@
       </fieldset>
       
       
-      <fieldset name="downloads" label="MYMUSE_DOWNLOADS_LABEL">
+      <fieldset name="downloads" label="COM_MYMUSE_DOWNLOADS_LABEL">
         <field 
                 name="my_downloads_enable" 
                 type="radio" 
-                label="MYMUSE_DOWNLOADS_ENABLE_LABEL"
-                description="MYMUSE_DOWNLOADS_ENABLE_DESC" 
+                label="COM_MYMUSE_DOWNLOADS_ENABLE_LABEL"
+                description="COM_MYMUSE_DOWNLOADS_ENABLE_DESC" 
                 class="btn-group btn-group-yesno"
                 default="1">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
           </field>
         <field
                 name="my_formats"
                 type="list"
-                label="MYMUSE_SELLING_FORMATS_LABEL"
-                description="MYMUSE_SELLING_FORMATS_DESC"
+                label="COM_MYMUSE_SELLING_FORMATS_LABEL"
+                description="COM_MYMUSE_SELLING_FORMATS_DESC"
                 class="inputbox"
                 size="4"
                 default="mp3"
@@ -261,29 +261,29 @@
           <!--field
                 name="my_download_require_release_date"
                 type="radio"
-                label="MYMUSE_REQUIRE_RELEASE_DATE_LABEL"
-                description="MYMUSE_REQUIRE_RELEASE_DATE_DESC"
+                label="COM_MYMUSE_REQUIRE_RELEASE_DATE_LABEL"
+                description="COM_MYMUSE_REQUIRE_RELEASE_DATE_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
             </field -->
             <!-- field
                   name="my_download_allow_preorder"
                   type="radio"
-                  label="MYMUSE_ALLOW_PREORDER_LABEL"
-                  description="MYMUSE_ALLOW_PREORDER_DESC"
+                  label="COM_MYMUSE_ALLOW_PREORDER_LABEL"
+                  description="COM_MYMUSE_ALLOW_PREORDER_DESC"
                   class="btn-group btn-group-yesno"
                   showon="my_download_require_release_date:1"
                   default="0">
-                  <option value="0">MYMUSE_NO</option>
-                  <option value="1">MYMUSE_YES</option>>
+                  <option value="0">COM_MYMUSE_NO</option>
+                  <option value="1">COM_MYMUSE_YES</option>>
               </field -->
           <field
                 name="my_download_max"
                 type="text"
-                label="MYMUSE_DOWNLOADS_MAX_LABEL"
-                description="MYMUSE_DOWNLOADS_MAX_DESC"
+                label="COM_MYMUSE_DOWNLOADS_MAX_LABEL"
+                description="COM_MYMUSE_DOWNLOADS_MAX_DESC"
                 class="inputbox"
                 size="3"
                 default="3"
@@ -291,8 +291,8 @@
            <field
                 name="my_download_expire"
                 type="list"
-                label="MYMUSE_DOWNLOADS_EXPIRE_LABEL"
-                description="MYMUSE_DOWNLOADS_EXPIRE_DESC"
+                label="COM_MYMUSE_DOWNLOADS_EXPIRE_LABEL"
+                description="COM_MYMUSE_DOWNLOADS_EXPIRE_DESC"
                 class="inputbox"
                 default="432000">
                 <option value="86400">J1</option>
@@ -302,13 +302,13 @@
                 <option value="432000">J5</option>
                 <option value="1296000">J15</option>
                 <option value="2592000">J30</option>
-                <option value="-">MYMUSE_NEVER</option>
+                <option value="-">COM_MYMUSE_NEVER</option>
            </field>
            <field
                 name="my_download_enable_status"
                 type="text"
-                label="MYMUSE_DOWNLOADS_ENABLE_STATUS_LABEL"
-                description="MYMUSE_DOWNLOADS_ENABLE_STATUS_DESC"
+                label="COM_MYMUSE_DOWNLOADS_ENABLE_STATUS_LABEL"
+                description="COM_MYMUSE_DOWNLOADS_ENABLE_STATUS_DESC"
                 class="inputbox"
                 size="3"
                 default="C"
@@ -316,22 +316,22 @@
            <field
                 name="my_use_zip"
                 type="radio"
-                label="MYMUSE_USE_ZIP_LABEL"
-                description="MYMUSE_USE_ZIP_DESC"
+                label="COM_MYMUSE_USE_ZIP_LABEL"
+                description="COM_MYMUSE_USE_ZIP_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
             </field>
         </fieldset>
       
       
-        <fieldset name="directories" label="MYMUSE_DOWNLOADS2_LABEL">
+        <fieldset name="directories" label="COM_MYMUSE_DOWNLOADS2_LABEL">
            <field
                 name="my_download_dir"
                 type="text"
-                label="MYMUSE_DOWNLOADS_DIR_LABEL"
-                description="MYMUSE_DOWNLOADS_DIR_DESC"
+                label="COM_MYMUSE_DOWNLOADS_DIR_LABEL"
+                description="COM_MYMUSE_DOWNLOADS_DIR_DESC"
                 class="inputbox"
                 size="40"
                 readonly="0"
@@ -339,20 +339,20 @@
            <field
                 name="my_download_dir_format"
                 type="list"
-                label="MYMUSE_DOWNLOAD_DIR_FORMAT_LABEL"
-                description="MYMUSE_DOWNLOAD_DIR_FORMAT_DESC"
+                label="COM_MYMUSE_DOWNLOAD_DIR_FORMAT_LABEL"
+                description="COM_MYMUSE_DOWNLOAD_DIR_FORMAT_DESC"
                 class="inputbox"
                 default="0">
-                <option value="0">MYMUSE_ARIST_PRODUCT</option>
-                <option value="1">MYMUSE_BY_FORMAT</option>
+                <option value="0">COM_MYMUSE_ARIST_PRODUCT</option>
+                <option value="1">COM_MYMUSE_BY_FORMAT</option>
             </field>
 
             
            <field
                 name="my_preview_dir"
                 type="text"
-                label="MYMUSE_DOWNLOADS_PREVIEW_DIR_LABEL"
-                description="MYMUSE_DOWNLOADS_PREVIEW_DIR_DESC"
+                label="COM_MYMUSE_DOWNLOADS_PREVIEW_DIR_LABEL"
+                description="COM_MYMUSE_DOWNLOADS_PREVIEW_DIR_DESC"
                 class="inputbox"
                 default="images/mymuse/previews"
                 size="40"
@@ -360,108 +360,108 @@
             <field
                 name="my_previews_in_one_dir"
                 type="radio"
-                label="MYMUSE_PREVIEWS_IN_ON_DIR_LABEL"
-                description="MYMUSE_PREVIEWS_IN_ON_DIR_DESC"
+                label="COM_MYMUSE_PREVIEWS_IN_ON_DIR_LABEL"
+                description="COM_MYMUSE_PREVIEWS_IN_ON_DIR_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
             </field>
             <field
                 name="my_encode_filenames"
                 type="radio"
-                label="MYMUSE_DOWNLOADS_ENCODE_LABEL"
-                description="MYMUSE_DOWNLOADS_ENCODE_DESC"
+                label="COM_MYMUSE_DOWNLOADS_ENCODE_LABEL"
+                description="COM_MYMUSE_DOWNLOADS_ENCODE_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
             </field>
             
    
             <field
                 name="my_use_string_url_safe"
                 type="radio"
-                label="MYMUSE_STR_URL_SAFE_LABEL"
-                description="MYMUSE_STR_URL_SAFE_DESC"
+                label="COM_MYMUSE_STR_URL_SAFE_LABEL"
+                description="COM_MYMUSE_STR_URL_SAFE_DESC"
                 class="btn-group btn-group-yesno"
                 default="1">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
             </field>
     </fieldset>
         
-        <fieldset name="physical" label="MYMUSE_PHYSICAL_LABEL">
+        <fieldset name="physical" label="COM_MYMUSE_PHYSICAL_LABEL">
             <field
                     name="my_use_shipping"
                     type="radio"
-                    label="MYMUSE_USE_SHIPPING_LABEL"
-                    description="MYMUSE_USE_SHIPPING_DESC"
+                    label="COM_MYMUSE_USE_SHIPPING_LABEL"
+                    description="COM_MYMUSE_USE_SHIPPING_DESC"
                     class="btn-group btn-group-yesno"
                     default="0">
-                    <option value="0">MYMUSE_NO</option>
-                    <option value="1">MYMUSE_YES</option>
+                    <option value="0">COM_MYMUSE_NO</option>
+                    <option value="1">COM_MYMUSE_YES</option>
             </field>
             <field
                     name="my_add_shipping_auto"
                     type="radio"
-                    label="MYMUSE_ADD_SHIPPING_AUTO_LABEL"
-                    description="MYMUSE_ADD_SHIPPING_AUTO_DESC"
+                    label="COM_MYMUSE_ADD_SHIPPING_AUTO_LABEL"
+                    description="COM_MYMUSE_ADD_SHIPPING_AUTO_DESC"
                     class="btn-group btn-group-yesno"
                     default="0">
-                    <option value="0">MYMUSE_NO</option>
-                    <option value="1">MYMUSE_YES</option>
+                    <option value="0">COM_MYMUSE_NO</option>
+                    <option value="1">COM_MYMUSE_YES</option>
             </field>
             
             <field
                     name="my_use_stock"
                     type="radio"
-                    label="MYMUSE_USE_STOCK_LABEL"
-                    description="MYMUSE_USE_STOCK_DESC"
+                    label="COM_MYMUSE_USE_STOCK_LABEL"
+                    description="COM_MYMUSE_USE_STOCK_DESC"
                     class="btn-group btn-group-yesno"
                     default="0">
-                    <option value="0">MYMUSE_NO</option>
-                    <option value="1">MYMUSE_YES</option>
+                    <option value="0">COM_MYMUSE_NO</option>
+                    <option value="1">COM_MYMUSE_YES</option>
             </field>
             <field
                     name="my_check_stock"
                     type="radio"
-                    label="MYMUSE_CHECK_STOCK_LABEL"
-                    description="MYMUSE_CHECK_STOCK_DESC"
+                    label="COM_MYMUSE_CHECK_STOCK_LABEL"
+                    description="COM_MYMUSE_CHECK_STOCK_DESC"
                     class="btn-group btn-group-yesno"
                     default="0">
-                    <option value="0">MYMUSE_NO</option>
-                    <option value="1">MYMUSE_YES</option>
+                    <option value="0">COM_MYMUSE_NO</option>
+                    <option value="1">COM_MYMUSE_YES</option>
             </field>
             <field
                     name="my_add_stock_zero"
                     type="radio"
-                    label="MYMUSE_ADD_STOCK_ZERO_LABEL"
-                    description="MYMUSE_ADD_STOCK_ZERO_DESC"
+                    label="COM_MYMUSE_ADD_STOCK_ZERO_LABEL"
+                    description="COM_MYMUSE_ADD_STOCK_ZERO_DESC"
                     class="btn-group btn-group-yesno"
                     default="0">
-                    <option value="0">MYMUSE_NO</option>
-                    <option value="1">MYMUSE_YES</option>
+                    <option value="0">COM_MYMUSE_NO</option>
+                    <option value="1">COM_MYMUSE_YES</option>
             </field>
 
         </fieldset>
-    <fieldset name="store" label="MYMUSE_STORE_OPTIONS_LABEL">
+    <fieldset name="store" label="COM_MYMUSE_STORE_OPTIONS_LABEL">
             
         <field 
                 name="my_saveorder" 
                 type="hidden" 
                 default="before" 
-                label="MYMUSE_SAVEORDER_LABEL" 
-                description="MYMUSE_SAVEORDER_DESC">
-                <option value="before">MYMUSE_BEFORE_PAYMENT</option>
+                label="COM_MYMUSE_SAVEORDER_LABEL" 
+                description="COM_MYMUSE_SAVEORDER_DESC">
+                <option value="before">COM_MYMUSE_BEFORE_PAYMENT</option>
         </field>
         
 
         <field
                 name="my_currency_separator"
                 type="text"
-                label="MYMUSE_CURRENCY_SEPARATOR_LABEL"
-                description="MYMUSE_CURRENCY_SEPARATOR_DESC"
+                label="COM_MYMUSE_CURRENCY_SEPARATOR_LABEL"
+                description="COM_MYMUSE_CURRENCY_SEPARATOR_DESC"
                 class="inputbox"
                 size="3"
                 default=","
@@ -469,8 +469,8 @@
         <field
                 name="my_currency_dec_point"
                 type="text"
-                label="MYMUSE_CURRENCY_DEC_POINT_LABEL"
-                description="MYMUSE_CURRENCY_DEC_POINT_DESC"
+                label="COM_MYMUSE_CURRENCY_DEC_POINT_LABEL"
+                description="COM_MYMUSE_CURRENCY_DEC_POINT_DESC"
                 class="inputbox"
                 size="3"
                 default="."
@@ -478,42 +478,42 @@
         <field
                 name="my_currency_position"
                 type="radio"
-                label="MYMUSE_CURRENCY_POSITION_LABEL"
-                description="MYMUSE_CURRENCY_POSITION_DESC"
+                label="COM_MYMUSE_CURRENCY_POSITION_LABEL"
+                description="COM_MYMUSE_CURRENCY_POSITION_DESC"
                 class="inputbox"
                 default="0">
-                <option value="0">MYMUSE_BEFORE</option>
-                <option value="1">MYMUSE_AFTER</option>
+                <option value="0">COM_MYMUSE_BEFORE</option>
+                <option value="1">COM_MYMUSE_AFTER</option>
         </field>
         
         <field
                 name="my_registration_redirect"
                 type="list"
-                label="MYMUSE_REGISTER_REDIRECT_LABEL"
-                description="MYMUSE_REGISTER_REDIRECT_DESC"
+                label="COM_MYMUSE_REGISTER_REDIRECT_LABEL"
+                description="COM_MYMUSE_REGISTER_REDIRECT_DESC"
                 default="registration">
-                <option value="registration">MYMUSE_REGISTRATION</option>
-                <option value="login">MYMUSE_LOGIN</option>
+                <option value="registration">COM_MYMUSE_REGISTRATION</option>
+                <option value="login">COM_MYMUSE_LOGIN</option>
                 
         </field>
         <field
                 name="my_registration"
                 type="list"
-                label="MYMUSE_REGISTER_LABEL"
-                description="MYMUSE_REGISTER_DESC"
+                label="COM_MYMUSE_REGISTER_LABEL"
+                description="COM_MYMUSE_REGISTER_DESC"
                 default="joomla">
-                <option value="joomla">MYMUSE_JOOMLA</option>
-                <option value="full">MYMUSE_FULL</option>
-                <option value="jomsocial">MYMUSE_JOMSOCIAL</option>
-                <option value="no_reg">MYMUSE_NO_REGISTRATION</option>
+                <option value="joomla">COM_MYMUSE_JOOMLA</option>
+                <option value="full">COM_MYMUSE_FULL</option>
+                <option value="jomsocial">COM_MYMUSE_JOMSOCIAL</option>
+                <option value="no_reg">COM_MYMUSE_NO_REGISTRATION</option>
 
         </field>
         
          <field
                 name="my_noreg_password"
                 type="text"
-                label="MYMUSE_NOREG_PASSWORD_LABEL"
-                description="MYMUSE_NOREG_PASSWORD_DESC"
+                label="COM_MYMUSE_NOREG_PASSWORD_LABEL"
+                description="COM_MYMUSE_NOREG_PASSWORD_DESC"
                 class="inputbox"
                 size="15"
                 default="buyer"
@@ -521,49 +521,49 @@
         <field
                 name="my_checkout"
                 type="list"
-                label="MYMUSE_CHECKOUT_LABEL"
-                description="MYMUSE_CHECKOUT_DESC"
+                label="COM_MYMUSE_CHECKOUT_LABEL"
+                description="COM_MYMUSE_CHECKOUT_DESC"
                 default="joomla">
-                <option value="regular">MYMUSE_CHECKOUT_REGULAR</option>
-                <option value="skip_confirm">MYMUSE_CHECKOUT_SKIP_CONFIRM</option>
+                <option value="regular">COM_MYMUSE_CHECKOUT_REGULAR</option>
+                <option value="skip_confirm">COM_MYMUSE_CHECKOUT_SKIP_CONFIRM</option>
 
         </field>
         
         <field
                 name="my_profile_key"
                 type="text"
-                label="MYMUSE_PROFILE_KEY_LABEL"
-                description="MYMUSE_PROFILE_KEY_DESC"
+                label="COM_MYMUSE_PROFILE_KEY_LABEL"
+                description="COM_MYMUSE_PROFILE_KEY_DESC"
                 class="inputbox"
                 size="15"
-                default="mymuse"
+                default="COM_MYMUSE"
         />
         <field
                 name="my_use_coupons"
                 type="radio"
-                label="MYMUSE_USE_COUPONS"
-                description="MYMUSE_USE_COUPONS_DESC"
+                label="COM_MYMUSE_USE_COUPONS"
+                description="COM_MYMUSE_USE_COUPONS_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         <field
                 name="my_use_alias"
                 type="radio"
-                label="MYMUSE_USE_ALIAS_LABEL"
-                description="MYMUSE_USE_ALIAS_DESC"
+                label="COM_MYMUSE_USE_ALIAS_LABEL"
+                description="COM_MYMUSE_USE_ALIAS_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         
         <field
                 name="top_menu_item"
                 type="menuitem"
-                label="MYMUSE_TOP_MENU_LABEL"
-                description="MYMUSE_TOP_MENU_DESC"
+                label="COM_MYMUSE_TOP_MENU_LABEL"
+                description="COM_MYMUSE_TOP_MENU_DESC"
                 class="inputbox"
                 required="false">
                 <option value="">NO SELECTION</option>
@@ -572,8 +572,8 @@
         <field 
                 name="my_delay_fadeout" 
                 type="text" 
-                label="MYMUSE_DELAY_FADEOUT_LABEL"
-                description="MYMUSE_DELAY_FADEOUT_DESC" 
+                label="COM_MYMUSE_DELAY_FADEOUT_LABEL"
+                description="COM_MYMUSE_DELAY_FADEOUT_DESC" 
                 class="inputbox"
                 default="4000"
                 size="4"
@@ -581,73 +581,73 @@
         <field
                 name="my_show_cart_preview"
                 type="radio"
-                label="MYMUSE_SHOW_CART_PREVIEW_LABEL"
-                description="MYMUSE_SHOW_CART_PREVIEW_DESC"
+                label="COM_MYMUSE_SHOW_CART_PREVIEW_LABEL"
+                description="COM_MYMUSE_SHOW_CART_PREVIEW_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         <field
                 name="my_show_cart_player"
                 type="radio"
-                label="MYMUSE_SHOW_CART_PLAYER_LABEL"
-                description="MYMUSE_SHOW_CART_PLAYER_DESC"
+                label="COM_MYMUSE_SHOW_CART_PLAYER_LABEL"
+                description="COM_MYMUSE_SHOW_CART_PLAYER_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
     </fieldset>
-    <fieldset name="store2" label="MYMUSE_STORE_OPTIONS2_LABEL">
+    <fieldset name="store2" label="COM_MYMUSE_STORE_OPTIONS2_LABEL">
         <field
                 name="my_price_by_product"
                 type="list"
-                label="MYMUSE_PRICING_LABEL"
-                description="MYMUSE_PRICING_DESC"
+                label="COM_MYMUSE_PRICING_LABEL"
+                description="COM_MYMUSE_PRICING_DESC"
                 class="inputbox"
                 default="0">
-                <option value="0">MYMUSE_PRICE_BY_TRACK</option>
-                <option value="1">MYMUSE_PRICE_BY_PRODUCT</option>
+                <option value="0">COM_MYMUSE_PRICE_BY_TRACK</option>
+                <option value="1">COM_MYMUSE_PRICE_BY_PRODUCT</option>
                 
         </field>
         <field
                 name="my_disable_css"
                 type="radio"
-                label="MYMUSE_DISABLE_CSS_LABEL"
-                description="MYMUSE_DISABLE_CSS_DESC"
+                label="COM_MYMUSE_DISABLE_CSS_LABEL"
+                description="COM_MYMUSE_DISABLE_CSS_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         
         <field
                 name="my_plugin_email"
                 type="radio"
-                label="MYMUSE_PLUGIN_EMAIL_LABEL"
-                description="MYMUSE_PLUGIN_EMAIL_DESC"
+                label="COM_MYMUSE_PLUGIN_EMAIL_LABEL"
+                description="COM_MYMUSE_PLUGIN_EMAIL_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
 
         <field
                 name="my_cc_webmaster"
                 type="radio"
-                label="MYMUSE_CC_WEBMASTER_LABEL"
-                description="MYMUSE_CC_WEBMASTER_DESC"
+                label="COM_MYMUSE_CC_WEBMASTER_LABEL"
+                description="COM_MYMUSE_CC_WEBMASTER_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         <field
                 name="my_webmaster"
                 type="text"
-                label="MYMUSE_WEBMASTER_EMAIL_LABEL"
-                description="MYMUSE_WEBMASTER_EMAIL_DESC"
+                label="COM_MYMUSE_WEBMASTER_EMAIL_LABEL"
+                description="COM_MYMUSE_WEBMASTER_EMAIL_DESC"
                 class="inputbox"
                 size="40"
                 default="info@joomlamymuse.com"
@@ -655,8 +655,8 @@
         <field
                 name="my_webmaster_name"
                 type="text"
-                label="MYMUSE_WEBMASTER_NAME_LABEL"
-                description="MYMUSE_WEBMASTER_NAME_DESC"
+                label="COM_MYMUSE_WEBMASTER_NAME_LABEL"
+                description="COM_MYMUSE_WEBMASTER_NAME_DESC"
                 class="inputbox"
                 size="40"
                 default="Joe Strummer"
@@ -664,8 +664,8 @@
         <field
                 name="my_continue_shopping"
                 type="text"
-                label="MYMUSE_CONTINUE_SHOPPING_LABEL"
-                description="MYMUSE_CONTINUE_SHOPPING_DESC"
+                label="COM_MYMUSE_CONTINUE_SHOPPING_LABEL"
+                description="COM_MYMUSE_CONTINUE_SHOPPING_DESC"
                 class="inputbox"
                 size="40"
                 default="/index.php?option=com_mymuse"
@@ -673,8 +673,8 @@
         <field
                 name="my_date_format"
                 type="text"
-                label="MYMUSE_DATE_FORMAT_LABEL"
-                description="MYMUSE_DATE_FORMAT_DESC"
+                label="COM_MYMUSE_DATE_FORMAT_LABEL"
+                description="COM_MYMUSE_DATE_FORMAT_DESC"
                 class="inputbox"
                 size="40"
                 default="d F Y H:i"
@@ -682,8 +682,8 @@
         <field 
                 name="my_default_itemid" 
                 type="text" 
-                label="MYMUSE_DEFAULT_ITEMID_LABEL"
-                description="MYMUSE_DEFAULT_ITEMID_DESC" 
+                label="COM_MYMUSE_DEFAULT_ITEMID_LABEL"
+                description="COM_MYMUSE_DEFAULT_ITEMID_DESC" 
                 class="inputbox"
                 size="4"
                 />
@@ -693,15 +693,15 @@
                 rows="3" 
                 cols="35" 
                 default="" 
-                label="MYMUSE_EMAIL_MSG_LABEL" 
-                description="MYMUSE_EMAIL_MSG_DESC" 
+                label="COM_MYMUSE_EMAIL_MSG_LABEL" 
+                description="COM_MYMUSE_EMAIL_MSG_DESC" 
                 filter="raw"
         />
         <field
                 name="my_max_recommended"
                 type="text"
-                label="MYMUSE_MAX_RECOMMENDED_LABEL"
-                description="MYMUSE_MAX_RECOMMENDED_DESC"
+                label="COM_MYMUSE_MAX_RECOMMENDED_LABEL"
+                description="COM_MYMUSE_MAX_RECOMMENDED_DESC"
                 class="inputbox"
                 size="4"
                 default="4"
@@ -709,87 +709,87 @@
         <field
                 name="my_show_original_price"
                 type="radio"
-                label="MYMUSE_SHOW_ORIGINAL_PRICE"
-                description="MYMUSE_SHOW_ORIGINAL_PRICE_DESC"
+                label="COM_MYMUSE_SHOW_ORIGINAL_PRICE"
+                description="COM_MYMUSE_SHOW_ORIGINAL_PRICE_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
       
         <field
                 name="my_show_category_name"
                 type="radio"
-                label="MYMUSE_SHOW_CATEGORY_NAME_LABEL"
-                description="MYMUSE_SHOW_CATEGORY_NAME_DESC"
+                label="COM_MYMUSE_SHOW_CATEGORY_NAME_LABEL"
+                description="COM_MYMUSE_SHOW_CATEGORY_NAME_DESC"
                 class="btn-group btn-group-yesno"
                 default="1">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         
         
         <field
                 name="my_show_sku"
                 type="radio"
-                label="MYMUSE_SHOW_SKU_LABEL"
-                description="MYMUSE_SHOW_SKU_DESC"
+                label="COM_MYMUSE_SHOW_SKU_LABEL"
+                description="COM_MYMUSE_SHOW_SKU_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         
         <field
                 name="my_default_shopper_group_id"
                 type="hidden"
-                label="MYMUSE_DEFAULT_SHOPPER_GROUP_LABEL"
-                description="MYMUSE_DEFAULT_SHOPPER_GROUP_DESC"
+                label="COM_MYMUSE_DEFAULT_SHOPPER_GROUP_LABEL"
+                description="COM_MYMUSE_DEFAULT_SHOPPER_GROUP_DESC"
                 class="inputbox"
                 size="5"
                 default="1"
         />
     </fieldset>
 
-    <fieldset name="reports" label="MYMUSE_FRONT_END_SALES_REPORTS_LABEL">
+    <fieldset name="reports" label="COM_MYMUSE_FRONT_END_SALES_REPORTS_LABEL">
         <field
                 name="my_ownergid" 
                 type="usergrouplist" 
                 default="" 
-                label="MYMUSE_OWNERGID_LABEL" 
-                description="MYMUSE_OWNERGID_DESC" 
+                label="COM_MYMUSE_OWNERGID_LABEL" 
+                description="COM_MYMUSE_OWNERGID_DESC" 
         />
         <field
                 name="my_owner_percent" 
                 type="text" 
                 default="100" 
                 size="5" 
-                label="MYMUSE_OWNER_PERCENT_LABEL" 
-                description="MYMUSE_OWNER_PERCENT_DESC" 
+                label="COM_MYMUSE_OWNER_PERCENT_LABEL" 
+                description="COM_MYMUSE_OWNER_PERCENT_DESC" 
         />
     
     </fieldset>
 
-    <fieldset name="testing" label="MYMUSE_TEST_OPTIONS_LABEL">
+    <fieldset name="testing" label="COM_MYMUSE_TEST_OPTIONS_LABEL">
         <field
                 name="my_shop_test"
                 type="radio"
-                label="MYMUSE_SHOP_TEST_LABEL"
-                description="MYMUSE_SHOP_TEST_DESC"
+                label="COM_MYMUSE_SHOP_TEST_LABEL"
+                description="COM_MYMUSE_SHOP_TEST_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
         <field
                 name="my_debug"
                 type="radio"
-                label="MYMUSE_DEBUG_LABEL"
-                description="MYMUSE_DEBUG_DESC"
+                label="COM_MYMUSE_DEBUG_LABEL"
+                description="COM_MYMUSE_DEBUG_DESC"
                 class="btn-group btn-group-yesno"
                 default="0">
-                <option value="0">MYMUSE_NO</option>
-                <option value="1">MYMUSE_YES</option>>
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
         </field>
       </fieldset>
     </fields>
@@ -815,7 +815,7 @@
             description="JFIELD_META_RIGHTS_DESC" required="false" filter="string"
             cols="30" rows="2" />
         <field name="xreference" type="text"
-            label="MYMUSE_FIELD_XREFERENCE_LABEL" description="MYMUSE_FIELD_XREFERENCE_DESC"
+            label="COM_MYMUSE_FIELD_XREFERENCE_LABEL" description="COM_MYMUSE_FIELD_XREFERENCE_DESC"
             class="inputbox" size="20" />
 
 

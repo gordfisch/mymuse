@@ -119,7 +119,7 @@ customElements.define('joomla-field-module-order', /*#__PURE__*/function (_HTMLE
         }
 
         selectNode.appendChild(node);
-        i++;
+        i += 1;
       }
 
       this.innerHTML = '';
@@ -143,7 +143,7 @@ customElements.define('joomla-field-module-order', /*#__PURE__*/function (_HTMLE
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        onSuccess: function onSuccess(response, xhr) {
+        onSuccess: function onSuccess(response) {
           if (response) {
             response = JSON.parse(response);
             /** Check if everything is OK * */

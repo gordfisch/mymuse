@@ -32,8 +32,8 @@
     buttons.forEach(function (button) {
       button.addEventListener('click', function (e) {
         e.preventDefault();
-        var task = e.target.getAttribute(buttonDataSelector);
-        submitTask(task, e.target.form);
+        var task = e.currentTarget.getAttribute(buttonDataSelector);
+        submitTask(task, e.currentTarget.form);
       });
     });
   };

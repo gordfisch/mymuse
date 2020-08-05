@@ -33,9 +33,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     throw new Error('Joomla API is not properly initiated');
   }
 
-  var selectedFile = {};
+  Joomla.selectedFile = {};
   window.document.addEventListener('onMediaFileSelected', function (e) {
-    selectedFile = e.detail;
+    Joomla.selectedFile = e.detail;
   });
 
   var execTransform = function execTransform(resp, editor, fieldClass) {
@@ -46,31 +46,31 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
               rootFull = _Joomla$getOptions.rootFull; // eslint-disable-next-line prefer-destructuring
 
 
-          selectedFile.url = resp.data[0].url.split(rootFull)[1];
+          Joomla.selectedFile.url = resp.data[0].url.split(rootFull)[1];
 
           if (resp.data[0].thumb_path) {
-            selectedFile.thumb = resp.data[0].thumb_path;
+            Joomla.selectedFile.thumb = resp.data[0].thumb_path;
           } else {
-            selectedFile.thumb = false;
+            Joomla.selectedFile.thumb = false;
           }
         } else if (resp.data[0].thumb_path) {
-          selectedFile.thumb = resp.data[0].thumb_path;
+          Joomla.selectedFile.thumb = resp.data[0].thumb_path;
         }
       } else {
-        selectedFile.url = false;
+        Joomla.selectedFile.url = false;
       }
 
       var isElement = function isElement(o) {
         return (typeof HTMLElement === "undefined" ? "undefined" : _typeof(HTMLElement)) === 'object' ? o instanceof HTMLElement : o && _typeof(o) === 'object' && o !== null && o.nodeType === 1 && typeof o.nodeName === 'string';
       };
 
-      if (selectedFile.url) {
+      if (Joomla.selectedFile.url) {
         if (!isElement(editor) && _typeof(editor) !== 'object') {
-          Joomla.editors.instances[editor].replaceSelection("<img loading=\"lazy\" src=\"".concat(selectedFile.url, "\" alt=\"\"/>"));
+          Joomla.editors.instances[editor].replaceSelection("<img loading=\"lazy\" src=\"".concat(Joomla.selectedFile.url, "\" alt=\"\"/>"));
         } else if (!isElement(editor) && _typeof(editor) === 'object' && editor.id) {
-          window.parent.Joomla.editors.instances[editor.id].replaceSelection("<img loading=\"lazy\" src=\"".concat(selectedFile.url, "\" alt=\"\"/>"));
+          window.parent.Joomla.editors.instances[editor.id].replaceSelection("<img loading=\"lazy\" src=\"".concat(Joomla.selectedFile.url, "\" alt=\"\"/>"));
         } else {
-          editor.value = selectedFile.url;
+          editor.value = Joomla.selectedFile.url;
           fieldClass.updatePreview();
         }
       }
@@ -85,11 +85,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
    */
 
 
-  var fetchImageDetails = function fetchImageDetails(data, editor, fieldClass) {
+  Joomla.getImage = function (data, editor, fieldClass) {
     return new Promise(function (resolve, reject) {
       if (!data || _typeof(data) === 'object' && (!data.path || data.path === '')) {
-        selectedFile = {};
-        reject(new Error('Nothing selected'));
+        Joomla.selectedFile = {};
+        resolve({
+          resp: {
+            success: false
+          }
+        });
         return;
       }
 
@@ -172,16 +176,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       key: "show",
       value: function show() {
         this.querySelector('[role="dialog"]').open();
+        Joomla.selectedFile = {};
         this.querySelector(this.buttonSaveSelected).addEventListener('click', this.onSelected);
       }
     }, {
       key: "modalClose",
       value: function modalClose() {
         var input = this.querySelector(this.input);
-        fetchImageDetails(selectedFile, input, this).then(function () {
+        Joomla.getImage(Joomla.selectedFile, input, this).then(function () {
           Joomla.Modal.getCurrent().close();
+          Joomla.selectedFile = {};
         }).catch(function () {
           Joomla.Modal.getCurrent().close();
+          Joomla.selectedFile = {};
           Joomla.renderMessages({
             error: [Joomla.Text._('JLIB_APPLICATION_ERROR_SERVER')]
           });

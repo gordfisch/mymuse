@@ -18,6 +18,7 @@ if (!Joomla) {
     view: 'dashboard',
     id: 0,
     ordering: '',
+    version: 'current',
     list: 0,
     options: Joomla.getOptions('plg_installer_webinstaller', {})
   };
@@ -60,10 +61,17 @@ if (!Joomla) {
       }
 
       let requestUrl = `${url}&product=${webInstallerOptions.options.product}&release=${webInstallerOptions.options.release}&dev_level=${webInstallerOptions.options.dev_level}&list=${webInstallerOptions.list ? 'list' : 'grid'}&lang=${webInstallerOptions.options.language}`;
+      const orderingSelect = document.getElementById('com-apps-ordering');
+      const versionSelect = document.getElementById('com-apps-filter-joomla-version');
 
-      if (webInstallerOptions.ordering !== '' && document.getElementById('com-apps-ordering').value) {
-        webInstallerOptions.ordering = document.getElementById('com-apps-ordering').value;
+      if (webInstallerOptions.ordering !== '' && orderingSelect && orderingSelect.value) {
+        webInstallerOptions.ordering = orderingSelect.value;
         requestUrl += `&ordering=${webInstallerOptions.ordering}`;
+      }
+
+      if (webInstallerOptions.version !== '' && versionSelect && versionSelect.value) {
+        webInstallerOptions.version = versionSelect.value;
+        requestUrl += `&filter_version=${webInstallerOptions.version}`;
       }
 
       WebInstaller.showLoadingLayer();
@@ -99,13 +107,24 @@ if (!Joomla) {
               const searchBox = document.getElementById('com-apps-searchbox');
               searchBox.value = '';
               this.initiateSearch();
-            });
-            const orderingSelect = document.getElementById('com-apps-ordering');
+            }); // eslint-disable-next-line no-shadow
+
+            const orderingSelect = document.getElementById('com-apps-ordering'); // eslint-disable-next-line no-shadow
+
+            const versionSelect = document.getElementById('com-apps-filter-joomla-version');
 
             if (orderingSelect) {
               orderingSelect.addEventListener('change', () => {
                 const index = orderingSelect.selectedIndex;
                 webInstallerOptions.ordering = orderingSelect.options[index].value;
+                this.installfromwebajaxsubmit();
+              });
+            }
+
+            if (versionSelect) {
+              versionSelect.addEventListener('change', () => {
+                const index = versionSelect.selectedIndex;
+                webInstallerOptions.version = versionSelect.options[index].value;
                 this.installfromwebajaxsubmit();
               });
             }
@@ -225,12 +244,23 @@ if (!Joomla) {
         tail += `&filter_search=${value}`;
       }
 
-      if (webInstallerOptions.ordering !== '' && document.getElementById('com-apps-ordering').value) {
-        webInstallerOptions.ordering = document.getElementById('com-apps-ordering').value;
+      const orderingSelect = document.getElementById('com-apps-ordering');
+      const versionSelect = document.getElementById('com-apps-filter-joomla-version');
+
+      if (webInstallerOptions.ordering !== '' && orderingSelect && orderingSelect.value) {
+        webInstallerOptions.ordering = orderingSelect.value;
       }
 
       if (webInstallerOptions.ordering) {
         tail += `&ordering=${webInstallerOptions.ordering}`;
+      }
+
+      if (webInstallerOptions.version !== '' && versionSelect && versionSelect.value) {
+        webInstallerOptions.version = versionSelect.value;
+      }
+
+      if (webInstallerOptions.version) {
+        tail += `&filter_version=${webInstallerOptions.version}`;
       }
 
       this.loadweb(`${webInstallerOptions.options.base_url}index.php?format=json&option=com_apps${tail}`);

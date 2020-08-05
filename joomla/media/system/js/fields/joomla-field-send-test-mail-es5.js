@@ -69,7 +69,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       key: "sendTestMail",
       value: function sendTestMail() {
         var email_data = {
-          smtpauth: document.getElementById("jform_smtpauth1").checked ? 1 : 0,
+          smtpauth: document.getElementById('jform_smtpauth1').checked ? 1 : 0,
           smtpuser: this.querySelector('[name="jform[smtpuser]"]').value,
           smtppass: this.querySelector('[name="jform[smtppass]"]').value,
           smtphost: this.querySelector('[name="jform[smtphost]"]').value,
@@ -78,7 +78,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           mailfrom: this.querySelector('[name="jform[mailfrom]"]').value,
           fromname: this.querySelector('[name="jform[fromname]"]').value,
           mailer: this.querySelector('[name="jform[mailer]"]').value,
-          mailonline: document.getElementById("jform_mailonline1").checked ? 1 : 0
+          mailonline: document.getElementById('jform_mailonline1').checked ? 1 : 0
         }; // Remove js messages, if they exist.
 
         Joomla.removeMessages();
@@ -90,7 +90,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           headers: {
             'Content-Type': 'application/json'
           },
-          onSuccess: function onSuccess(response, xhr) {
+          onSuccess: function onSuccess(response) {
             response = JSON.parse(response);
 
             if (_typeof(response.messages) === 'object' && response.messages !== null) {

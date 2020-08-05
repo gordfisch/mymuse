@@ -203,7 +203,7 @@
         after.parentNode.insertBefore(row, after.nextSibling);
       } else {
         this.containerWithRows.append(row);
-      } // Add dragable attributes
+      } // Add draggable attributes
 
 
       if (this.buttonMove) {
@@ -377,7 +377,7 @@
       let item = null; // Storing the selected item
 
       let touched = false; // We have a touch events
-      // Find all existing rows and add dragable attributes
+      // Find all existing rows and add draggable attributes
 
       const rows = this.getRows();
 
@@ -413,7 +413,7 @@
           dest.parentNode.insertBefore(src, dest.nextSibling);
         }
       } // Touch interaction:
-      // - a touch of "move button" mark a row dragable / "selected", or deselect previous selected
+      // - a touch of "move button" mark a row draggable / "selected", or deselect previous selected
       // - a touch of "move button" in the destination row will move a selected row to a new position
 
 

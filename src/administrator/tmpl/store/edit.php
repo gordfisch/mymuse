@@ -72,14 +72,14 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 
 
 
-			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'css', Text::_('MYMUSE_EDIT_CSS')); ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'css', Text::_('COM_MYMUSE_EDIT_CSS')); ?>
 				<fieldset class="adminform">
-					<textarea cols="220" rows="80" name="mymuse_css" id="mymuse_css" style="width:100%"><?php echo $this->css; ?></textarea>
+					<textarea cols="220" rows="80" name="COM_MYMUSE_css" id="COM_MYMUSE_css" style="width:100%"><?php echo $this->css; ?></textarea>
 				</fieldset>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 
-			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Contact', Text::_('MYMUSE_CONTACTS_LABEL')); ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Contact', Text::_('COM_MYMUSE_CONTACTS_LABEL')); ?>
 				<div class="row">
 					
 					<?php foreach ($fieldsetsInContact as $fieldset) : ?>
@@ -96,7 +96,7 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 				</div>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Downloads', Text::_('MYMUSE_DOWNLOADS_LABEL')); ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Downloads', Text::_('COM_MYMUSE_DOWNLOADS_LABEL')); ?>
 				<div class="row">
 					
 					<?php foreach ($fieldsetsInDownloads as $fieldset) : ?>
@@ -113,7 +113,7 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 				</div>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Store', Text::_('MYMUSE_STORE_OPTIONS_LABEL')); ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Store', Text::_('COM_MYMUSE_STORE_OPTIONS_LABEL')); ?>
 				<div class="row">
 					
 					<?php foreach ($fieldsetsInStore as $fieldset) : ?>
@@ -130,13 +130,13 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 				</div>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Reports', Text::_('MYMUSE_FRONT_END_SALES_REPORTS_LABEL')); ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Reports', Text::_('COM_MYMUSE_FRONT_END_SALES_REPORTS_LABEL')); ?>
 				<div class="row">
 					
 
 						<div class="col-12 col-lg-6">
 						<fieldset id="fieldset-<?php echo $fieldset; ?>" class="options-form">
-							<legend><?php echo Text::_('MYMUSE_FRONT_END_SALES_REPORTS_LABEL'); ?></legend>
+							<legend><?php echo Text::_('COM_MYMUSE_FRONT_END_SALES_REPORTS_LABEL'); ?></legend>
 							<div>
 							<?php echo $this->form->renderFieldset('reports'); ?>
 							</div>
@@ -147,13 +147,13 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 				</div>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Testing', Text::_('MYMUSE_TEST_OPTIONS_LABEL')); ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Testing', Text::_('COM_MYMUSE_TEST_OPTIONS_LABEL')); ?>
 				<div class="row">
 					
 
 						<div class="col-12 col-lg-6">
 						<fieldset id="fieldset-<?php echo $fieldset; ?>" class="options-form">
-							<legend><?php echo Text::_('MYMUSE_TEST_OPTIONS_LABEL'); ?></legend>
+							<legend><?php echo Text::_('COM_MYMUSE_TEST_OPTIONS_LABEL'); ?></legend>
 							<div>
 							<?php echo $this->form->renderFieldset('testing'); ?>
 							</div>

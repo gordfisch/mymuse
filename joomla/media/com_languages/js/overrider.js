@@ -28,6 +28,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       this.spinner = document.getElementById('overrider-spinner');
       this.spinnerBtn = document.getElementById('overrider-spinner-btn');
       this.moreResults = document.getElementById('more-results');
+      this.moreResultsButton = document.getElementById('more-results-button');
       this.resultsContainer = document.getElementById('results-container');
       this.refreshStatus = document.getElementById('refresh-status');
     }
@@ -153,8 +154,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 // If there are more results than the sent ones
                 // display the more link
                 _this2.states.more = response.data.more;
+                _this2.moreResultsButton.disabled = false;
 
                 _this2.moreResults.classList.add('show');
+              } else {
+                _this2.moreResultsButton.disabled = true;
+
+                _this2.moreResults.classList.remove('show');
               }
             }
 
@@ -164,6 +170,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           },
           onError: function onError() {
             alert(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
+            _this2.moreResultsButton.disabled = true;
 
             _this2.moreResults.classList.remove('show');
 
@@ -198,19 +205,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         results.forEach(function (item, index) {
           var a = document.createElement('a');
-          a.setAttribute('onclick', "Joomla.overrider.selectString(".concat(_this3.states.counter + index, ");"));
+          a.setAttribute('onclick', "Joomla.overrider.selectString(".concat(_this3.states.counter).concat(index, ");"));
           a.setAttribute('href', '#');
           a.classList.add('list-group-item');
           a.classList.add('list-group-item-action');
           a.classList.add('flex-column');
           a.classList.add('align-items-start');
           var key = document.createElement('div');
-          key.setAttribute('id', "override_key".concat(_this3.states.counter + index));
+          key.setAttribute('id', "override_key".concat(_this3.states.counter).concat(index));
           key.setAttribute('title', item.file);
           key.classList.add('result-key');
           key.innerHTML = item.constant;
           var string = document.createElement('div');
-          string.setAttribute('id', "override_string".concat(_this3.states.counter + index));
+          string.setAttribute('id', "override_string".concat(_this3.states.counter).concat(index));
           string.classList.add('result-string');
           string.innerHTML = item.string;
           a.appendChild(key);

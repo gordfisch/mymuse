@@ -24,7 +24,20 @@
       var editors = [].slice.call(container.querySelectorAll('.js-editor-tinymce'));
       editors.forEach(function (editor) {
         var currentEditor = editor.querySelector('textarea');
-        Joomla.JoomlaTinyMCE.setupEditor(currentEditor, pluginOptions);
+        var toggleButton = editor.querySelector('.js-tiny-toggler-button'); // Setup the editor
+
+        Joomla.JoomlaTinyMCE.setupEditor(currentEditor, pluginOptions); // Setup the toggle button
+
+        if (toggleButton) {
+          toggleButton.removeAttribute('disabled');
+          toggleButton.addEventListener('click', function () {
+            if (Joomla.editors.instances[currentEditor.id].instance.isHidden()) {
+              Joomla.editors.instances[currentEditor.id].instance.show();
+            } else {
+              Joomla.editors.instances[currentEditor.id].instance.hide();
+            }
+          });
+        }
       });
     },
 
@@ -116,7 +129,16 @@
         options.setup = function (editor) {
           editor.settings.readonly = readOnlyMode;
         };
-      } // Create a new instance
+      } // We'll take over the onSubmit event
+
+
+      options.init_instance_callback = function (editor) {
+        editor.on('submit', function () {
+          if (editor.isHidden()) {
+            editor.show();
+          }
+        }, true);
+      }; // Create a new instance
       // eslint-disable-next-line no-undef
 
 
@@ -146,20 +168,8 @@
         },
         // Some extra instance dependent
         id: element.id,
-        instance: ed,
-        onSave: function onSave() {
-          if (Joomla.editors.instances[element.id].instance.isHidden()) {
-            Joomla.editors.instances[element.id].instance.show();
-          }
-
-          return '';
-        }
+        instance: ed
       };
-      /** On save * */
-
-      document.getElementById(ed.id).form.addEventListener('submit', function () {
-        return Joomla.editors.instances[ed.targetElm.id].onSave();
-      });
     }
   };
   /**

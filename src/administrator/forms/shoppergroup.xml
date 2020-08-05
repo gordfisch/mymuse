@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+        <field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+         <field
+            name="state"
+            type="list"
+            label="JSTATUS"
+            class="custom-select-color-state"
+            size="1"
+            default="1"
+            >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+            <option value="2">JARCHIVED</option>
+            <option value="-2">JTRASHED</option>
+        </field>
+        <field
+            name="usergroups_id"
+            type="usergrouplist"
+            label="COM_MYMUSE_SHOPPERGROUP_NAME_LABEL"
+            description="COM_MYMUSE_SHOPPERGROUP_NAME_DESC"
+            size="40"
+           />
+		<field
+            name="shopper_group_description"
+            type="text"
+            label="COM_MYMUSE_SHOPPERGROUP_DESC_LABEL"
+            description="COM_MYMUSE_SHOPPERGROUP_DESC_DESC"
+            class="inputbox"
+            size="60"
+           />
+         <field
+            name="discount"
+            type="text"
+            label="COM_MYMUSE_SHOPPERGROUP_DISCOUNT_LABEL"
+            description="COM_MYMUSE_SHOPPERGROUP_DISCOUNT_DESC"
+            class="inputbox"
+            size="6"
+           />
+            <field name="checked_out" type="hidden" filter="unset" />
+            <field name="checked_out_time" type="hidden" filter="unset" />
+	
+	</fieldset>
+
+</form>

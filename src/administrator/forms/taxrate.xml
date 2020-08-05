@@ -45,8 +45,8 @@
                 description="MYMUSE_TAX_APPLIES_TO_DESC"
                 class="inputbox"
                 default="S">
-				<option value="S">MYMUSE_TAX_PROVINCE</option>
-				<option value="C">MYMUSE_TAX_COUNTRY</option>
+				<option value="S">COM_MYMUSE_TAX_PROVINCE</option>
+				<option value="C">COM_MYMUSE_TAX_COUNTRY</option>
                </field>
             <field
                 name="country"
@@ -77,8 +77,8 @@
                 description="MYMUSE_TAX_FORMAT_DESC"
                 class="inputbox"
                 default="S">
-				<option value="RATE">MYMUSE_TAX_FORMAT_RATE</option>
-				<option value="AMOUNT">MYMUSE_TAX_FORMAT_AMOUNT</option>
+				<option value="RATE">COM_MYMUSE_TAX_FORMAT_RATE</option>
+				<option value="AMOUNT">COM_MYMUSE_TAX_FORMAT_AMOUNT</option>
                </field>
                <field
                 name="compounded"
@@ -87,8 +87,8 @@
                 description="MYMUSE_TAX_COMPOUNDED_DESC"
                 class="inputbox"
                 default="0">
-				<option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
+				<option value="0">COM_MYMUSE_NO</option>
+				<option value="1">COM_MYMUSE_YES</option>
                </field>
                <field name="ordering" type="text" label="JFIELD_ORDERING_LABEL"
 			description="JFIELD_ORDERING_DESC" class="inputbox" size="6"

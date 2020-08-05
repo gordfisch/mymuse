@@ -1,5 +1,9 @@
 {
-    "require-dev": {
-        "phing/phing": "2.*"
-    }
+	"require-dev": {
+	},
+	"minimum-stability": "dev",
+    "prefer-stable": true,
+	"require": {
+		"phing/phing": "^3.0"
+	}
 }

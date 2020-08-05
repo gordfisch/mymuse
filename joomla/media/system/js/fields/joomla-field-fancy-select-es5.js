@@ -215,17 +215,49 @@ window.customElements.define('joomla-field-fancy-select', /*#__PURE__*/function 
           button: 'choices__button_joomla' // It is need because an original styling use unavailable Icon.svg file
 
         }
-      }); // Handle typing of custom term
+      }); // Handle typing of custom Term
 
       if (this.allowCustom) {
+        // START Work around for issue https://github.com/joomla/joomla-cms/issues/29459
+        // The choices.js always auto-hightlight first element
+        // in the dropdown that not allow to add a custom Term.
+        //
+        // This workaround can be removed when choices.js
+        // will have an option that allow to disable it.
+        // eslint-disable-next-line no-underscore-dangle, prefer-destructuring
+        var _highlightChoice = this.choicesInstance._highlightChoice; // eslint-disable-next-line no-underscore-dangle
+
+        this.choicesInstance._highlightChoice = function (el) {
+          // Prevent auto-highlight of first element, if nothing actually highlighted
+          if (!el) return; // Call original highlighter
+
+          _highlightChoice.call(_this3.choicesInstance, el);
+        }; // Unhighlight any highlighted items, when mouse leave the dropdown
+
+
+        this.addEventListener('mouseleave', function () {
+          if (!_this3.choicesInstance.dropdown.isActive) {
+            return;
+          }
+
+          var highlighted = Array.from(_this3.choicesInstance.dropdown.element.querySelectorAll(".".concat(_this3.choicesInstance.config.classNames.highlightedState)));
+          highlighted.forEach(function (choice) {
+            choice.classList.remove(_this3.choicesInstance.config.classNames.highlightedState);
+            choice.setAttribute('aria-selected', 'false');
+          }); // eslint-disable-next-line no-underscore-dangle
+
+          _this3.choicesInstance._highlightPosition = 0;
+        }); // END workaround for issue #29459
+        // Add custom term on ENTER keydown
+
         this.addEventListener('keydown', function (event) {
           if (event.keyCode !== _this3.keyCode.ENTER || event.target !== _this3.choicesInstance.input.element) {
             return;
           }
 
-          event.preventDefault();
+          event.preventDefault(); // eslint-disable-next-line no-underscore-dangle
 
-          if (_this3.choicesInstance.highlightPosition || !event.target.value || _this3.choicesCache[event.target.value]) {
+          if (_this3.choicesInstance._highlightPosition || !event.target.value) {
             return;
           } // Make sure nothing is highlighted
 
@@ -234,7 +266,44 @@ window.customElements.define('joomla-field-fancy-select', /*#__PURE__*/function 
 
           if (highlighted) {
             return;
-          }
+          } // Check if value already exist
+
+
+          var lowerValue = event.target.value.toLowerCase();
+          var valueInCache = false; // Check if value in existing choices
+
+          _this3.choicesInstance.config.choices.some(function (choiceItem) {
+            if (choiceItem.value.toLowerCase() === lowerValue || choiceItem.label.toLowerCase() === lowerValue) {
+              valueInCache = choiceItem.value;
+              return true;
+            }
+
+            return false;
+          });
+
+          if (valueInCache === false) {
+            // Check if value in cache
+            Object.keys(_this3.choicesCache).some(function (key) {
+              if (key.toLowerCase() === lowerValue || _this3.choicesCache[key].toLowerCase() === lowerValue) {
+                valueInCache = key;
+                return true;
+              }
+
+              return false;
+            });
+          } // Make choice based on existing value
+
+
+          if (valueInCache !== false) {
+            _this3.choicesInstance.setChoiceByValue(valueInCache);
+
+            event.target.value = null;
+
+            _this3.choicesInstance.hideDropdown();
+
+            return;
+          } // Create and add new
+
 
           _this3.choicesInstance.setChoices([{
             value: _this3.newItemPrefix + event.target.value,

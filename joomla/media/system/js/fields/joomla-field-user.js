@@ -155,7 +155,9 @@
 
     setValue(value, name) {
       this.input.setAttribute('value', value);
-      this.inputName.setAttribute('value', name || value);
+      this.inputName.setAttribute('value', name || value); // trigger change event
+
+      this.input.dispatchEvent(new Event('change'));
     }
 
   }
