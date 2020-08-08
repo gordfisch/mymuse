@@ -269,235 +269,241 @@ class ProductModel extends AdminModel
 
 	}
 
-		/**
-		 * Method to get a single record.
-		 *
-		 * @param	integer	The id of the primary key.
-		 *
-		 * @return	mixed	Object on success, false on failure.
-		 * @since	1.6
-		 */
-	    public function getItem($pk = null)
-		{
-			if(!$this->_item){
-				$input = JFactory::getApplication()->input;
-				$task = $input->get('task','');
-				$parentid= $input->get('parentid','');
-				$id = $input->get('id','');
-				
-				if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
-					$pk = 0;
-					$input->set('id',0);
-				}
-				
-				if ($item = parent::getItem($pk)) {
-					//print_pre($item); exit; 
-					// Convert the attribs field to an array.
-					$registry = new JRegistry;
-					$registry->loadString($item->attribs);
-					$item->attribs = $registry->toArray();
-
-					// Convert the metadata field to an array.
-					$registry = new JRegistry;
-					$registry->loadString($item->metadata);
-					$item->metadata = $registry->toArray();
-
-					$item->articletext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
-						
-					if($parentid && $parentid != $id){
-						$item->parentid = $parentid;
-					}
-						
-					if($task == "new_allfiles"){
-						$item->product_allfiles = 1;
-					}
-					if($item->parentid){
-						$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
-						$this->_db->setQuery($q);
-						$this->_parent = $this->_db->loadObject();
-						$item->parent = $this->_parent;
-						$item->catid = $item->parent->catid;
-					}else{
-						//set the parent id for the tracks and items
-						$mainframe = JFactory::getApplication();
-						$parentid= $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
-					}
-					$item->flash_type = '';
-					
-					$jason = json_decode($item->file_name);
-					if(is_array($jason)){
-						$item->file_name = $jason;
-					}elseif($item->file_name != ''){
-						$jason = (object) array('file_name' => $item->file_name);
-						$item->file_name = array();
-						$item->file_name[] = $jason;
-					}
-					
-				}
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param	integer	The id of the primary key.
+	 *
+	 * @return	mixed	Object on success, false on failure.
+	 * @since	1.6
+	 */
+    public function getItem($pk = null)
+	{
+		if(!$this->_item){
+			$input = JFactory::getApplication()->input;
+			$task = $input->get('task','');
+			$parentid= $input->get('parentid','');
+			$id = $input->get('id','');
 			
-				$this->_item = $item;
-
+			if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
+				$pk = 0;
+				$input->set('id',0);
 			}
-			return $this->_item;
+			
+			if ($item = parent::getItem($pk)) {
+	
+				// Convert the attribs field to an array.
+				$registry = new JRegistry;
+				$registry->loadString($item->attribs);
+				$item->attribs = $registry->toArray();
+
+				// Convert the metadata field to an array.
+				$registry = new JRegistry;
+				$registry->loadString($item->metadata);
+				$item->metadata = $registry->toArray();
+
+				// Convert the dimensions field to an array.
+				$registry = new JRegistry;
+				$registry->loadString($item->dimensions);
+				$item->dimensions = $registry->toArray();
+
+
+				$item->articletext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
+					
+				if($parentid && $parentid != $id){
+					$item->parentid = $parentid;
+				}
+					
+				if($task == "new_allfiles"){
+					$item->product_type = "AllFiles";
+				}
+				if($item->parentid){
+					$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
+					$this->_db->setQuery($q);
+					$this->_parent = $this->_db->loadObject();
+					$item->parent = $this->_parent;
+					$item->catid = $item->parent->catid;
+				}else{
+					//set the parent id for the tracks and items
+					$mainframe = JFactory::getApplication();
+					$parentid= $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
+				}
+				$item->flash_type = '';
+				
+				$jason = json_decode($item->file_name);
+				if(is_array($jason)){
+					$item->file_name = $jason;
+				}elseif($item->file_name != ''){
+					$jason = (object) array('file_name' => $item->file_name);
+					$item->file_name = array();
+					$item->file_name[] = $jason;
+				}
+				
+			}
+		
+			$this->_item = $item;
+
 		}
+		return $this->_item;
+	}
 
 
-	   /**
-	     * Get the tracks for the product
-	     *
-	     * @return	mixed	An array of products or false if an error occurs.
-	     * @since	1.5
-	     */
-	    function getTracks()
-	    {
+   /**
+     * Get the tracks for the product
+     *
+     * @return	mixed	An array of products or false if an error occurs.
+     * @since	1.5
+     */
+    function getTracks()
+    {
 
-	    	$app 				= JFactory::getApplication();
-	    	$input 				= $app->input;
-	    	$option 			= $input->get('option','com_mymuse');
-	    	$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-	    	$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-	    	$this->setState('file.ordering', $filter_order);
-	    	$this->setState('file.direction', $filter_order_Dir);
-	    	$this->setState('list.ordering', $filter_order);
-	    	$this->setState('list.direction', $filter_order_Dir);
-	    	$table = $this->getTable('product','MymuseTable');
+    	$app 				= JFactory::getApplication();
+    	$input 				= $app->input;
+    	$option 			= $input->get('option','com_mymuse');
+    	$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+    	$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+    	$this->setState('file.ordering', $filter_order);
+    	$this->setState('file.direction', $filter_order_Dir);
+    	$this->setState('list.ordering', $filter_order);
+    	$this->setState('list.direction', $filter_order_Dir);
+    	$table = $this->getTable('product','MymuseTable');
 
-	    	$limit 				= $this->getState('list.limit');
-	    	$id 				= $input->get('id');
-	    	
+    	$limit 				= $this->getState('list.limit');
+    	$id 				= $input->get('id');
+    	
 
-	    	$root = JPATH_ROOT;
-	  
-	    	if ($this->_tracks === null && $product = $this->getItem()) {
-	    		JLoader::import( 'products', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_mymuse' . DS . 'models' );
-	    		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
+    	$root = JPATH_ROOT;
+  
+    	if ($this->_tracks === null && $product = $this->getItem()) {
+    		JLoader::import( 'products', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_mymuse' . DS . 'models' );
+    		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 
-	    		//$model->setState('filter.category_id', $category->id);
-	    		$model->setState('filter.published', $this->getState('filter.published'));
-	    		$model->setState('filter.access', $this->getState('filter.access'));
-	    		$model->setState('filter.language', $this->getState('filter.language'));
-	    		$model->setState('list.ordering', $this->getState('file.ordering'));
-	    		$model->setState('list.start', $this->getState('list.start'));
-	    		$model->setState('list.limit', $limit);
-	    		$model->setState('list.direction', $this->getState('file.direction'));
-	    		$model->setState('list.filter', $this->getState('list.filter'));
-	    		// filter.subcategories indicates whether to include articles from subcategories in the list or blog
-	    		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
-	    		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
-	    		$model->setState('list.links', $this->getState('list.links'));
-	    
-	    		$model->setState('filter.downloadable', 1);
-	    		$model->setState('filter.parentid', $product->id);
-
-
-	    		if ($limit >= 0) {
-	    			$this->_tracks = $model->getItems();
-
-	    			if ($this->_tracks  === false) {
-	    				$this->setError($model->getError());
-	    			}
-	    		}
-	    		else {
-	    			$this->_track =array();
-	    		}
-	    
-	    		$this->_trackPagination = $model->getPagination();
-	    	}
-
-	  
-	    	return $this->_tracks;
-	    }
+    		//$model->setState('filter.category_id', $category->id);
+    		$model->setState('filter.published', $this->getState('filter.published'));
+    		$model->setState('filter.access', $this->getState('filter.access'));
+    		$model->setState('filter.language', $this->getState('filter.language'));
+    		$model->setState('list.ordering', $this->getState('file.ordering'));
+    		$model->setState('list.start', $this->getState('list.start'));
+    		$model->setState('list.limit', $limit);
+    		$model->setState('list.direction', $this->getState('file.direction'));
+    		$model->setState('list.filter', $this->getState('list.filter'));
+    		// filter.subcategories indicates whether to include articles from subcategories in the list or blog
+    		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
+    		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
+    		$model->setState('list.links', $this->getState('list.links'));
+    
+    		$model->setState('filter.downloadable', 1);
+    		$model->setState('filter.parentid', $product->id);
 
 
-      /**
-        * Get the items for the product
-        *
-        * @return	mixed	An array of products or false if an error occurs.
-        * @since	1.5
-        */
-       function getItems()
-       {
-       	
-       	$app = JFactory::getApplication();
-       	$input = $app->input;
-       	$option = 'com_mymuse';
+    		if ($limit >= 0) {
+    			$this->_tracks = $model->getItems();
 
-       	$this->_params = $this->getState()->get('params');
-       	$limit = $this->getState('list.limit');
-       	$id = $input->get('id');
+    			if ($this->_tracks  === false) {
+    				$this->setError($model->getError());
+    			}
+    		}
+    		else {
+    			$this->_track =array();
+    		}
+    
+    		$this->_trackPagination = $model->getPagination();
+    	}
 
-       	$root = JPATH_ROOT.DS;
-       
-       	if ($this->_items === null && $product = $this->getItem()) {
-       
-       		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
-       
-       		//$model->setState('filter.category_id', $category->id);
-       		$model->setState('filter.published', $this->getState('filter.published'));
-       		$model->setState('filter.access', $this->getState('filter.access'));
-       		$model->setState('filter.language', $this->getState('filter.language'));
-       		$model->setState('list.ordering', $this->getState('item.ordering'));
-       		$model->setState('list.start', $this->getState('list.start'));
-       		$model->setState('list.limit', $limit);
-       		$model->setState('list.direction', $this->getState('item.direction'));
-       		$model->setState('list.filter', $this->getState('list.filter'));
-       		// filter.subcategories indicates whether to include articles from subcategories in the list or blog
-       		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
-       		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
-       		$model->setState('list.links', $this->getState('list.links'));
-       
-       		$model->setState('filter.downloadable', 0);
-       		$model->setState('filter.physical', 1);
-       		$model->setState('filter.parentid', $product->id);
-       
-       
-       		if ($limit >= 0) {
-       			$this->_items = $model->getItems();
-       
-       			if ($this->_items  === false) {
-       				$this->setError($model->getError());
-       			}
-       		}
-       		else {
-       			$this->_items =array();
-       		}
-       
-       		$this->_itemPagination = $model->getPagination();
-       		
-       		//get attributes
-       		$db = JFactory::getDBO();
-       		for($i = 0; $i<count($this->_items); $i++){
-       		
-       			if(!$this->_attribute_skus && $product->id){
-       				$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE product_parent_id='.$product->id;
+  
+    	return $this->_tracks;
+    }
+
+
+  /**
+    * Get the items for the product
+    *
+    * @return	mixed	An array of products or false if an error occurs.
+    * @since	1.5
+    */
+   function getItems()
+   {
+   	
+   	$app = JFactory::getApplication();
+   	$input = $app->input;
+   	$option = 'com_mymuse';
+
+   	$this->_params = $this->getState()->get('params');
+   	$limit = $this->getState('list.limit');
+   	$id = $input->get('id');
+
+   	$root = JPATH_ROOT.DS;
+   
+   	if ($this->_items === null && $product = $this->getItem()) {
+   
+   		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
+   
+   		//$model->setState('filter.category_id', $category->id);
+   		$model->setState('filter.published', $this->getState('filter.published'));
+   		$model->setState('filter.access', $this->getState('filter.access'));
+   		$model->setState('filter.language', $this->getState('filter.language'));
+   		$model->setState('list.ordering', $this->getState('item.ordering'));
+   		$model->setState('list.start', $this->getState('list.start'));
+   		$model->setState('list.limit', $limit);
+   		$model->setState('list.direction', $this->getState('item.direction'));
+   		$model->setState('list.filter', $this->getState('list.filter'));
+   		// filter.subcategories indicates whether to include articles from subcategories in the list or blog
+   		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
+   		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
+   		$model->setState('list.links', $this->getState('list.links'));
+   
+   		$model->setState('filter.downloadable', 0);
+   		$model->setState('filter.physical', 1);
+   		$model->setState('filter.parentid', $product->id);
+   
+   
+   		if ($limit >= 0) {
+   			$this->_items = $model->getItems();
+   
+   			if ($this->_items  === false) {
+   				$this->setError($model->getError());
+   			}
+   		}
+   		else {
+   			$this->_items =array();
+   		}
+   
+   		$this->_itemPagination = $model->getPagination();
+   		
+   		//get attributes
+   		$db = JFactory::getDBO();
+   		for($i = 0; $i<count($this->_items); $i++){
+   		
+   			if(!$this->_attribute_skus && $product->id){
+   				$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE product_parent_id='.$product->id;
+					$db->setQuery($query);
+					$this->_attribute_skus = $db->loadObjectList();
+   			}
+   			$id = $this->_items[$i]->id;
+   			if($this->_attribute_skus ){
+   				foreach($this->_attribute_skus as $a_sku){
+   					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$id.'
+   					AND product_attribute_sku_id='.$a_sku->id;
+   					
    					$db->setQuery($query);
-   					$this->_attribute_skus = $db->loadObjectList();
-       			}
-       			$id = $this->_items[$i]->id;
-       			if($this->_attribute_skus ){
-       				foreach($this->_attribute_skus as $a_sku){
-       					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$id.'
-       					AND product_attribute_sku_id='.$a_sku->id;
-       					
-       					$db->setQuery($query);
-       					$this->_items[$i]->attributes[$a_sku->name] = $db->loadResult();
-       				}
-       			}
-       		}
-       	}
+   					$this->_items[$i]->attributes[$a_sku->name] = $db->loadResult();
+   				}
+   			}
+   		}
+   	}
 
-       	return $this->_items;
-       }
-       
+   	return $this->_items;
+   }
+   
 
-       
-       function getItemPagination()
-       {
-       	if (empty($this->_itemPagination)) {
-       		return null;
-       	}
-       	return $this->_itemPagination;
-       }
+   
+   function getItemPagination()
+   {
+   	if (empty($this->_itemPagination)) {
+   		return null;
+   	}
+   	return $this->_itemPagination;
+   }
 	       
 	/**
      * Method to set the product lists

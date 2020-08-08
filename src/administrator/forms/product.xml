@@ -315,65 +315,7 @@
         rows="3"
         cols="40"
       />
-      <field 
-        name="product_made_date" 
-        type="calendar" 
-        label="COM_MYMUSE_PRODUCT_CREATED_LABEL"
-        description="COM_MYMUSE_PRODUCT_CREATED_DESC" 
-        class="inputbox" size="22"
-        format="%Y-%m-%d" 
-        filter="none" 
-      />
       
-      <field
-        name="product_full_time"
-        type="text"
-        label="COM_MYMUSE_PRODUCT_FULL_TIME_LABEL"
-        description="COM_MYMUSE_PRODUCT_FULL_TIME_DESC"
-        class="inputbox"
-        size="20"
-        required="false"
-        />
-    
-        <field
-        name="product_country"
-        type="country"
-        label="COM_MYMUSE_PRODUCT_COUNTRY_LABEL"
-        description="COM_MYMUSE_PRODUCT_COUNTRY_DESC"
-        class="inputbox"
-        size="1"
-        />
-    
-      <field
-        name="product_publisher"
-        type="text"
-        label="COM_MYMUSE_PRODUCT_PUBLISHER_LABEL"
-        description="COM_MYMUSE_PRODUCT_PUBLISHER_DESC"
-        class="inputbox"
-        size="35"
-        required="false"
-      />
-    
-      <field
-        name="product_producer"
-        type="text"
-        label="COM_MYMUSE_PRODUCT_PRODUCER_LABEL"
-        description="COM_MYMUSE_PRODUCT_PRODUCER_DESC"
-        class="inputbox"
-        size="35"
-        required="false"
-      />
-    
-      <field
-        name="product_studio"
-        type="text"
-        label="COM_MYMUSE_PRODUCT_STUDIO_LABEL"
-        description="COM_MYMUSE_PRODUCT_STUDIO_DESC"
-        class="inputbox"
-        size="35"
-        required="false"
-      />
-
       <field 
         name="product_coming_soon" 
         type="list"
@@ -409,26 +351,23 @@
         <option value="COM_MYMUSE_OUT_OF_STOCK">MYMUSE_OUT_OF_STOCK</option>
         <option value="COM_MYMUSE_NO_LONGER_AVAILABLE">MYMUSE_NO_LONGER_AVAILABLE</option>
       </field>
+      <field 
+        name="product_release_date" 
+        type="calendar" 
+        label="COM_MYMUSE_PRODUCT_CREATED_LABEL"
+        description="COM_MYMUSE_PRODUCT_CREATED_DESC" 
+        class="inputbox" size="22"
+        format="%Y-%m-%d" 
+        filter="none" 
+      />
+      <field 
+        name="product_in_stock" 
+        type="text" 
+        label="COM_MYMUSE_PRODUCT_IN_STOCK_LABEL"
+        description="COM_MYMUSE_PRODUCT_IN_STOCK_DESC"
+      />
       
-      <field
-        name="media_rls"
-        type="hidden"
-        label="COM_MYMUSE_NEWS_RLS_LABEL"
-        description="COM_MYMUSE_NEWS_RLS_DESC"
-        class="inputbox"
-        edit="true"
-        clear="true"
-        required="false"
-      />
-      <field
-        name="media_link"
-        type="hidden"
-        label="COM_MYMUSE_MEDIA_LINK_LABEL"
-        description="COM_MYMUSE_MEDIA_LINK_DESC"
-        class="inputbox"
-        directory="/"
-        required="false"
-      />
+      
     </fieldset>
   </fields>
   <fields name="metadata">
@@ -529,15 +468,6 @@
         required="false"
       />
       <field
-        name="file_plays"
-        type="text"
-        label="COM_MYMUSE_FILE_PLAYS_LABEL"
-        description="COM_MYMUSE_FILE_PLAYS_DESC"
-        class="inputbox"
-        size="20"
-        required="false"
-      />
-      <field
         name="isrc_code"
         type="hidden"
         label="COM_MYMUSE_ISRC_LABEL"
@@ -548,14 +478,9 @@
       />
     </fieldset>
   </fields>
-  <fields name="physical" label="COM_MYMUSE_PRODUCT_PHYSICAL">
-    <fieldset name="physical" label="COM_MYMUSE_PRODUCT_PHYSICAL">
-      <field 
-        name="product_in_stock" 
-        type="text" 
-        label="COM_MYMUSE_PRODUCT_IN_STOCK_LABEL"
-        description="COM_MYMUSE_PRODUCT_IN_STOCK_DESC"
-      />
+  <fields name="dimensions" label="COM_MYMUSE_PRODUCT_DIMENSIONS">
+    <fieldset name="dimensions" label="COM_MYMUSE_PRODUCT_DIMENSIONS">
+      
       <field 
         name="product_images" 
         type="folderlist" 
@@ -618,6 +543,74 @@
   </fields>
   <fields name="attribs">
     <fieldset name="attribs" label="COM_MYMUSE_PARAMETERS_ATTRIBUTES">
+      <field
+        name="media_rls"
+        type="hidden"
+        label="COM_MYMUSE_NEWS_RLS_LABEL"
+        description="COM_MYMUSE_NEWS_RLS_DESC"
+        class="inputbox"
+        edit="true"
+        clear="true"
+        required="false"
+      />
+      <field
+        name="media_link"
+        type="hidden"
+        label="COM_MYMUSE_MEDIA_LINK_LABEL"
+        description="COM_MYMUSE_MEDIA_LINK_DESC"
+        class="inputbox"
+        directory="/"
+        required="false"
+      />
+      
+      <field
+        name="product_full_time"
+        type="text"
+        label="COM_MYMUSE_PRODUCT_FULL_TIME_LABEL"
+        description="COM_MYMUSE_PRODUCT_FULL_TIME_DESC"
+        class="inputbox"
+        size="20"
+        required="false"
+        />
+    
+        <field
+        name="product_country"
+        type="country"
+        label="COM_MYMUSE_PRODUCT_COUNTRY_LABEL"
+        description="COM_MYMUSE_PRODUCT_COUNTRY_DESC"
+        class="inputbox"
+        size="1"
+        />
+    
+      <field
+        name="product_publisher"
+        type="text"
+        label="COM_MYMUSE_PRODUCT_PUBLISHER_LABEL"
+        description="COM_MYMUSE_PRODUCT_PUBLISHER_DESC"
+        class="inputbox"
+        size="35"
+        required="false"
+      />
+    
+      <field
+        name="product_producer"
+        type="text"
+        label="COM_MYMUSE_PRODUCT_PRODUCER_LABEL"
+        description="COM_MYMUSE_PRODUCT_PRODUCER_DESC"
+        class="inputbox"
+        size="35"
+        required="false"
+      />
+    
+      <field
+        name="product_studio"
+        type="text"
+        label="COM_MYMUSE_PRODUCT_STUDIO_LABEL"
+        description="COM_MYMUSE_PRODUCT_STUDIO_DESC"
+        class="inputbox"
+        size="35"
+        required="false"
+      />
 
       <field
           name="product_price_physical"
