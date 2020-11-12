@@ -749,6 +749,16 @@
                 size="5"
                 default="1"
         />
+        <field 
+                name="my_order_msg" 
+                type="textarea"  
+                rows="3" 
+                cols="35" 
+                default="" 
+                label="MYMUSE_ORDER_TEXT_LABEL" 
+                description="MYMUSE_ORDER_TEXT_DESC" 
+                filter="raw"
+        />
     </fieldset>
 
     <fieldset name="reports" label="COM_MYMUSE_FRONT_END_SALES_REPORTS_LABEL">

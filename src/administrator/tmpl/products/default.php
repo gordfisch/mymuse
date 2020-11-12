@@ -25,7 +25,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\Component\Content\Administrator\Helper\ContentHelper;
 use Joomla\Utilities\ArrayHelper;
 
-HTMLHelper::_('behavior.multiselect');
+HtmlHelper::_('behavior.multiselect');
 
 $app       = Factory::getApplication();
 $user      = Factory::getUser();
@@ -33,7 +33,7 @@ $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
-
+echo $listOrder;
 if (strpos($listOrder, 'publish_up') !== false)
 {
 	$orderingColumn = 'publish_up';
@@ -46,6 +46,10 @@ elseif (strpos($listOrder, 'modified') !== false)
 {
 	$orderingColumn = 'modified';
 }
+elseif (strpos($listOrder, 'product_release_date') !== false)
+{
+    $orderingColumn = 'product_release_date';
+}
 else
 {
 	$orderingColumn = 'created';
@@ -53,11 +57,14 @@ else
 
 if ($saveOrder && !empty($this->items))
 {
-	$saveOrderingUrl = 'index.php?option=com_content&task=products.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
-	HTMLHelper::_('draggablelist.draggable');
+	$saveOrderingUrl = 'index.php?option=com_mymuse&task=products.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+	HtmlHelper::_('draggablelist.draggable');
 }
 
-
+$workflow_enabled  	= false;
+$workflow_state    	= false;
+$workflow_featured 	= false;
+$this->vote 		= false;
 $assoc = Associations::isEnabled();
 ?>
 
@@ -80,153 +87,198 @@ $assoc = Associations::isEnabled();
 	
 
 
-					<table class="table itemList" id="articleList">
-						<caption id="captionTable" class="sr-only">
-							<?php echo Text::_('COM_CONTENT_ARTICLES_TABLE_CAPTION'); ?>,
-							<span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
-							<span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
-						</caption>
+	<table class="table itemList" id="trackList">
+		<caption id="captionTable" class="sr-only">
+			<?php echo Text::_('COM_MYMUSE_PRODUCTS_TABLE_CAPTION'); ?>,
+			<span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
+			<span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
+		</caption>
 		<thead>
 			<tr>
-				<th width="1%" class="nowrap center hidden-phone">
-					<?php echo Html::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+				<td class="w-1 text-center">
+					<?php echo HtmlHelper::_('grid.checkall'); ?>
+				</td>
+				<th scope="col" class="w-1 text-center d-none d-md-table-cell">
+					<?php echo HtmlHelper::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'fas fa-sort'); ?>
 				</th>
-				<th width="1%" class="center">
-					<?php echo Html::_('grid.checkall'); ?>
+				<?php if ($workflow_enabled) : ?>
+				<th scope="col" class="w-1 text-center">
+					<?php echo HtmlHelper::_('searchtools.sort', 'JSTAGE', 'ws.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap center">
-					<?php echo Html::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+				<?php endif; ?>
+				<th scope="col" class="w-1 text-center d-none d-md-table-cell">
+					<?php echo HtmlHelper::_('searchtools.sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder); ?>
 				</th>
-				<th style="min-width:100px" class="nowrap">
-					<?php echo Html::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+				<th scope="col" class="w-1 text-center">
+					<?php echo HtmlHelper::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%" class="nowrap hidden-phone">
-					<?php echo Html::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+				<th scope="col" style="min-width:100px">
+					<?php echo HtmlHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
-					<?php echo Html::_('searchtools.sort', 'MYMUSE_ARTIST', 'artist_title', $listDirn, $listOrder); ?>
+				<th scope="col" class="w-10 d-none d-md-table-cell">
+					<?php echo HtmlHelper::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
-					<?php echo Html::_('searchtools.sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
+
+				<th scope="col" class="w-10 d-none d-md-table-cell">
+					<?php echo HtmlHelper::_('searchtools.sort', 'COM_MYMUSE_ARTIST', 'artist_title', $listDirn, $listOrder); ?>
 				</th>
+				<th scope="col" class="w-10 d-none d-md-table-cell">
+					<?php echo HtmlHelper::_('searchtools.sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
+				</th>
+
+
 				
-				<th width="10%" class="nowrap hidden-phone">
-					<?php echo Html::_('searchtools.sort', 'MYMUSE_DATE', 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
+				<?php if (Multilanguage::isEnabled()) : ?>
+					<th scope="col" class="w-10 d-none d-md-table-cell">
+						<?php echo HtmlHelper::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
+					</th>
+				<?php endif; ?>
+				<th scope="col" class="w-10 d-none d-md-table-cell text-center">
+					<?php echo HtmlHelper::_('searchtools.sort', 'COM_MYMUSE_DATE_' . strtoupper($orderingColumn), 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
-					<?php echo Html::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+				<th scope="col" class="w-3 d-none d-lg-table-cell text-center">
+					<?php echo HtmlHelper::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
-					<?php echo Html::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
-				</th>
-				<th width="1%" class="nowrap hidden-phone">
-					<?php echo Html::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+				<?php if ($this->vote) : ?>
+					<th scope="col" class="w-3 d-none d-md-table-cell text-center">
+						<?php echo HtmlHelper::_('searchtools.sort', 'JGLOBAL_VOTES', 'rating_count', $listDirn, $listOrder); ?>
+					</th>
+					<th scope="col" class="w-3 d-none d-md-table-cell text-center">
+						<?php echo HtmlHelper::_('searchtools.sort', 'JGLOBAL_RATINGS', 'rating', $listDirn, $listOrder); ?>
+					</th>
+				<?php endif; ?>
+				<th scope="col" class="w-3 d-none d-lg-table-cell">
+					<?php echo HtmlHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="<?php echo $columns; ?>">
-				</td>
-			</tr>
-		</tfoot>
-		<tbody>
-		<?php foreach ($this->items as $i => $item) :
+		<tbody <?php if ($saveOrder) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
+			<?php foreach ($this->items as $i => $item) :
+				$item->max_ordering = 0;
+				$canEdit    = $user->authorise('core.edit', 'com_mymuse.product.' . $item->id);
+				$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || is_null($item->checked_out);
+				$canEditOwn = $user->authorise('core.edit.own', 'com_mymuse.product.' . $item->id) && $item->created_by == $userId;
+				$canChange  = $user->authorise('core.edit.state', 'com_mymuse.product.' . $item->id) && $canCheckin;
 
-			$item->max_ordering = 0;
-			$ordering   = ($listOrder == 'a.ordering');
-			$canCreate  = $user->authorise('core.create',     'com_joomlamymuse.category.' . $item->catid);
-			$canEdit    = $user->authorise('core.edit',       'com_mymuse.product.' . $item->id);
-			$canCheckin = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-			$canEditOwn = $user->authorise('core.edit.own',   'com_mymuse.product.' . $item->id) && $item->created_by == $userId;
-			$canChange  = $user->authorise('core.edit.state', 'com_mymuse.product.' . $item->id) && $canCheckin;
-		
-			?>
-			<tr class="row<?php echo $i % 2; ?>">
-				<td class="order nowrap center hidden-phone">
-							<?php
-							$iconClass = '';
-							if (!$canChange)
-							{
-								$iconClass = ' inactive';
-							}
-							elseif (!$saveOrder)
-							{
-								$iconClass = ' inactive tip-top hasTooltip" title="' . Html::_('tooltipText', 'JORDERINGDISABLED');
-							}
-							?>
-							<span class="sortable-handler<?php echo $iconClass ?>">
-								<span class="icon-menu" aria-hidden="true"></span>
-							</span>
-							<?php if ($canChange && $saveOrder) : ?>
-								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order" />
-							<?php endif; ?>
-						</td>
-				<td class="center">
-					<?php echo Html::_('grid.id', $i, $item->id); ?>
+				?>
+			<tr class="row<?php echo $i % 2; ?>"
+				data-draggable-group="<?php echo $item->catid; ?>"
+			>
+				<td class="text-center">
+					<?php echo HtmlHelper::_('grid.id', $i, $item->id, false, 'cid', 'cb', $item->title); ?>
 				</td>
-				<td class="center">
-					<div class="btn-group">
-						<?php echo Html::_('jgrid.published', $item->state, $i, 'products.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-						<?php echo Html::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>
-						<?php // Create dropdown items and render the dropdown list.
-						if ($canChange)
-						{
-							Html::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'products');
-							Html::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'products');
-							echo Html::_('actionsdropdown.render', $this->escape($item->title));
-						}
-						?>
-					</div>
+				<td class="text-center d-none d-md-table-cell">
+					<?php
+					$iconClass = '';
+					if (!$canChange)
+					{
+						$iconClass = ' inactive';
+					}
+					elseif (!$saveOrder)
+					{
+						$iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
+					}
+					?>
+					<span class="sortable-handler<?php echo $iconClass ?>">
+						<span class="fas fa-ellipsis-v" aria-hidden="true"></span>
+					</span>
+					<?php if ($canChange && $saveOrder) : ?>
+						<input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order hidden">
+					<?php endif; ?>
 				</td>
-				<td class="has-context">
-					<div class="pull-left break-word">
+				<td class="text-center d-none d-md-table-cell">
+					<?php
+						$options = [
+							'disabled' => $workflow_featured || !$canChange
+						];
+
+						echo (new FeaturedButton)
+							->render((int) $item->featured, $i, $options, 0, 0);
+							//$item->featured_up, $item->featured_down
+					?>
+				</td>
+				<td class="product-status text-center">
+				<?php
+					$options = [
+						'task_prefix' => 'products.',
+						'disabled' => $workflow_state || !$canChange
+					];
+
+					echo (new PublishedButton)->render((int) $item->state, $i, $options, $item->publish_up, $item->publish_down);
+				?>
+				</td>
+				<th scope="row" class="has-context">
+					<div class="break-word">
 						<?php if ($item->checked_out) : ?>
-							<?php echo Html::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'products.', $canCheckin); ?>
+							<?php echo HtmlHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'products.', $canCheckin); ?>
 						<?php endif; ?>
 						<?php if ($canEdit || $canEditOwn) : ?>
-							<a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_mymuse&task=product.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+							<a href="<?php echo Route::_('index.php?option=com_mymuse&task=product.edit&id=' . $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
 								<?php echo $this->escape($item->title); ?></a>
 						<?php else : ?>
-							<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
+							<span title="<?php echo Text::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
 						<?php endif; ?>
-						<span class="small break-word">
-							<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
-						</span>
+							<div class="small break-word">
+								<?php if (empty($item->note)) : ?>
+									<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
+								<?php else : ?>
+									<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note)); ?>
+								<?php endif; ?>
+							</div>
+
 					</div>
-				</td>
-				<td class="small hidden-phone">
+				</th>
+				<td class="small d-none d-md-table-cell">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
+
 				<td >
 					<?php echo $this->escape($item->artist_title);  ?>
 				</td>
 				<td>
 					<?php echo $this->escape($item->category_title); 
-					if($item->subcats){
+					if(isset($item->subcats)){
 						echo "<br />(".$item->subcats.")";
 					} ?>
 				</td>
-				
-				<td class="nowrap small hidden-phone">
+				<?php if ($assoc) : ?>
+					<td class="d-none d-md-table-cell">
+						<?php if ($item->association) : ?>
+							<?php echo HtmlHelper::_('contentadministrator.association', $item->id); ?>
+						<?php endif; ?>
+					</td>
+				<?php endif; ?>
+				<?php if (Multilanguage::isEnabled()) : ?>
+					<td class="small d-none d-md-table-cell">
+						<?php echo LayoutHelper::render('joomla.content.language', $item); ?>
+					</td>
+				<?php endif; ?>
+
+
+				<td class="small d-none d-md-table-cell text-center">
 					<?php
 					$date = $item->{$orderingColumn};
-					echo $date > 0 ? Html::_('date', $date, JText::_('DATE_FORMAT_LC4')) : '-';
+					echo $date > 0 ? HtmlHelper::_('date', $date, Text::_('DATE_FORMAT_LC4')) : '-';
 					?>
 				</td>
-				<td class="hidden-phone center">
-							<span class="badge badge-info">
-								<?php echo (int) $item->hits; ?>
-							</span>
-						</td>
-				<td>
-					<?php if ($item->language=='*'):?>
-						<?php echo JText::alt('JALL','language'); ?>
-					<?php else:?>
-						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
-					<?php endif;?>
+				<td class="d-none d-lg-table-cell text-center">
+					<span class="badge badge-info">
+						<?php echo (int) $item->hits; ?>
+					</span>
 				</td>
-				<td class="center">
+				<?php if ($this->vote) : ?>
+					<td class="d-none d-md-table-cell text-center">
+						<span class="badge badge-success">
+						<?php echo (int) $item->rating_count; ?>
+						</span>
+					</td>
+					<td class="d-none d-md-table-cell text-center">
+						<span class="badge badge-warning">
+						<?php echo (int) $item->rating; ?>
+						</span>
+					</td>
+				<?php endif; ?>
+				<td class="d-none d-lg-table-cell">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
@@ -235,11 +287,12 @@ $assoc = Associations::isEnabled();
 	</table>
 
 	<?php endif; ?>
-
+	<?php // load the pagination. ?>
+	<?php echo $this->pagination->getListFooter(); ?>
 
 				<input type="hidden" name="task" value="">
 				<input type="hidden" name="boxchecked" value="0">
-				<?php echo HTMLHelper::_('form.token'); ?>
+				<?php echo HtmlHelper::_('form.token'); ?>
 			</div>
 		</div>
 	</div>

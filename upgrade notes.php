@@ -1,0 +1,1 @@
+product_made_date => product_release_date

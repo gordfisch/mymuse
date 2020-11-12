@@ -123,11 +123,11 @@ class HtmlView extends BaseHtmlView
 		$state	= $this->get('State');
 		$canDo = $this->canDo;
 
-		ToolBarHelper::title(Text::_('MYMUSE').' : '.Text::_('COM_MYMUSE_TITLE_PRODUCTS'), 'mymuse.png');
+		ToolBarHelper::title(Text::_('COM_MYMUSE').' : '.Text::_('COM_MYMUSE_TITLE_PRODUCTS'), 'mymuse.png');
 
 
         //Check if the form exists before showing the add/edit buttons
-        $formPath = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'product';
+        $formPath = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'forms'.DIRECTORY_SEPARATOR.'product.xml';
         if (file_exists($formPath)) {
 
             if ($canDo->get('core.create')) {

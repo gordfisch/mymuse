@@ -15,7 +15,7 @@
         <targetplatform name="joomla" version="4.*"/>
         <php_minimum>7.2</php_minimum>
     </update>
-        <update>
+    <update>
         <name>MyMuse</name>
         <description>This is com_mymuse</description>
         <element>com_mymuse</element>

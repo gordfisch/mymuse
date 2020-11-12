@@ -35,7 +35,7 @@ DROP TABLE IF EXISTS `#__mymuse_product_recommend_xref`;
 DROP TABLE IF EXISTS `#__mymuse_product_file`;
 DROP TABLE IF EXISTS `#__mymuse_product_rating`;
 DROP TABLE IF EXISTS `#__mymuse_shopper`;
-DROP TABLE IF EXISTS `#__mymuse_shopper_group`;
+DROP TABLE IF EXISTS `#__mymuse_shoppergroup`;
 DROP TABLE IF EXISTS `#__mymuse_state`;
 DROP TABLE IF EXISTS `#__mymuse_store`;
 DROP TABLE IF EXISTS `#__mymuse_track`;

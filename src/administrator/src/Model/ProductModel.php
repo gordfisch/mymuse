@@ -11,15 +11,37 @@ namespace Joomla\Component\Mymuse\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Factory\LegacyFactory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormFactoryInterface;
+use Joomla\CMS\Helper\TagsHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\MVC\Model\WorkflowBehaviorTrait;
+use Joomla\CMS\MVC\Model\WorkflowModelInterface;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\TableInterface;
+use Joomla\CMS\UCM\UCMType;
 use Joomla\CMS\Versioning\VersionableModelTrait;
+use Joomla\CMS\Workflow\Workflow;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
+use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\Mp3fileHelper;
+use Joomla\Component\Mymuse\Administrator\Model\ProductsModel;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
 
 
 /**
@@ -51,6 +73,7 @@ class ProductModel extends AdminModel
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
 	 *
 	 * @var  string
+     * @since  5.0
 	 */
 	protected $batch_copymove = false;
 
@@ -58,6 +81,7 @@ class ProductModel extends AdminModel
 	 * Allowed batch commands
 	 *
 	 * @var  array
+     * @since  5.0
 	 */
 	protected $batch_commands = array(
 		'language_id' => 'batchLanguage'
@@ -101,28 +125,83 @@ class ProductModel extends AdminModel
 	
 	/**
 	 * @var		array
+     * @since  4.0
 	 */
 	protected $filter_fields = null;
 	
 	/**
 	 * @var		array
+     * @since  4.0
 	 */
 	protected $_attribute_skus = null;
 	
 	/**
 	 * @var		object
+     * @since  4.0
 	 */
 	protected $_params = null;
 	
 	/**
 	 * @var		array
+     * @since  4.0
 	 */
 	protected $_previews = null;
 	
 	/**
 	 * @var		object
-	 */
+     * @since  4.0
+
 	protected $storage = null;
+     */
+
+	/**
+	 * The event to trigger before changing featured status one or more items.
+	 *
+	 * @var    string
+	 * @since  4.0
+	 */
+	protected $event_before_change_featured = null;
+
+	/**
+	 * The event to trigger after changing featured status one or more items.
+	 *
+	 * @var    string
+	 * @since  4.0
+	 */
+	protected $event_after_change_featured = null;
+
+	/**
+	 * The event to trigger before changing featured status one or more items.
+	 *
+	 * @var    string
+	 * @since  4.0
+	 */
+	protected $event_before_delete = null;
+
+	/**
+	 * The event to trigger after changing featured status one or more items.
+	 *
+	 * @var    string
+	 * @since  4.0
+	 */
+	protected $event_before_save = null;
+
+	/**
+	 * The event to trigger before changing featured status one or more items.
+	 *
+	 * @var    string
+	 * @since  4.0
+	 */
+	protected $event_after_delete = null;
+
+	/**
+	 * The event to trigger after changing featured status one or more items.
+	 *
+	 * @var    string
+	 * @since  4.0
+	 */
+	protected $event_after_save = null;
+
 	
 	/**
 	 * Constructor.
@@ -141,10 +220,10 @@ class ProductModel extends AdminModel
 
 		// Set the featured status change events
 		$this->event_before_change_featured = $config['event_before_change_featured'] ?? $this->event_before_change_featured;
-		$this->event_before_change_featured = $this->event_before_change_featured ?? 'onContentBeforeChangeFeatured';
+		$this->event_before_change_featured = $this->event_before_change_featured ?? 'onMymuseBeforeChangeFeatured';
 
 		$this->event_after_change_featured  = $config['event_after_change_featured'] ?? $this->event_after_change_featured;
-		$this->event_after_change_featured  = $this->event_after_change_featured ?? 'onContentAfterChangeFeatured';
+		$this->event_after_change_featured  = $this->event_after_change_featured ?? 'onMymuseAfterChangeFeatured';
 
 
 		$this->event_before_delete = $config['event_before_delete'] ?? $this->event_before_delete;
@@ -161,7 +240,7 @@ class ProductModel extends AdminModel
 
 
 		$this->_params 		= MyMuseHelper::getParams();
-		$this->storage 		= $GLOBALS['mymuseStorage'];
+		//$this->storage 		= $GLOBALS['mymuseStorage'];
 
 
 
@@ -213,8 +292,6 @@ class ProductModel extends AdminModel
 				$filters     = (array) $app->getUserState('com_mymuse.product.filter');
 			}
 		}
-		
-		
 
 		$this->preprocessData('com_mymuse.product', $data);
 
@@ -239,9 +316,9 @@ class ProductModel extends AdminModel
 	}
 
 	/**
-	 * Prepare and sanitise the table prior to saving.
+	 * Prepare and sanitise the table data prior to saving.
 	 *
-	 * @param   Table  $table  A Table object.
+	 * @param   \Joomla\CMS\Table\Table  $table  A Table object.
 	 *
 	 * @return  void
 	 *
@@ -249,25 +326,28 @@ class ProductModel extends AdminModel
 	 */
 	protected function prepareTable($table)
 	{
+		
 
+		// Increment the content version number.
+		$table->version++;
+
+		// Reorder the articles within the category so the new article is first
 		if (empty($table->id))
 		{
-			// Set ordering to the last item if not set
-			if (empty($table->ordering))
-			{
-				$db = $this->getDbo();
-				$query = $db->getQuery(true)
-					->select('MAX(' . $db->quoteName('ordering') . ')')
-					->from($db->quoteName('#__mymuse_product'));
+			$table->reorder('catid = ' . (int) $table->catid . ' AND state >= 0');
+		}
+		if ($table->state == 1 && (int) $table->publish_up == 0)
+		{
+			$table->publish_up = Factory::getDate()->toSql();
+		}
 
-				$db->setQuery($query);
-				$max = $db->loadResult();
-
-				$table->ordering = $max + 1;
-			}
+		if ($table->state == 1 && intval($table->publish_down) == 0)
+		{
+			$table->publish_down = NULL;
 		}
 
 	}
+
 
 	/**
 	 * Method to get a single record.
@@ -280,43 +360,55 @@ class ProductModel extends AdminModel
     public function getItem($pk = null)
 	{
 		if(!$this->_item){
-			$input = JFactory::getApplication()->input;
+			$input = Factory::getApplication()->input;
 			$task = $input->get('task','');
 			$parentid= $input->get('parentid','');
 			$id = $input->get('id','');
-			
+
 			if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 				$pk = 0;
+                $id = 0;
 				$input->set('id',0);
 			}
 			
 			if ($item = parent::getItem($pk)) {
-	
+
+
 				// Convert the attribs field to an array.
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->attribs);
 				$item->attribs = $registry->toArray();
 
 				// Convert the metadata field to an array.
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->metadata);
 				$item->metadata = $registry->toArray();
 
-				// Convert the dimensions field to an array.
-				$registry = new JRegistry;
-				$registry->loadString($item->dimensions);
-				$item->dimensions = $registry->toArray();
+				// Convert the physical field to an array.
+				$registry = new Registry;
+				$registry->loadString($item->physical);
+				$item->physical = $registry->toArray();
+
+				// Convert the physical field to an array.
+				$registry = new Registry;
+				$registry->loadString($item->recording);
+				$item->recording = $registry->toArray();
+
+				// Convert the digital field to an array.
+				$registry = new Registry;
+				$registry->loadString($item->digital);
+				$item->digital = $registry->toArray();
 
 
 				$item->articletext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
-					
-				if($parentid && $parentid != $id){
-					$item->parentid = $parentid;
-				}
-					
+
+                if($parentid && $parentid != $id){
+                    $item->parentid = $parentid;
+                }
 				if($task == "new_allfiles"){
-					$item->product_type = "AllFiles";
+					$item->product_allfiles = "1";
 				}
+
 				if($item->parentid){
 					$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
 					$this->_db->setQuery($q);
@@ -325,19 +417,13 @@ class ProductModel extends AdminModel
 					$item->catid = $item->parent->catid;
 				}else{
 					//set the parent id for the tracks and items
-					$mainframe = JFactory::getApplication();
-					$parentid= $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
+					//$mainframe = Factory::getApplication();
+                    //$item->parentid = $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
 				}
 				$item->flash_type = '';
+
+
 				
-				$jason = json_decode($item->file_name);
-				if(is_array($jason)){
-					$item->file_name = $jason;
-				}elseif($item->file_name != ''){
-					$jason = (object) array('file_name' => $item->file_name);
-					$item->file_name = array();
-					$item->file_name[] = $jason;
-				}
 				
 			}
 		
@@ -357,7 +443,7 @@ class ProductModel extends AdminModel
     function getTracks()
     {
 
-    	$app 				= JFactory::getApplication();
+    	$app 				= Factory::getApplication();
     	$input 				= $app->input;
     	$option 			= $input->get('option','com_mymuse');
     	$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
@@ -375,8 +461,18 @@ class ProductModel extends AdminModel
     	$root = JPATH_ROOT;
   
     	if ($this->_tracks === null && $product = $this->getItem()) {
-    		JLoader::import( 'products', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_mymuse' . DS . 'models' );
-    		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
+
+
+            $this->factory =  new LegacyFactory;
+            $model = $this->factory->createModel('Products', 'MyMuseModel', array('ignore_request' => true));
+
+    		//$model = new \Joomla\Component\Mymuse\Administrator\Model\ProductsModel;
+
+			$form = $model->getFilterForm(array(), true);
+			$ordering = $form->getField('fullordering', 'list');
+			$ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
+			$ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
+			$this->filterForm = $form;
 
     		//$model->setState('filter.category_id', $category->id);
     		$model->setState('filter.published', $this->getState('filter.published'));
@@ -387,13 +483,14 @@ class ProductModel extends AdminModel
     		$model->setState('list.limit', $limit);
     		$model->setState('list.direction', $this->getState('file.direction'));
     		$model->setState('list.filter', $this->getState('list.filter'));
-    		// filter.subcategories indicates whether to include articles from subcategories in the list or blog
-    		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
-    		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
-    		$model->setState('list.links', $this->getState('list.links'));
+    		// filter.subcategories indicates whether to include products from subcategories in the list or blog
+    		// $model->setState('filter.subcategories', $this->getState('filter.subcategories'));
+    		// $model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
+    		//$model->setState('list.links', $this->getState('list.links'));
     
     		$model->setState('filter.downloadable', 1);
-    		$model->setState('filter.parentid', $product->id);
+
+
 
 
     		if ($limit >= 0) {
@@ -410,21 +507,22 @@ class ProductModel extends AdminModel
     		$this->_trackPagination = $model->getPagination();
     	}
 
-  
+
     	return $this->_tracks;
     }
 
-
-  /**
+    /**
     * Get the items for the product
     *
     * @return	mixed	An array of products or false if an error occurs.
     * @since	1.5
-    */
+   *
+   * @since 3.0
+     */
    function getItems()
    {
    	
-   	$app = JFactory::getApplication();
+   	$app = Factory::getApplication();
    	$input = $app->input;
    	$option = 'com_mymuse';
 
@@ -432,7 +530,7 @@ class ProductModel extends AdminModel
    	$limit = $this->getState('list.limit');
    	$id = $input->get('id');
 
-   	$root = JPATH_ROOT.DS;
+   	$root = JPATH_ROOT.DIRECTORY_SEPARATOR;
    
    	if ($this->_items === null && $product = $this->getItem()) {
    
@@ -471,7 +569,7 @@ class ProductModel extends AdminModel
    		$this->_itemPagination = $model->getPagination();
    		
    		//get attributes
-   		$db = JFactory::getDBO();
+   		$db = Factory::getDBO();
    		for($i = 0; $i<count($this->_items); $i++){
    		
    			if(!$this->_attribute_skus && $product->id){
@@ -510,11 +608,13 @@ class ProductModel extends AdminModel
      *
      * @access    public
      * @return    array
+     *
+     * @since 3.0
      */
     function getLists()
     {
     	global $option;
-    	$app 				= JFactory::getApplication();
+    	$app 				= Factory::getApplication();
     	$input 				= $app->input;
     	$id 				= $input->get('id', 0);
 
@@ -578,7 +678,7 @@ class ProductModel extends AdminModel
 
 		// items
 		$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-			AND product_downloadable=0 ";
+			AND product_downloadable='1'";
 		if($filter_item_order){
 			$query .= "ORDER BY $filter_item_order ";
 		}
@@ -614,12 +714,14 @@ class ProductModel extends AdminModel
      *
      * @access    public
      * @return    array
+      *
+      * @since 3.0
      */
     public function getFileLists()
     {
-    	$input = JFactory::getApplication()->input;
-    	$parentid = $this->_item->parentid;
-    	jimport('joomla.filesystem.file');
+
+    	$input = Factory::getApplication()->input;
+        $parentid= $input->get('parentid','');
 
  		// file lists for albums
  		$artist_alias = MyMuseHelper::getArtistAlias($parentid,1);
@@ -628,43 +730,42 @@ class ProductModel extends AdminModel
 		$site_url = MyMuseHelper::getSiteUrl($parentid,1);
 		$site_path = MyMuseHelper::getSitePath($parentid,1);
 		$download_path = MyMuseHelper::getdownloadPath($parentid,1);
-		$application = JFactory::getApplication();
+		$application = Factory::getApplication();
 
 		$files = array();
 
-		$files = $this->storage->listFilesPreviews($site_path);
-
-		
-		$previews 	= array(  JHTML::_('select.option',  '', '- '. JText::_( 'MYMUSE_SELECT_FILE' ) .' -' ) );
+		$files = MymuseStorage::listFilesPreviews($site_path);
+		$previews 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
 		foreach ( $files as $file ) {
-				$previews[] = JHTML::_('select.option',  $file );
+				$previews[] = HTMLHelper::_('select.option',  $file );
 		}
-		$lists['previews'] = JHTML::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
+        $this->_item->file_preview  = isset($this->_item->file_preview) ? $this->_item->file_preview: '';
+		$lists['previews'] = HTMLHelper::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
 
 		
 		
 		// get the download tracks lists
 		$files = array();
 		$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
-		$files = $this->storage->listFilesDownloads($directory);
-		
-		$myfiles = array(  JHTML::_('select.option',  '', '- '. JText::_( 'MYMUSE_SELECT_FILE' ) .' -' ) );
+		$files = MymuseStorage::listFilesDownloads($directory);
+
+		$myfiles = array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
 		foreach($files as $file){
-				$myfiles[] = JHTML::_('select.option',  $file, stripslashes($file) );
+				$myfiles[] = HTMLHelper::_('select.option',  $file, stripslashes($file) );
 		}
-		
+        $this->_item->file_name  = isset($$this->_item->file_name) ? $this->_item->file_name: '';
 		$current = $this->_item->file_name;
 
 		$i = 0;
 		if($current){
 			for($i = 0; $i < count($current); $i++){
-				$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file_name);
+				$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file_name);
 			}
 		}else{
-			$lists['select_file'][0] = JHTML::_('select.genericlist',  $myfiles, "select_file[0]", 'class="inputbox" size="1" ', 'value', 'text','');
+			$lists['select_file'][0] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[0]", 'class="inputbox" size="1" ', 'value', 'text','');
 		}
 		for($i = $i++; $i < 9; $i++){
-			$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
+			$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
 		}
 		
 		// for display purposes
@@ -673,7 +774,7 @@ class ProductModel extends AdminModel
             //by format
             $lists['download_dir'] = '';
             foreach($this->_params->get('my_formats') as $format){
-            	$lists['download_dir'] .= $download_path.DS.$format."<br />";
+            	$lists['download_dir'] .= $download_path.DIRECTORY_SEPARATOR.$format."<br />";
             }
         }else{
         	$lists['download_dir'] = $download_path;
@@ -683,6 +784,163 @@ class ProductModel extends AdminModel
 		return $lists;
     }
     
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   1.6
+	 */
+	public function save($data)
+	{
+		$input  		= Factory::getApplication()->input;
+		$filter 		= \JFilterInput::getInstance();
+		$db     		= $this->getDbo();
+		$user			= Factory::getUser();
+
+
+
+		if (isset($data['metadata']) && isset($data['metadata']['author']))
+		{
+			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
+		}
+
+		if (isset($data['created_by_alias']))
+		{
+			$data['created_by_alias'] = $filter->clean($data['created_by_alias'], 'TRIM');
+		}
+
+		
+
+		// Alter the title for save as copy
+		if ($input->get('task') == 'save2copy')
+		{
+			$origTable = clone $this->getTable();
+			$origTable->load($input->getInt('id'));
+
+			if ($data['title'] == $origTable->title)
+			{
+				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
+				$data['title'] = $title;
+				$data['alias'] = $alias;
+			}
+			else
+			{
+				if ($data['alias'] == $origTable->alias)
+				{
+					$data['alias'] = '';
+				}
+			}
+		}
+
+		// Automatic handling of alias for empty fields
+		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
+		{
+			if ($data['alias'] == null)
+			{
+				if (Factory::getApplication()->get('unicodeslugs') == 1)
+				{
+					$data['alias'] = \JFilterOutput::stringURLUnicodeSlug($data['title']);
+				}
+				else
+				{
+					$data['alias'] = \JFilterOutput::stringURLSafe($data['title']);
+				}
+
+				$table = Table::getInstance('Content', 'JTable');
+
+				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid'])))
+				{
+					$msg = Text::_('COM_CONTENT_SAVE_WARNING');
+				}
+
+				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
+				$data['alias'] = $alias;
+
+				if (isset($msg))
+				{
+					Factory::getApplication()->enqueueMessage($msg, 'warning');
+				}
+			}
+		}
+
+
+
+		if (parent::save($data))
+		{
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * updateAttributes
+	 *
+	 * @return boolean
+	 */
+	public function updateAttributes()
+	{
+		// Attributes
+		$input 				= Factory::getApplication()->input;
+		$post 				= $input->post->getArray();
+		$itemid				= $input->get('itemid','');
+
+		if(!$input->get('attribute_value',0) || !$input->get('attribute_name',0) || !isset($itemid)){
+			return;
+		}
+
+
+		if(!$itemid){
+			return;
+		}
+		$db = Factory::getDBO();
+		$attribute_values		= $input->getVar('attribute_value', array());
+		$attribute_names		= $input->getVar('attribute_name', array());
+
+
+		$query = "DELETE FROM #__mymuse_product_attribute
+			WHERE product_id='".$itemid."'";
+		//echo $query;
+		$db->setQuery($query);
+		$db->execute();
+
+		foreach( $attribute_values as $key => $val) {
+
+			$query = "INSERT INTO #__mymuse_product_attribute
+				(`product_id`,`product_attribute_sku_id`,`attribute_name`,`attribute_value`)
+				VALUES 
+				(".$itemid.",".$key.",'".$attribute_names[$key]."','".$val."')";
+	
+			$db->setQuery($query);
+			$db->execute();
+
+		}
+		return true;
+
+	}
+    /**
+     * Method override to check-in a record or an array of record
+     *
+     * @param   mixed  $pks  The ID of the primary key or an array of IDs
+     *
+     * @return  integer|boolean  Boolean false if there is an error, otherwise the count of records checked in.
+     *
+     * @since   1.6
+     *
+     */
+
+    public function checkin($pks = array()) {
+        $table = $this->getTable('Product');
+        foreach($pks as $pk){
+            $table->checkin($pk);
+        }
+        return true;
+
+    }
 
 
 }

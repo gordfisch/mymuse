@@ -11,6 +11,7 @@ namespace Joomla\Component\Mymuse\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -85,4 +86,23 @@ class ProductsController extends AdminController
 
 		echo new JsonResponse($result);
 	}
+
+
+    /**
+     * Method override to check-in a record or an array of record
+     *
+     * @param   mixed  $pks  The ID of the primary key or an array of IDs
+     *
+     * @return  integer|boolean  Boolean false if there is an error, otherwise the count of records checked in.
+     *
+     * @since   1.6
+     * */
+    public function checkin() {
+
+        $pks = $this->app->input->get('cid');
+        $model = $this->getModel('product');
+        return $model->checkin($pks);
+
+    }
+
 }

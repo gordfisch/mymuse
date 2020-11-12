@@ -20,7 +20,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Mymuse\Administrator\Model\TaxtrateModel;
+use Joomla\Component\Mymuse\Administrator\Model\ProductModel;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * View to edit a store.
@@ -29,6 +30,13 @@ use Joomla\Component\Mymuse\Administrator\Model\TaxtrateModel;
  */
 class HtmlView extends BaseHtmlView
 {
+	/**
+	 * The Input object
+	 *
+	 * @var    input
+	 * @since  1.5
+	 */
+	public $input;
 	/**
 	 * The Form object
 	 *
@@ -54,6 +62,22 @@ class HtmlView extends BaseHtmlView
 	protected $state;
 
 	/**
+	 * The layout
+	 *
+	 * @var    string
+	 * @since  1.5
+	 */
+	protected $layout;
+
+	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -66,6 +90,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): void
 	{
+		$this->input = Factory::getApplication()->input;
 		/** @var MymuseModel $model */
 		$model       	= $this->getModel();
 		$this->form  	= $model->getForm();
@@ -74,27 +99,28 @@ class HtmlView extends BaseHtmlView
 		$this->lists 	= $this->get('Lists');
 		$this->params 	= MyMuseHelper::getParams();
 
-		$input = JFactory::getApplication()->input;
-		$this->task 	= $task 	= $input->get('task', 'edit');
+
+		$this->task 	= $task 	= $this->input->get('task', 'edit');
 		
 		if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
-			$input->set('id',0);
+			$this->input->set('id',0);
 		}
 
-				$app 			= JFactory::getApplication();
+		$app 			= Factory::getApplication();
 		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
 		$subtype 		='details';
-		$view 			= $input->get('view');
+		$view 			= $this->input->get('view');
 		
         $isNew  		= ($this->item->id < 1);
 		$lists['isNew'] = $isNew;
 		
 		//setlayout
-		$layout = $input->get('layout', 'edit');
+		$this->layout = $this->input->get('layout', 'edit');
 		
 		//listtracks
-		if($layout == "listtracks"){
-			$this->tracks 	= $this->get('Tracks');
+		if($this->layout == "listtracks"){
+			$this->tracks 		= $this->get('Tracks');
+			$this->filterForm   = $model->filterForm;
 
 			//See if there is an all files zip
 			$this->all_files = 0;
@@ -105,33 +131,36 @@ class HtmlView extends BaseHtmlView
 			}
 			$this->trackPagination = $this->get('TrackPagination');
 		}
-		if($layout == "listitems"){
+		if($this->layout == "listitems"){
 			$this->items 	= $this->get('Items');
 			$this->itemPagination = $this->get('ItemPagination');
 		}
 
-		$this->setLayout($layout);
-		
+		$this->setLayout($this->layout);
+
 		//new file || edit file
 		if($task == "addfile" || $task == "editfile" || 
 				(isset($this->item->parentid) && $this->item->parentid > 0 
 						&& !$this->item->product_allfiles && $subtype == "file")){
 			if($task == "addfile"){
-				$input->set('id','0');
+				$this->input->set('id','0');
 			}
+            $this->item->parentid = $this->input->get('parentid', 0);
 
-			$layout = 'edittracks';
+			$this->layout = 'edittracks';
         	$this->setLayout('edittracks');
         	$filelists = $this->get('FileLists');
 
         	$this->lists = array_merge($this->lists,$filelists);
         	
         	if(!$this->item->parentid){
-        		$this->item->parentid = $input->get('parentid', 0);
+        		$this->item->parentid = $this->input->get('parentid', 0);
         	}
-        	$input->set('subtype','file');
+        	$this->input->set('subtype','file');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'file');
-        	
+            if(!isset($this->item->parent)){
+                $this->item->parent = $model->getItem($this->item->parentid);
+            }
         	
         }
         
@@ -139,41 +168,42 @@ class HtmlView extends BaseHtmlView
         elseif($task == "edit_allfiles" || $task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
         	$this->setLayout('edit_allfiles');
 			if(!$this->item->parentid){
-        		$this->item->parentid = $input->get('parentid', 0);
+        		$this->item->parentid = $this->input->get('parentid', 0);
         	}
+
         	$subtype = 'allfiles';
   
         }
      
         //item
-        elseif($task == "additem" || $task == "product.additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical == 1)){
+        elseif($task == "additem" || $task == "product.additem"){
         
-        	$layout = 'edititems';
+        	$this->layout = 'edititems';
         	$this->setLayout('edititems');
         	$this->attribute_skus = $this->get('Attributeskus');
         	$this->attributes = $this->get('Attributes');
         	
         	if(!count($this->attribute_skus)){
         		//no attributes yet!!
-        		$msg = JText::_("MYMUSE_CREATE_ATTRIBUTE_FIRST");
+        		$msg = Text::_("MYMUSE_CREATE_ATTRIBUTE_FIRST");
         		$url = "index.php?option=com_mymuse&view=product&layout=listitems&id=".$this->item->parentid;
         		$app->redirect($url, $msg);
+                //$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id), 'error');
+                //$this->setRedirect(Route::_('index.php?option=com_mywalk&view=mywalk_datess', false));
         		exit;
         	}
         	
         	
         	$isNew  = (@$items->id < 1);
         	$this->lists['isNew'] = $isNew;
-        	$input->set('subtype','item');
+        	$this->input->set('subtype','item');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
         	
         }
 
-
-
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
-        	$app = JFactory::getApplication();
+        	$app = Factory::getApplication();
         	$parentid = $app->getUserStateFromRequest("com_mymuse.parentid", 'parentid', $this->item->id);
         }
         if(!$this->item->id  && $this->item->parentid == 0){
@@ -188,7 +218,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		$this->addToolbar($subtype,$this->item->parentid);
-
+        //MymuseHelper::print_pre($this->item);
 		parent::display($tpl);
 	}
 
@@ -210,153 +240,179 @@ class HtmlView extends BaseHtmlView
 		$checkedOut = !(is_null($this->item->checked_out) || $this->item->checked_out == $userId);
 
 		$canDo	= MymuseHelper::getActions('com_mymuse', 'store', $this->item->id);
-		$title = JText::_('COM_MYMUSE_TITLE_PRODUCT');
+		$title = Text::_('COM_MYMUSE_TITLE_PRODUCT');
 
 		if($this->item->parentid){
 			$title .= ' : <a href="index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->item->parentid.'">'.$this->item->parent->title."</a>";
 		}else{
 			$title .= " : ".$this->item->title;
 		}
-		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
+		ToolBarHelper::title(Text::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 	
-		if($layout == "listtracks"){
+		if($this->layout == "listtracks"){
 			// LIST TRACKS
 			if($this->params->get('storage', 'regular') == 'regular' ){
-				JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
-				JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
+				ToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'COM_MYMUSE_UPLOAD_TRACKS', false);
+				ToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'COM_MYMUSE_UPLOAD_PREVIEWS', false);
 			}
 			
 			
-			JToolBarHelper::editList('product.edit', 'MYMUSE_EDIT_TRACK');
-			JToolBarHelper::addNew('product.addfile', 'MYMUSE_NEW_TRACK');
-			JToolBarHelper::deleteList('','product.removefile','MYMUSE_DELETE_TRACKS');
+			ToolBarHelper::editList('product.edit', 'COM_MYMUSE_EDIT_TRACK');
+			ToolBarHelper::addNew('product.addfile', 'COM_MYMUSE_NEW_TRACK');
+			ToolBarHelper::deleteList('','product.removefile','COM_MYMUSE_DELETE_TRACKS');
 			
 			
 			if(!$this->all_files){ 
-				JToolBarHelper::addNew('product.new_allfiles', 'MYMUSE_ALL_TRACKS');
+				ToolBarHelper::addNew('product.new_allfiles', 'COM_MYMUSE_ALL_TRACKS');
 			}		  
-			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
+			ToolBarHelper::apply('product.productreturn', 'COM_MYMUSE_RETURN_TO_PRODUCT');
 			
 			
-			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component');
-		}elseif($layout == "listitems"){
+			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component');
+		}elseif($this->layout == "listitems"){
 			// LIST ITEMS
-			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
-			JToolBarHelper::custom('products.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::custom('products.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-items?tmpl=component');
+			ToolBarHelper::apply('product.productreturn', 'COM_MYMUSE_RETURN_TO_PRODUCT');
+			ToolBarHelper::custom('products.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			ToolBarHelper::custom('products.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-items?tmpl=component');
 			
 		}elseif($subtype == "file" && $parentid){
 			//TRACK
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
-				JToolBarHelper::apply('product.applyfile', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.savefile', 'JTOOLBAR_SAVE');
+				ToolBarHelper::apply('product.applyfile', 'JTOOLBAR_APPLY');
+				ToolBarHelper::save('product.savefile', 'JTOOLBAR_SAVE');
 			}
 			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2newfile', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				ToolBarHelper::custom('product.save2newfile', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
 
 			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CANCEL');
+				ToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CANCEL');
 			}
 			else {
-				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CLOSE');
+				ToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component#new-edit-track');			
+			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component#new-edit-track');			
 		
 		}elseif($subtype == "allfiles" && $parentid){
 			// ALLFILES
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
-				JToolBarHelper::apply('product.apply_allfiles', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.save_allfiles', 'JTOOLBAR_SAVE');
+				ToolBarHelper::apply('product.apply_allfiles', 'JTOOLBAR_APPLY');
+				ToolBarHelper::save('product.save_allfiles', 'JTOOLBAR_SAVE');
 			}
 
 			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
+				ToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
 			}
 			else {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
+				ToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component#tracks-all-tracks');		
+			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component#tracks-all-tracks');		
 		
 		}elseif( $subtype == 'item' ){
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
-				JToolBarHelper::apply('product.applyitem', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.saveitem', 'JTOOLBAR_SAVE');
+				ToolBarHelper::apply('product.applyitem', 'JTOOLBAR_APPLY');
+				ToolBarHelper::save('product.saveitem', 'JTOOLBAR_SAVE');
 			}
 			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2newitem', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				ToolBarHelper::custom('product.save2newitem', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
 
 			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
+				ToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
 			}
 			else {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
+				ToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-items?tmpl=component');
+			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-items?tmpl=component');
 		}else{
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
-				JToolBarHelper::apply('product.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.save', 'JTOOLBAR_SAVE');
+				ToolBarHelper::apply('product.apply', 'JTOOLBAR_APPLY');
+				ToolBarHelper::save('product.save', 'JTOOLBAR_SAVE');
 			}
 			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				JToolbarHelper::save2copy('product.save2copy');
+				ToolBarHelper::custom('product.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				ToolBarHelper::save2copy('product.save2copy');
 			}
 
 			
 
-			JToolBarHelper::custom('product.listracks', 'featured.png', 'featured_f2.png', 'MYMUSE_TRACKS', false);
-			JToolBarHelper::custom('product.listitems', 'featured.png', 'featured_f2.png', 'MYMUSE_ITEMS', false);
+			ToolBarHelper::custom('product.listracks', 'featured.png', 'featured_f2.png', 'COM_MYMUSE_TRACKS', false);
+			ToolBarHelper::custom('product.listitems', 'featured.png', 'featured_f2.png', 'COM_MYMUSE_ITEMS', false);
 
 			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CANCEL');
+				ToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else {
-				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
+				ToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
 			}
 		}
 
 		
 
-		// If not checked out, can save the item.
-		if (!$checkedOut && $canDo->get('core.edit'))
-		{
-			ToolbarHelper::apply('store.apply');
-			$toolbarButtons[] = ['save', 'store.save'];
 
-		}
-
-
-		ToolbarHelper::saveGroup(
-			$toolbarButtons,
-			'btn-success'
-		);
 
 		if (empty($this->item->id))
 		{
-			ToolbarHelper::cancel('store.cancel');
+
 		}
 		else
 		{
-			ToolbarHelper::cancel('store.cancel', 'JTOOLBAR_CLOSE');
 
 			if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $canDo->get('core.edit'))
 			{
-				ToolbarHelper::versions('com_mymuse.store', $this->item->id);
+				ToolbarHelper::versions('com_mymuse.product', $this->item->id);
 			}
 		}
 
 		ToolbarHelper::divider();
 		ToolbarHelper::help('JHELP_COMPONENTS_MYMUSE_PRODUCT_EDIT');
+	}
+
+	/**
+	 * Returns an array of fields the table can be sorted by for TRACKS
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields2()
+	{
+		return array(
+				'a.ordering' => Text::_('JGRID_HEADING_ORDERING'),
+				'a.state' => Text::_('JSTATUS'),
+				'a.title' => Text::_('JGLOBAL_TITLE'),
+				'a.id' => Text::_('JGRID_HEADING_ID'),
+				'a.price' => Text::_('COM_MYMUSE_PRICE'),
+				'a.product_discount' => Text::_('COM_MYMUSE_DISCOUNT')
+		);
+	}
+
+	/**
+	 * Returns an array of fields the table can be sorted by for ITEMS
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields3()
+	{
+		return array(
+				'a.ordering' => Text::_('JGRID_HEADING_ORDERING'),
+				'a.state' => Text::_('JSTATUS'),
+				'a.title' => Text::_('JGLOBAL_TITLE'),
+				'a.id' => Text::_('JGRID_HEADING_ID'),
+				'a.price' => Text::_('COM_MYMUSE_PRICE'),
+				'a.product_discount' => Text::_('COM_MYMUSE_DISCOUNT'),
+				'a.product_in_stock' => Text::_('COM_MYMUSE_PRODUCT_IN_STOCK_LABEL')
+		);
 	}
 }

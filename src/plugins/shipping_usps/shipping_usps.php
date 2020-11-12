@@ -589,7 +589,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 	static function renderLWHUnitList ($name, $selected) {
 
 		if (!class_exists ('VmHTML')) {
-			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'html.php');
 		}
 
 		$lwh_unit_default = array('M' => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_M')
@@ -863,7 +863,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 		$this->logInfo('****USPS API CALL: Total cart weight='.$order_weight.'lbs zipcode from='.$source_zip.' zipcode to='.$dest_zip.' countryid='.$dest_countryid.' service='.$usps_service_code.' container='.$usps_container_name.'****');
 		//Store variables to cart which are used to determine if another call to USPS API is required on future requests.
 		$session = JFactory::getSession();
-		require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
+		require_once( JPATH_COMPONENT.DIRECTORY_SEPARATOR.'mymuse.class.php');
 		$MyMuseCart = MyMuse::getObject('cart','helpers');
 		$MyMuseCart->usps_ship_weight  = $order_weight;
 		$MyMuseCart->usps_ship_source_zip = $source_zip;

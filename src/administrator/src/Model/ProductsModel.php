@@ -22,6 +22,8 @@ use Joomla\CMS\Workflow\Workflow;
 use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 
 /**
  * Methods supporting a list of taxrate records.
@@ -54,6 +56,7 @@ class ProductsModel extends ListModel
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',
+				'product_release_date', 'a.product_release_date',
 				'modified', 'a.modified',
 				'ordering', 'a.ordering',
 				'featured', 'a.featured',
@@ -67,7 +70,7 @@ class ProductsModel extends ListModel
 		}
 
         parent::__construct($config);
-        $this->storage = $GLOBALS['mymuseStorage'];
+
     }
 
 	/**
@@ -105,6 +108,8 @@ class ProductsModel extends ListModel
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+     *
+     * @since 1.0
 	 */
 	protected function populateState($ordering = 'a.id', $direction = 'desc')
 	{
@@ -115,7 +120,7 @@ class ProductsModel extends ListModel
 		// Adjust the context to support modal layouts.
 		if ($layout = $app->input->get('layout'))
 		{
-			$this->context .= '.' . $layout;
+			//$this->context .= '.' . $layout;
 		}
 
 		// Adjust the context to support forced languages.
@@ -135,6 +140,12 @@ class ProductsModel extends ListModel
 
 		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
+
+		$downloadable = $this->getUserStateFromRequest($this->context . '.filter.downloadable', 'filter_downloadable');
+		$this->setState('filter.downloadable', $downloadable);
+
+        $parentid = $this->getUserStateFromRequest($this->context . '.filter.parentid', 'filter_parentid');
+        $this->setState('filter.parentid', $parentid);
 
 		$formSubmited = $app->input->post->get('form_submited');
 
@@ -209,15 +220,10 @@ class ProductsModel extends ListModel
 		);
 		$query->from('`#__mymuse_product` AS a');
 
-		// Join on mymuse_product_data.
-		$query->select('pd.product_made_date, pd.catid, pd.artistid');
-		$query->join('LEFT', '#__mymuse_product_data AS pd ON pd.product_id=a.id');
-
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
-		
 		
 		// Filter by published state
 		$published = $this->getState('filter.published');
@@ -235,11 +241,21 @@ class ProductsModel extends ListModel
 
 		// Join over the categories.
 		$query->select('c.title AS category_title');
-		$query->join('LEFT', '#__categories AS c ON c.id = pd.catid');
+		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
 		
 		// Join over the artist categories.
 		$query->select('art.title AS artist_title');
-		$query->join('LEFT', '#__categories AS art ON art.id = pd.artistid');
+		$query->join('LEFT', '#__categories AS art ON art.id = a.artistid');
+
+		
+
+		$query->select($db->quoteName('ag.title', 'access_level'));
+		$query->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'));
+
+		//downloadable??
+		if ($downloadable = $this->getState('filter.downloadable')) {
+			$query->where('a.product_downloadable = 1');
+		}
                     
 
 		// Filter by search in title
@@ -295,7 +311,8 @@ class ProductsModel extends ListModel
         if ($orderCol && $orderDirn) {
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
-		//echo($query->__toString()); exit;
+
+        //echo($query->__toString()); //exit;
 		return $query;
 	}
 
@@ -315,7 +332,7 @@ class ProductsModel extends ListModel
 			$query = $db->getQuery(true);
 
 			$query->update('`#__mymuse_product`');
-			$query->set('published = ' . $value);
+			$query->set('state = ' . $value);
 			$query->where('id IN (' . implode(',', $pks). ')');
 			$db->setQuery($query);
 			$db->execute();
@@ -340,5 +357,13 @@ class ProductsModel extends ListModel
 			$query->where('id IN (' . implode(',', $pks). ')');
 			$db->setQuery($query);
 			$db->execute();
+
+			//delete children
+			$query = $db->getQuery(true);
+			$query->delete('`#__mymuse_product`');
+			$query->where('parentid IN (' . implode(',', $pks). ')');
+			$db->setQuery($query);
+			$db->execute();
+
 		}
 }

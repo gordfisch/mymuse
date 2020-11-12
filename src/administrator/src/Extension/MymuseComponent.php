@@ -57,6 +57,7 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 		$this->getRegistry()->register('mymuseadministrator', new AdministratorService);
 		$this->getRegistry()->register('mymuseicon', new Icon($container->get(SiteApplication::class)));
 
+		/*
 		$res = Factory::getApplication()->triggerEvent('onMymuseGetStorage', array('com_mymuse'));
 		if(isset($res[0]) && is_object($res[0])){
 			$GLOBALS['mymuseStorage'] = $res[0];
@@ -65,6 +66,8 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 			$GLOBALS['mymuseStorage'] = new MymuseStorage();
 		}
 		MyMuseHelper::setParam('storage', $GLOBALS['mymuseStorage']->type);
+		*/
+        MymuseHelper::setParam('storage', 'regular');
 	}
 
 	/**

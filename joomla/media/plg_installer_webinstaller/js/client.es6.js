@@ -38,9 +38,9 @@ if (!Joomla) {
       const installButton = document.getElementById('uploadform-web-install');
       installButton.addEventListener('click', () => {
         if (webInstallerOptions.options.installFrom === 4) {
-          Joomla.submitbutton4();
+          this.submitButtonUrl();
         } else {
-          Joomla.submitbutton5();
+          this.submitButtonWeb();
         }
       });
       this.loadweb(`${webInstallerOptions.options.base_url}index.php?format=json&option=com_apps&view=dashboard`);
@@ -190,7 +190,7 @@ if (!Joomla) {
           if (installExtensionFromExternalButton) {
             installExtensionFromExternalButton.addEventListener('click', () => {
               const redirectUrl = installExtensionFromExternalButton.getAttribute('data-downloadurl');
-              const redirectConfirm = window.confirm(Joomla.JText._('PLG_INSTALLER_WEBINSTALLER_REDIRECT_TO_EXTERNAL_SITE_TO_INSTALL').replace('[SITEURL]', redirectUrl));
+              const redirectConfirm = window.confirm(Joomla.Text._('PLG_INSTALLER_WEBINSTALLER_REDIRECT_TO_EXTERNAL_SITE_TO_INSTALL').replace('[SITEURL]', redirectUrl));
 
               if (redirectConfirm !== true) {
                 return;
@@ -325,7 +325,7 @@ if (!Joomla) {
     static installfromweb(installUrl, name = null) {
       if (!installUrl) {
         Joomla.renderMessages({
-          warning: [Joomla.JText._('PLG_INSTALLER_WEBINSTALLER_CANNOT_INSTALL_EXTENSION_IN_PLUGIN')]
+          warning: [Joomla.Text._('PLG_INSTALLER_WEBINSTALLER_CANNOT_INSTALL_EXTENSION_IN_PLUGIN')]
         });
         return false;
       }
@@ -342,6 +342,42 @@ if (!Joomla) {
 
       document.getElementById('uploadform-web').classList.remove('hidden');
       return true;
+    } // eslint-disable-next-line class-methods-use-this
+
+
+    submitButtonUrl() {
+      const form = document.getElementById('adminForm'); // do field validation
+
+      if (form.install_url.value === '' || form.install_url.value === 'http://' || form.install_url.value === 'https://') {
+        Joomla.renderMessages({
+          warning: [Joomla.Text._('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL')]
+        });
+      } else {
+        const loading = document.getElementById('loading');
+
+        if (loading) {
+          loading.classList.remove('hidden');
+        }
+
+        form.installtype.value = 'url';
+        form.submit();
+      }
+    }
+
+    submitButtonWeb() {
+      const form = document.getElementById('adminForm'); // do field validation
+
+      if (form.install_url.value !== '' || form.install_url.value !== 'http://' || form.install_url.value !== 'https://') {
+        this.submitButtonUrl();
+      } else if (form.install_url.value === '') {
+        Joomla.renderMessages({
+          warning: [Joomla.apps.options.btntxt]
+        });
+      } else {
+        document.querySelector('#appsloading').classList.remove('hidden');
+        form.installtype.value = 'web';
+        form.submit();
+      }
     }
 
   }

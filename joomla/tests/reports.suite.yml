@@ -14,7 +14,7 @@ modules:
             capabilities:
               unexpectedAlertBehaviour: 'accept'
             username: 'admin'                      # UserName for the Administrator
-            password: 'admin'                      # Password for the Administrator
+            password: 'adminadminadmin'                      # Password for the Administrator
             database host: 'localhost'             # place where the Application is Hosted #server Address
             database user: 'mymuse'                  # MySQL Server user ID, usually root
             database password: 'K5xxQgB4RZNIVdqp'                  # MySQL Server password, usually empty or root

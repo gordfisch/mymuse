@@ -13,14 +13,15 @@
  * license		GNU General Public License version 2 or later; see LICENSE.txt
  * 
  */
- 
 
-defined('JPATH_BASE') or die;
+namespace Joomla\Component\Mymuse\Administrator\Field;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+
 
 /**
  * Form Field class for the Joomla Framework.
@@ -29,7 +30,9 @@ JFormHelper::loadFieldClass('list');
  * @subpackage	com_mymuse
  * @since		1.6
  */
-class JFormFieldCategoryTree extends JFormFieldList{
+
+class CategoryTree extends ListField
+{
 	/**
 	 * The form field type.
 	 *
@@ -49,13 +52,13 @@ class JFormFieldCategoryTree extends JFormFieldList{
 		$html = array();
 		$attr = '';
 		$selectedCats = array();
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		//product id
 		$id = $jinput->get('id',0);
 		$arr = array();
 		
 		if($id){
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = 'SELECT catid' .
 			' FROM #__mymuse_product_category_xref' .
 			' WHERE product_id='. $id ;
@@ -146,7 +149,7 @@ class JFormFieldCategoryTree extends JFormFieldList{
 		$name = (string) $this->element['name'];
 
 		// Let's get the id for the current item, either category or content item.
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		// Load the category options for a given extension.
 
 		// For categories the old category is the category id or 0 for new category.
@@ -164,7 +167,7 @@ class JFormFieldCategoryTree extends JFormFieldList{
 			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('a.id AS value, a.title AS text, a.level, a.published')
 			->from('#__categories AS a')
@@ -226,7 +229,8 @@ class JFormFieldCategoryTree extends JFormFieldList{
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage);
+
+            $this->app->enqueueMessage($e->getMessage,'error');
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
@@ -251,7 +255,7 @@ class JFormFieldCategoryTree extends JFormFieldList{
 		}
 
 		// Get the current user object.
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		// For new items we want a list of categories you are allowed to create in.
 		if ($oldCat == 0)
@@ -334,7 +338,7 @@ class JFormFieldCategoryTree extends JFormFieldList{
 	function getCategoriesTree()
 	{
 		global $mymusecats;
-		$db		= JFactory::getDBO();
+		$db		= Factory::getDBO();
 		$query 	= "SELECT lft,rgt FROM #__categories WHERE id=1 ";
 		$db->setQuery($query);
 		$obj 	= $db->loadObject();

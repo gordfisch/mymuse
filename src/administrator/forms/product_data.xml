@@ -19,10 +19,10 @@
       cols="40"
     />
     <field 
-  		name="product_made_date" 
+  		name="product_release_date"
   		type="calendar" 
-  		label="COM_MYMUSE_PRODUCT_CREATED_LABEL"
-  		description="COM_MYMUSE_PRODUCT_CREATED_DESC" 
+  		label="COM_MYMUSE_PRODUCT_RELEASE_DATE_LABEL"
+  		description="COM_MYMUSE_PRODUCT_RELEASE_DATE_DESC"
   		class="inputbox" size="22"
   		format="%Y-%m-%d" 
   		filter="none" 

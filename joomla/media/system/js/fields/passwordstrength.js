@@ -44,7 +44,7 @@ var PasswordStrength = /*#__PURE__*/function () {
     this.uppercase = parseInt(settings.uppercase, 10) || 0;
     this.numbers = parseInt(settings.numbers, 10) || 0;
     this.special = parseInt(settings.special, 10) || 0;
-    this.length = parseInt(settings.length, 10) || 4;
+    this.length = parseInt(settings.length, 10) || 12;
   }
 
   _createClass(PasswordStrength, [{
@@ -113,29 +113,15 @@ var PasswordStrength = /*#__PURE__*/function () {
       uppercase: minUppercase || 0,
       numbers: minIntegers || 0,
       special: minSymbols || 0,
-      length: minLength || 4
+      length: minLength || 12
     });
     var score = strength.getScore(element.value);
     var i = meter.getAttribute('id').replace(/^\D+/g, '');
     var label = element.parentNode.parentNode.querySelector("#password-".concat(i));
 
-    if (score > 79) {
+    if (score === 100) {
       label.innerText = Joomla.JText._('JFIELD_PASSWORD_INDICATE_COMPLETE');
-    }
-
-    if (score > 64 && score < 80) {
-      label.innerText = Joomla.JText._('JFIELD_PASSWORD_INDICATE_INCOMPLETE');
-    }
-
-    if (score > 50 && score < 65) {
-      label.innerText = Joomla.JText._('JFIELD_PASSWORD_INDICATE_INCOMPLETE');
-    }
-
-    if (score > 40 && score < 51) {
-      label.innerText = Joomla.JText._('JFIELD_PASSWORD_INDICATE_INCOMPLETE');
-    }
-
-    if (score < 41) {
+    } else {
       label.innerText = Joomla.JText._('JFIELD_PASSWORD_INDICATE_INCOMPLETE');
     }
 
@@ -163,8 +149,8 @@ var PasswordStrength = /*#__PURE__*/function () {
       meter.setAttribute('min', 0);
       meter.setAttribute('max', 100);
       meter.setAttribute('low', 40);
-      meter.setAttribute('high', 60);
-      meter.setAttribute('optimum', 80);
+      meter.setAttribute('high', 99);
+      meter.setAttribute('optimum', 100);
       meter.value = initialVal;
       var label = document.createElement('div');
       label.setAttribute('class', 'text-center');
@@ -197,7 +183,7 @@ var PasswordStrength = /*#__PURE__*/function () {
           uppercase: minUppercase || 0,
           numbers: minIntegers || 0,
           special: minSymbols || 0,
-          length: minLength || 4
+          length: minLength || 12
         });
         var score = strength.getScore(value);
 

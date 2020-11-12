@@ -59,7 +59,9 @@
   overflow: hidden;
   background: #d3d3d3;
   border: 1px solid rgba(0, 0, 0, 0.18);
-  transition: .2s ease all; }
+  transition: .2s ease all;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0); }
   [dir=rtl] .switcher .toggle-outside {
     right: 0;
     left: auto; }

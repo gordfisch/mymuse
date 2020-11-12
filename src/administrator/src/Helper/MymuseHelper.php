@@ -17,6 +17,7 @@ use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Uri\Uri;
 
 
 
@@ -69,7 +70,7 @@ class MymuseHelper extends ContentHelper
 	 * @param $var
 	 * @return string
 	 * 
-	 * 
+	 * @since 3.0
 	 */
 	public static function print_pre($var){
 		echo "<pre>";
@@ -245,6 +246,10 @@ class MymuseHelper extends ContentHelper
 		if(!$key || !$val){
 			return;
 		}
+        if(!self::$_params){
+            self::getParams();
+
+        }
 		self::$_params->set($key, $val);
 	}
 	
@@ -281,7 +286,7 @@ class MymuseHelper extends ContentHelper
 	static function returnURL()
 	{
 		$input 		= Factory::getApplication()->input;
-		$url 		= JURI::base(true);
+		$url 		= URI::base(true);
 		$option     = $input->get( 'option', '' );
 		$task       = $input->get( 'task', '' );
 		$Itemid     = $input->get( 'Itemid', '' );
@@ -438,7 +443,7 @@ class MymuseHelper extends ContentHelper
 	
 	public function logPayment($payment){
 		$db		= Factory::getDbo();
-		include_once(JPATH_ADMINISTRATOR.DS."components".DS."com_mymuse".DS."tables".DS."orderpayment.php");
+		include_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_mymuse".DIRECTORY_SEPARATOR."tables".DIRECTORY_SEPARATOR."orderpayment.php");
 		$table = new MymuseTableorderpayment($db);
 		
 		if (!$table->bind($payment)) {
@@ -593,7 +598,7 @@ class MymuseHelper extends ContentHelper
 
 		if(1 == $params->get('my_previews_in_one_dir')){
 			if( $params->get('storage', 'regular') == 'regular' ) {
-				$site_url = preg_replace("#administrator/#","",JURI::root(true)).DS.$params->get('my_preview_dir').DS;
+				$site_url = preg_replace("#administrator/#","",URI::root(true)).DIRECTORY_SEPARATOR.$params->get('my_preview_dir').DIRECTORY_SEPARATOR;
 			}else{
 				$site_url = $GLOBALS['mymuseStorage']->getSiteUrl();
 			}
@@ -602,11 +607,11 @@ class MymuseHelper extends ContentHelper
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);	
-			$path_url = $artist_alias.DS.$album_alias.DS;
+			$path_url = $artist_alias.DIRECTORY_SEPARATOR.$album_alias.DIRECTORY_SEPARATOR;
 			if( $params->get('storage', 'regular') == 'regular' ) {
-				$site_url = JURI::root(true).DS.$params->get('my_preview_dir').DS.$path_url;
+				$site_url = URI::root(true).DIRECTORY_SEPARATOR.$params->get('my_preview_dir').DIRECTORY_SEPARATOR.$path_url;
 			}else{
-				$site_url = $GLOBALS['mymuseStorage']->getSiteUrl().DS.$path_url;
+				$site_url = $GLOBALS['mymuseStorage']->getSiteUrl().DIRECTORY_SEPARATOR.$path_url;
 			}
 		}
 		return $site_url;
@@ -627,18 +632,18 @@ class MymuseHelper extends ContentHelper
 		$params = self::$_params;
 
 		if(1 == $params->get('my_previews_in_one_dir')){
-			$site_path = $params->get('my_preview_dir').DS;
+			$site_path = $params->get('my_preview_dir').DIRECTORY_SEPARATOR;
 			if( $params->get('storage', 'regular') == 'regular' ) {
-				$site_path = JPATH_ROOT.DS.$site_path;
+				$site_path = JPATH_ROOT.DIRECTORY_SEPARATOR.$site_path;
 			}else{
 				$site_path = '';
 			}
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);	
-			$site_path = $params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
+			$site_path = $params->get('my_preview_dir').DIRECTORY_SEPARATOR.$artist_alias.DIRECTORY_SEPARATOR.$album_alias.DIRECTORY_SEPARATOR;
 			if( $params->get('storage', 'regular') == 'regular' ) {
-				$site_path = JPATH_ROOT.DS.$site_path;
+				$site_path = JPATH_ROOT.DIRECTORY_SEPARATOR.$site_path;
 			}
 		}
 		return $site_path;
@@ -658,11 +663,11 @@ class MymuseHelper extends ContentHelper
 		$params = self::$_params;
 
 		if($params->get('my_download_dir_format') == 1 ){
-			$site_path = rtrim($params->get('my_download_dir'), '/').DS;
+			$site_path = rtrim($params->get('my_download_dir'), '/').DIRECTORY_SEPARATOR;
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
-			$site_path = rtrim($params->get('my_download_dir'), '/').DS.$artist_alias.DS.$album_alias.DS;
+			$site_path = rtrim($params->get('my_download_dir'), '/').DIRECTORY_SEPARATOR.$artist_alias.DIRECTORY_SEPARATOR.$album_alias.DIRECTORY_SEPARATOR;
 		}
 
 		return $site_path;

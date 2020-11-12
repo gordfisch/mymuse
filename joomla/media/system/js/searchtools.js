@@ -534,10 +534,11 @@ Joomla = window.Joomla || {};
     }
 
     var sort = document.getElementById('sorted');
+    var order = document.getElementById('orderedBy');
 
-    if (sort && sort.hasAttribute('data-caption')) {
+    if (sort && sort.hasAttribute('data-caption') && order) {
       var orderedBy = sort.getAttribute('data-caption');
-      document.getElementById('orderedBy').textContent += orderedBy;
+      order.textContent += orderedBy;
     }
 
     if (sort && sort.hasAttribute('data-sort')) {

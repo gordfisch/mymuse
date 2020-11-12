@@ -152,14 +152,14 @@ Joomla.MediaManager = Joomla.MediaManager || {};
 
       case 'save':
         Joomla.UploadFile.exec(name, JSON.stringify(forUpload), uploadPath, url, type);
-        window.location = "".concat(pathName, "?option=com_media&path=").concat(fileDirectory);
+        window.location = "".concat(pathName, "?option=com_media&view=media&path=").concat(fileDirectory);
         break;
 
       case 'cancel':
         if (window.self !== window.top) {
-          window.location = "".concat(pathName, "?option=com_media&path=").concat(fileDirectory, "&tmpl=component");
+          window.location = "".concat(pathName, "?option=com_media&view=media&path=").concat(fileDirectory, "&tmpl=component");
         } else {
-          window.location = "".concat(pathName, "?option=com_media&path=").concat(fileDirectory);
+          window.location = "".concat(pathName, "?option=com_media&view=media&path=").concat(fileDirectory);
         }
 
         break;

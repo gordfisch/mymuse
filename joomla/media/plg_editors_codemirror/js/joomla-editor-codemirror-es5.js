@@ -100,7 +100,13 @@ customElements.define('joomla-editor-codemirror', /*#__PURE__*/function (_HTMLEl
         }
 
         _this2.checkElement('CodeMirror', 'findModeByName').then(function () {
-          // For mode autoloading.
+          // Check if instance exists to avoid duplication on resize
+          if (_this2.instance !== '') {
+            Joomla.editors.instances[_this2.element.id] = _this2.instance;
+            return;
+          } // For mode autoloading.
+
+
           window.CodeMirror.modeURL = _this2.getAttribute('mod-path'); // Fire this function any time an editor is created.
 
           window.CodeMirror.defineInitHook(function (editor) {

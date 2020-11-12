@@ -1,12 +1,7 @@
 
 <?xml version="1.0" encoding="utf-8"?>
 <fieldset name="dimensions" label="COM_MYMUSE_DIMENSIONS">
-  <field 
-    name="product_in_stock" 
-    type="text" 
-    label="COM_MYMUSE_PRODUCT_IN_STOCK_LABEL"
-    description="COM_MYMUSE_PRODUCT_IN_STOCK_DESC"
-  />
+
   <field 
     name="product_images" 
     type="folderlist" 

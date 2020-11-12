@@ -131,7 +131,7 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-<field type="spacer" name="spacerddetails" label="MYMUSE_PRODUCT_DETAILS" /> 
+<field type="spacer" name="spacer_details" label="MYMUSE_PRODUCT_DETAILS" />
 			<field 
 				name="show_parent_category" 
 				type="radio"
@@ -277,7 +277,7 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-	<field type="spacer" name="spacerdescription" label="MYMUSE_PRODUCT_DESCRIPTION" /> 
+	<field type="spacer" name="spacer_description" label="MYMUSE_PRODUCT_DESCRIPTION" />
 
 			<field 
 				name="show_recording_details" 
@@ -398,7 +398,7 @@
 				<option value="1">JSHOW</option>
 			</field>
           	
-   	 <field type="spacer" name="spaceritems" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 	       	
+   	 <field type="spacer" name="spacer_items" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" />
 			
 			<field 
 	 			name="product_show_quantity" 
@@ -423,7 +423,7 @@
 				<option value="1">JYES</option>
 	 		</field>
 	 		
-	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" />			
+	<field type="spacer" name="spacer_download" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" />
 
 
 	 		<field 
@@ -595,7 +595,7 @@
 	 		
 	 		
 	 		
-	<field type="spacer" name="myspacer" hr="true" /> 		
+	<field type="spacer" name="my_spacer" hr="true" />
 
 			
 			<field 
@@ -697,8 +697,8 @@
 				type="text" 
 				default="" 
 				class="btn-group"
-	 			label="MYMUSE_TUNCATE_DESCRIPTION_LABEL" 
-	 			description="MYMUSE_TUNCATE_DESCRIPTION_DESC">
+	 			label="MYMUSE_TRUNCATE_DESCRIPTION_LABEL"
+	 			description="MYMUSE_TRUNCATE_DESCRIPTION_DESC">
 	 		</field>
 
 			<field 
@@ -868,8 +868,8 @@
 				name="subcat_desc_truncate" 
 				type="text" 
 				default="" 
-	 			label="MYMUSE_TUNCATE_DESCRIPTION_LABEL" 
-	 			description="MYMUSE_TUNCATE_DESCRIPTION_DESC">
+	 			label="MYMUSE_TRUNCATE_DESCRIPTION_LABEL"
+	 			description="MYMUSE_TRUNCATE_DESCRIPTION_DESC">
 	 		</field>
 
 			<field 
@@ -1200,7 +1200,7 @@
 				<option value="0">JALL</option>
 		</field>
 		
-		<!-- field type="spacer" name="spacerheadings" label="MYMUSE_TRACKS_OPTIONS" / --> 
+		<!-- field type="spacer" name="spacer_headings" label="MYMUSE_TRACKS_OPTIONS" / -->
 
 		<field name="show_alphabet" 
 			type="hidden" 

@@ -28,24 +28,41 @@ class MymuseStorage
 	 * type of storage
 	 *
 	 * @var		string
+     *
+     * @since 4.2
 	 */
 	public  $type = 'regular';
 
     /**
-     * mymuse params
+     * my_download_dir_format
      *
-     * @var     object
+     * @var     int
+     *
+     * @since 4.2
      */
-    private  $_params = null;
+    private  $_my_download_dir_format = null;
+
+    /**
+     * my_formats
+     *
+     * @var     array
+     *
+     * @since 4.2
+     */
+    private  $_my_formats = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @param   array   $params   An array that holds the plugin configuration
+     *
+     * @since 4.2
 	 */
 	public function __construct()
 	{
-        $this->_params = MyMuseHelper::getParams();
+        $params = MyMuseHelper::getParams();
+        $this->_my_download_dir_format = $params->get('my_download_dir_format');
+        $this->_my_formats = $params->get('my_formats');
 	}
 
 
@@ -55,8 +72,10 @@ class MymuseStorage
      * @param   string folder name
      *
      * @return  array
+     *
+     * @since 4.2
      */
-    public function listFilesPreviews($dir)
+    public static function listFilesPreviews($dir)
     {
 
         if(!Folder::exists($dir)){
@@ -74,14 +93,18 @@ class MymuseStorage
      * @param   string folder name
      *
      * @return  array
+     *
+     * @since 4.2
      */
-    public function listFilesDownloads($dir)
+    public static function listFilesDownloads($dir)
     {
-
-        if($this->_params->get('my_download_dir_format')){
+        $params = MyMuseHelper::getParams();
+        $_my_download_dir_format = $params->get('my_download_dir_format');
+        $_my_formats = $params->get('my_formats');
+        if($_my_download_dir_format){
             //by format
             $files = array();
-            foreach($this->_params->get('my_formats') as $format){
+            foreach($_my_formats as $format){
                 if(!Folder::exists( $dir.DIRECTORY_SEPARATOR.$format )){
                     Folder::create( $dir.DIRECTORY_SEPARATOR.$format );
                 }
@@ -108,6 +131,8 @@ class MymuseStorage
      * @param   string folder name
      *
      * @return  boolean  True on success.
+     *
+     * @since 4.2
      */
     public function folderNew($dir)
     {
@@ -138,6 +163,8 @@ class MymuseStorage
      * @param   string file name
      *
      * @return  boolean  True on success.
+     *
+     * @since 4.2
      */
     public function fileDelete($file)
     {
@@ -159,6 +186,8 @@ class MymuseStorage
      * @param   string file name moving to
      *
      * @return  boolean  True on success.
+     *
+     * @since 4.2
      */
     public function fileUpload($tmpName, $new_file)
     {
@@ -186,6 +215,8 @@ class MymuseStorage
      * @param   string file name copy to
      *
      * @return  boolean  True on success.
+     *
+     * @since 4.2
      */
     public function fileCopy($src, $dest)
     {
@@ -207,6 +238,8 @@ class MymuseStorage
      * @param   string file name
      *
      * @return  boolean  True on success.
+     *
+     * @since 4.2
      */
     public function fileExists($file)
     {
@@ -221,6 +254,8 @@ class MymuseStorage
      * @param   string $dest
      *
      * @return  boolean  True on success.
+     *
+     * @since 4.2
      */
     public function folderMove($src, $dest)
     {
@@ -234,7 +269,7 @@ class MymuseStorage
         }
         $files = Folder::files($src);
         foreach ($files as $file) {
-            File::move($src. DIRECTORY_SEPARATOR . $file, $dest . DS. $file);
+            File::move($src. DIRECTORY_SEPARATOR . $file, $dest . DIRECTORY_SEPARATOR. $file);
         }
     	
     	return true;
@@ -248,6 +283,8 @@ class MymuseStorage
      * @param   string $src
      *
      * @return  integer file size
+     *
+     * @since 4.2
      */
     public function fileFilesize($src)
     {

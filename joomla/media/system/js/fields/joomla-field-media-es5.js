@@ -97,7 +97,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return;
       }
 
-      var apiBaseUrl = "".concat(Joomla.getOptions('system.paths').rootFull, "administrator/index.php?option=com_media&format=json");
+      var apiBaseUrl = "".concat(Joomla.getOptions('system.paths').baseFull, "index.php?option=com_media&format=json");
       Joomla.request({
         url: "".concat(apiBaseUrl, "&task=api.files&url=true&path=").concat(data.path, "&").concat(Joomla.getOptions('csrf.token'), "=1&format=json"),
         method: 'GET',
@@ -130,6 +130,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       _this.onSelected = _this.onSelected.bind(_assertThisInitialized(_this));
       _this.show = _this.show.bind(_assertThisInitialized(_this));
       _this.clearValue = _this.clearValue.bind(_assertThisInitialized(_this));
+      _this.modalClose = _this.modalClose.bind(_assertThisInitialized(_this));
+      _this.setValue = _this.setValue.bind(_assertThisInitialized(_this));
+      _this.updatePreview = _this.updatePreview.bind(_assertThisInitialized(_this));
       return _this;
     }
 
@@ -138,12 +141,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       // attributeChangedCallback(attr, oldValue, newValue) {}
       value: function connectedCallback() {
         this.button = this.querySelector(this.buttonSelect);
+        this.inputElement = this.querySelector(this.input);
         this.buttonClearEl = this.querySelector(this.buttonClear);
-        this.show = this.show.bind(this);
-        this.modalClose = this.modalClose.bind(this);
-        this.clearValue = this.clearValue.bind(this);
-        this.setValue = this.setValue.bind(this);
-        this.updatePreview = this.updatePreview.bind(this);
+        this.modalElement = this.querySelector('.joomla-modal');
+        this.buttonSaveSelectedElement = this.querySelector(this.buttonSaveSelected);
+        this.previewElement = this.querySelector('.field-media-preview');
+
+        if (!this.button || !this.inputElement || !this.buttonClearEl || !this.modalElement || !this.buttonSaveSelectedElement) {
+          throw new Error('Misconfiguaration...');
+        }
+
+        if (Joomla.Bootstrap && Joomla.Bootstrap.initModal && typeof Joomla.Bootstrap.initModal === 'function') {
+          Joomla.Bootstrap.initModal(this.modalElement);
+        }
+
         this.button.addEventListener('click', this.show);
 
         if (this.buttonClearEl) {
@@ -166,7 +177,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }, {
       key: "onSelected",
       value: function onSelected(event) {
-        // event.target.removeEventListener('click', this.onSelected);
         event.preventDefault();
         event.stopPropagation();
         this.modalClose();
@@ -175,15 +185,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }, {
       key: "show",
       value: function show() {
-        this.querySelector('[role="dialog"]').open();
+        this.modalElement.open();
         Joomla.selectedFile = {};
-        this.querySelector(this.buttonSaveSelected).addEventListener('click', this.onSelected);
+        this.buttonSaveSelectedElement.addEventListener('click', this.onSelected);
       }
     }, {
       key: "modalClose",
       value: function modalClose() {
-        var input = this.querySelector(this.input);
-        Joomla.getImage(Joomla.selectedFile, input, this).then(function () {
+        Joomla.getImage(Joomla.selectedFile, this.inputElement, this).then(function () {
           Joomla.Modal.getCurrent().close();
           Joomla.selectedFile = {};
         }).catch(function () {
@@ -197,7 +206,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }, {
       key: "setValue",
       value: function setValue(value) {
-        this.querySelector(this.input).value = value;
+        this.inputElement.value = value;
         this.updatePreview();
       }
     }, {
@@ -208,20 +217,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }, {
       key: "updatePreview",
       value: function updatePreview() {
-        if (['true', 'static'].indexOf(this.preview) === -1 || this.preview === 'false') {
+        if (['true', 'static'].indexOf(this.preview) === -1 || this.preview === 'false' || !this.previewElement) {
           return;
         } // Reset preview
 
 
         if (this.preview) {
-          var input = this.querySelector(this.input);
-          var value = input.value;
-          var div = this.querySelector('.field-media-preview');
+          var value = this.inputElement.value;
 
           if (!value) {
-            div.innerHTML = '<span class="field-media-preview-icon"></span>';
+            this.previewElement.innerHTML = '<span class="field-media-preview-icon"></span>';
           } else {
-            div.innerHTML = '';
+            this.previewElement.innerHTML = '';
             var imgPreview = new Image();
 
             switch (this.type) {
@@ -235,8 +242,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
                 break;
             }
 
-            div.style.width = this.previewWidth;
-            div.appendChild(imgPreview);
+            this.previewElement.style.width = this.previewWidth;
+            this.previewElement.appendChild(imgPreview);
           }
         }
       }

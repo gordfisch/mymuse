@@ -2,7 +2,7 @@
 <extension version="3.0" type="plugin" group="mymuse">
 	<name>plg_mymuse_shipping_standard</name>
 	<author>Arboreta</author>
-	<creationDate>Janueary 2019</creationDate>
+	<creationDate>January 2019</creationDate>
 	<copyright>Copyright (C) 2019 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>

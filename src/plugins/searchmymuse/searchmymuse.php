@@ -12,11 +12,11 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if(!defined('DS')){
-	define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DIRECTORY_SEPARATOR')){
+	define('DIRECTORY_SEPARATOR',DIRECTORY_SEPARATOR);
 }
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'route.php');
+require_once(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'route.php');
 
 class plgSearchSearchMymuse extends JPlugin
 {

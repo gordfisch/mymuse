@@ -683,18 +683,19 @@ window.Joomla.Modal = window.Joomla.Modal || {
       title = Joomla.Text._(type); // Skip titles with untranslated strings
 
       if (typeof title !== 'undefined') {
-        titleWrapper = document.createElement('span');
+        titleWrapper = document.createElement('div');
         titleWrapper.className = 'alert-heading';
-        titleWrapper.innerHTML = Joomla.Text._(type) ? Joomla.Text._(type) : type;
+        titleWrapper.innerHTML = "<span class=\"".concat(type, "\"></span><span class=\"sr-only\">").concat(Joomla.Text._(type) ? Joomla.Text._(type) : type, "</span>");
         messagesBox.appendChild(titleWrapper);
       } // Add messages to the message box
 
 
+      messageWrapper = document.createElement('div');
+      messageWrapper.className = 'alert-wrapper';
       typeMessages.forEach(function (typeMessage) {
-        messageWrapper = document.createElement('div');
-        messageWrapper.innerHTML = typeMessage;
-        messagesBox.appendChild(messageWrapper);
+        messageWrapper.innerHTML += "<div class=\"alert-message\">".concat(typeMessage, "</div>");
       });
+      messagesBox.appendChild(messageWrapper);
       messageContainer.appendChild(messagesBox);
     });
   };
@@ -916,7 +917,7 @@ window.Joomla.Modal = window.Joomla.Modal || {
         });
       }
 
-      newDef = newDef === undefined ? '' : newDef;
+      newDef = newDef === undefined ? newKey : newDef;
       newKey = newKey.toUpperCase();
       return Joomla.Text.strings[newKey] !== undefined ? Joomla.Text.strings[newKey] : newDef;
     },

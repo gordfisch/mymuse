@@ -11,20 +11,20 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-if(!defined('DS')){
-	define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DIRECTORY_SEPARATOR')){
+	define('DIRECTORY_SEPARATOR',DIRECTORY_SEPARATOR);
 }
 
 if(!defined('MYMUSE_ADMIN_PATH')){
-	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
+	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR);
 }
 if(!defined('MYMUSE_PATH')){
-	define('MYMUSE_PATH',JPATH_SITE.DS."components".DS."com_mymuse".DS);
+	define('MYMUSE_PATH',JPATH_SITE.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_mymuse".DIRECTORY_SEPARATOR);
 }
 require_once( MYMUSE_PATH.'mymuse.class.php');
-require_once( MYMUSE_PATH.'helpers'.DS.'route.php');
-require_once (dirname(__FILE__).DS.'helper.php');
-require_once(MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php');
+require_once( MYMUSE_PATH.'helpers'.DIRECTORY_SEPARATOR.'route.php');
+require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php');
+require_once(MYMUSE_ADMIN_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'mymuse.php');
 $MyMuseHelper 	= new MyMuseHelper;
 
 
@@ -104,7 +104,7 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 	$document = JFactory::getDocument();
 	JHtml::_('jquery.framework');
 	
-	$css_path = $site_url.'modules'.DS.'mod_mymuse_latest'.DS.'assets'.DS.'circle.player.css';
+	$css_path = $site_url.'modules'.DIRECTORY_SEPARATOR.'mod_mymuse_latest'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'circle.player.css';
 	$document->addStyleSheet( $css_path );
 	
 	//load jplayer?
@@ -130,13 +130,13 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 		$document->addScript( $js_path );
 	}
 	
-	$js_path = $site_url.'modules'.DS.'mod_mymuse_latest'.DS.'assets'.DS.'jquery.transform2d.js';
+	$js_path = $site_url.'modules'.DIRECTORY_SEPARATOR.'mod_mymuse_latest'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'jquery.transform2d.js';
 	$document->addScript( $js_path );
-	$js_path = $site_url.'modules'.DS.'mod_mymuse_latest'.DS.'assets'.DS.'jquery.grab.js';
+	$js_path = $site_url.'modules'.DIRECTORY_SEPARATOR.'mod_mymuse_latest'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'jquery.grab.js';
 	$document->addScript( $js_path );
-	$js_path = $site_url.'modules'.DS.'mod_mymuse_latest'.DS.'assets'.DS.'mod.csstransforms.min.js';
+	$js_path = $site_url.'modules'.DIRECTORY_SEPARATOR.'mod_mymuse_latest'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'mod.csstransforms.min.js';
 	$document->addScript( $js_path );
-	$js_path = $site_url.'modules'.DS.'mod_mymuse_latest'.DS.'assets'.DS.'circle.jplayer.js';
+	$js_path = $site_url.'modules'.DIRECTORY_SEPARATOR.'mod_mymuse_latest'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'circle.jplayer.js';
 	$document->addScript( $js_path );
 	$js = '
 	var myCirclePlayer;

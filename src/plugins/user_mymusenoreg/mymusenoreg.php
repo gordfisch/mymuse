@@ -11,15 +11,15 @@
 defined('JPATH_BASE') or die;
 
 jimport('joomla.utilities.date');
-if(!defined('DS')){
-	define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DIRECTORY_SEPARATOR')){
+	define('DIRECTORY_SEPARATOR',DIRECTORY_SEPARATOR);
 }
 
 if(!defined('MYMUSE_ADMIN_PATH')){
-	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse');
+	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse');
 }
 
-require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
+require_once( MYMUSE_ADMIN_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'mymuse.php' );
 
 
 
