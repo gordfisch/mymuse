@@ -1,0 +1,48 @@
+[17-Feb-2021 05:01:00 America/Denver] PHP Fatal error:  Uncaught Error: Using $this when not in object context in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_description.php:4
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_description.php on line 4
+[17-Feb-2021 05:01:00 America/Denver] PHP Fatal error:  Uncaught Error: Class 'Joomla\CMS\Language\Text' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_details.php:9
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_details.php on line 9
+[17-Feb-2021 05:01:01 America/Denver] PHP Fatal error:  Uncaught Error: Using $this when not in object context in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_dimensions.php:5
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_dimensions.php on line 5
+[17-Feb-2021 05:01:01 America/Denver] PHP Fatal error:  Uncaught Error: Class 'JText' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_images.php:5
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_images.php on line 5
+[17-Feb-2021 05:01:02 America/Denver] PHP Fatal error:  Uncaught Error: Class 'JText' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/items.php:4
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/items.php on line 4
+[17-Feb-2021 05:01:02 America/Denver] PHP Fatal error:  Uncaught Error: Class 'JHtml' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/listitems.php:3
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/listitems.php on line 3
+[10-Mar-2021 11:26:35 America/Denver] PHP Fatal error:  Uncaught Error: Using $this when not in object context in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_description.php:4
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_description.php on line 4
+[10-Mar-2021 11:26:36 America/Denver] PHP Fatal error:  Uncaught Error: Class 'Joomla\CMS\Language\Text' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_details.php:9
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_details.php on line 9
+[10-Mar-2021 11:26:36 America/Denver] PHP Fatal error:  Uncaught Error: Using $this when not in object context in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_dimensions.php:5
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_dimensions.php on line 5
+[10-Mar-2021 11:26:36 America/Denver] PHP Fatal error:  Uncaught Error: Class 'JText' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_images.php:5
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/edit_images.php on line 5
+[10-Mar-2021 11:26:37 America/Denver] PHP Fatal error:  Uncaught Error: Class 'JText' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/items.php:4
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/items.php on line 4
+[10-Mar-2021 11:26:37 America/Denver] PHP Fatal error:  Uncaught Error: Class 'JHtml' not found in /var/www/html/mymuseJ4/src/administrator/tmpl/product/listitems.php:3
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/mymuseJ4/src/administrator/tmpl/product/listitems.php on line 3
