@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/master" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4c438839-b0fd-4875-b6c7-0027d965d6d6" name="Default Changelist" comment="first storm">
+      <change afterPath="$PROJECT_DIR$/src/mymuse.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/others/mysql/utf8mb4-conversion.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/others/mysql/utf8mb4-conversion.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2016-10-02.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2016-10-02.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2017-03-18.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2017-03-18.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2017-04-25.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2017-04-25.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2017-10-10.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2017-10-10.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-05-15.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-05-15.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-06-03.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-06-03.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-06-11.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-06-11.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-07-02.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-07-02.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-07-19.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-07-19.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-07-29.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2018-07-29.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-01-05.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-01-05.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-01-16.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-01-16.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-03-09.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-03-09.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-03-31.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-03-31.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-04-15.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-04-15.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-07-02.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-07-02.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-07-13.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-07-13.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-08-21.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-08-21.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-10-29.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-10-29.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-11-07.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2019-11-07.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-02-29.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-02-29.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-03-10.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-03-10.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-04-11.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-04-11.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-04-18.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/mysql/4.0.0-2020-04-18.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2016-10-02.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2016-10-02.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2017-03-18.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2017-03-18.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2017-04-25.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2017-04-25.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2017-10-10.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2017-10-10.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-05-15.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-05-15.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-06-03.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-06-03.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-06-11.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-06-11.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-07-02.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-07-02.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-07-19.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-07-19.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-07-29.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2018-07-29.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-01-05.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-01-05.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-01-16.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-01-16.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-03-09.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-03-09.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-03-31.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-03-31.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-04-15.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-04-15.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-07-02.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-07-02.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-07-13.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-07-13.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-08-21.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-08-21.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-10-29.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-10-29.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-11-07.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2019-11-07.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-02-29.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-02-29.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-03-10.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-03-10.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-04-11.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-04-11.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-04-18.sql" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_admin/sql/updates/postgresql/4.0.0-2020-04-18.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_banners/src/Model/BannersModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_banners/src/Model/BannersModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_contact/src/Service/HTML/Icon.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_contact/src/Service/HTML/Icon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_contact/tmpl/contacts/modal.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_contact/tmpl/contacts/modal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_content/forms/article.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_content/forms/article.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_content/src/Model/ArticleModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_content/src/Model/ArticleModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_content/src/Model/ArticlesModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_content/src/Model/ArticlesModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_content/src/Service/HTML/Icon.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_content/src/Service/HTML/Icon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_content/tmpl/articles/modal.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_content/tmpl/articles/modal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_fields/src/Helper/FieldsHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_fields/src/Helper/FieldsHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_fields/src/Model/FieldsModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_fields/src/Model/FieldsModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_finder/src/Service/HTML/Query.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_finder/src/Service/HTML/Query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_installer/src/Model/DatabaseModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_installer/src/Model/DatabaseModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_installer/src/Model/InstallerModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_installer/src/Model/InstallerModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_installer/src/Model/UpdateModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_installer/src/Model/UpdateModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_installer/tmpl/install/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_installer/tmpl/install/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/src/Controller/UpdateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/src/Controller/UpdateController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_nodownload.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_nodownload.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_noupdate.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_noupdate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_preupdatecheck.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_preupdatecheck.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_reinstall.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_reinstall.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_update.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_update.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_updatemefirst.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_updatemefirst.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_upload.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_joomlaupdate/tmpl/joomlaupdate/default_upload.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_languages/forms/language.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_languages/forms/language.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_languages/src/Helper/MultilangstatusHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_languages/src/Helper/MultilangstatusHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_languages/tmpl/multilangstatus/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_languages/tmpl/multilangstatus/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_media/src/Controller/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_media/src/Controller/ApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_media/src/Controller/PluginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_media/src/Controller/PluginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_media/src/Model/FileModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_media/src/Model/FileModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_media/tmpl/file/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_media/tmpl/file/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_media/tmpl/media/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_media/tmpl/media/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_media/tmpl/media/default_texts.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_media/tmpl/media/default_texts.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_menus/presets/help.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_menus/presets/help.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_menus/tmpl/items/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_menus/tmpl/items/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_menus/tmpl/items/modal.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_menus/tmpl/items/modal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_newsfeeds/src/Model/NewsfeedsModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_newsfeeds/src/Model/NewsfeedsModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_newsfeeds/tmpl/newsfeeds/modal.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_newsfeeds/tmpl/newsfeeds/modal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_templates/src/View/Template/HtmlView.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_templates/src/View/Template/HtmlView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_users/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_users/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_users/tmpl/debuggroup/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_users/tmpl/debuggroup/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_users/tmpl/debuguser/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_users/tmpl/debuguser/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/src/Model/TransitionsModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/src/Model/TransitionsModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/src/Model/WorkflowsModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/src/Model/WorkflowsModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/tmpl/stage/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/tmpl/stage/edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/tmpl/workflow/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/components/com_workflow/tmpl/workflow/edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/help/en-GB/toc.json" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/help/en-GB/toc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_cpanel.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_cpanel.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_installer.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_installer.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_languages.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_languages.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_media.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_media.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_privacy.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_privacy.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_users.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_users.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_workflow.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/com_workflow.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/en-GB.com_mymuse.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/en-GB.com_mymuse.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/en-GB.com_mymuse.sys.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/en-GB.com_mymuse.sys.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/install.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/install.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/joomla.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/joomla.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/langmetadata.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/langmetadata.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/mod_menu.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/mod_menu.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/plg_installer_webinstaller.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/plg_installer_webinstaller.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/language/en-GB/plg_system_webauthn.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/language/en-GB/plg_system_webauthn.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/logs/1.jcontroller.log.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/logs/1.jcontroller.log.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/logs/jcontroller.log.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/logs/jcontroller.log.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/logs/joomla_update.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/manifests/files/joomla.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/manifests/files/joomla.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/manifests/packages/pkg_en-GB.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/manifests/packages/pkg_en-GB.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/modules/mod_latest/src/Helper/LatestHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/modules/mod_latest/src/Helper/LatestHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/modules/mod_login/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/modules/mod_login/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/modules/mod_loginsupport/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/modules/mod_loginsupport/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/modules/mod_user/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/modules/mod_user/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/php_errors.log" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/php_errors.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template-rtl.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template-rtl.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template-rtl.min.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template-rtl.min.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template.min.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/css/template.min.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/_variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/_variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_alerts.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_alerts.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_form.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_form.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_global.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_global.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_header.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_icons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_icons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_login.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_login.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_modals.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_modals.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_quickicons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_quickicons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_sidebar-nav.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_sidebar-nav.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_sidebar.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_sidebar.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_utilities.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/administrator/templates/atum/scss/blocks/_utilities.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/api/components/com_categories/src/Controller/CategoriesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/api/components/com_categories/src/Controller/CategoriesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/api/components/com_users/src/View/Users/JsonapiView.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/api/components/com_users/src/View/Users/JsonapiView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/api/language/en-GB/joomla.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/api/language/en-GB/joomla.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/api/language/en-GB/langmetadata.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/api/language/en-GB/langmetadata.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_config/src/Controller/TemplatesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_config/src/Controller/TemplatesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_config/tmpl/modules/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_config/tmpl/modules/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_config/tmpl/templates/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_config/tmpl/templates/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_contact/src/Model/ContactModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_contact/src/Model/ContactModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_contact/tmpl/category/default_items.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_contact/tmpl/category/default_items.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_contact/tmpl/contact/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_contact/tmpl/contact/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_content/helpers/icon.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_content/helpers/icon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_finder/tmpl/search/default_form.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_finder/tmpl/search/default_form.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_finder/tmpl/search/default_result.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_finder/tmpl/search/default_result.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_finder/tmpl/search/default_results.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_finder/tmpl/search/default_results.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_media/src/Dispatcher/Dispatcher.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_media/src/Dispatcher/Dispatcher.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/components/com_users/forms/registration.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/components/com_users/forms/registration.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/com_contact.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/com_contact.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/com_content.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/com_content.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/com_finder.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/com_finder.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/com_privacy.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/com_privacy.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/com_users.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/com_users.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/install.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/install.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/joomla.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/joomla.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/langmetadata.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/langmetadata.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/language/en-GB/tpl_cassiopeia.ini" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/language/en-GB/tpl_cassiopeia.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/button/iconclass.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/button/iconclass.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons/create.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons/create.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons/edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons/edit_lock.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/icons/edit_lock.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/associations.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/associations.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/author.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/author.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/category.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/create_date.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/create_date.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/hits.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/hits.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/modify_date.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/modify_date.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/publish_date.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/content/info_block/publish_date.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/edit/params.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/edit/params.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/form/field/media.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/form/field/media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/form/field/password.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/form/field/password.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/system/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/system/message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/joomla/toolbar/iconclass.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/joomla/toolbar/iconclass.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/layouts/plugins/system/webauthn/manage.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/layouts/plugins/system/webauthn/manage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Application/AdministratorApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Application/AdministratorApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Application/ApiApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Application/ApiApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Application/CMSApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Application/CMSApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Application/SiteApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Application/SiteApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Application/WebApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Application/WebApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Button/FeaturedButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Button/FeaturedButton.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Document/HtmlDocument.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Document/HtmlDocument.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Document/Renderer/Html/ScriptsRenderer.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Document/Renderer/Html/ScriptsRenderer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Document/Renderer/Html/StylesRenderer.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Document/Renderer/Html/StylesRenderer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Error/Renderer/HtmlRenderer.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Error/Renderer/HtmlRenderer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Form/Field/PasswordField.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Form/Field/PasswordField.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Form/Rule/PasswordRule.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Form/Rule/PasswordRule.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/HTML/HTMLHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/HTML/HTMLHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/HTML/Helpers/ActionsDropdown.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/HTML/Helpers/ActionsDropdown.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/HTML/Helpers/Grid.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/HTML/Helpers/Grid.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/HTML/Helpers/JGrid.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/HTML/Helpers/JGrid.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Helper/ModuleHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Helper/ModuleHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Installer/Adapter/TemplateAdapter.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Installer/Adapter/TemplateAdapter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Layout/FileLayout.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Layout/FileLayout.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/MVC/Model/ListModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/MVC/Model/ListModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/MVC/Model/WorkflowBehaviorTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/MVC/Model/WorkflowBehaviorTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/MVC/View/HtmlView.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/MVC/View/HtmlView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Plugin/CMSPlugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Plugin/CMSPlugin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Plugin/PluginHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Plugin/PluginHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Profiler/Profiler.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Profiler/Profiler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Schema/ChangeSet.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Schema/ChangeSet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Table/CoreContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Table/CoreContent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Table/Extension.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Table/Extension.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Toolbar/Toolbar.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Toolbar/Toolbar.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Toolbar/ToolbarButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Toolbar/ToolbarButton.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/User/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/User/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/User/UserHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/User/UserHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/Version.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/Version.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/libraries/src/WebAsset/AssetItem/CoreAssetItem.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/libraries/src/WebAsset/AssetItem/CoreAssetItem.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_finder/css/finder.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_finder/css/finder.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_finder/css/finder.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_finder/css/finder.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_finder/css/finder.min.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_finder/css/finder.min.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.es6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.es6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.es6.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.es6.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_installer/js/installer.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_joomlaupdate/js/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_joomlaupdate/js/default.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_joomlaupdate/js/default.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_joomlaupdate/js/default.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_joomlaupdate/js/default.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_joomlaupdate/js/default.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.es6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.es6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_media/js/edit-images.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_media/js/mediamanager.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_media/js/mediamanager.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_media/js/mediamanager.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_media/js/mediamanager.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/com_media/js/mediamanager.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/com_media/js/mediamanager.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/legacy/js/bootstrap-init.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/legacy/js/bootstrap-init.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/legacy/js/bootstrap-init.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/legacy/js/bootstrap-init.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/legacy/js/bootstrap-init.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/legacy/js/bootstrap-init.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror-es5.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror-es5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror-es5.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror-es5.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror-es5.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror-es5.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_editors_codemirror/js/joomla-editor-codemirror.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.es6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.es6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.es6.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.es6.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_installer_webinstaller/js/client.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.es6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.es6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.es6.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.es6.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_media-action_rotate/js/rotate.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_system_debug/widgets/sqlqueries/widget.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_system_debug/widgets/sqlqueries/widget.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_system_debug/widgets/sqlqueries/widget.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_system_debug/widgets/sqlqueries/widget.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/plg_system_debug/widgets/sqlqueries/widget.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/plg_system_debug/widgets/sqlqueries/widget.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/css/fields/switcher.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/css/fields/switcher.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/css/fields/switcher.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/css/fields/switcher.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/css/fields/switcher.min.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/css/fields/switcher.min.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.es6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.es6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.es6.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.es6.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.es6/message.es6" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.es6/message.es6" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.es6/text.es6" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.es6/text.es6" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/core.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/core.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media-es5.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media-es5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media-es5.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media-es5.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media-es5.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media-es5.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/joomla-field-media.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.es6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.es6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.es6.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.es6.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/fields/passwordstrength.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/searchtools.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/searchtools.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/searchtools.es6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/searchtools.es6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/searchtools.es6.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/searchtools.es6.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/searchtools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/searchtools.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/searchtools.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/media/system/js/searchtools.min.js.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/media/system/js/searchtools.min.js.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/modules/mod_articles_latest/src/Helper/ArticlesLatestHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/modules/mod_articles_latest/src/Helper/ArticlesLatestHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/modules/mod_articles_news/tmpl/horizontal.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/modules/mod_articles_news/tmpl/horizontal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/modules/mod_login/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/modules/mod_login/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/modules/mod_menu/src/Helper/MenuHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/modules/mod_menu/src/Helper/MenuHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/modules/mod_menu/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/modules/mod_menu/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/modules/mod_menu/tmpl/default_component.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/modules/mod_menu/tmpl/default_component.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/mymuse-updates.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/mymuse-updates.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/content/joomla/joomla.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/content/joomla/joomla.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/editors-xtd/image/image.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/editors-xtd/image/image.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/editors/codemirror/codemirror.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/editors/codemirror/codemirror.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/editors/codemirror/fonts.json" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/editors/codemirror/fonts.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/editors/tinymce/tinymce.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/editors/tinymce/tinymce.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/editors/tinymce/tinymce.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/editors/tinymce/tinymce.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/folderinstaller/folderinstaller.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/folderinstaller/folderinstaller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/folderinstaller/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/folderinstaller/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/packageinstaller/packageinstaller.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/packageinstaller/packageinstaller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/packageinstaller/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/packageinstaller/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/urlinstaller/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/urlinstaller/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/urlinstaller/urlinstaller.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/urlinstaller/urlinstaller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/webinstaller/tmpl/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/webinstaller/tmpl/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/installer/webinstaller/webinstaller.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/installer/webinstaller/webinstaller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/system/accessibility/accessibility.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/system/accessibility/accessibility.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/system/debug/debug.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/system/debug/debug.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/system/debug/src/DataCollector/QueryCollector.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/system/debug/src/DataCollector/QueryCollector.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/system/httpheaders/httpheaders.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/system/httpheaders/httpheaders.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/system/httpheaders/httpheaders.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/system/httpheaders/httpheaders.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/system/stats/layouts/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/system/stats/layouts/message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/plugins/system/webauthn/src/Helper/CredentialsCreation.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/plugins/system/webauthn/src/Helper/CredentialsCreation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template-rtl.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template-rtl.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template-rtl.min.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template-rtl.min.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template.min.css.gz" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/css/template.min.css.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/_variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/_variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_alerts.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_alerts.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_css-grid.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_css-grid.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_footer.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_footer.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_form.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_form.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_global.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_global.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_header.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_icons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_icons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_layout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/blocks/_layout.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/template.scss" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/scss/template.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/templates/cassiopeia/templateDetails.xml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/templates/cassiopeia/templateDetails.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/tests/_data/com_mymuse-latest.zip" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/tests/_data/com_mymuse-latest.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/tests/acceptance.suite.yml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/tests/acceptance.suite.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/tests/reports.suite.yml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/tests/reports.suite.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/joomla/tests/storage.suite.yml" beforeDir="false" afterPath="$PROJECT_DIR$/joomla/tests/storage.suite.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/releases/com_mymuse-5.0.2-J4-1.zip" beforeDir="false" afterPath="$PROJECT_DIR$/releases/com_mymuse-5.0.2-J4-1.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/releases/com_mymuse-latest.zip" beforeDir="false" afterPath="$PROJECT_DIR$/releases/com_mymuse-latest.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/forms/filter_products.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/forms/filter_products.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/forms/product.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/forms/product.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/forms/product_data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/forms/product_data.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/forms/product_physical.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/forms/product_physical.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/forms/store.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/forms/store.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/language/en-GB/en-GB.com_mymuse.ini" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/language/en-GB/en-GB.com_mymuse.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/language/en-GB/en-GB.com_mymuse.sys.ini" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/language/en-GB/en-GB.com_mymuse.sys.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/mymuse.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/sql/install.mysql.utf8.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/sql/install.mysql.utf8.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/sql/uninstall.mysql.utf8.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/sql/uninstall.mysql.utf8.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Controller/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Controller/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Controller/ProductsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Controller/ProductsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Extension/MymuseComponent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Extension/MymuseComponent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Field/categorytree.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Field/categorytree.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Helper/MymuseHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Helper/MymuseHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Helper/MymuseStorage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Helper/MymuseStorage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Model/ProductModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Model/ProductModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Model/ProductsModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Model/ProductsModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/Table/ProductTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/Table/ProductTable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/View/Product/HtmlView.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/View/Product/HtmlView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/src/View/Products/HtmlView.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/src/View/Products/HtmlView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/administrator/tmpl/products/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/administrator/tmpl/products/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/build.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/build.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/mod_mymuse_latest/mod_mymuse_latest.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/mod_mymuse_latest/mod_mymuse_latest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/mod_mymuse_minicart/mod_mymuse_minicart.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/mod_mymuse_minicart/mod_mymuse_minicart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugins/searchmymuse/searchmymuse.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugins/searchmymuse/searchmymuse.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugins/shipping_standard/shipping_standard.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugins/shipping_standard/shipping_standard.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugins/shipping_usps/shipping_usps.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugins/shipping_usps/shipping_usps.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugins/user_mymuse/mymuse.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugins/user_mymuse/mymuse.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugins/user_mymusenoreg/mymusenoreg.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugins/user_mymusenoreg/mymusenoreg.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/script.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="composer.json" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JoomlaConfiguration" enabled="true">
+    <joomlaConfigPath>$PROJECT_DIR$/joomla/configuration.php</joomlaConfigPath>
+    <joomlaPath>$PROJECT_DIR$/joomla</joomlaPath>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-ftpdeploy" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-zendserverdevelopmenttools" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-ioncube" />
+      <path value="$PROJECT_DIR$/vendor/phing/phing-composer-configurator" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-smarty" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-phpdoc" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-coverage" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-ssh" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-jshint" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-apigen" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-zendcodeanalyser" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-jsmin" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-phkpackage" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-liquibase" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/mehr-als-nix/parallel" />
+      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/vendor/symfony/string" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/phing/phing" />
+      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="1ifCd8G9bOmFRgTaoPoJwCP2hVF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../nexgen/littleacreflowers/stage" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.spelling" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/administrator" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4c438839-b0fd-4875-b6c7-0027d965d6d6" name="Default Changelist" comment="" />
+      <created>1602289344084</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1602289344084</updated>
+      <workItem from="1602289345577" duration="521000" />
+      <workItem from="1602289893467" duration="539000" />
+      <workItem from="1602436015443" duration="1042000" />
+      <workItem from="1602630570442" duration="2936000" />
+      <workItem from="1602686393112" duration="1369000" />
+      <workItem from="1602870070164" duration="7195000" />
+      <workItem from="1602938333345" duration="13483000" />
+      <workItem from="1603394063659" duration="7324000" />
+      <workItem from="1603462969591" duration="46189000" />
+      <workItem from="1604081999277" duration="8476000" />
+      <workItem from="1604243647517" duration="17295000" />
+    </task>
+    <task id="LOCAL-00001" summary="first storm">
+      <created>1602290357536</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1602290357536</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first storm" />
+    <option name="LAST_COMMIT_MESSAGE" value="first storm" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="803" y="446" width="369" height="214" key="#Joomla!" timestamp="1602289489120">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="803" y="446" width="369" height="214" key="#Joomla!/67.27.1853.1053/1920.92.2048.1280@67.27.1853.1053" timestamp="1602289489120" />
+    <state x="2240" y="585" width="1397" height="301" key="#SQL_Dialects" timestamp="1602870117211">
+      <screen x="1920" y="92" width="2048" height="1280" />
+    </state>
+    <state x="2240" y="585" width="1397" height="301" key="#SQL_Dialects/72.27.1848.1053/1920.92.2048.1280@1920.92.2048.1280" timestamp="1602870117211" />
+    <state x="2539" y="393" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602870188796">
+      <screen x="1920" y="92" width="2048" height="1280" />
+    </state>
+    <state x="2539" y="393" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053/1920.92.2048.1280@1920.92.2048.1280" timestamp="1602870188796" />
+    <state x="2677" y="490" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1603834324762">
+      <screen x="1920" y="92" width="2048" height="1280" />
+    </state>
+    <state x="2677" y="490" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/72.27.1848.1053/1920.92.2048.1280@1920.92.2048.1280" timestamp="1603834324762" />
+    <state x="323" y="120" width="424" height="520" key="FileChooserDialogImpl" timestamp="1603914436417">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="771" y="297" width="453" height="513" key="FileChooserDialogImpl/67.27.1853.1053/1920.92.2048.1280@67.27.1853.1053" timestamp="1602290286653" />
+    <state x="323" y="120" width="424" height="520" key="FileChooserDialogImpl/72.27.1848.1053/1920.92.2048.1280@1920.92.2048.1280" timestamp="1603914436417" />
+    <state x="482" y="187" key="SettingsEditor" timestamp="1602436458942">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="482" y="187" key="SettingsEditor/67.27.1853.1053/1920.92.2048.1280@67.27.1853.1053" timestamp="1602436458942" />
+    <state x="588" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1602290379427">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="588" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1853.1053/1920.92.2048.1280@67.27.1853.1053" timestamp="1602290379427" />
+    <state x="2578" y="345" width="722" height="780" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1603832736040">
+      <screen x="1920" y="92" width="2048" height="1280" />
+    </state>
+    <state x="2578" y="345" width="722" height="780" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1848.1053/1920.92.2048.1280@1920.92.2048.1280" timestamp="1603832736040" />
+    <state x="805" y="195" width="1049" height="783" key="find.popup" timestamp="1603889579236">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="805" y="195" width="1049" height="783" key="find.popup/72.27.1848.1053/1920.92.2048.1280@1920.92.2048.1280" timestamp="1603889579236" />
+    <state x="2607" y="381" key="search.everywhere.popup" timestamp="1603575192261">
+      <screen x="1920" y="92" width="2048" height="1280" />
+    </state>
+    <state x="2607" y="381" key="search.everywhere.popup/72.27.1848.1053/1920.92.2048.1280@1920.92.2048.1280" timestamp="1603575192261" />
+  </component>
+</project>

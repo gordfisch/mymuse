@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mehr-als-nix/parallel" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/phing" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/phing-composer-configurator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-apigen" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-ftpdeploy" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-ioncube" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-jshint" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-jsmin" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-liquibase" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-phkpackage" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-phpdoc" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-smarty" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-ssh" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-zendcodeanalyser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/task-zendserverdevelopmenttools" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-grapheme" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-normalizer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php73" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/service-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/yaml" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

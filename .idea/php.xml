@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-ftpdeploy" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-zendserverdevelopmenttools" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-ioncube" />
+      <path value="$PROJECT_DIR$/vendor/phing/phing-composer-configurator" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-smarty" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-phpdoc" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-coverage" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-ssh" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-jshint" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-apigen" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-zendcodeanalyser" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-jsmin" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-phkpackage" />
+      <path value="$PROJECT_DIR$/vendor/phing/task-liquibase" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/mehr-als-nix/parallel" />
+      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/vendor/symfony/string" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/phing/phing" />
+      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7" />
+</project>
