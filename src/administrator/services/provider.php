@@ -23,11 +23,11 @@ use Joomla\Component\Mymuse\Administrator\Helper\AssociationsHelper;
 use Joomla\CMS\Association\AssociationExtensionInterface;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Extension\Service\Provider\RouterFactory;
+use Joomla\Component\Mymuse\Administrator\Helper;
 
 
 /**
  * The Mymuse service provider.
- * https://github.com/joomla/joomla-cms/pull/20217
  *
  * @since  5.0.0
  */

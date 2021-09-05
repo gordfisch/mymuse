@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Mymuse\Administrator\View\Taxrates;
+namespace Joomla\Component\Mymuse\Administrator\View\Coupons;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
@@ -22,7 +22,7 @@ use Joomla\Database\DatabaseDriver;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
- * View class for a list of taxrates.
+ * View class for a list of coupons.
  *
  * @since  1.6
  */
@@ -126,11 +126,11 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
-		ToolbarHelper::title(Text::_('MYMUSE').' : '.Text::_('COM_MYMUSE_TITLE_TAXRATES'), 'taxrates taxrate');
+		ToolbarHelper::title(Text::_('COM_MYMUSE').' : '.Text::_('COM_MYMUSE_TITLE_COUPONS'), 'coupons coupon');
 
 		if ($canDo->get('core.create'))
 		{
-			$toolbar->addNew('taxrate.add');
+			$toolbar->addNew('coupon.add');
 		}
 
 		if ($canDo->get('core.edit.state') || $canDo->get('core.admin'))
@@ -144,13 +144,13 @@ class HtmlView extends BaseHtmlView
 
 			$childBar = $dropdown->getChildToolbar();
 
-			$childBar->publish('taxrates.publish', 'JTOOLBAR_PUBLISH', true);
-			$childBar->unpublish('taxrates.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			$childBar->publish('coupons.publish', 'JTOOLBAR_PUBLISH', true);
+			$childBar->unpublish('coupons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
 
 			if ($canDo->get('core.delete'))
 			{
-				$childBar->delete('taxrates.delete')
+				$childBar->delete('coupons.delete')
 					->text('JTOOLBAR_DELETE')
 					->message('JGLOBAL_CONFIRM_DELETE')
 					->listCheck(true);
@@ -162,8 +162,7 @@ class HtmlView extends BaseHtmlView
 			$toolbar->preferences('com_mymuse');
 		}
 
-		$toolbar->help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-new-edit?tmpl=component');
-		$toolbar->StandardButton('add','COM_MYMUSE_ADD_EURO_TAXES','taxrates.addEuroTax');
+		$toolbar->help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/coupons-list?tmpl=component');
 
 	}
 
@@ -178,12 +177,9 @@ class HtmlView extends BaseHtmlView
 	{
 		return array(			
 				'a.state' => JText::_('JSTATUS'),
-				'a.province' => JText::_('MYMUSE_TAX_PROVINCE'),
-				'a.country' => JText::_('MYMUSE_TAX_COUNTRY'),
+				'a.code' => JText::_('COM_MYMUSE_COUPON_CODE'),
+				'a.title' => JText::_('COM_MYMUSE_TITLE'),
 				'a.id' => JText::_('JGRID_HEADING_ID'),
-				'a.tax_rate' => JText::_('MYMUSE_RATE'),
-				'a.tax_name' => JText::_('MYMUSE_TITLE'),
-				'a.tax_applies_to' => JText::_('MYMUSE_TAX_APPLIES_TO_LABEL'),
 		);
 	}
 }

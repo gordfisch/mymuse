@@ -11,7 +11,7 @@ namespace Joomla\Component\Mymuse\Administrator\View\Mymuse;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * View class for a list of foos.
@@ -26,6 +26,8 @@ class HtmlView extends BaseHtmlView
 	 * @var  array
 	 */
 	protected $items;
+	protected $params;
+	protected $state;
 
 	/**
 	 * Method to display the view.
@@ -38,7 +40,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): void
 	{
-	
+		$this->params = myMuseHelper::getParams();
 		parent::display($tpl);
 	}
 }

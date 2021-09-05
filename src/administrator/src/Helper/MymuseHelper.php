@@ -41,6 +41,14 @@ class MymuseHelper extends ContentHelper
 	 * @since   5.0.0
 	 */
 	public static $_params = null;
+
+	/**
+	 * version
+	 *
+	 * @var		string
+	 * @since   5.0.0
+	 */
+	public static $_version = null;
 	
 	/**
 	 * extarray extentions to mime type
@@ -63,6 +71,23 @@ class MymuseHelper extends ContentHelper
 			'wmv' => 'video/webmv'
 	
 	);
+
+	/**
+	 * Get current version
+	 * 
+	 * @return string
+	 * 
+	 * @since 5.0
+	 */
+	public static function getVersion() {
+
+		if (preg_match('/<version>([0-9.]+)<\/version>/s', file_get_contents(JPATH_ADMINISTRATOR.'/components/com_mymuse/mymuse.xml'), $match)) {
+			return $match[1];
+		}else{
+			return"unknown";
+		}
+
+	}
 
 	/**
 	 * For debugging
@@ -218,13 +243,8 @@ class MymuseHelper extends ContentHelper
 			$params->set('my_currency_symbol',$currency['symbol']);
 			$params->set('my_currency_id',$currency['id']);
 			
-			$db = Factory::getDbo();
-			$query = "SELECT manifest_cache from #__extensions WHERE element='com_mymuse'";
-			$db->setQuery($query);
-			if($res = $db->loadResult()){
-				$manifest = json_decode( $res, true );
-				$params->set('my_version',$manifest['version']);
-			}
+			$version = (self::$_version)? self::$_version : self::getVersion();
+			$params->set('my_version',$version);
 	
 			self::$_params = $params;
 		}

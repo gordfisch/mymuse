@@ -144,6 +144,6 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolbarHelper::divider();
-		ToolbarHelper::help('JHELP_COMPONENTS_MYMUSE_TAXRATE_EDIT');
+		ToolbarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/taxrates-new-edit?tmpl=component');
 	}
 }

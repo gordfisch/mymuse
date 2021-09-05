@@ -22,7 +22,7 @@ HTMLHelper::_('script', 'com_contenthistory/admin-history-versions.js', ['versio
 $this->item->name = $this->item->tax_name;
 ?>
 <h3>
-	<?php echo JText::_('COM_MYMUSE_LEGEND_TAXRATE'); ?>
+	<?php echo JText::_('COM_MYMUSE_TAX_RATES'); ?>
 
 	<?php if($this->form->getValue('tax_name') != ''){
 		echo " : ".$this->form->getValue('tax_name');
@@ -39,7 +39,7 @@ $this->item->name = $this->item->tax_name;
 	<div>
 		<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_MYMUSE_NEW_TAXRATE') : Text::_('COM_MYMUSE_EDIT_TAXRATE')); ?>
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_MYMUSE_NEW_TAX_RATE') : Text::_('COM_MYMUSE_EDIT_TAX_RATE')); ?>
 		<div class="row">
 			<div class="col-lg-9">
 				<div class="card">
@@ -70,8 +70,7 @@ $this->item->name = $this->item->tax_name;
 
 		<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 	</div>
-	<?php echo $this->form->getInput('checked_out'); ?>
-	<?php echo $this->form->getInput('checked_out_time'); ?>
+
 	<input type="hidden" name="task" value="">
 	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

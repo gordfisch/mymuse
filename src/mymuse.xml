@@ -40,9 +40,9 @@
 				img="class:component" alt="Mymuse/Coupons">COM_MYMUSE_COUPONS</menu>
 			<menu link="option=com_mymuse&amp;view=shoppergroups" view="shoppergroups" 
 				alt="Mymuse/Shoppergroups">COM_MYMUSE_SHOPPERGROUPS</menu>
-			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=mymuse&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 
+			<menu link="option=com_plugins&amp;view=plugins&amp;filter[folder]=mymuse" view="plugins" 
 				img="class:themes" alt="Mymuse/Plugins">COM_MYMUSE_PLUGINS</menu>	
-			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=user&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 
+			<menu link="option=com_plugins&amp;view=plugins&amp;filter[folder]=user" view="plugins" 
 				img="class:themes" alt="Mymuse/PluginsUser">COM_MYMUSE_USER_PLUGINS</menu>
 		</submenu>
 		<files folder="administrator">
@@ -57,10 +57,11 @@
 			<folder>src</folder>
 			<folder>tmpl</folder>
 		</files>
-		<languages folder="administrator">
-			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.sys.ini</language>
+		<languages folder="administrator/language">
+			<language tag="en-GB">en-GB/en-GB.com_mymuse.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_mymuse.sys.ini</language>
 		</languages>
+
 	</administration>
 
 	<install> <!-- Runs on install -->
@@ -82,9 +83,10 @@
 
 	</files>
 
-	<languages folder="site">
-		<language tag="en-GB">language/en-GB/en-GB.com_mymuse.ini</language>
+	<languages folder="site/language">
+		<language tag="en-GB">en-GB/en-GB.com_mymuse.ini</language>
 	</languages>
+
 
 	<!-- Plugins -->
 	<plugins>

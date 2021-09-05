@@ -84,7 +84,7 @@ $saveOrder = $listOrder == 'a.ordering';
 			$canCheckin	= $user->authorise('core.manage',		'com_mymuse');
 			$canChange	= $user->authorise('core.edit.state',	'com_mymuse');
 			?>
-			<tr class="row<?php echo $i % 2; ?>" data-dragable-group="<?php echo $item->catid; ?>">
+			<tr class="row<?php echo $i % 2; ?>">
 				<td class="text-center">
 					<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 				</td>

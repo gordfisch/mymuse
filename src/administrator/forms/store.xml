@@ -258,7 +258,7 @@
                 <option value="pdf">PDF</option>
                 <option value="other">OTHER</option>
           </field>  
-          <!--field
+          <field
                 name="my_download_require_release_date"
                 type="radio"
                 label="COM_MYMUSE_REQUIRE_RELEASE_DATE_LABEL"
@@ -267,8 +267,8 @@
                 default="0">
                 <option value="0">COM_MYMUSE_NO</option>
                 <option value="1">COM_MYMUSE_YES</option>>
-            </field -->
-            <!-- field
+            </field>
+            <field
                   name="my_download_allow_preorder"
                   type="radio"
                   label="COM_MYMUSE_ALLOW_PREORDER_LABEL"
@@ -278,7 +278,7 @@
                   default="0">
                   <option value="0">COM_MYMUSE_NO</option>
                   <option value="1">COM_MYMUSE_YES</option>>
-              </field -->
+              </field>
           <field
                 name="my_download_max"
                 type="text"

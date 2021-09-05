@@ -24,7 +24,6 @@
             type="usergrouplist"
             label="COM_MYMUSE_SHOPPERGROUP_NAME_LABEL"
             description="COM_MYMUSE_SHOPPERGROUP_NAME_DESC"
-            size="40"
            />
 		<field
             name="shopper_group_description"

@@ -88,7 +88,7 @@ class ProductsModel extends ListModel
 		$form = parent::getFilterForm($data, $loadData);
 
 		$params = ComponentHelper::getParams('com_mymuse');
-
+print_r($form);
 		if (!$params->get('workflow_enabled'))
 		{
 			$form->removeField('stage', 'filter');

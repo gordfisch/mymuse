@@ -17,11 +17,11 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 
 /**
- * Taxrate controller class.
+ * Coupon controller class.
  *
  * @since  1.6
  */
-class TaxrateController extends FormController
+class CouponController extends FormController
 {
 	use VersionableControllerTrait;
 
@@ -31,7 +31,7 @@ class TaxrateController extends FormController
 	 * @var    string
 	 * @since  1.6
 	 */
-	protected $text_prefix = 'COM_MYMUSE_TAXRATE';
+	protected $text_prefix = 'COM_MYMUSE_COUPON';
 
 
 
@@ -49,10 +49,11 @@ class TaxrateController extends FormController
 		$this->checkToken();
 
 		// Set the model
-		$model = $this->getModel('Taxrate', '', array());
+		$model = $this->getModel('
+			Coupon', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(Route::_('index.php?option=com_mymuse&view=taxrate' . $this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::_('index.php?option=com_mymuse&view=coupon' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}

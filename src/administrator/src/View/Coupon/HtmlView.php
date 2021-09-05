@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Mymuse\Administrator\View\Store;
+namespace Joomla\Component\Mymuse\Administrator\View\Coupon;
 
 \defined('_JEXEC') or die;
 
@@ -20,10 +20,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Mymuse\Administrator\Model\TaxtrateModel;
+use Joomla\Component\Mymuse\Administrator\Model\CouponModel;
 
 /**
- * View to edit a store.
+ * View to edit a coupon.
  *
  * @since  1.5
  */
@@ -71,7 +71,6 @@ class HtmlView extends BaseHtmlView
 		$this->form  = $model->getForm();
 		$this->item  = $model->getItem();
 		$this->state = $model->getState();
-		$this->css	 = $model->getCss();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -101,20 +100,29 @@ class HtmlView extends BaseHtmlView
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !(is_null($this->item->checked_out) || $this->item->checked_out == $userId);
 
-		$canDo = ContentHelper::getActions('com_mymuse', 'store', $this->item->id);
+		$canDo = ContentHelper::getActions('com_mymuse', 'coupon', $this->item->id);
 
-		ToolbarHelper::title($isNew ? Text::_('COM_MYMUSE_STORE_NEW') : Text::_('COM_MYMUSE_STORE_EDIT'), 'bookmark stores');
+		ToolbarHelper::title($isNew ? Text::_('COM_MYMUSE_COUPON_NEW') : Text::_('COM_MYMUSE_COUPON_EDIT'), 'bookmark coupons');
 
 		$toolbarButtons = [];
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit'))
 		{
-			ToolbarHelper::apply('store.apply');
-			$toolbarButtons[] = ['save', 'store.save'];
+			ToolbarHelper::apply('coupon.apply');
+			$toolbarButtons[] = ['save', 'coupon.save'];
 
+			if ($canDo->get('core.create'))
+			{
+				$toolbarButtons[] = ['save2new', 'coupon.save2new'];
+			}
 		}
 
+		// If an existing item, can save to a copy.
+		if (!$isNew && $canDo->get('core.create'))
+		{
+			$toolbarButtons[] = ['save2copy', 'coupon.save2copy'];
+		}
 
 		ToolbarHelper::saveGroup(
 			$toolbarButtons,
@@ -123,19 +131,19 @@ class HtmlView extends BaseHtmlView
 
 		if (empty($this->item->id))
 		{
-			ToolbarHelper::cancel('store.cancel');
+			ToolbarHelper::cancel('coupon.cancel');
 		}
 		else
 		{
-			ToolbarHelper::cancel('store.cancel', 'JTOOLBAR_CLOSE');
+			ToolbarHelper::cancel('coupon.cancel', 'JTOOLBAR_CLOSE');
 
 			if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $canDo->get('core.edit'))
 			{
-				ToolbarHelper::versions('com_mymuse.store', $this->item->id);
+				ToolbarHelper::versions('com_mymuse.coupon', $this->item->id);
 			}
 		}
 
 		ToolbarHelper::divider();
-		ToolbarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/store-edit?tmpl=component');
+		ToolbarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/coupons-new-edit');
 	}
 }
