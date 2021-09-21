@@ -6,6 +6,7 @@
  * @copyright   Copyright (C) 2020 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 namespace Joomla\Component\Mymuse\Administrator\Controller;
 
 \defined('_JEXEC') or die;
@@ -112,8 +113,9 @@ class ProductController extends FormController
 
         $cid = $this->input->get( 'cid', array(0));
         if($cid[0] > 0){
-            $this->set('id',$cid[0]);
+            $this->input->set('id',$cid[0]);
         }
+
         $this->input->set('view','product');
 	}
 
@@ -271,7 +273,7 @@ class ProductController extends FormController
 
 				case 'saveitem':
 				default:
-                    $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_SAVED' ),'notice');
+                    $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_SAVED' ),'warning');
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='. $this->parentid."&subtype=item" );
 					break;
 				}
@@ -281,8 +283,6 @@ class ProductController extends FormController
             //exit;
         	$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->parentid."&subtype=item" );
         }
-        
-        
 
     }
 
@@ -344,7 +344,7 @@ class ProductController extends FormController
                     return false;
                 }
             }
-            $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_SAVED' ));
+            //$this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_SAVED' ).' here');
             $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='.$this->id );
         }else{
             $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ERROR_SAVING_ITEM' ).' : '.$this->getError(), 'error');
@@ -560,10 +560,10 @@ class ProductController extends FormController
         $model = $this->getModel('product');
         $model->checkin();
 
-        $this->input      = Factory::getApplication()->input;
-        $parentid   = $this->input->get( 'parentid', '');
+        $this->input    = Factory::getApplication()->input;
+        $parentid       = $this->input->get( 'parentid', '');
 
-        $this->app->enqueueMessage(ext::_( 'COM_MYMUSE_ITEM_CANCELLED' ), 'warning');
+        $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_CANCELLED' ), 'warning');
         $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='.$parentid);
     }
 

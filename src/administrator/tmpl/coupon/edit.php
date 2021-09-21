@@ -22,7 +22,7 @@ HTMLHelper::_('script', 'com_contenthistory/admin-history-versions.js', ['versio
 $this->item->name = $this->item->title;
 ?>
 <h3>
-	<?php echo empty($this->item->id) ? Text::_('COM_MYMUSE_NEW_COUPON') : Text::_('COM_MYMUSE_EDIT_COUPON'); ?>
+	<?php echo empty($this->item->id) ? Text::_('COM_MYMUSE_COUPON_NEW') : Text::_('COM_MYMUSE_COUPON_EDIT'); ?>
 
 	<?php if($this->form->getValue('title') != ''){
 		echo " : ".$this->form->getValue('title');
@@ -39,7 +39,7 @@ $this->item->name = $this->item->title;
 	<div>
 		<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_MYMUSE_NEW_COUPON') : Text::_('COM_MYMUSE_EDIT_COUPON')); ?>
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', Text::_('COM_MYMUSE_DETAILS')); ?>
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="card">
@@ -62,7 +62,6 @@ $this->item->name = $this->item->title;
 							<div class="col-lg-9">
 								<?php echo $this->form->renderField('state'); ?>
 								<?php echo $this->form->renderField('coupon_value'); ?>
-								<?php echo $this->form->renderField('currency_id'); ?>
 								<?php echo $this->form->renderField('coupon_value_type'); ?>
 								<?php echo $this->form->renderField('coupon_max_uses'); ?>
 								<?php echo $this->form->renderField('coupon_max_uses_per_user'); ?>

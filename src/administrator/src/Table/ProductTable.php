@@ -79,7 +79,7 @@ class ProductTable extends Table implements VersionableTableInterface
      * @var    int
      * @since  5.0
      */
-    protected $parentid = 0;
+    public $parentid = 0;
 
 	/**
 	 * Constructor
@@ -673,7 +673,8 @@ class ProductTable extends Table implements VersionableTableInterface
 						$changed = 1;
 					}
 					if($changed){
-						$msg = Text::sprintf ( "COM_MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS". ' '. $src.' '.$dest );
+						$msg = Text::_("COM_MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS");
+						$msg .= ' src: '.$src.' dest:'.$dest ;
 						Factory::getApplication ()->enqueueMessage ( $msg, 'notice' );
 					}
 					

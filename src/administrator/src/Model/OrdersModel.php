@@ -45,8 +45,7 @@ class OrdersModel extends ListModel
 		if (empty($config['filter_fields'])) {
             $config['filter_fields'] = array(
                 'id', 'a.id',
-                'ordering', 'a.ordering',
-                'state', 'a.state',
+
             );
         }
 
@@ -67,19 +66,7 @@ class OrdersModel extends ListModel
 	{
 		$form = parent::getFilterForm($data, $loadData);
 
-		$params = ComponentHelper::getParams('com_mymuse');
 
-		if (!$params->get('workflow_enabled'))
-		{
-			$form->removeField('stage', 'filter');
-		}
-		else
-		{
-			$ordering = $form->getField('fullordering', 'list');
-
-			$ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
-			$ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
-		}
 
 		return $form;
 	}
@@ -98,8 +85,14 @@ class OrdersModel extends ListModel
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$published = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
+		$order_status = $app->getUserStateFromRequest($this->context.'.filter.order_status', 'filter_order_status', '', 'string');
+		$this->setState('filter.order_status', $order_status);
+		
+		$start_date = $app->getUserStateFromRequest($this->context.'.filter.start_date', 'filter_start_date', '', 'string');
+		$this->setState('filter.start_date', $start_date);
+		
+		$end_date = $app->getUserStateFromRequest($this->context.'.filter.end_date', 'filter_end_date', '', 'string');
+		$this->setState('filter.end_date', $end_date);
 
 		// Load the parameters.
 		$params = ComponentHelper::getParams('com_mymuse');
@@ -126,7 +119,7 @@ class OrdersModel extends ListModel
 	{
 		// Compile the store id.
 		$id.= ':' . $this->getState('filter.search');
-		$id.= ':' . $this->getState('filter.state');
+		$id.= ':' . $this->getState('filter.order_status');
 
 		return parent::getStoreId($id);
 	}
@@ -150,22 +143,52 @@ class OrdersModel extends ListModel
 				'a.*'
 			)
 		);
-		$query->from('`#__mymuse_coupon` AS a');
+		$query->from('`#__mymuse_order` AS a');
 
 
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
-		// Filter by published state
-		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
-			$query->where('a.published = '.(int) $published);
-		} else if ($published === '') {
-			$query->where('(a.published IN (0, 1))');
+		// Join over the users for the order owner.
+		$query->select('u.name AS shopper, u.username AS username');
+		$query->join('LEFT', '#__users AS u ON u.id=a.user_id');
+
+		// Join over the order_status for the status name.
+		$query->select('os.name AS status_name');
+		$query->join('LEFT', '#__mymuse_order_status AS os ON os.code=a.order_status');
+
+
+		// Filter by order_status
+		$order_status = $this->getState('filter.order_status');
+		if (is_string($order_status) && $order_status != '') {
+			$query->where('a.order_status = "'.$order_status.'"');
+		} else if ($order_status === '') {
+			//$query->where('(a.order_status IN (SELECT code from #__mymuse_order_status))');
 		}
                     
+		//filter by date
+		$start_date = $this->getState('filter.start_date');
+		$end_date = $this->getState('filter.end_date');
+		$datenow = Factory::getDate();
+		$now = $datenow->format("%Y-%m-%d");
+		
+		if($start_date== $now && $end_date == $now ){
+			$start_date = '';
+			$end_date = '';
+		}
+		
+		$where = array();
+		if($start_date){
+			$query->where("a.created >= '$start_date 00:00:00'");
+		}
+		if($end_date){
+			$query->where("a.created <= '$end_date 00:00:00'");
+		}
 
+		
+		
+		
 		// Filter by search in title
 		$search = $this->getState('filter.search');
 		if (!empty($search)) {
@@ -173,10 +196,7 @@ class OrdersModel extends ListModel
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-                $query->where('(
-						a.title LIKE '.$search.' 
-						OR a.code LIKE '.$search.'
-						)');
+                $query->where("u.name LIKE $search");
 			}
 		}
 
@@ -185,51 +205,70 @@ class OrdersModel extends ListModel
 		$orderDirn	= $this->state->get('list.direction');
         if ($orderCol && $orderDirn) {
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
-		}
+        }
+
 		//echo($query->__toString()); exit;
 		return $query;
 	}
 
-		/**
-		 * Method to change the published state of one or more records.
-		 *
-		 * @param   array    &$pks   A list of the primary keys to change.
-		 * @param   integer  $value  The value of the published state.
-		 *
-		 * @return  boolean  True on success.
-		 *
-		 * @since   4.0.0
-		 */
-		public function publish(&$pks, $value = 1) {
+	/**
+	 * Method to change the published state of one or more records.
+	 *
+	 * @param   array    &$pks   A list of the primary keys to change.
+	 * @param   integer  $value  The value of the published state.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   4.0.0
+	 */
+	public function publish(&$pks, $value = 1) {
 
-			$db = $this->getDbo();
-			$query = $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
-			$query->update('`#__mymuse_coupon`');
-			$query->set('state = ' . $value);
-			$query->where('id IN (' . implode(',', $pks). ')');
-			$db->setQuery($query);
-			$db->execute();
+		$query->update('`#__mymuse_coupon`');
+		$query->set('state = ' . $value);
+		$query->where('id IN (' . implode(',', $pks). ')');
+		$db->setQuery($query);
+		$db->execute();
+	}
+
+
+	/**
+	 * Method to delete of one or more records.
+	 *
+	 * @param   array    &$pks   A list of the primary keys to change.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   4.0.0
+	 */
+	public function delete($cid = array()) {
+
+		if (count( $cid ))
+		{
+		    JArrayHelper::toInteger($cid);
+		    $cids = implode( ',', $cid );
+		 
+		
+		    // Let's get rid of order items
+		    $query = 'DELETE FROM #__mymuse_order_item'
+		    . ' WHERE order_id IN ( '.$cids.' )';
+		    $this->_db->setQuery( $query );
+		    if(!$this->_db->execute()) {
+		        $this->setError($this->_db->getErrorMsg());
+		    	return false;
+		    }
+
+
+		    $query = 'DELETE FROM #__mymuse_order'
+		    . ' WHERE id IN ( '.$cids.' )';
+		    $this->_db->setQuery( $query );
+		    if(!$this->_db->execute()) {
+		        $this->setError($this->_db->getErrorMsg());
+		    	return false;
+		    }
 		}
-
-
-		/**
-		 * Method to delete of one or more records.
-		 *
-		 * @param   array    &$pks   A list of the primary keys to change.
-		 *
-		 * @return  boolean  True on success.
-		 *
-		 * @since   4.0.0
-		 */
-		public function delete(&$pks) {
-
-			$db = $this->getDbo();
-			$query = $db->getQuery(true);
-
-			$query->delete('`#__mymuse_coupon`');
-			$query->where('id IN (' . implode(',', $pks). ')');
-			$db->setQuery($query);
-			$db->execute();
-		}
+		return true;
+	}
 }

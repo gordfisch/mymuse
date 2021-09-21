@@ -166,20 +166,5 @@ class HtmlView extends BaseHtmlView
 
 	}
 
-	/**
-	 * Returns an array of fields the table can be sorted by
-	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
-	 *
-	 * @since   3.0
-	 */
-	protected function getSortFields()
-	{
-		return array(			
-				'a.state' => JText::_('JSTATUS'),
-				'a.code' => JText::_('COM_MYMUSE_COUPON_CODE'),
-				'a.title' => JText::_('COM_MYMUSE_TITLE'),
-				'a.id' => JText::_('JGRID_HEADING_ID'),
-		);
-	}
+
 }

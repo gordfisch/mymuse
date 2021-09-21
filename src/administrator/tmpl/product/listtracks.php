@@ -54,13 +54,12 @@ $workflow_enabled  	= false;
 $workflow_state    	= false;
 $workflow_featured 	= false;
 $this->vote 		= false;
-$assoc = Associations::isEnabled();
+
 //TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS
 
 ?>
 
 
-</script>
 
 <h2><?php echo Text::_( 'COM_MYMUSE_TRACKS' ); ?></h2>
 

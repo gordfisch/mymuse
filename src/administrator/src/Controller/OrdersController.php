@@ -58,7 +58,7 @@ class OrdersController extends AdminController
 	 *
 	 * @since   1.6
 	 */
-	public function getModel($name = 'products', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	public function getModel($name = 'orders', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}

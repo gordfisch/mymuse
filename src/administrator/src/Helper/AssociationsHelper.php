@@ -39,7 +39,7 @@ class AssociationsHelper extends AssociationExtensionHelper
 	 *
 	 * @since   5.0.0
 	 */
-	protected $itemTypes = array('foo', 'category');
+	protected $itemTypes = array('product', 'category');
 
 	/**
 	 * Has the extension association support
@@ -123,14 +123,26 @@ class AssociationsHelper extends AssociationExtensionHelper
 
 		switch ($typeName)
 		{
-			case 'array_product(array)':
-				$table = Table::getInstance('ProductTable', 'Joomla\\Component\\Mymuse\\Administrator\\Table\\');
+			case 'product':
+				//$table = Table::getInstance('ProductTable', 'Joomla\\Component\\Mymuse\\Administrator\\Table\\');
+				$table = Table::getInstance('Product');
 				break;
 
 			case 'category':
 				$table = Table::getInstance('Category');
 				break;
 		}
+		switch ($typeName)
+		{
+			case 'article':
+				$table = Table::getInstance('Content');
+				break;
+
+			case 'category':
+				$table = Table::getInstance('Category');
+				break;
+		}
+
 
 		if (empty($table))
 		{
@@ -163,7 +175,7 @@ class AssociationsHelper extends AssociationExtensionHelper
 		{
 			switch ($typeName)
 			{
-				case 'foo':
+				case 'product':
 					$fields['title'] = 'a.name';
 					$fields['state'] = 'a.published';
 

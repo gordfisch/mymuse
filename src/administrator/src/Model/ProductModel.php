@@ -11,6 +11,7 @@ namespace Joomla\Component\Mymuse\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\LegacyFactory;
@@ -75,7 +76,7 @@ class ProductModel extends AdminModel
 	 * @var  string
      * @since  5.0
 	 */
-	protected $batch_copymove = false;
+	protected $batch_copymove = true;
 
 	/**
 	 * Allowed batch commands
@@ -434,14 +435,14 @@ class ProductModel extends AdminModel
 	}
 
 
-   /**
-     * Get the tracks for the product
-     *
-     * @return	mixed	An array of products or false if an error occurs.
-     * @since	1.5
-     */
-    function getTracks()
-    {
+  /**
+   * Get the tracks for the product
+   *
+   * @return	mixed	An array of products or false if an error occurs.
+   * @since	1.5
+  */
+  function getTracks()
+  {
 
     	$app 				= Factory::getApplication();
     	$input 				= $app->input;
@@ -452,46 +453,38 @@ class ProductModel extends AdminModel
     	$this->setState('file.direction', $filter_order_Dir);
     	$this->setState('list.ordering', $filter_order);
     	$this->setState('list.direction', $filter_order_Dir);
-    	$table = $this->getTable('product','MymuseTable');
 
     	$limit 				= $this->getState('list.limit');
     	$id 				= $input->get('id');
     	
-
+		
     	$root = JPATH_ROOT;
   
     	if ($this->_tracks === null && $product = $this->getItem()) {
 
+	      	$model = ListModel::getInstance('Products', 'MyMuse', array('ignore_request' => true));
+	      	$form = $model->getFilterForm(array(), true);
+	      	$form->removeField('stage', 'filter');
+	      	$form->removeField('category_id', 'filter');
+	      	$form->removeField('artist_id', 'filter');
+	      	$form->removeField('language', 'filter');
+	      	$form->removeField('author_id', 'filter');
+	      	$this->filterForm = $form;
 
-            $this->factory =  new LegacyFactory;
-            $model = $this->factory->createModel('Products', 'MyMuseModel', array('ignore_request' => true));
-
-    		//$model = new \Joomla\Component\Mymuse\Administrator\Model\ProductsModel;
-
-			$form = $model->getFilterForm(array(), true);
-			$ordering = $form->getField('fullordering', 'list');
-			$ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
-			$ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
-			$this->filterForm = $form;
-
-    		//$model->setState('filter.category_id', $category->id);
-    		$model->setState('filter.published', $this->getState('filter.published'));
-    		$model->setState('filter.access', $this->getState('filter.access'));
-    		$model->setState('filter.language', $this->getState('filter.language'));
-    		$model->setState('list.ordering', $this->getState('file.ordering'));
-    		$model->setState('list.start', $this->getState('list.start'));
-    		$model->setState('list.limit', $limit);
-    		$model->setState('list.direction', $this->getState('file.direction'));
-    		$model->setState('list.filter', $this->getState('list.filter'));
-    		// filter.subcategories indicates whether to include products from subcategories in the list or blog
-    		// $model->setState('filter.subcategories', $this->getState('filter.subcategories'));
-    		// $model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
-    		//$model->setState('list.links', $this->getState('list.links'));
-    
+			$model->setState('filter.published', $this->getState('filter.published'));
+	   		$model->setState('filter.access', $this->getState('filter.access'));
+	   		$model->setState('filter.language', $this->getState('filter.language'));
+	   		$model->setState('list.ordering', $this->getState('item.ordering'));
+	   		$model->setState('list.start', $this->getState('list.start'));
+	   		$model->setState('list.limit', $limit);
+	   		$model->setState('list.direction', $this->getState('item.direction'));
+	   		$model->setState('list.filter', $this->getState('list.filter'));
+	   		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
+	   		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
+	   		$model->setState('list.links', $this->getState('list.links'));
+	   		
+	   		$model->setState('filter.parentid', $id);
     		$model->setState('filter.downloadable', 1);
-
-
-
 
     		if ($limit >= 0) {
     			$this->_tracks = $model->getItems();
@@ -501,7 +494,7 @@ class ProductModel extends AdminModel
     			}
     		}
     		else {
-    			$this->_track =array();
+    			$this->_tracks =array();
     		}
     
     		$this->_trackPagination = $model->getPagination();
@@ -516,9 +509,7 @@ class ProductModel extends AdminModel
     *
     * @return	mixed	An array of products or false if an error occurs.
     * @since	1.5
-   *
-   * @since 3.0
-     */
+    */
    function getItems()
    {
    	
@@ -534,8 +525,8 @@ class ProductModel extends AdminModel
    
    	if ($this->_items === null && $product = $this->getItem()) {
    
-   		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
-   
+   		$model = ListModel::getInstance('Products', 'MyMuse', array('ignore_request' => true));
+
    		//$model->setState('filter.category_id', $category->id);
    		$model->setState('filter.published', $this->getState('filter.published'));
    		$model->setState('filter.access', $this->getState('filter.access'));
@@ -545,7 +536,6 @@ class ProductModel extends AdminModel
    		$model->setState('list.limit', $limit);
    		$model->setState('list.direction', $this->getState('item.direction'));
    		$model->setState('list.filter', $this->getState('list.filter'));
-   		// filter.subcategories indicates whether to include articles from subcategories in the list or blog
    		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
    		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
    		$model->setState('list.links', $this->getState('list.links'));
@@ -553,7 +543,7 @@ class ProductModel extends AdminModel
    		$model->setState('filter.downloadable', 0);
    		$model->setState('filter.physical', 1);
    		$model->setState('filter.parentid', $product->id);
-   
+
    
    		if ($limit >= 0) {
    			$this->_items = $model->getItems();
@@ -604,119 +594,119 @@ class ProductModel extends AdminModel
    }
 	       
 	/**
-     * Method to set the product lists
+     * Method to get the product lists
      *
      * @access    public
      * @return    array
      *
      * @since 3.0
-     */
-    function getLists()
-    {
+   */
+   function getLists()
+   {
     	global $option;
     	$app 				= Factory::getApplication();
     	$input 				= $app->input;
     	$id 				= $input->get('id', 0);
 
     	$filter_state 		= $app->getUserStateFromRequest( $option.'filter_state', 'filter_state', '', 'word' );
-		$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
-		$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
-		$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-		$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+			$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
+			$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
+			$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+			$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 
-		$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-		$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-		
-		$this->setState('file.ordering', $filter_order);
-		$this->setState('file.direction', $filter_order_Dir);
-		
-		$this->setState('item.ordering', $filter_order);
-		$this->setState('item.direction', $filter_item_order_Dir);
-		
-		$lists['order'] = $filter_order;
-		$lists['order_Dir'] = $filter_order_Dir;
-		$edit = $input->get('edit', 0);
-
-		//other categories
-		$selectedCats = array();
-		if($id){
-			$query = "SELECT * FROM #__mymuse_product_category_xref WHERE product_id=".$id;
-			$this->_db->setQuery($query);
-			$cats =  $this->_db->loadObjectList();
-			if($cats){
-				foreach($cats as $cat){
-					$selectedCats[] = $cat->catid;
-				}
-			}
-		}	
-		
-		$query = "SELECT id,title FROM #__categories WHERE extension='com_mymuse'";
-		$this->_db->setQuery($query);
-		$lists['other_cats'] = $this->_db->loadObjectList();
-		
-		
-		// Items, Attributes, Files
-		$lists['attributes'] 	= array();
-		$lists['attribute_sku'] = array();
-		$lists['items'] 		= array();
-		$lists['files'] 		= array();
-	
-		//attributes
-		$subtype				= $input->get('subtype', '');
-		if($this->_item->parentid){
-			//we want the parentid
-			$pid = $this->_item->parentid;
-		}else{
-			$pid = $id;
-		}
-		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
-			product_parent_id='.$pid.'
-			ORDER BY ordering';
-
-		$this->_db->setQuery($query);
-		$lists['attribute_sku'] = $this->_db->loadObjectList();
-
-		// items
-		$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-			AND product_downloadable='1'";
-		if($filter_item_order){
-			$query .= "ORDER BY $filter_item_order ";
-		}
-		if($filter_item_order && $filter_item_order_Dir){
-			$query .= "$filter_item_order_Dir";
-		}
+			$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+			$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 			
-		$this->_db->setQuery($query);
+			$this->setState('file.ordering', $filter_order);
+			$this->setState('file.direction', $filter_order_Dir);
+			
+			$this->setState('item.ordering', $filter_order);
+			$this->setState('item.direction', $filter_item_order_Dir);
+			
+			$lists['order'] = $filter_order;
+			$lists['order_Dir'] = $filter_order_Dir;
+			$edit = $input->get('edit', 0);
 
-		if($lists['items'] = $this->_db->loadObjectList()){
+			//other categories
+			$selectedCats = array();
+			if($id){
+				$query = "SELECT * FROM #__mymuse_product_category_xref WHERE product_id=".$id;
+				$this->_db->setQuery($query);
+				$cats =  $this->_db->loadObjectList();
+				if($cats){
+					foreach($cats as $cat){
+						$selectedCats[] = $cat->catid;
+					}
+				}
+			}	
+			
+			$query = "SELECT id,title FROM #__categories WHERE extension='com_mymuse'";
+			$this->_db->setQuery($query);
+			$lists['other_cats'] = $this->_db->loadObjectList();
+			
+			
+			// Items, Attributes, Files
+			$lists['attributes'] 	= array();
+			$lists['attribute_sku'] = array();
+			$lists['items'] 		= array();
+			$lists['files'] 		= array();
+		
+			//attributes
+			$subtype				= $input->get('subtype', '');
+			if($this->_item->parentid){
+				//we want the parentid
+				$pid = $this->_item->parentid;
+			}else{
+				$pid = $id;
+			}
+			$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
+				product_parent_id='.$pid.'
+				ORDER BY ordering';
 
-			foreach($lists['items'] as $item){
-				foreach($lists['attribute_sku'] as $a_sku){
-					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
-						AND product_attribute_sku_id='.$a_sku->id;
+			$this->_db->setQuery($query);
+			$lists['attribute_sku'] = $this->_db->loadObjectList();
+
+			// items
+			$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
+				AND product_downloadable='1'";
+			if($filter_item_order){
+				$query .= "ORDER BY $filter_item_order ";
+			}
+			if($filter_item_order && $filter_item_order_Dir){
+				$query .= "$filter_item_order_Dir";
+			}
+				
+			$this->_db->setQuery($query);
+
+			if($lists['items'] = $this->_db->loadObjectList()){
+
+				foreach($lists['items'] as $item){
+					foreach($lists['attribute_sku'] as $a_sku){
+						$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
+							AND product_attribute_sku_id='.$a_sku->id;
+					
+						$this->_db->setQuery($query);
+						$item->attributes[$a_sku->name] = $this->_db->loadResult();
+					}
+					$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
 				
 					$this->_db->setQuery($query);
-					$item->attributes[$a_sku->name] = $this->_db->loadResult();
+					$lists['attributes'][$item->id] = $this->_db->loadObjectList();
+
 				}
-				$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
-			
-				$this->_db->setQuery($query);
-				$lists['attributes'][$item->id] = $this->_db->loadObjectList();
-
 			}
-		}
 
-		return $lists;
+			return $lists;
     }
     
-     /**
-     * Method to get the file lists.
-     *
-     * @access    public
-     * @return    array
-      *
-      * @since 3.0
-     */
+    /**
+    * Method to get the file lists.
+    *
+    * @access    public
+    * @return    array
+    *
+    * @since 3.0
+    */
     public function getFileLists()
     {
 
@@ -877,6 +867,68 @@ class ProductModel extends AdminModel
 		return false;
 	}
 
+
+
+
+	/**
+	 * getAttributes
+	 * 
+	 * @return array
+	 */
+	function getAttributes(){
+		$db = Factory::getDBO();
+		if(!$this->_attribute_skus){
+			$this->getAttributeskus();
+		}
+		$app 	= Factory::getApplication();
+		$input 	= $app->input;
+		$id 	= $input->get('id',0);
+		if($id){
+			foreach($this->_attribute_skus as $a_sku){
+				$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$id.'
+				AND product_attribute_sku_id='.$a_sku->id;
+
+				$db->setQuery($query);
+				$this->_item->attributes[$a_sku->name] = $db->loadResult();
+			}
+		
+			return $this->_item->attributes;
+		}
+		
+		return array();
+		
+	}
+
+	/**
+	 * getAttributeskus
+	 *
+	 * @return array
+	 */
+	function getAttributeskus(){
+		$db = Factory::getDBO();
+		$app 	= Factory::getApplication();
+		$input 	= $app->input;
+		$pid	= $input->get( 'parentid', null );
+		if(!$pid){
+			//see if we can get the parent from the item id
+			$item = $this->getItem();
+			if(isset($item->id)){
+				$query = "SELECT parentid from #__mymuse_product WHERE id=".$item->id;
+				$this->_db->setQuery($query);
+				$pid = $this->_db->loadResult();
+			}else{
+				$this->setError(JText::_('MYMUSE_COULD_NOT_FIND_PARENT'));
+            	return false;
+			}
+		}
+		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE product_parent_id='.$pid;
+		$db->setQuery($query);
+		$this->_attribute_skus = $db->loadObjectList();
+
+		return $this->_attribute_skus;
+
+	}
+	
 	/**
 	 * updateAttributes
 	 *
@@ -922,6 +974,100 @@ class ProductModel extends AdminModel
 		return true;
 
 	}
+
+
+	function save2copy($oldid, $item=0){
+
+			$this->table = $this->getTable();
+			$this->table->reset();
+
+			// Check that the row actually exists
+			if (!$this->table->load($oldid))
+			{
+				if ($error = $this->table->getError())
+				{
+					// Fatal error
+					$this->setError($error);
+
+					return false;
+				}
+				else
+				{
+					// Not fatal error
+					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					return false;
+				}
+			}
+			
+			$categoryId = $this->table->catid;
+
+			//is it an item?
+			if($item){
+				// Reset the ID because we are making a copy
+				$this->table->id 										= 0;
+				$input      												= Factory::getApplication()->input;
+				$this->table->parentid 							= $oldid;
+				$this->table->product_physical 			= 1;
+				$this->table->product_downloadable 	= 0;
+				$this->table->title 								= $this->table->title . $input->get('item_title');
+				$old_alias													= $this->table->alias;
+				$this->table->alias 								= ApplicationHelper::stringURLSafe($this->table->title);
+				$this->table->state 								= 1;
+				if(isset($this->table->product_images) && $this->table->product_images != '' && $input->get('color',0)){
+					$detail_image = "images/".$this->table->product_images.'/'.$old_alias.'-'.$input->get('color',0).'.png';
+					if(file_exists(JPATH_ROOT.'/'.$detail_image)){
+						$this->table->detail_image = $detail_image;
+					}
+				}
+			}else{
+				// Alter the title & alias
+				$data = $this->generateNewTitle($categoryId, $this->table->alias, $this->table->title);
+				$this->table->title = $data['0'];
+				$this->table->alias = $data['1'];
+				// Unpublish because we are making a copy
+				$this->table->state = 0;
+			}
+
+			// Reset hits because we are making a copy
+			$this->table->hits = 0;
+
+			
+
+			// New category ID
+			$this->table->catid = $categoryId;
+			$this->table->asset_id = '';
+
+			// TODO: Deal with ordering?
+			// $table->ordering	= 1;
+
+			// Get the featured state
+			$featured = $this->table->featured;
+
+			// Check the row.
+			if (!$this->table->check())
+			{
+				$this->setError($this->table->getError());
+
+				return false;
+			}
+
+
+			// Store the row.
+			if (!$this->table->store())
+			{
+				$this->setError($this->table->getError());
+
+				return false;
+			}
+
+			// Get the new item ID
+			$newId = $this->table->get('id');
+
+			return $newId;
+
+	}
+
+
     /**
      * Method override to check-in a record or an array of record
      *

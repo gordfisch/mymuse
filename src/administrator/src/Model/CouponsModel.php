@@ -50,7 +50,11 @@ class CouponsModel extends ListModel
                 'code','a.code',
                 'start_date','a.start_date',
                 'expiration_date','a.expiration_date',
-                'title', 'a.title'
+                'title', 'a.title',
+                'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
+				'created', 'a.created',
+                'published'
             );
         }
 
@@ -162,11 +166,17 @@ class CouponsModel extends ListModel
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
 		// Filter by published state
-		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
-			$query->where('a.published = '.(int) $published);
-		} else if ($published === '') {
-			$query->where('(a.published IN (0, 1))');
+		$published = (string) $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$published = (int) $published;
+			$query->where($db->quoteName('a.state') . ' = :published')
+				->bind(':published', $published, ParameterType::INTEGER);
+		}
+		elseif ($published === '')
+		{
+			$query->where($db->quoteName('a.state') . ' IN (0, 1)');
 		}
                     
 

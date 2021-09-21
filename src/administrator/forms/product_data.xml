@@ -164,7 +164,14 @@
 
 <fields name="attribs">
   <fieldset name="attribs" label="COM_MYMUSE_PARAMETERS_ATTRIBUTES">
-
+    <field
+        name="id"
+        type="number"
+        label="JGLOBAL_FIELD_ID_LABEL"
+        default="0"
+        class="readonly"
+        readonly="true"
+    />
     <field
         name="product_price_physical"
         type="text"

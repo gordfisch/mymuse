@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+        <field
+            name="id"
+            type="number"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            default="0"
+            class="readonly"
+            readonly="true"
+        />
+        <field
+            name="currency_name"
+            type="text"
+            label="COM_MYMUSE_CURRENCY_NAME_LABEL"
+            description="COM_MYMUSE_CURRENCY_NAME_DESCRIPTION"
+            class="inputbox"
+            size="45"
+            required="true"
+        />
+        <field
+            name="currency_code"
+            type="text"
+            label="COM_MYMUSE_CURRENCY_CODE_LABEL"
+            description="COM_MYMUSE_CURRENCY_CODE_DESCRIPTION"
+            class="inputbox"
+            size="45"
+            required="true"
+        />
+        <field
+            name="symbol"
+            type="text"
+            label="COM_MYMUSE_CURRENCY_SYMBOL_LABEL"
+            description="COM_MYMUSE_CURRENCY_SYMBOL_DESCRIPTION"
+            class="inputbox"
+            size="45"
+            required="true"
+        />
+
+
+
+	</fieldset>
+
+</form>

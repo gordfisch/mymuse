@@ -1,10 +1,10 @@
 <?php
 /**
- * @version     $Id$
- * @package     com_mymuse3
- * @copyright   Copyright (C) 2011. All rights reserved.
+ * @package     Joomla.Administrator
+ * @subpackage  com_mymuse
+ *
+ * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Gord Fisch arboreta.ca
  */
 
 
@@ -33,7 +33,7 @@ $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
-echo $listOrder;
+
 if (strpos($listOrder, 'publish_up') !== false)
 {
 	$orderingColumn = 'publish_up';
@@ -186,27 +186,24 @@ $assoc = Associations::isEnabled();
 						<input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order hidden">
 					<?php endif; ?>
 				</td>
-				<td class="text-center d-none d-md-table-cell">
-					<?php
-						$options = [
-							'disabled' => $workflow_featured || !$canChange
-						];
 
-						echo (new FeaturedButton)
-							->render((int) $item->featured, $i, $options, 0, 0);
-							//$item->featured_up, $item->featured_down
-					?>
+				<td class="text-center">
+					<?php echo HTMLHelper::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>
 				</td>
-				<td class="product-status text-center">
-				<?php
-					$options = [
-						'task_prefix' => 'products.',
-						'disabled' => $workflow_state || !$canChange
-					];
+				<td class="article-status text-center">
+								<?php
+									$options = [
+										'task_prefix' => 'products.',
+										'disabled' => $workflow_state || !$canChange,
+										'id' => 'state-' . $item->id
+									];
 
-					echo (new PublishedButton)->render((int) $item->state, $i, $options, $item->publish_up, $item->publish_down);
-				?>
-				</td>
+									echo (new PublishedButton)->render((int) $item->state, $i, $options, $item->publish_up, $item->publish_down);
+								?>
+								</td>
+
+
+
 				<th scope="row" class="has-context">
 					<div class="break-word">
 						<?php if ($item->checked_out) : ?>
@@ -244,7 +241,7 @@ $assoc = Associations::isEnabled();
 				<?php if ($assoc) : ?>
 					<td class="d-none d-md-table-cell">
 						<?php if ($item->association) : ?>
-							<?php echo HtmlHelper::_('contentadministrator.association', $item->id); ?>
+							<?php echo HtmlHelper::_('mymuseadministrator.association', $item->id); ?>
 						<?php endif; ?>
 					</td>
 				<?php endif; ?>

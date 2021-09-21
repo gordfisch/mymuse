@@ -115,7 +115,7 @@ class HtmlView extends BaseHtmlView
 		$lists['isNew'] = $isNew;
 		
 		//setlayout
-		$this->layout = $this->input->get('layout', 'edit');
+		$this->layout 	= $this->input->get('layout', 'edit');
 		
 		//listtracks
 		if($this->layout == "listtracks"){
@@ -131,7 +131,10 @@ class HtmlView extends BaseHtmlView
 			}
 			$this->trackPagination = $this->get('TrackPagination');
 		}
+
+		//listitems
 		if($this->layout == "listitems"){
+			
 			$this->items 	= $this->get('Items');
 			$this->itemPagination = $this->get('ItemPagination');
 		}
@@ -203,8 +206,8 @@ class HtmlView extends BaseHtmlView
 
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
-        	$app = Factory::getApplication();
-        	$parentid = $app->getUserStateFromRequest("com_mymuse.parentid", 'parentid', $this->item->id);
+        	
+        	$app->setUserState("com_mymuse.parentid", $this->item->id);
         }
         if(!$this->item->id  && $this->item->parentid == 0){
         	$subtype = "details";
@@ -218,7 +221,6 @@ class HtmlView extends BaseHtmlView
 		}
 
 		$this->addToolbar($subtype,$this->item->parentid);
-        //MymuseHelper::print_pre($this->item);
 		parent::display($tpl);
 	}
 
@@ -240,15 +242,26 @@ class HtmlView extends BaseHtmlView
 		$checkedOut = !(is_null($this->item->checked_out) || $this->item->checked_out == $userId);
 
 		$canDo	= MymuseHelper::getActions('com_mymuse', 'store', $this->item->id);
-		$title = Text::_('COM_MYMUSE_TITLE_PRODUCT');
+		
 
+		//title
+		$title = Text::_('COM_MYMUSE_TITLE_PRODUCT');
 		if($this->item->parentid){
 			$title .= ' : <a href="index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->item->parentid.'">'.$this->item->parent->title."</a>";
 		}else{
 			$title .= " : ".$this->item->title;
 		}
+		
+		if($this->layout == "listitems") {
+			$title .= ": ".Text::_("COM_MYMUSE_LIST_ITEMS");
+		}
+		if($this->layout == "listtracks"){
+			$title .= ": ".Text::_("COM_MYMUSE_LIST_TRACKS");
+		}
 		ToolBarHelper::title(Text::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 	
+
+
 		if($this->layout == "listtracks"){
 			// LIST TRACKS
 			if($this->params->get('storage', 'regular') == 'regular' ){
@@ -269,11 +282,25 @@ class HtmlView extends BaseHtmlView
 			
 			
 			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component');
+
 		}elseif($this->layout == "listitems"){
 			// LIST ITEMS
-			ToolBarHelper::apply('product.productreturn', 'COM_MYMUSE_RETURN_TO_PRODUCT');
+
+			
+			ToolBarHelper::addNew('product.additem', 'COM_MYMUSE_NEW_ITEM');
+			ToolBarHelper::deleteList('','product.removeitem','COM_MYMUSE_DELETE_ITEM');
+
 			ToolBarHelper::custom('products.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
 			ToolBarHelper::custom('products.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+			ToolBarHelper::divider('|');
+			
+			ToolBarHelper::addNew('productattributeskus.list', 'COM_MYMUSE_LIST_ATTRIBUTES');
+
+			ToolBarHelper::addNew('productattributesku.add', 'COM_MYMUSE_ADD_ATTRIBUTES');
+			ToolBarHelper::apply('product.productreturn', 'COM_MYMUSE_RETURN_TO_PRODUCT');
+						
+
+
 			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-items?tmpl=component');
 			
 		}elseif($subtype == "file" && $parentid){

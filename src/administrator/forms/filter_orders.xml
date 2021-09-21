@@ -10,14 +10,34 @@
 			hint="JSEARCH_FILTER"
 		/>
 
-		<field
-			name="published"
-			type="status"
-			label="JSTATUS"
-			onchange="this.form.submit();"
-			>
-			<option value="">JOPTION_SELECT_PUBLISHED</option>http://localhost/mymuseJ4/joomla/administrator/index.php?option=com_categories&extension=com_mymuse
-		</field>
+		<field 
+			name="startdate" 
+			type="calendar" 
+			default="" 
+			label="COM_MYMUSE_STARTDATE" 
+			description=""
+			class="input-small" 
+			required="true" 
+			filter="user_utc"
+			showtime="false" 
+			todaybutton="false" 
+			filltable="false" 
+			translateformat="true" 
+		/>
+		<field 
+			name="enddate" 
+			type="calendar" 
+			default="" 
+			label="COM_MYMUSE_ENDDATE" 
+			description=""
+			class="input-small" 
+			required="true" 
+			filter="user_utc"
+			showtime="false" 
+			todaybutton="false" 
+			filltable="false" 
+			translateformat="true" 
+		/>
 
 
 	</fields>
@@ -33,14 +53,14 @@
 			validate="options"
 			>
 			<option value="">JGLOBAL_SORT_BY</option>
-			<option value="a.tax_name ASC">COM_MYMUSE_TAX_NAME_LABEL</option>
-			<option value="a.tax_name DESC">COM_MYMUSE_TAX_NAME_DESCENDING</option>
-			<option value="a.province ASC">COM_MYMUSE_TAX_PROVINCE_LABEL</option>
-			<option value="a.province DESC">COM_MYMUSE_TAX_PROVINCE_DESCENDING</option>
-			<option value="a.country ASC">COM_MYMUSE_TAX_COUNTRY_LABEL</option>
-			<option value="a.country DESC">COM_MYMUSE_TAX_COUNTRY_DESCENDING</option>
-			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
-			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			<option value="u.last_name ASC">COM_MYMUSE_NAME_ASC</option>
+			<option value="u.last_name DESC">COM_MYMUSE_NAME_DESC</option>
+			<option value="c.created ASC">COM_MYMUSE_DATE_ASC</option>
+			<option value="c.created DESC">COM_MYMUSE_DATE_DESC</option>
+			<option value="c.order_status ASC">COM_MYMUSE_STATUS_ASC</option>
+			<option value="c.order_status DESC">COM_MYMUSE_STATUS_DESC</option>
+			<option value="c.order_subtotal ASC">COM_MYMUSE_SUBTOTAL_ASC</option>
+			<option value="c.order_subtotal DESC">COM_MYMUSE_SUBTOTAL_DESC</option>
 		</field>
 
 		<field

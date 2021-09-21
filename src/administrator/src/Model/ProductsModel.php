@@ -66,6 +66,10 @@ class ProductsModel extends ListModel
 				'publish_down', 'a.publish_down',
 				'author', 'a.author'
 			);
+			if (Associations::isEnabled())
+			{
+				$config['filter_fields'][] = 'association';
+			}
 
 		}
 
@@ -88,7 +92,7 @@ class ProductsModel extends ListModel
 		$form = parent::getFilterForm($data, $loadData);
 
 		$params = ComponentHelper::getParams('com_mymuse');
-print_r($form);
+
 		if (!$params->get('workflow_enabled'))
 		{
 			$form->removeField('stage', 'filter');
@@ -99,6 +103,18 @@ print_r($form);
 
 			$ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
 			$ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
+		}
+		$app = Factory::getApplication();
+		$layout = $app->input->get('layout', '');
+
+		if($layout == 'listtracks'){
+
+			$form->removeField('fullordering', 'list');
+			$form->setFieldAttribute('trackordering', 'name', 'fullordering');
+
+		}else{
+			
+			$form->removeField('trackordering', 'list');
 		}
 
 		return $form;
@@ -239,6 +255,11 @@ print_r($form);
 			$query->where("a.featured = '" . $featured."'");
 		}
 
+		// Filter by parentid.
+		if ($parentid = $this->getState('filter.parentid')) {
+			$query->where("a.parentid = '" . $parentid."'");
+		}
+
 		// Join over the categories.
 		$query->select('c.title AS category_title');
 		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
@@ -246,6 +267,23 @@ print_r($form);
 		// Join over the artist categories.
 		$query->select('art.title AS artist_title');
 		$query->join('LEFT', '#__categories AS art ON art.id = a.artistid');
+
+		// Join over the associations.
+		if (Associations::isEnabled())
+		{
+			$subQuery = $db->getQuery(true)
+				->select('COUNT(' . $db->quoteName('asso1.id') . ') > 1')
+				->from($db->quoteName('#__associations', 'asso1'))
+				->join('INNER', $db->quoteName('#__associations', 'asso2'), $db->quoteName('asso1.key') . ' = ' . $db->quoteName('asso2.key'))
+				->where(
+					[
+						$db->quoteName('asso1.id') . ' = ' . $db->quoteName('a.id'),
+						$db->quoteName('asso1.context') . ' = ' . $db->quote('com_content.item'),
+					]
+				);
+
+			$query->select('(' . $subQuery . ') AS ' . $db->quoteName('association'));
+		}
 
 		
 
@@ -256,7 +294,7 @@ print_r($form);
 		if ($downloadable = $this->getState('filter.downloadable')) {
 			$query->where('a.product_downloadable = 1');
 		}
-                    
+            
 
 		// Filter by search in title
 		$search = $this->getState('filter.search');
@@ -316,54 +354,54 @@ print_r($form);
 		return $query;
 	}
 
-		/**
-		 * Method to change the published state of one or more records.
-		 *
-		 * @param   array    &$pks   A list of the primary keys to change.
-		 * @param   integer  $value  The value of the published state.
-		 *
-		 * @return  boolean  True on success.
-		 *
-		 * @since   4.0.0
-		 */
-		public function publish(&$pks, $value = 1) {
+	/**
+	 * Method to change the published state of one or more records.
+	 *
+	 * @param   array    &$pks   A list of the primary keys to change.
+	 * @param   integer  $value  The value of the published state.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   4.0.0
+	 */
+	public function publish(&$pks, $value = 1) {
 
-			$db = $this->getDbo();
-			$query = $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
-			$query->update('`#__mymuse_product`');
-			$query->set('state = ' . $value);
-			$query->where('id IN (' . implode(',', $pks). ')');
-			$db->setQuery($query);
-			$db->execute();
-		}
+		$query->update('`#__mymuse_product`');
+		$query->set('state = ' . $value);
+		$query->where('id IN (' . implode(',', $pks). ')');
+		$db->setQuery($query);
+		$db->execute();
+	}
 
 
-		/**
-		 * Method to delete of one or more records.
-		 *
-		 * @param   array    &$pks   A list of the primary keys to change.
-		 *
-		 * @return  boolean  True on success.
-		 *
-		 * @since   4.0.0
-		 */
-		public function delete(&$pks) {
+	/**
+	 * Method to delete of one or more records.
+	 *
+	 * @param   array    &$pks   A list of the primary keys to change.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   4.0.0
+	 */
+	public function delete(&$pks) {
 
-			$db = $this->getDbo();
-			$query = $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
-			$query->delete('`#__mymuse_product`');
-			$query->where('id IN (' . implode(',', $pks). ')');
-			$db->setQuery($query);
-			$db->execute();
+		$query->delete('`#__mymuse_product`');
+		$query->where('id IN (' . implode(',', $pks). ')');
+		$db->setQuery($query);
+		$db->execute();
 
-			//delete children
-			$query = $db->getQuery(true);
-			$query->delete('`#__mymuse_product`');
-			$query->where('parentid IN (' . implode(',', $pks). ')');
-			$db->setQuery($query);
-			$db->execute();
+		//delete children
+		$query = $db->getQuery(true);
+		$query->delete('`#__mymuse_product`');
+		$query->where('parentid IN (' . implode(',', $pks). ')');
+		$db->setQuery($query);
+		$db->execute();
 
-		}
+	}
 }

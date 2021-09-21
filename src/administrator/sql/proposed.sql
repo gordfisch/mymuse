@@ -1,3 +1,16 @@
+CREATE TABLE IF NOT EXISTS `#__mymuse_product`
+
+
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_text`
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `introtext` mediumtext NOT NULL,
+  `fulltext` mediumtext NOT NULL,
+  `language` char(7) NOT NULL COMMENT 'The language code for the product.',
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
@@ -22,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_type` varchar(32) NULL COMMENT 'Parent, Physical, Digital, AllFiles', 
 
   `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
-  `language` char(7) NOT NULL COMMENT 'The language code for the article.',
+
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) unsigned NOT NULL DEFAULT '0',
   `created_by_alias` varchar(255) NOT NULL DEFAULT '',
@@ -40,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
+//1 to 1
 CREATE TABLE IF NOT EXISTS `#__mymuse_product_data` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -66,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
+//1 to 1
 CREATE TABLE IF NOT EXISTS `#__mymuse_product_physical` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -84,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_physical` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
+//1 to many
 CREATE TABLE IF NOT EXISTS `#__mymuse_product_digital` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(11) unsigned NOT NULL DEFAULT '0',

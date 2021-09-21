@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Mymuse\Administrator\Model\TaxtrateModel;
+use Joomla\Component\Mymuse\Administrator\Model\StoreModel;
 
 /**
  * View to edit a store.

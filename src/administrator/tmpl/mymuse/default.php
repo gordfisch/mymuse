@@ -9,11 +9,11 @@
 defined('_JEXEC') or die('Restricted access'); 
 ?>
 
+<div class="row">
+        <div class="col-md-12">
+            <div id="j-main-container" class="j-main-container">
 
-    <div id="j-main-container" class="span12">
-    <div class="clearfix"></div>
-        <fieldset class="adminform">
-                <legend><?php echo JText::_('COM_MYMUSE_FOR_JOOMLA'); ?></legend>
+        <h1><?php echo JText::_('COM_MYMUSE_FOR_JOOMLA'); ?></h1>
         <table>
         <tr>
             <td align="left" width="100%"><h2><?php echo JText::_("COM_MYMUSE_WELCOME"); ?> 
@@ -64,14 +64,25 @@ defined('_JEXEC') or die('Restricted access');
             <li><b><?php echo JText::_("COM_MYMUSE_HELP"); ?></b> 
             <?php echo JText::_("COM_MYMUSE_HELP_DESC"); ?>
             <br /><br /></li>
-            <li><?php echo JText::_("COM_MYMUSE_CONTACT"); ?> <a href="mailto:info@joomlamymuse.com">info@joomlamymuse.com</a> <?php echo JText::_("COM_MYMUSE_WEBSITE"); ?> <a targete="_new" href="https://www.joomlamymuse.com">www.joomlamymuse.com</a>
+            <li><?php echo JText::_("COM_MYMUSE_CONTACT"); ?> <a href="mailto:info@joomlamymuse.com">info@joomlamymuse.com</a> <?php echo JText::_("COM_MYMUSE_WEBSITE"); ?> <a targete="_new" href="https://www.joomlamymuse.com">www.joomlamymuse.com</a></li>
             </ul>
             </td>
         </tr>
         
 
         </table>
-        </fieldset>
-    
+        </div>
     </div>
-</form>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="j-main-container" class="j-main-container">
+            <h3>Helper Tables</h3>
+                <ul>
+                    <li><b><a href="index.php?option=com_mymuse&view=currencies"><?php echo JText::_("COM_MYMUSE_TITLE_CURRENCIES"); ?></a></b></li>
+                    <li><b><a href="index.php?option=com_mymuse&view=formats"><?php echo JText::_("COM_MYMUSE_TITLE_FORMATS"); ?></a></b></li>
+                </ul>
+
+        </div>
+    </div>
+</div>

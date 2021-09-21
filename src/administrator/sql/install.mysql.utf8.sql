@@ -297,7 +297,6 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_coupon` (
   `product_id` int(11) unsigned NOT NULL DEFAULT '0',
   `coupon_value` decimal(12,5) DEFAULT NULL,
   `coupon_value_type` tinyint(1) NOT NULL COMMENT '0=Flat-rate, 1=Percentage',
-  `currency_id` int(11) DEFAULT NULL,
   `description` text ,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) unsigned NOT NULL DEFAULT '0',
@@ -377,6 +376,21 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_downloads` (
   `product_filename` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_product_filename` (`product_filename`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `#__mymuse_formats`
+--
+DROP TABLE IF EXISTS `#__mymuse_format`;
+CREATE TABLE IF NOT EXISTS `#__mymuse_format` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `format_key` char(10)  DEFAULT NULL,
+  `format_value` varchar(64)  DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
