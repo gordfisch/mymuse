@@ -25,15 +25,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\MVC\Model\WorkflowBehaviorTrait;
-use Joomla\CMS\MVC\Model\WorkflowModelInterface;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\TableInterface;
 use Joomla\CMS\UCM\UCMType;
 use Joomla\CMS\Versioning\VersionableModelTrait;
-use Joomla\CMS\Workflow\Workflow;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 use Joomla\Database\ParameterType;
@@ -607,96 +604,96 @@ class ProductModel extends AdminModel
     	$app 				= Factory::getApplication();
     	$input 				= $app->input;
     	$id 				= $input->get('id', 0);
+    	$subtype			= $input->get('subtype', '');
 
     	$filter_state 		= $app->getUserStateFromRequest( $option.'filter_state', 'filter_state', '', 'word' );
-			$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
-			$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
-			$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-			$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+		$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
+		$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
+		$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+		$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 
-			$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-			$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-			
-			$this->setState('file.ordering', $filter_order);
-			$this->setState('file.direction', $filter_order_Dir);
-			
-			$this->setState('item.ordering', $filter_order);
-			$this->setState('item.direction', $filter_item_order_Dir);
-			
-			$lists['order'] = $filter_order;
-			$lists['order_Dir'] = $filter_order_Dir;
-			$edit = $input->get('edit', 0);
-
-			//other categories
-			$selectedCats = array();
-			if($id){
-				$query = "SELECT * FROM #__mymuse_product_category_xref WHERE product_id=".$id;
-				$this->_db->setQuery($query);
-				$cats =  $this->_db->loadObjectList();
-				if($cats){
-					foreach($cats as $cat){
-						$selectedCats[] = $cat->catid;
-					}
-				}
-			}	
-			
-			$query = "SELECT id,title FROM #__categories WHERE extension='com_mymuse'";
-			$this->_db->setQuery($query);
-			$lists['other_cats'] = $this->_db->loadObjectList();
-			
-			
-			// Items, Attributes, Files
-			$lists['attributes'] 	= array();
-			$lists['attribute_sku'] = array();
-			$lists['items'] 		= array();
-			$lists['files'] 		= array();
+		$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+		$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 		
-			//attributes
-			$subtype				= $input->get('subtype', '');
-			if($this->_item->parentid){
-				//we want the parentid
-				$pid = $this->_item->parentid;
-			}else{
-				$pid = $id;
-			}
-			$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
-				product_parent_id='.$pid.'
-				ORDER BY ordering';
+		$this->setState('file.ordering', $filter_order);
+		$this->setState('file.direction', $filter_order_Dir);
+		
+		$this->setState('item.ordering', $filter_order);
+		$this->setState('item.direction', $filter_item_order_Dir);
+		
+		$lists['order'] = $filter_order;
+		$lists['order_Dir'] = $filter_order_Dir;
+		$edit = $input->get('edit', 0);
 
+		//other categories
+		$selectedCats = array();
+		if($id){
+			$query = "SELECT * FROM #__mymuse_product_category_xref WHERE product_id=".$id;
 			$this->_db->setQuery($query);
-			$lists['attribute_sku'] = $this->_db->loadObjectList();
-
-			// items
-			$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-				AND product_downloadable='1'";
-			if($filter_item_order){
-				$query .= "ORDER BY $filter_item_order ";
+			$cats =  $this->_db->loadObjectList();
+			if($cats){
+				foreach($cats as $cat){
+					$selectedCats[] = $cat->catid;
+				}
 			}
-			if($filter_item_order && $filter_item_order_Dir){
-				$query .= "$filter_item_order_Dir";
-			}
-				
-			$this->_db->setQuery($query);
+		}	
+		
+		$query = "SELECT id,title FROM #__categories WHERE extension='com_mymuse'";
+		$this->_db->setQuery($query);
+		$lists['other_cats'] = $this->_db->loadObjectList();
+		
+		
+		// Items, Attributes, Files
+		$lists['attributes'] 	= array();
+		$lists['attribute_sku'] = array();
+		$lists['items'] 		= array();
+		$lists['files'] 		= array();
+	
+		//attributes
+		if($this->_item->parentid){
+			//we want the parentid
+			$pid = $this->_item->parentid;
+		}else{
+			$pid = $id;
+		}
 
-			if($lists['items'] = $this->_db->loadObjectList()){
+		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
+			product_parent_id='.$pid.'
+			ORDER BY ordering';
+		$this->_db->setQuery($query);
+		$lists['attribute_sku'] = $this->_db->loadObjectList();
 
-				foreach($lists['items'] as $item){
-					foreach($lists['attribute_sku'] as $a_sku){
-						$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
-							AND product_attribute_sku_id='.$a_sku->id;
-					
-						$this->_db->setQuery($query);
-						$item->attributes[$a_sku->name] = $this->_db->loadResult();
-					}
-					$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
+		// items
+		$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
+			AND product_downloadable='1'";
+		if($filter_item_order){
+			$query .= "ORDER BY $filter_item_order ";
+		}
+		if($filter_item_order && $filter_item_order_Dir){
+			$query .= "$filter_item_order_Dir";
+		}
+			
+		$this->_db->setQuery($query);
+
+		if($lists['items'] = $this->_db->loadObjectList()){
+
+			foreach($lists['items'] as $item){
+				foreach($lists['attribute_sku'] as $a_sku){
+					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
+						AND product_attribute_sku_id='.$a_sku->id;
 				
 					$this->_db->setQuery($query);
-					$lists['attributes'][$item->id] = $this->_db->loadObjectList();
-
+					$item->attributes[$a_sku->name] = $this->_db->loadResult();
 				}
-			}
+				$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
+			
+				$this->_db->setQuery($query);
+				$lists['attributes'][$item->id] = $this->_db->loadObjectList();
 
-			return $lists;
+			}
+		}
+
+		return $lists;
     }
     
     /**
@@ -756,6 +753,19 @@ class ProductModel extends AdminModel
 		}
 		for($i = $i++; $i < 9; $i++){
 			$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
+		}
+
+		//for formats
+		$all_formats = $this->_params->get('my_formats');
+
+		for($i = 0; $i < count($all_formats); $i++){ 
+
+			$formats 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FORMAT' ) .' -' ) );
+			foreach ( $all_formats as $format ) {
+					$formats[] = HTMLHelper::_('select.option',  $format->format_key, $format->format_value);
+			}
+			$ff = isset($current[$i]->file_format)? $current[$i]->file_format : '';
+			$lists['formats'][$i] = HTMLHelper::_('select.genericlist',  $formats, "formats[$i]", 'class="inputbox" size="1" ', 'value', 'text', $ff);
 		}
 		
 		// for display purposes
@@ -839,7 +849,7 @@ class ProductModel extends AdminModel
 					$data['alias'] = \JFilterOutput::stringURLSafe($data['title']);
 				}
 
-				$table = Table::getInstance('Content', 'JTable');
+				$table = Table::getInstance('Product', 'JTable');
 
 				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid'])))
 				{

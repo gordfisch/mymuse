@@ -600,7 +600,7 @@ class ProductController extends FormController
         $remove     = JPATH_SITE."/images/";
 
         $dir        = preg_replace("#$remove#", '',$params->get('my_download_dir'));
-        $url        = 'index.php?option=com_media&path=local-0:/'.$dir;
+        $url        = 'index.php?option=com_media&path=local-images:/'.$dir;
 
         $this->setRedirect( $url);
         return;
@@ -617,7 +617,7 @@ class ProductController extends FormController
     {
         $params     = MyMuseHelper::getParams();
         $dir        = preg_replace("#^images/#", '',$params->get('my_preview_dir'));
-        $url        = 'index.php?option=com_media&path=local-0:/'.$dir;
+        $url        = 'index.php?option=com_media&path=local-images:/'.$dir;
 
         $this->setRedirect( $url);
         return;

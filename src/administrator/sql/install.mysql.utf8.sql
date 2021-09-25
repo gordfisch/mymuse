@@ -546,11 +546,13 @@ INSERT IGNORE INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) V
 -- 
 CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) NOT NULL DEFAULT '',
   `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
   `parentid` int(11) unsigned NOT NULL DEFAULT '0',
-  `title` varchar(255) NOT NULL DEFAULT '',
+  `track_parentid` int(11) unsigned NOT NULL DEFAULT '0',
   `product_sku` varchar(64) NOT NULL DEFAULT '',
-  `alias` varchar(255) NOT NULL DEFAULT '',
+  
   `title_alias` varchar(255) DEFAULT NULL,
   `catid` int(11) NOT NULL,
   `artistid` int(11) NOT NULL,

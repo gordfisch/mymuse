@@ -243,6 +243,8 @@ $lists = $this->lists;
                                 </th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_FILE_NAME_LABEL' ); ?>
                                 </th>
+                                <th class="title"><?php echo JText::_("COM_MYMUSE_FORMAT")?>
+								</th>
                                 <th class="title"><?php echo Text::_("COM_MYMUSE_FILE_ALIAS")?>
                                 </th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_FILE_LENGTH_LABEL' ); ?>
@@ -267,6 +269,9 @@ $lists = $this->lists;
                                 <td><?php echo $lists['select_file'][$i]; ?>
                                 </td>
                                 <td><?php echo isset($item->file_name[$i]->file_name)? $item->file_name[$i]->file_name : ''; ?>
+                                </td>
+                                <td>
+                                <?php echo $lists['formats'][$i] ?>
                                 </td>
                                 <td><?php echo isset($item->file_name[$i]->file_alias)? $item->file_name[$i]->file_alias : ''; ?>
                                 </td>

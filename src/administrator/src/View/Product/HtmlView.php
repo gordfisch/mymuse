@@ -305,6 +305,7 @@ class HtmlView extends BaseHtmlView
 			
 		}elseif($subtype == "file" && $parentid){
 			//TRACK
+
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{

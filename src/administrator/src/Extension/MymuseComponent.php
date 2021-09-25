@@ -68,6 +68,7 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 		MyMuseHelper::setParam('storage', $GLOBALS['mymuseStorage']->type);
 		*/
         MymuseHelper::setParam('storage', 'regular');
+
 	}
 
 	/**

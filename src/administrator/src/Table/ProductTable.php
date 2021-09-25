@@ -202,6 +202,12 @@ class ProductTable extends Table implements VersionableTableInterface
 	public function check()
 	{
 		$app = Factory::getApplication();
+
+		if (is_null($this->checked_out))
+		{
+			$this->checked_out = NULL;
+		}
+
 		$this->title = trim($this->title);
 
 		if ($this->title == '') {
@@ -260,70 +266,8 @@ class ProductTable extends Table implements VersionableTableInterface
 		    $this->metadata = '';
         }
         if(!isset($this->product_physical)){
-            $this->product_physical = '0s';
+            $this->product_physical = '0';
         }
-		
-
-
-		//If there is an ordering column and this is a new row then get the next ordering value
-		if (property_exists($this, 'ordering') && $this->id == 0) {
-			$this->ordering = self::getNextOrder();
-		}
-
-		return true;
-	}
-	/*
-	 * Stores a product.
-	 *
-	 * @param   boolean  $updateNulls  True to update fielDIRECTORY_SEPARATOR even if they are null.
-	 *
-	 * @return  boolean  True on success, false on failure.
-	 *
-	 * @since   1.6
-	 */
-	public function store($updateNulls = true)
-	{
-		if (is_null($this->checked_out))
-		{
-			$this->checked_out = 0;
-		}
-
-		$params 		= MyMuseHelper::getParams();
-		$app 			= Factory::getApplication();
-		$input 			= $app->input;
-		$task 			= $input->get('task');
-		$form 			= $input->get('jform', array(), 'ARRAY'); 
-		$select_files 	= $input->get('select_file', '' ,'array');
-		$preview 		= $input->getString('file_preview', '');
-		$current_preview = $input->get('current_preview', $this->file_preview ?? '');
-		$remove_preview = $input->get('remove_preview', '');
-		$date			= Factory::getDate();
-		$user			= Factory::getUser();
-		$db 			= Factory::getDBO();
-
-
-		if ($this->id) {
-			// Existing item
-			$this->modified		= $date->toSQL();
-			$this->modified_by	= $user->get('id');
-			$isNew = 0;
-		} else {
-			// New product.
-			if (!intval($this->created)) {
-				$this->created = $date->toSQL();
-			}
-
-			if (empty($this->created_by)) {
-				$this->created_by = $user->get('id');
-			}
-            if (empty($this->modified_by)) {
-                $this->modified_by = $user->get('id');
-            }
-			if(!isset($this->parentid) || !$this->parentid ){
-				$this->parentid 	= isset($form['parentid'])? $form['parentid'] : '0' ;
-			}
-			$isNew = 1;
-		}
         if (empty($this->product_coming_soon)) {
             $this->product_coming_soon = 0;
         }
@@ -342,12 +286,71 @@ class ProductTable extends Table implements VersionableTableInterface
         if (empty($this->recording)) {
             $this->recording= '';
         }
-        if (empty($this->digital)) {
-            $this->digital = '';
-        }
         if (empty($this->isrc_code)) {
             $this->isrc_code= '';
         }
+		
+		//If there is an ordering column and this is a new row then get the next ordering value
+		if (property_exists($this, 'ordering') && $this->id == 0) {
+			$this->ordering = self::getNextOrder();
+		}
+
+		return true;
+	}
+
+	/*
+	 * Stores a product.
+	 *
+	 * @param   boolean  $updateNulls  True to update fielDIRECTORY_SEPARATOR even if they are null.
+	 *
+	 * @return  boolean  True on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+	public function store($updateNulls = true)
+	{
+		
+
+		$params 		= MyMuseHelper::getParams();
+		$app 			= Factory::getApplication();
+		$input 			= $app->input;
+		$subtype		= $input->get('subtype');
+		$task 			= $input->get('task');
+		$form 			= $input->get('jform', array(), 'array'); 
+		$select_files 	= $input->get('select_file', '' ,'array');
+		$formats 		= $input->get('formats', '' ,'array');
+		$preview 		= $input->getString('file_preview', '');
+		$current_preview = $input->get('current_preview', $this->file_preview ?? '');
+		$remove_preview = $input->get('remove_preview', '');
+		$date			= Factory::getDate();
+		$user			= Factory::getUser();
+		$db 			= Factory::getDBO();
+
+
+		if ($this->id) {
+			// Existing item
+			$this->modified		= $date->toSQL();
+			$this->modified_by	= $user->get('id');
+			$isNew = 0;
+
+		} else {
+			// New product.
+			if (!intval($this->created)) {
+				$this->created = $date->toSQL();
+			}
+
+			if (empty($this->created_by)) {
+				$this->created_by = $user->get('id');
+			}
+            if (empty($this->modified_by)) {
+                $this->modified_by = $user->get('id');
+            }
+			if(!isset($this->parentid) || !$this->parentid ){
+				$this->parentid 	= isset($form['parentid'])? $form['parentid'] : '0' ;
+			}
+			$isNew = 1;
+		}
+        
 
         // for tracks with parentids
         if($this->parentid){
@@ -376,80 +379,159 @@ class ProductTable extends Table implements VersionableTableInterface
 			
 		}
 
+		if($subtype == 'file'){
 
-		//chosen from select dropdown
-		if(is_array( $select_files ) && !$done){
-			
-			for( $i = 0; $i < count($select_files); $i++ ){
-				//rename if necessary
-				$select_file = $select_files[$i];
-				if($select_file &&  $select_file != @$current_files[$i]->file_name){
-					
-					
-					// tidy up name and copy it to the download dir
-					$ext = MyMuseHelper::getExt($select_file);
-					$name = preg_replace("/$ext$/","",$select_file);
-					if($params->get('my_use_string_url_safe')){
-						$file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
-					}else{
-						$file_name = $select_file;
-					}
-				
-					$my_download_path = $download_path;
+			if(!isset($form['file_type']) || $form['file_type'] == ''){
+				$form['file_type'] = 'audio';
+			}
 
-					if($params->get('my_download_dir_format', 0)){
-						$my_download_path .= $ext.DIRECTORY_SEPARATOR;
-					}
+			// Preview from select box
+			if(isset($preview) && $preview && $preview != $current_preview){
+				if($this->parentid){
+					$path = MyMuseHelper::getSitePath($this->parentid, 1);
+				}elseif ($this->id){
+					$path = MyMuseHelper::getSitePath($this->id, 0);
+				}
 
-					$new_file = $my_download_path.$file_name;
-					$old_file = $my_download_path.$select_file;
+				$new = 1;
 
-					if($old_file != $new_file){
-						//echo "old = $old_file new = $new_file <br />"; 
+				$ext = MyMuseHelper::getExt($preview);
+				$name = preg_replace("/\.$ext$/","",$preview);
+				if($params->get('my_use_string_url_safe')){
+					$file_preview_name = ApplicationHelper::stringURLSafe($name).'.'.$ext;
+				}else{
+					$file_preview_name = $preview;
+				}
+
+
+				$old_file = $path.$preview;
+				$new_file = $path.$file_preview_name;
+
+				if($old_file != $new_file){
+
+					if($this->storage->fileExists($old_file)){
 						if(!$this->storage->fileCopy($old_file, $new_file)){
 							return false;
 						}
 						if(!$this->storage->fileDelete($old_file)){
 							return false;
 						}
+
 					}
-					$file_length = $this->storage->fileFilesize($new_file);
+				}
+				$this->file_preview = $file_preview_name;
+			}else{
+				$this->file_preview = isset($current_preview)? $current_preview : '';
+			}//if preview
 
+			if($remove_preview){
+				$this->file_preview = '';
+			}
 
-					$track_time = ($form['file_time'])? $form['file_time']: '';
-
-					if(isset($new_file) && is_file($new_file)
-							&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"
-							&& !$track_time){
-						$m = new Mp3fileHelper($new_file);
-
-						$a = $m->get_metadata();
-						if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
-							$track_time = $a["Length mm:ss"];
+			//if select_files
+			if(is_array( $select_files ) && !$done){
+				
+				for( $i = 0; $i < count($select_files); $i++ ){
+					//rename if necessary
+					$select_file = $select_files[$i];
+					if($select_file &&  $select_file != @$current_file[$i]->file_name){
+						
+						// tidy up name and copy it to the download dir
+						$ext = MyMuseHelper::getExt($select_file);
+						$name = preg_replace("/$ext$/","",$select_file);
+						if($params->get('my_use_string_url_safe')){
+							$file_name = ApplicationHelper::stringURLSafe($name).'.'.$ext;
+						}else{
+							$file_name = $select_file;
 						}
-					}
+					
+						$my_download_path = $download_path;
 
-					$file_downloads = isset($current[$i]->file_downloads)? $current[$i]->file_downloads: "0";
-					//  save this to the file_name
-					$current_files[$i] = array(
+						if($params->get('my_download_dir_format', 0)){
+							$my_download_path .= $ext.DIRECTORY_SEPARATOR;
+						}
+
+						$new_file = $my_download_path.$file_name;
+						$old_file = $my_download_path.$select_file;
+
+						if($old_file != $new_file){
+							//echo "old = $old_file new = $new_file <br />"; 
+							if(!$this->storage->fileCopy($old_file, $new_file)){
+								return false;
+							}
+							if(!$this->storage->fileDelete($old_file)){
+								return false;
+							}
+						}
+						$file_length = $this->storage->fileFilesize($new_file);
+
+
+						if(!isset($track_time)){
+							$track_time = (isset($form['file_time']))? $form['file_time']: '';
+						}
+						
+
+
+						if(isset($new_file) && is_file($new_file)
+								&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"
+								&& !$track_time){
+							$m = new Mp3fileHelper($new_file);
+
+							$a = $m->get_metadata();
+							if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
+								$track_time = $a["Length mm:ss"];
+							}
+						}
+
+						$file_downloads = isset($current[$i]->file_downloads)? $current[$i]->file_downloads: "0";
+
+						
+						//  save this to the digital field
+						$digital = array(
 							'file_name' => $file_name,
 							'file_length' => $file_length,
 							'file_ext' => $ext,
 							'file_downloads'=> $file_downloads,
-							'file_time' => $track_time
-					);
-				}
-			}
-
-			$this->digital= json_encode($current_files);
-		}
+							'file_time' => $track_time,
+							'file_type' => $form['file_type'],
+							'file_format' => $formats[$i]
+						);
+						$registry = new Registry($digital );
+						$this->digital = (string) $registry;
+						if($i == 0){
+							//make this the parent track
+							$this->track_parentid = 0;
+							$result = parent::store($updateNulls);
+							if(!$result){
+								$this->setError('Could not save parent track');
+				                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK' ), 'error');
+								return false;
+							}
+							$track_parent_id = $this->id;
+						}else{
+							unset($this->id);
+							$this->featured = 0;
+							$this->track_parentid = $track_parentid;
+							$result = parent::store($updateNulls);
+							if(!$result){
+								$this->setError('Could not save child track');
+				                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK' ), 'error');
+								return false;
+							}
+						}
+					}//if not = current
+				}//for each select_files
+			}//if select files
+			$this->id = $track_parentid;
+			return true;
+		} //if subtype = file
 
 		//all files
 		if(isset($form['product_allfiles']) && $form['product_allfiles']){
 
 			$this->product_allfiles = 1;
 			for($p = 0; $p < count($params->get('my_formats')); $p++){
-				$file_name = FilterOutput::stringURLSafe($this->alias."-full-release-". $params->get('my_formats')[$p]);
+				$file_name = ApplicationHelper::stringURLSafe($this->alias."-full-release-". $params->get('my_formats')[$p]);
 				$current_files[$p] = array(
 							'file_name' => $file_name,
 							'file_length' => '',
@@ -465,47 +547,7 @@ class ProductTable extends Table implements VersionableTableInterface
 
 
 
-		// Preview from select box
-		if(isset($preview) && $preview && $preview != $current_preview){
-			if($this->parentid){
-				$path = MyMuseHelper::getSitePath($this->parentid, 1);
-			}elseif ($this->id){
-				$path = MyMuseHelper::getSitePath($this->id, 0);
-			}
 
-			$new = 1;
-
-			$ext = MyMuseHelper::getExt($preview);
-			$name = preg_replace("/\.$ext$/","",$preview);
-			if($params->get('my_use_string_url_safe')){
-				$file_preview_name = FilterOutput::stringURLSafe($name).'.'.$ext;
-			}else{
-				$file_preview_name = $preview;
-			}
-
-
-			$old_file = $path.$preview;
-			$new_file = $path.$file_preview_name;
-
-			if($old_file != $new_file){
-
-				if($this->storage->fileExists($old_file)){
-					if(!$this->storage->fileCopy($old_file, $new_file)){
-						return false;
-					}
-					if(!$this->storage->fileDelete($old_file)){
-						return false;
-					}
-
-				}
-			}
-			$this->file_preview = $file_preview_name;
-		}else{
-			$this->file_preview = isset($current_preview)? $current_preview : '';
-		}
-		if($remove_preview){
-			$this->file_preview = '';
-		}
 
 		//$this->checkin();
 

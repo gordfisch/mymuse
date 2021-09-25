@@ -112,10 +112,10 @@ $this->vote 		= false;
 							<th scope="col" class="w-1 text-center">
 								<?php echo HtmlHelper::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 							</th>
-							<th scope="col" style="min-width:100px">
+							<th scope="col" class="w-10 d-none d-md-table-cell">
 								<?php echo HtmlHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 							</th>
-							<th scope="col" class="w-10 d-none d-md-table-cell">
+							<th scope="col" class="w-3 d-none d-md-table-cell">
 								<?php echo HtmlHelper::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 							</th>
 
@@ -129,11 +129,13 @@ $this->vote 		= false;
 								</th>
 							<?php } ?>
 							<?php if (Multilanguage::isEnabled()) : ?>
-								<th scope="col" class="w-10 d-none d-md-table-cell">
+								<th scope="col" class="w-3 d-none d-md-table-cell">
 									<?php echo HtmlHelper::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 								</th>
 							<?php endif; ?>
-
+							<th scope="col" class="w-3 d-none d-md-table-cell">
+								<?php echo Text::_('COM_MYMUSE_FORMAT');?>
+							</th>
 							<th scope="col" class="w-10 d-none d-md-table-cell">
 								<?php echo Text::_('COM_MYMUSE_FILE_NAME_LABEL');?>
 							</th>
@@ -163,8 +165,9 @@ $this->vote 		= false;
 					for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
 					{
 						$track = &$this->tracks[$i];
+						$track->digital = json_decode($track->digital);
 						$track->max_ordering = 0;
-						if($track->product_downloadable == "1"){
+						if($track->product_allfiles == "1"){
 							$link 	= Route::_('index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $track->id.'&parentid='.$track->parentid);
 						}else{
 							$link 	= Route::_('index.php?option=com_mymuse&task=product.editfile&type=file&id='. $track->id.'&parentid='.$track->parentid);
@@ -176,7 +179,7 @@ $this->vote 		= false;
 						$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$track->id) && $track->created_by == $userId;
 						$canChange	= $user->authorise('core.edit.state',	'com_mymuse.product.'.$track->id) && $canCheckin;
 
-MymuseHelper::print_pre(json_decode($track->digital));
+MymuseHelper::print_pre($track->digital);
 
 						?>
 
@@ -205,28 +208,30 @@ MymuseHelper::print_pre(json_decode($track->digital));
 								<?php endif; ?>
 							</td>
 							<td class="text-center d-none d-md-table-cell">
-								<?php
-									$options = [
-										'disabled' => $workflow_featured || !$canChange
-									];
+								<?php 
+								if(!$track->track_parentid) :
+									echo HTMLHelper::_('mymuseadministrator.featured', $track->featured, $i, $canChange); 
+								endif;
 
-									echo (new FeaturedButton)
-										->render((int) $track->featured, $i, $options, 0, 0);
-										//$track->featured_up, $track->featured_down
 								?>
 							</td>
 							<td class="product-status text-center">
 							<?php
+							if(!$track->track_parentid) :
 								$options = [
 									'task_prefix' => 'products.',
-									'disabled' => $workflow_state || !$canChange
+									'disabled' => $workflow_state || !$canChange,
+									'id' => 'state-' . $track->id
 								];
 
 								echo (new PublishedButton)->render((int) $track->state, $i, $options, $track->publish_up, $track->publish_down);
+							endif;
 							?>
 							</td>
 							<th scope="row" class="has-context">
 								<div class="break-word">
+								<?php if(!$track->track_parentid) : ?>
+
 									<?php if ($track->checked_out) : ?>
 										<?php echo HtmlHelper::_('jgrid.checkedout', $i, $track->editor, $track->checked_out_time, 'products.', $canCheckin); ?>
 									<?php endif; ?>
@@ -248,6 +253,7 @@ MymuseHelper::print_pre(json_decode($track->digital));
 										<?php echo Text::_("MYMUSE_ALL_TRACKS"); ?>
 										</div>
 									 <?php endif; ?>
+								<?php endif ?>
 
 								</div>
 							</th>
@@ -264,12 +270,19 @@ MymuseHelper::print_pre(json_decode($track->digital));
 									<?php echo LayoutHelper::render('joomla.content.language', $track); ?>
 								</td>
 							<?php endif; ?>
+							<td class="track-format text-center">
+								<?php
+								//foreach($files as $file){
+									echo stripslashes($track->digital->file_format)."<br />";
+								//}
+								?>
 
+							</td>
 
 							<td class="track-file-name text-center">
 								<?php
 								//foreach($files as $file){
-									echo stripslashes($track->file_name)."<br />";
+									echo stripslashes($track->digital->file_name)."<br />";
 								//}
 								?>
 
@@ -277,14 +290,14 @@ MymuseHelper::print_pre(json_decode($track->digital));
 							<td class="track-file-downloads text-center">
 								<?php
 								//foreach($files as $file){
-									echo stripslashes($track->file_downloads)."<br />";
+									echo stripslashes($track->digital->file_downloads)."<br />";
 								//}
 								?>
 							</td>
 							<td class="track-file-length text-center">
 								<?php
 								//foreach($files as $file){
-									echo MyMuseHelper::ByteSize($track->file_length)."<br />";
+									echo MyMuseHelper::ByteSize($track->digital->file_length)."<br />";
 								//}
 								?>
 							</td>

@@ -28,5 +28,6 @@ if (version_compare(PHP_VERSION, JOOMLA_MINIMUM_PHP, '<'))
  */
 define('_JEXEC', 1);
 
+
 // Run the application - All executable code should be triggered through this file
 require_once dirname(__FILE__) . '/includes/app.php';

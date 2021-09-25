@@ -255,8 +255,9 @@ class ProductsModel extends ListModel
 			$query->where("a.featured = '" . $featured."'");
 		}
 
-		// Filter by parentid.
-		if ($parentid = $this->getState('filter.parentid')) {
+		// Filter by parentid. Default is parentid = 0
+		if ( $parentid = $this->getState('filter.parentid', 'default') ) {
+			if($parentid == 'default'){ $parentid = 0; }
 			$query->where("a.parentid = '" . $parentid."'");
 		}
 
@@ -350,7 +351,7 @@ class ProductsModel extends ListModel
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
 
-        //echo($query->__toString()); //exit;
+        echo($query->__toString()); //exit;
 		return $query;
 	}
 

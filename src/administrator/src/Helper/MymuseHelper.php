@@ -214,9 +214,9 @@ class MymuseHelper extends ContentHelper
 	public static function getParams($store=0, $new = 0)
 	{
 		if(!self::$_params || $new){
+			$db = Factory::getDbo();
 
 			if(!$store){
-				$db = Factory::getDbo();
 				$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 				$db->setQuery($query);
 				$store = $db->loadObject();
@@ -228,7 +228,23 @@ class MymuseHelper extends ContentHelper
 			//get component params
 			$cparams = ComponentHelper::getParams( 'com_mymuse' );
 			$params->merge( $cparams );
-			//$params->set('my_formats', 'mp3') ;
+			$my_formats = $params->get('my_formats');
+			if(isset($my_formats[0])){
+				$f_array = [];
+				foreach($my_formats as $f){
+					$f_array[] = $f;
+				}
+				$IN = implode(",",$f_array);
+				$query = "SELECT * from `#__mymuse_format` WHERE id IN ($IN)";
+				$db->setQuery($query);
+				$formats = $db->loadObjectList();
+				$params->set('my_formats', $formats) ;
+
+			}else{
+				$params->set('my_formats', ['id'=> 1, 'format_key'=> 'mp3', 'format_value' => 'MP3', 'ordering' => 1]) ;
+			}
+			
+
 			//merge app params includes menu
 			$app            = Factory::getApplication();
 			if($app->isClient('site')){
