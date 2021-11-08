@@ -314,11 +314,13 @@ class ProductTable extends Table implements VersionableTableInterface
 		$params 		= MyMuseHelper::getParams();
 		$app 			= Factory::getApplication();
 		$input 			= $app->input;
+
 		$subtype		= $input->get('subtype');
 		$task 			= $input->get('task');
 		$form 			= $input->get('jform', array(), 'array'); 
 		$select_files 	= $input->get('select_file', '' ,'array');
 		$formats 		= $input->get('formats', '' ,'array');
+		$format_ids 	= $input->get('format_id', '' ,'array');
 		$preview 		= $input->getString('file_preview', '');
 		$current_preview = $input->get('current_preview', $this->file_preview ?? '');
 		$remove_preview = $input->get('remove_preview', '');
@@ -326,7 +328,15 @@ class ProductTable extends Table implements VersionableTableInterface
 		$user			= Factory::getUser();
 		$db 			= Factory::getDBO();
 
-
+		//removing one of the track formats
+		if($task == 'deletevariation'){
+			$variationid = $input->get('variation','');
+			if($this->delete($variationid)){
+				return true;
+			}else{
+				return false;
+			}
+		}
 		if ($this->id) {
 			// Existing item
 			$this->modified		= $date->toSQL();
@@ -359,25 +369,7 @@ class ProductTable extends Table implements VersionableTableInterface
 
  		$done = 0;
 
-		//removing one of the variations
-		if($task == 'deletevariation'){
-			$variationid = $input->get('variation','');
-			
-			$new_current = array();
-			$new_select = array();
-					
-			for( $i = 0; $i < count($select_files); $i++ ){
-				if($i != $variationid && isset($current_files[$i]) && $select_files[$i]){
-					$new_select[] = $select_files[$i];
-					$new_current[] = $current_files[$i];
-				}
-			}
-			$select_files = $new_select;
-			$current_files = $new_current;
-			$this->digital= json_encode($current_files);
-			$done = 1;
-			
-		}
+		
 
 		if($subtype == 'file'){
 
@@ -428,14 +420,48 @@ class ProductTable extends Table implements VersionableTableInterface
 				$this->file_preview = '';
 			}
 
-			//if select_files
+
+			//if select_files we have formats
 			if(is_array( $select_files ) && !$done){
-				
+
+				//do we have a track entry yet?
+				if(!$this->id){
+					//make a parent track
+					$this->track_parentid = 0;
+					$result = parent::store($updateNulls);
+					if(!$result){
+						$this->setError(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK'));
+		                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK'), 'error');
+						return false;
+					}
+				}else{
+					//update current track
+					$result = parent::store($updateNulls);
+					if(!$result){
+						$this->setError(Text::_('COM_MYMUSE_COULD_NOT_UPDATE_PARENT_TRACK'));
+		                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SUPDATE_PARENT_TRACK'), 'error');
+						return false;
+					}
+				}
+
+				//process track formats
+				$track_parentid = $this->id;
 				for( $i = 0; $i < count($select_files); $i++ ){
 					//rename if necessary
+					
 					$select_file = $select_files[$i];
-					if($select_file &&  $select_file != @$current_file[$i]->file_name){
-						
+
+					if($select_file){
+						//get current is exists
+						$current = array();
+						if(isset($format_ids[$i])){
+							$query = "SELECT digital FROM #__mymuse_product WHERE id='".$format_ids[$i]."'";
+							$db->setQuery($query);
+							$current = $db->loadResult();
+							$this->id = $format_ids[$i];
+						}else{
+							unset($this->id);
+						}
 						// tidy up name and copy it to the download dir
 						$ext = MyMuseHelper::getExt($select_file);
 						$name = preg_replace("/$ext$/","",$select_file);
@@ -469,7 +495,7 @@ class ProductTable extends Table implements VersionableTableInterface
 						if(!isset($track_time)){
 							$track_time = (isset($form['file_time']))? $form['file_time']: '';
 						}
-						
+						$this->id = isset($format_ids[$i])? $format_ids[$i] : '';
 
 
 						if(isset($new_file) && is_file($new_file)
@@ -483,7 +509,7 @@ class ProductTable extends Table implements VersionableTableInterface
 							}
 						}
 
-						$file_downloads = isset($current[$i]->file_downloads)? $current[$i]->file_downloads: "0";
+						$file_downloads = isset($current[$i]->file_downloads)? $current->file_downloads: "0";
 
 						
 						//  save this to the digital field
@@ -496,33 +522,24 @@ class ProductTable extends Table implements VersionableTableInterface
 							'file_type' => $form['file_type'],
 							'file_format' => $formats[$i]
 						);
+
+
 						$registry = new Registry($digital );
 						$this->digital = (string) $registry;
-						if($i == 0){
-							//make this the parent track
-							$this->track_parentid = 0;
-							$result = parent::store($updateNulls);
-							if(!$result){
-								$this->setError('Could not save parent track');
-				                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK' ), 'error');
-								return false;
-							}
-							$track_parent_id = $this->id;
-						}else{
-							unset($this->id);
-							$this->featured = 0;
-							$this->track_parentid = $track_parentid;
-							$result = parent::store($updateNulls);
-							if(!$result){
-								$this->setError('Could not save child track');
-				                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK' ), 'error');
-								return false;
-							}
+						$this->featured = 0;
+						$this->track_parentid = $track_parentid;
+						$result = parent::store($updateNulls);
+						if(!$result){
+							$this->setError(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK'));
+			                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK'), 'error');
+							return false;
 						}
-					}//if not = current
+
+					}//if select file
 				}//for each select_files
-			}//if select files
-			$this->id = $track_parentid;
+				$this->id = $track_parentid;
+			}//if is array select files
+		
 			return true;
 		} //if subtype = file
 
@@ -545,12 +562,7 @@ class ProductTable extends Table implements VersionableTableInterface
 			$this->file_type = "audio";
 		}
 
-
-
-
-
-		//$this->checkin();
-
+		//store the product
 		$result = parent::store($updateNulls);
 
 		if($result){

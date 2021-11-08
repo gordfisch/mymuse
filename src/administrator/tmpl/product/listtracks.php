@@ -89,7 +89,7 @@ $this->vote 		= false;
 				</div>
 				<div id="jp-title-li"></div>
 
-
+<?php //MymuseHelper::print_pre($this->tracks[0]->formats); ?>
 
 				<table class="table itemList" id="trackList">
 					<caption id="captionTable" class="sr-only">
@@ -105,6 +105,9 @@ $this->vote 		= false;
 							</td>
 							<th scope="col" class="w-1 text-center d-none d-md-table-cell">
 								<?php echo HtmlHelper::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'fas fa-sort'); ?>
+							</th>
+							<th scope="col" class="w-3 d-none d-lg-table-cell">
+								<?php echo HtmlHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 							</th>
 							<th scope="col" class="w-1 text-center d-none d-md-table-cell">
 								<?php echo HtmlHelper::_('searchtools.sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder); ?>
@@ -149,9 +152,7 @@ $this->vote 		= false;
 								<?php echo Text::_('COM_MYMUSE_PREVIEW_NAME');?>
 							</th>
 
-							<th scope="col" class="w-3 d-none d-lg-table-cell">
-								<?php echo HtmlHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
-							</th>
+							
 						</tr>
 					</thead>
 
@@ -165,7 +166,6 @@ $this->vote 		= false;
 					for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
 					{
 						$track = &$this->tracks[$i];
-						$track->digital = json_decode($track->digital);
 						$track->max_ordering = 0;
 						if($track->product_allfiles == "1"){
 							$link 	= Route::_('index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $track->id.'&parentid='.$track->parentid);
@@ -178,8 +178,6 @@ $this->vote 		= false;
 						$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $track->checked_out == $userId || is_null($track->checked_out);
 						$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$track->id) && $track->created_by == $userId;
 						$canChange	= $user->authorise('core.edit.state',	'com_mymuse.product.'.$track->id) && $canCheckin;
-
-MymuseHelper::print_pre($track->digital);
 
 						?>
 
@@ -207,6 +205,9 @@ MymuseHelper::print_pre($track->digital);
 									<input type="text" name="order[]" size="5" value="<?php echo $track->ordering; ?>" class="width-20 text-area-order hidden">
 								<?php endif; ?>
 							</td>
+							<td class="d-none d-lg-table-cell">
+								<?php echo (int) $track->id; ?>
+							</td>
 							<td class="text-center d-none d-md-table-cell">
 								<?php 
 								if(!$track->track_parentid) :
@@ -228,7 +229,7 @@ MymuseHelper::print_pre($track->digital);
 							endif;
 							?>
 							</td>
-							<th scope="row" class="has-context">
+							<td scope="row" class="has-context">
 								<div class="break-word">
 								<?php if(!$track->track_parentid) : ?>
 
@@ -256,7 +257,7 @@ MymuseHelper::print_pre($track->digital);
 								<?php endif ?>
 
 								</div>
-							</th>
+							</td>
 							<td class="small d-none d-md-table-cell">
 								<?php echo $this->escape($track->access_level); ?>
 							</td>
@@ -272,45 +273,43 @@ MymuseHelper::print_pre($track->digital);
 							<?php endif; ?>
 							<td class="track-format text-center">
 								<?php
-								//foreach($files as $file){
-									echo stripslashes($track->digital->file_format)."<br />";
-								//}
+								foreach($track->formats as $f){
+									echo stripslashes($f->file_data->file_format)."<br />";
+								}
 								?>
 
 							</td>
 
 							<td class="track-file-name text-center">
 								<?php
-								//foreach($files as $file){
-									echo stripslashes($track->digital->file_name)."<br />";
-								//}
+								foreach($track->formats as $f){
+									echo stripslashes($f->file_data->file_name)."<br />";
+								}
 								?>
 
 							</td>
 							<td class="track-file-downloads text-center">
 								<?php
-								//foreach($files as $file){
-									echo stripslashes($track->digital->file_downloads)."<br />";
-								//}
+								foreach($track->formats as $f){
+									echo stripslashes($f->file_data->file_downloads)."<br />";
+								}
 								?>
 							</td>
 							<td class="track-file-length text-center">
 								<?php
-								//foreach($files as $file){
-									echo MyMuseHelper::ByteSize($track->digital->file_length)."<br />";
-								//}
+								foreach($track->formats as $f){
+									echo MyMuseHelper::ByteSize($f->file_data->file_length)."<br />";
+								}
 								?>
 							</td>
 
-							<<td class="track-file-preview text-center">
+							<td class="track-file-preview text-center">
 								<?php echo htmlspecialchars($track->file_preview, ENT_QUOTES);
 								?>
 							</td>
 
 
-							<td class="d-none d-lg-table-cell">
-								<?php echo (int) $track->id; ?>
-							</td>
+							
 						</tr>
 						<?php
 						$k = 1 - $k;

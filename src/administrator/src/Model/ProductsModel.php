@@ -163,6 +163,9 @@ class ProductsModel extends ListModel
         $parentid = $this->getUserStateFromRequest($this->context . '.filter.parentid', 'filter_parentid');
         $this->setState('filter.parentid', $parentid);
 
+        $trackparentid = $this->getUserStateFromRequest($this->context . '.filter.trackparentid', 'filter_trackparentid');
+        $this->setState('filter.trackparentid', $trackparentid);
+
 		$formSubmited = $app->input->post->get('form_submited');
 
 		$access     = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
@@ -261,6 +264,12 @@ class ProductsModel extends ListModel
 			$query->where("a.parentid = '" . $parentid."'");
 		}
 
+		// Filter by trackparentid. Default is trackparentid = 0
+		if ( $trackparentid = $this->getState('filter.trackparentid', 'default') ) {
+			if($trackparentid == 'default'){ $trackparentid = 0; }
+			$query->where("a.track_parentid = '" . $trackparentid."'");
+		}
+
 		// Join over the categories.
 		$query->select('c.title AS category_title');
 		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
@@ -351,7 +360,7 @@ class ProductsModel extends ListModel
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
 
-        echo($query->__toString()); //exit;
+        //echo($query->__toString()); //exit;
 		return $query;
 	}
 

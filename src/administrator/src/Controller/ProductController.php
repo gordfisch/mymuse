@@ -162,7 +162,11 @@ class ProductController extends FormController
 		if($subtype == "file" || $subtype == "allfiles"){
 	
 			if ($model->save($form)) {
-
+                if(!$this->id){
+                    $item = $model->getItem();
+                    $this->id = $item->id;
+                }
+                
 				switch ($task )
 				{
 				case 'apply_allfiles':
@@ -182,7 +186,7 @@ class ProductController extends FormController
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.editfile&id='. $this->id.'&subtype='.$post['subtype'] );
 					break;
 				case 'deletevariation':
-                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_CHANGES_TO_FILE_SAVED' ), 'notice');
+                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_FORMAT_DELETED' ), 'notice');
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.editfile&id='. $this->id.'&subtype='.$post['subtype'] );
 					break;
 				case 'savefile':

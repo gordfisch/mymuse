@@ -1,0 +1,50 @@
+Array
+(
+    [jform] => Array
+        (
+            [id] => 0
+            [title] => Are You My Sister Song
+            [file_type] => audio
+            [alias] => 
+            [product_sku] => 
+            [ordering] => 0
+            [price] => 0.00
+            [product_discount] => 0.00
+            [state] => 1
+            [access] => 1
+            [featured] => 0
+            [language] => *
+            [isrc_code] => 
+            [articletext] => 
+            [file_preview] => 
+            [parentid] => 1
+            [catid] => 8
+            [artistid] => 11
+            [version] => 
+            [product_downloadable] => 1
+        )
+
+    [select_file] => Array
+        (
+            [0] => are-you-my-sister.mp3
+            [1] => are-you-my-sister.wav
+        )
+
+    [formats] => Array
+        (
+            [0] => mp3
+            [1] => wav
+        )
+
+    [file_preview] => 
+    [parentid] => 1
+    [current_preview] => 
+    [view] => product
+    [id] => 
+    [subtype] => file
+    [layout] => editfile
+    [option] => com_mymuse
+    [task] => product.applyfile
+    [variation] => 
+    [835d6049fc0ae4c37b70fee7a03c8d92] => 1
+)

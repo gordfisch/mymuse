@@ -102,6 +102,12 @@ class ProductModel extends AdminModel
 	 * @since	1.6
 	 */
 	protected $_tracks = null;
+
+	/**
+	 * @var		array of product(format) objects
+	 * @since	1.6
+	 */
+	protected $_formats = null;
 	
 	/**
 	 * @var		array of product(item) objects
@@ -367,8 +373,10 @@ class ProductModel extends AdminModel
 				$pk = 0;
                 $id = 0;
 				$input->set('id',0);
+				
 			}
 			
+
 			if ($item = parent::getItem($pk)) {
 
 
@@ -403,9 +411,7 @@ class ProductModel extends AdminModel
                 if($parentid && $parentid != $id){
                     $item->parentid = $parentid;
                 }
-				if($task == "new_allfiles"){
-					$item->product_allfiles = "1";
-				}
+				
 
 				if($item->parentid){
 					$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
@@ -413,6 +419,8 @@ class ProductModel extends AdminModel
 					$this->_parent = $this->_db->loadObject();
 					$item->parent = $this->_parent;
 					$item->catid = $item->parent->catid;
+					$item->artistid = $item->parent->artistid;
+
 				}else{
 					//set the parent id for the tracks and items
 					//$mainframe = Factory::getApplication();
@@ -420,7 +428,12 @@ class ProductModel extends AdminModel
 				}
 				$item->flash_type = '';
 
-
+				if($task == "addfile" || $task == "new_allfiles"){
+					$item->downloadable = 1;
+				}
+				if($task == "new_allfiles"){
+					$item->product_allfiles = "1";
+				}
 				
 				
 			}
@@ -453,10 +466,7 @@ class ProductModel extends AdminModel
 
     	$limit 				= $this->getState('list.limit');
     	$id 				= $input->get('id');
-    	
-		
-    	$root = JPATH_ROOT;
-  
+
     	if ($this->_tracks === null && $product = $this->getItem()) {
 
 	      	$model = ListModel::getInstance('Products', 'MyMuse', array('ignore_request' => true));
@@ -493,7 +503,9 @@ class ProductModel extends AdminModel
     		else {
     			$this->_tracks =array();
     		}
-    
+    		foreach($this->_tracks as $track){
+    			$track->formats = $this->getFormats($track->id);
+    		}
     		$this->_trackPagination = $model->getPagination();
     	}
 
@@ -501,6 +513,77 @@ class ProductModel extends AdminModel
     	return $this->_tracks;
     }
 
+ /**
+   * Get the formats for the track
+   *
+   * @return	mixed	An array of formats or false if an error occurs.
+   * @since	1.5
+  */
+  function getFormats($id)
+  {
+
+    	$app 				= Factory::getApplication();
+    	$input 				= $app->input;
+    	if(isset($this->_parent->id)){
+    		$parentid = $this->_parent->id;
+    	}else{
+    		$parentid = $this->_item->id;
+    	}
+    	
+    	$option 			= $input->get('option','com_mymuse');
+    	$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+    	$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+    	$this->setState('file.ordering', $filter_order);
+    	$this->setState('file.direction', $filter_order_Dir);
+    	$this->setState('list.ordering', $filter_order);
+    	$this->setState('list.direction', $filter_order_Dir);
+
+    	$limit 				= $this->getState('list.limit');
+  
+    	if ($this->_formats === null && $track = $this->getItem()) {
+
+	      	$model = ListModel::getInstance('Products', 'MyMuse', array('ignore_request' => true));
+	      	$form = $model->getFilterForm(array(), true);
+	      	$form->removeField('stage', 'filter');
+	      	$form->removeField('category_id', 'filter');
+	      	$form->removeField('artist_id', 'filter');
+	      	$form->removeField('language', 'filter');
+	      	$form->removeField('author_id', 'filter');
+	      	$this->filterForm = $form;
+
+			$model->setState('filter.published', $this->getState('filter.published'));
+	   		$model->setState('filter.access', $this->getState('filter.access'));
+	   		$model->setState('filter.language', $this->getState('filter.language'));
+	   		$model->setState('list.ordering', $this->getState('item.ordering'));
+	   		$model->setState('list.start', $this->getState('list.start'));
+	   		$model->setState('list.limit', $limit);
+	   		$model->setState('list.direction', $this->getState('item.direction'));
+	   		$model->setState('list.filter', $this->getState('list.filter'));
+	   		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
+	   		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
+	   		$model->setState('list.links', $this->getState('list.links'));
+			$model->setState('filter.parentid', $parentid);
+	   		$model->setState('filter.trackparentid', $id);
+    		$model->setState('filter.downloadable', 1);
+
+    		if ($limit >= 0) {
+    			$this->_formats = $model->getItems();
+
+    			if ($this->_formats  === false) {
+    				$this->setError($model->getError());
+    			}
+    			foreach($this->_formats as $f){
+    				$f->file_data = json_decode($f->digital);
+    			}
+    		}
+    		else {
+    			$this->_formats =array();
+    		}
+    
+    	}
+
+    	return $this->_formats;
+    }
     /**
     * Get the items for the product
     *
@@ -517,8 +600,6 @@ class ProductModel extends AdminModel
    	$this->_params = $this->getState()->get('params');
    	$limit = $this->getState('list.limit');
    	$id = $input->get('id');
-
-   	$root = JPATH_ROOT.DIRECTORY_SEPARATOR;
    
    	if ($this->_items === null && $product = $this->getItem()) {
    
@@ -637,7 +718,7 @@ class ProductModel extends AdminModel
 				}
 			}
 		}	
-		
+
 		$query = "SELECT id,title FROM #__categories WHERE extension='com_mymuse'";
 		$this->_db->setQuery($query);
 		$lists['other_cats'] = $this->_db->loadObjectList();
@@ -708,7 +789,13 @@ class ProductModel extends AdminModel
     {
 
     	$input = Factory::getApplication()->input;
+    	$task = $input->get('task');
+    	$id = $input->get('id');
+
         $parentid= $input->get('parentid','');
+        if(!$parentid){
+        	$parentid = $this->_item->parentid;
+        }
 
  		// file lists for albums
  		$artist_alias = MyMuseHelper::getArtistAlias($parentid,1);
@@ -719,20 +806,19 @@ class ProductModel extends AdminModel
 		$download_path = MyMuseHelper::getdownloadPath($parentid,1);
 		$application = Factory::getApplication();
 
+		//get previews
 		$files = array();
-
 		$files = MymuseStorage::listFilesPreviews($site_path);
 		$previews 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
 		foreach ( $files as $file ) {
 				$previews[] = HTMLHelper::_('select.option',  $file );
 		}
-        $this->_item->file_preview  = isset($this->_item->file_preview) ? $this->_item->file_preview: '';
+        $this->_item->file_preview  = isset($this->_item->file_preview) ? $this->_item->file_preview : '';
 		$lists['previews'] = HTMLHelper::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
 
 		
 		
 		// get the download tracks lists
-		$files = array();
 		$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
 		$files = MymuseStorage::listFilesDownloads($directory);
 
@@ -740,11 +826,22 @@ class ProductModel extends AdminModel
 		foreach($files as $file){
 				$myfiles[] = HTMLHelper::_('select.option',  $file, stripslashes($file) );
 		}
-        $this->_item->file_name  = isset($$this->_item->file_name) ? $this->_item->file_name: '';
-		$current = $this->_item->file_name;
+		$current = array();
+		if($task == "editfile"){
+			
+
+			$formats = $this->getFormats($id);
+			
+			foreach($formats as $key => $f){
+				$current[] = json_decode($f->digital);
+			}
+
+
+		}
+	
 
 		$i = 0;
-		if($current){
+		if(count($current) > 0){
 			for($i = 0; $i < count($current); $i++){
 				$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file_name);
 			}

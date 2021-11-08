@@ -117,30 +117,6 @@ class HtmlView extends BaseHtmlView
 		//setlayout
 		$this->layout 	= $this->input->get('layout', 'edit');
 		
-		//listtracks
-		if($this->layout == "listtracks"){
-			$this->tracks 		= $this->get('Tracks');
-			$this->filterForm   = $model->filterForm;
-
-			//See if there is an all files zip
-			$this->all_files = 0;
-			for ($i=0, $n=count( $this->tracks ); $i < $n; $i++){
-				if($this->tracks[$i]->product_allfiles == "1"){
-					$this->all_files = 1;
-				}
-			}
-			$this->trackPagination = $this->get('TrackPagination');
-		}
-
-		//listitems
-		if($this->layout == "listitems"){
-			
-			$this->items 	= $this->get('Items');
-			$this->itemPagination = $this->get('ItemPagination');
-		}
-
-		$this->setLayout($this->layout);
-
 		//new file || edit file
 		if($task == "addfile" || $task == "editfile" || 
 				(isset($this->item->parentid) && $this->item->parentid > 0 
@@ -148,17 +124,21 @@ class HtmlView extends BaseHtmlView
 			if($task == "addfile"){
 				$this->input->set('id','0');
 			}
-            $this->item->parentid = $this->input->get('parentid', 0);
+
+            if(!$this->item->parentid){
+        		$this->item->parentid = $this->lists->items[0]->parentid;
+        	}
 
 			$this->layout = 'edittracks';
         	$this->setLayout('edittracks');
         	$filelists = $this->get('FileLists');
-
         	$this->lists = array_merge($this->lists,$filelists);
-        	
-        	if(!$this->item->parentid){
-        		$this->item->parentid = $this->input->get('parentid', 0);
+
+        	if($task == "editfile"){
+        		$this->item->formats = $model->getFormats($this->item->id);
         	}
+        	
+        	
         	$this->input->set('subtype','file');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'file');
             if(!isset($this->item->parent)){
@@ -203,6 +183,29 @@ class HtmlView extends BaseHtmlView
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
         	
         }
+        //listtracks
+        if($this->layout == "listtracks"){
+        	$this->tracks 		= $this->get('Tracks');
+        	$this->filterForm   = $model->filterForm;
+
+        	//See if there is an all files zip
+        	$this->all_files = 0;
+        	for ($i=0, $n=count( $this->tracks ); $i < $n; $i++){
+        		if($this->tracks[$i]->product_allfiles == "1"){
+        			$this->all_files = 1;
+        		}
+        	}
+        	$this->trackPagination = $this->get('TrackPagination');
+        }
+
+        //listitems
+        if($this->layout == "listitems"){
+        	
+        	$this->items 	= $this->get('Items');
+        	$this->itemPagination = $this->get('ItemPagination');
+        }
+
+        $this->setLayout($this->layout);
 
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
@@ -219,6 +222,8 @@ class HtmlView extends BaseHtmlView
 		{
 			throw new GenericDataException(implode("\n", $errors), 500);
 		}
+
+		//MymuseHelper::print_pre($this->item);
 
 		$this->addToolbar($subtype,$this->item->parentid);
 		parent::display($tpl);

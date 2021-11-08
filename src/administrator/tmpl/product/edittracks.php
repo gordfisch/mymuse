@@ -19,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
@@ -54,7 +55,7 @@ $lists = $this->lists;
 			}
 		}
 
-		var variation = <?php  echo count($item->file_name); ?>;
+		var variation = 0;
 		function addvariation()
 		{
 			
@@ -68,8 +69,8 @@ $lists = $this->lists;
 		function deletevariation (variationid){
 			var form = document.adminForm;
 			form.variation.value = variationid;
-			//alert(variationid);
-			submitform( 'product.deletevariation' );
+			form.task.value = 'product.deletevariation'
+			form.submit();
 
 		}
 		//-->
@@ -225,6 +226,7 @@ $lists = $this->lists;
 <!--  TRACKS TAB -->
 <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'tracks', Text::_('COM_MYMUSE_TRACKS', true)); ?>
     <div class="row">
+
         <div class="col-12 col-lg-12">
             <fieldset class="adminform">
 
@@ -239,14 +241,14 @@ $lists = $this->lists;
                 <table class="table table-striped" id="articleList">
                         <thead>
                             <tr>
+                            	<th class="title">ID
+                                </th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_SELECT_FILE' ); ?>
                                 </th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_FILE_NAME_LABEL' ); ?>
                                 </th>
                                 <th class="title"><?php echo JText::_("COM_MYMUSE_FORMAT")?>
 								</th>
-                                <th class="title"><?php echo Text::_("COM_MYMUSE_FILE_ALIAS")?>
-                                </th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_FILE_LENGTH_LABEL' ); ?>
                                 </th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_FILE_DOWNLOADS_LABEL' ); ?>
@@ -257,29 +259,47 @@ $lists = $this->lists;
                         </thead>
                         <tbody>
                         <?php
-                        $formats = $this->params->get('my_formats');
+                        if(isset($this->item->formats)){
+                        	$formats = $this->item->formats;
+                        }else{
+                        	$formats = $this->params->get('my_formats');
+                        }
+                        $my_formats = $this->params->get('my_formats');
+                 
 
-                        for($i = 0; $i < count($formats); $i++){
+                        for($i = 0; $i < count($my_formats); $i++){
                             $class = '';
                             if($i >= count($formats)){
-                                $class = "hidden";
+                                //$class = "hidden";
                             }
                             ?>
                             <tr class="<?php echo $class;?>" id="row_<?php echo $i; ?>">
+                                <td><?php 
+                                if(isset($formats[$i]->id)){
+                                	echo $formats[$i]->id;
+                                	?>
+                                	<input type="hidden" name="format_id[<?php echo $i; ?>]" value="<?php echo $formats[$i]->id; ?>">
+                                	<?php
+                                } ?>
+                                
+
+
+                                </td>
                                 <td><?php echo $lists['select_file'][$i]; ?>
                                 </td>
-                                <td><?php echo isset($item->file_name[$i]->file_name)? $item->file_name[$i]->file_name : ''; ?>
+                                <td><?php echo isset($formats[$i]->file_data->file_name)? $formats[$i]->file_data->file_name : ''; ?>
                                 </td>
                                 <td>
                                 <?php echo $lists['formats'][$i] ?>
                                 </td>
-                                <td><?php echo isset($item->file_name[$i]->file_alias)? $item->file_name[$i]->file_alias : ''; ?>
+                                <td><?php echo isset($formats[$i]->file_data->file_length)? MyMuseHelper::ByteSize($formats[$i]->file_data->file_length) : ''; ?>
                                 </td>
-                                <td><?php echo isset($item->file_name[$i]->file_length)? MyMuseHelper::ByteSize($item->file_name[$i]->file_length) : ''; ?>
+                                <td><?php echo isset($formats[$i]->file_data->file_downloads)? $formats[$i]->file_data->file_downloads : '0'; ?>
                                 </td>
-                                <td><?php echo isset($item->file_name[$i]->file_downloads)? $item->file_name[$i]->file_downloads : ''; ?>
-                                </td>
-                                <td><a href="javascript:deletevariation(<?php echo $i; ?>)"><?php echo Text::_( 'COM_MYMUSE_DELETE_ITEM' ); ?></a>
+                                <td>
+                                <?php if(isset($formats[$i]->id)){
+                                	?><a href="javascript:deletevariation(<?php echo $formats[$i]->id; ?>)"><?php echo Text::_( 'COM_MYMUSE_DELETE_ITEM' ); ?></a>
+                                <?php } ?>
                                 </td>
                             </tr>
                         <?php } ?>
