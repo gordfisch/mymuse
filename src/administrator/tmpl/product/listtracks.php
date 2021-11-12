@@ -274,7 +274,7 @@ $this->vote 		= false;
 							<td class="track-format text-center">
 								<?php
 								foreach($track->formats as $f){
-									echo stripslashes($f->file_data->file_format)."<br />";
+									echo $f->id." ".stripslashes($f->file_data->file_format)."<br />";
 								}
 								?>
 

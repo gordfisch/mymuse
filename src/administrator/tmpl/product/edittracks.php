@@ -262,14 +262,14 @@ $lists = $this->lists;
                         if(isset($this->item->formats)){
                         	$formats = $this->item->formats;
                         }else{
-                        	$formats = $this->params->get('my_formats');
+                        	//$formats = $this->params->get('my_formats');
                         }
                         $my_formats = $this->params->get('my_formats');
                  
 
                         for($i = 0; $i < count($my_formats); $i++){
                             $class = '';
-                            if($i >= count($formats)){
+                            if($i >= count($my_formats)){
                                 //$class = "hidden";
                             }
                             ?>
@@ -278,7 +278,8 @@ $lists = $this->lists;
                                 if(isset($formats[$i]->id)){
                                 	echo $formats[$i]->id;
                                 	?>
-                                	<input type="hidden" name="format_id[<?php echo $i; ?>]" value="<?php echo $formats[$i]->id; ?>">
+                                	<input type="hidden" name="format_id[<?php echo $i; ?>]" value="<?php 
+                                	echo isset($formats[$i]->id)? $formats[$i]->id : ''; ?>">
                                 	<?php
                                 } ?>
                                 

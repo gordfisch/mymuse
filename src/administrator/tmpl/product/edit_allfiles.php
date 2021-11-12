@@ -11,44 +11,31 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\Registry\Registry;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 $item = $this->item;
 $params = $this->params;
 
+
+
 JFilterOutput::objectHTMLSafe( $item );
-JHTML::_('behavior.tooltip');
+
 ?>
 <!-- product edit_allfiles.php -->
-		<script type="text/javascript">
-		<!--
 
-		function submitbutton(pressbutton)
-		{
-			var form = document.adminForm;
-
-			if (pressbutton == 'cancelitem') {
-				submitform( pressbutton );
-				return;
-			}
-
-			// do field validation
-
-			if (form.title.value == ""){
-				alert( "<?php echo JText::_( 'MYMUSE_FILE_MUST_HAVE_A_TITLE', true ); ?>" );
-			//} else if (form.product_sku.value == ""){
-			//	alert( "<?php echo JText::_( 'MYMUSE_FILE_MUST_HAVE_AN_SKU', true ); ?>" );
-
-			} else {
-
-				submitform( pressbutton );
-			}
-		}
-		//-->
-		</script>
 
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
-<h2><?php echo $item->parent->title; ?>: <?php echo JText::_("MYMUSE_ALL_FILES"); ?></h2>
-<div class="edittracks">
-	<div class="pull-left span5">
+<h2><?php echo $item->parent->title; ?>: <?php echo JText::_("COM_MYMUSE_ALL_FILES"); ?></h2>
+<div class="edittracks row">
+	<div class="col-6 col-lg-6">
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('title'); ?>
@@ -82,9 +69,6 @@ JHTML::_('behavior.tooltip');
 				</div>
 			</div>
 			
-			<?php //file_downloads ?>
-
-
 	<?php if(!$this->params->get('my_price_by_product')){ ?>			
 			<div class="control-group">
 				<div class="control-label">
@@ -103,9 +87,16 @@ JHTML::_('behavior.tooltip');
 					<?php echo $this->form->getInput('product_discount'); ?>
 				</div>
 			</div>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('file_time'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('file_time'); ?>
+				</div>
+			</div>
 
 	</div>			
-	<div class="pull-right span5">
+	<div class="col-6 col-lg-6">
 
 			<div class="control-group">
 				<div class="control-label">
@@ -144,6 +135,16 @@ JHTML::_('behavior.tooltip');
 
 	</div>
 </div>
+<div class="col-12 col-lg-12">
+		<fieldset class="adminform">
+
+			<legend></legend>
+			<?php echo $this->form->getLabel('articletext'); ?>
+			<div class="clr"></div>
+			<?php echo $this->form->getInput('articletext'); ?>
+
+		</fieldset>
+    </div>
 <div class="clr"></div>
 		<input type="hidden" name="product_allfiles" value="1">
 		<input type="hidden" name="jform[product_allfiles]" value="1">

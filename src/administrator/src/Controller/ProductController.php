@@ -144,7 +144,7 @@ class ProductController extends FormController
 		$model 				= $this->getModel();
         $table 				= $model->getTable();
 
-    	// is this the special 'AllFiles'?
+    	
 		if(isset($form['product_allfiles']) && $form['product_allfiles'] == 1){
 			$subtype = 'allfiles';
 			$table->product_allfiles = 1;
@@ -159,8 +159,9 @@ class ProductController extends FormController
             $this->input->set('task', "apply");
         }
 
+        
 		if($subtype == "file" || $subtype == "allfiles"){
-	
+	        /* SAVING A FILE */
 			if ($model->save($form)) {
                 if(!$this->id){
                     $item = $model->getItem();
@@ -199,7 +200,7 @@ class ProductController extends FormController
                     $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='. $this->id.'&subtype='.$post['subtype'] );
 				}
 			}else {
-
+                /* SAVING ALLFILES */
         		Factory::getApplication()->enqueueMessage($model->getError(), 'error');
         		switch ($task )
         		{
@@ -223,9 +224,9 @@ class ProductController extends FormController
         		}
         	}
  
-		//save an item
-		}elseif ($model->save($form)) {
 
+		}elseif ($model->save($form)) {
+            /* SAVING ITEM */
 
             $this->id = $form['id'];
             $this->id = $model->getState('product.id');
@@ -277,13 +278,13 @@ class ProductController extends FormController
 
 				case 'saveitem':
 				default:
-                    $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_SAVED' ),'warning');
+                    $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_SAVED' ),'notice');
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='. $this->parentid."&subtype=item" );
 					break;
 				}
 
         } else {
-            $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ERROR_SAVING_ITEM' ).' : '.$model->getError());
+            $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ERROR_SAVING_ITEM' ).' : '.$model->getError(), 'error');
             //exit;
         	$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->parentid."&subtype=item" );
         }
@@ -315,7 +316,6 @@ class ProductController extends FormController
                     return false;
                 }
             }
-            $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_SAVED' ), 'notice');
             $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listtracks&id='.$this->id );
         }else{
             $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ERROR_SAVING_ITEM' ).' : '.$this->getError(), 'error');

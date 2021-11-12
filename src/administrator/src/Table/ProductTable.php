@@ -81,6 +81,26 @@ class ProductTable extends Table implements VersionableTableInterface
      */
     public $parentid = 0;
 
+      public $form_fields = array(    
+  	'id',
+    'title',
+    'alias',
+    'product_sku',
+    'ordering',
+    'price',
+    'product_discount',
+    'state',
+    'access', 
+    'featured',
+    'language',
+    'isrc_code',
+    'file_preview',
+    'parentid',
+    'catid',
+    'artistid',
+    'version',
+    'product_downloadable');
+
 	/**
 	 * Constructor
 	 *
@@ -179,7 +199,7 @@ class ProductTable extends Table implements VersionableTableInterface
 		}
 
 		if (!isset($array['alias']) || trim($array['alias']) == '') {
-			$array['alias'] = $array['title'];
+			$array['alias'] = ApplicationHelper::stringURLSafe($array['title']);
 		}
 		if (!isset($array['hits']) || trim($array['hits']) == '') {
 			$array['hits'] = 0;
@@ -281,15 +301,25 @@ class ProductTable extends Table implements VersionableTableInterface
             $this->digital = '';
         }
         if (empty($this->physical)) {
-            $this->physical= '';
+            $this->physical = '';
         }
         if (empty($this->recording)) {
-            $this->recording= '';
+            $this->recording = '';
         }
         if (empty($this->isrc_code)) {
-            $this->isrc_code= '';
+            $this->isrc_code = '';
         }
-		
+        if (empty($this->file_preview)) {
+            $this->file_preview = '';
+        }
+        /*
+		if (empty($this->list_image)) {
+		    $this->list_image = '';
+		}
+		if (empty($this->full_image)) {
+		    $this->full_image = '';
+		}
+		*/
 		//If there is an ordering column and this is a new row then get the next ordering value
 		if (property_exists($this, 'ordering') && $this->id == 0) {
 			$this->ordering = self::getNextOrder();
@@ -348,9 +378,11 @@ class ProductTable extends Table implements VersionableTableInterface
 			if (!intval($this->created)) {
 				$this->created = $date->toSQL();
 			}
-
 			if (empty($this->created_by)) {
 				$this->created_by = $user->get('id');
+			}
+			if (empty($this->created_by_alias)) {
+				$this->created_by_alias = $user->get('username');
 			}
             if (empty($this->modified_by)) {
                 $this->modified_by = $user->get('id');
@@ -361,17 +393,13 @@ class ProductTable extends Table implements VersionableTableInterface
 			$isNew = 1;
 		}
         
-
-        // for tracks with parentids
-        if($this->parentid){
-        	$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
-        }   
-
  		$done = 0;
 
 		
-
+ 		/* TRACKS ======================================================*/
 		if($subtype == 'file'){
+
+			$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
 
 			if(!isset($form['file_type']) || $form['file_type'] == ''){
 				$form['file_type'] = 'audio';
@@ -420,26 +448,32 @@ class ProductTable extends Table implements VersionableTableInterface
 				$this->file_preview = '';
 			}
 
-
 			//if select_files we have formats
 			if(is_array( $select_files ) && !$done){
 
-				//do we have a track entry yet?
+				/* CREATE OR UPDATE PARENT TRACK */
+				if(!isset($form['product_sku']) || $form['product_sku'] == ''){
+					//get the parent
+					$query = "SELECT product_sku FROM #__mymuse_product WHERE id='".$form['parentid']."'";
+					$db->setQuery($query);
+					$parent_product_sku = $db->loadResult();
+					$form['product_sku'] = ($parent_product_sku).':'.($this->alias);
+					$this->product_sku = $form['product_sku'];
+				}
 				if(!$this->id){
 					//make a parent track
 					$this->track_parentid = 0;
+					
 					$result = parent::store($updateNulls);
 					if(!$result){
-						$this->setError(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK'));
-		                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK'), 'error');
+		                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK').' '.$this->getError(), 'error');
 						return false;
 					}
 				}else{
 					//update current track
 					$result = parent::store($updateNulls);
 					if(!$result){
-						$this->setError(Text::_('COM_MYMUSE_COULD_NOT_UPDATE_PARENT_TRACK'));
-		                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SUPDATE_PARENT_TRACK'), 'error');
+		                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_UPDATE_PARENT_TRACK').' '.$this->getError(), 'error');
 						return false;
 					}
 				}
@@ -455,9 +489,10 @@ class ProductTable extends Table implements VersionableTableInterface
 						//get current is exists
 						$current = array();
 						if(isset($format_ids[$i])){
-							$query = "SELECT digital FROM #__mymuse_product WHERE id='".$format_ids[$i]."'";
+							$query = "SELECT * FROM #__mymuse_product WHERE id='".$format_ids[$i]."'";
 							$db->setQuery($query);
-							$current = $db->loadResult();
+							$existing = $db->loadObject();
+							$current_digital = json_decode($existing->digital);
 							$this->id = $format_ids[$i];
 						}else{
 							unset($this->id);
@@ -509,10 +544,10 @@ class ProductTable extends Table implements VersionableTableInterface
 							}
 						}
 
-						$file_downloads = isset($current[$i]->file_downloads)? $current->file_downloads: "0";
+						$file_downloads = isset($current_digital->file_downloads)? $current_digital->file_downloads: "0";
 
 						
-						//  save this to the digital field
+						//  create the digital field
 						$digital = array(
 							'file_name' => $file_name,
 							'file_length' => $file_length,
@@ -522,16 +557,15 @@ class ProductTable extends Table implements VersionableTableInterface
 							'file_type' => $form['file_type'],
 							'file_format' => $formats[$i]
 						);
-
-
 						$registry = new Registry($digital );
 						$this->digital = (string) $registry;
 						$this->featured = 0;
 						$this->track_parentid = $track_parentid;
-						$result = parent::store($updateNulls);
+						$this->product_sku = $form['product_sku'].':'.$formats[$i];
+						$this->check();
+						$result = parent::store(false);
 						if(!$result){
-							$this->setError(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK'));
-			                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK'), 'error');
+			                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->getError(), 'error');
 							return false;
 						}
 
@@ -543,26 +577,87 @@ class ProductTable extends Table implements VersionableTableInterface
 			return true;
 		} //if subtype = file
 
-		//all files
+		/* ALL FILES ==========================================================*/
 		if(isset($form['product_allfiles']) && $form['product_allfiles']){
-
+//MymuseHelper::print_pre($params->get('my_formats')); exit;
 			$this->product_allfiles = 1;
-			for($p = 0; $p < count($params->get('my_formats')); $p++){
-				$file_name = ApplicationHelper::stringURLSafe($this->alias."-full-release-". $params->get('my_formats')[$p]);
-				$current_files[$p] = array(
-							'file_name' => $file_name,
-							'file_length' => '',
-							'file_ext' => $params->get('my_formats')[$p],
-							'file_downloads'=> '0',
-							'file_time' => ''
-					);
-
+			$this->featured = 0;
+			/* CREATE OR UPDATE PARENT ALLFILES */
+			if(!isset($form['product_sku']) || $form['product_sku'] == ''){
+				//get the parent
+				$query = "SELECT product_sku FROM #__mymuse_product WHERE id='".$form['parentid']."'";
+				$db->setQuery($query);
+				$parent_product_sku = $db->loadResult();
+				$form['product_sku'] = ($parent_product_sku).':'.($this->alias);
+				$this->product_sku = $form['product_sku'];
 			}
-			$this->digital= json_encode($current_files);
-			$this->file_type = "audio";
+			if(!$this->id){
+				/* create a parent allfiles */
+				$this->track_parentid = 0;
+				
+				$this->check();
+				$result = parent::store($updateNulls);
+				if(!$result){
+	                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK').' '.$this->getError(), 'error');
+					return false;
+				}
+				$this->file_type = "audio";
+				$this->track_parentid = $this->id;
+				
+				/* make child formats allfiles */
+				for($p = 0; $p < count($params->get('my_formats')); $p++){
+					$this->id = '';
+					$file_name = ApplicationHelper::stringURLSafe($this->alias."-full-release-". $params->get('my_formats')[$p]->format_value);
+					$current_files = array(
+						'file_name' => $file_name,
+						'file_length' => '',
+						'file_ext' => $params->get('my_formats')[$p]->format_value,
+						'file_downloads'=> '0',
+						'file_time' => '',
+						'file_format' => $params->get('my_formats')[$p]->format_key
+					);
+					$this->digital= json_encode($current_files);
+					$this->product_sku = $form['product_sku'].':'.$params->get('my_formats')[$p]->format_key;
+					$this->check();
+					
+					if(!$result = parent::store(false)){
+						$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->getError(), 'error');
+						return false;
+					}
+
+				}
+				return true;
+
+			}else{
+				/* update current track */
+				$this->check();
+				$result = parent::store($updateNulls);
+				if(!$result){
+	                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_UPDATE_PARENT_TRACK').' '.$this->getError(), 'error');
+					return false;
+				}
+				/* update child format tracks */
+				$query = "SELECT * FROM #__mymuse_product WHERE track_parentid='".$this->id."'";
+				$db->setQuery($query);
+				$child_tracks = $db->loadObjectList();
+				foreach($child_tracks as $child){
+					$this->id = $child->id;
+					$current_digital = json_decode($child->digital);
+					$this->digital = $child->digital;
+					$this->product_sku = $form['product_sku'].':'.$current_digital->file_format;
+					$this->check();
+					if(!$result = parent::store(false)){
+						$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->getError(), 'error');
+						return false;
+					}
+
+				}
+			}
+			
+			
 		}
 
-		//store the product
+		/* STORE THE PRODUCT MAIN FILE */
 		$result = parent::store($updateNulls);
 
 		if($result){

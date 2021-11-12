@@ -96,7 +96,7 @@ class HtmlView extends BaseHtmlView
 		$this->form  	= $model->getForm();
 		$this->item  	= $model->getItem();
 		$this->state 	= $model->getState();
-		$this->lists 	= $this->get('Lists');
+		$this->lists 	= $model->getLists();
 		$this->params 	= MyMuseHelper::getParams();
 
 
@@ -131,7 +131,7 @@ class HtmlView extends BaseHtmlView
 
 			$this->layout = 'edittracks';
         	$this->setLayout('edittracks');
-        	$filelists = $this->get('FileLists');
+        	$filelists = $model->getFileLists();
         	$this->lists = array_merge($this->lists,$filelists);
 
         	if($task == "editfile"){
@@ -149,6 +149,8 @@ class HtmlView extends BaseHtmlView
         
         // allfiles
         elseif($task == "edit_allfiles" || $task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
+
+        	$this->layout = "edit_allfiles";
         	$this->setLayout('edit_allfiles');
 			if(!$this->item->parentid){
         		$this->item->parentid = $this->input->get('parentid', 0);
@@ -163,8 +165,8 @@ class HtmlView extends BaseHtmlView
         
         	$this->layout = 'edititems';
         	$this->setLayout('edititems');
-        	$this->attribute_skus = $this->get('Attributeskus');
-        	$this->attributes = $this->get('Attributes');
+        	$this->attribute_skus = $model->getAttributeskus();
+        	$this->attributes = $model->getAttributes();
         	
         	if(!count($this->attribute_skus)){
         		//no attributes yet!!
@@ -185,7 +187,7 @@ class HtmlView extends BaseHtmlView
         }
         //listtracks
         if($this->layout == "listtracks"){
-        	$this->tracks 		= $this->get('Tracks');
+        	$this->tracks 		= $model->getTracks();
         	$this->filterForm   = $model->filterForm;
 
         	//See if there is an all files zip
@@ -201,10 +203,9 @@ class HtmlView extends BaseHtmlView
         //listitems
         if($this->layout == "listitems"){
         	
-        	$this->items 	= $this->get('Items');
-        	$this->itemPagination = $this->get('ItemPagination');
+        	$this->items 	= $model->getItems();
+        	$this->itemPagination = $model->getItemPagination();
         }
-
         $this->setLayout($this->layout);
 
         //It's the parent, set the user state
