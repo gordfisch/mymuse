@@ -18,8 +18,8 @@
 	</files>
 
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_audio_jplayer.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_audio_jplayer.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_audio_jplayer.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_audio_jplayer.sys.ini</language>
 	</languages>
 	<config>
 	<fields  name="params">

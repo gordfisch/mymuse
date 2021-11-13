@@ -10,8 +10,8 @@
 	<version>4.0.0</version>
 	<description>MYMUSE_SHIPPING_STANDARD_DESC</description>
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_standard.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_standard.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_shipping_standard.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_shipping_standard.sys.ini</language>
 
 	</languages>
 	<files>

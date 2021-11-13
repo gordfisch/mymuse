@@ -38,10 +38,10 @@
 		]]>
 	</description>
     <languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_usps.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_usps.sys.ini</language>
-		<language tag="en-US">language/en-US/en-US.plg_mymuse_shipping_usps.ini</language>
-		<language tag="en-US">language/en-US/en-US.plg_mymuse_shipping_usps.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_shipping_usps.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_shipping_usps.sys.ini</language>
+		<language tag="en-US">language/en-US/plg_mymuse_shipping_usps.ini</language>
+		<language tag="en-US">language/en-US/plg_mymuse_shipping_usps.sys.ini</language>
     </languages>
     <files>
 		<filename plugin="shipping_usps">shipping_usps.php</filename>	

@@ -17,8 +17,8 @@
 		<folder>fields</folder>
 	</files>
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_mymusenoreg.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_mymusenoreg.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_mymusenoreg.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_mymusenoreg.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

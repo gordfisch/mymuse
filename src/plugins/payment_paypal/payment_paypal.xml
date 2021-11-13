@@ -15,8 +15,8 @@
 	</files>
 
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_paypal.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_paypal.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_payment_paypal.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_payment_paypal.sys.ini</language>
 	</languages>
 
 	<config>

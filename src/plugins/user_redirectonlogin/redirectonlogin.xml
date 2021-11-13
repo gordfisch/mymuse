@@ -14,8 +14,8 @@
 		<filename>index.html</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_redirectonlogin.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_redirectonlogin.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_redirectonlogin.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_redirectonlogin.sys.ini</language>
 	</languages>
 <updateservers>
     <server type="extension" priority="1"

@@ -17,8 +17,8 @@
 		<folder>fields</folder>
 	</files>
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_mymuse.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_mymuse.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_mymuse.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_mymuse.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
