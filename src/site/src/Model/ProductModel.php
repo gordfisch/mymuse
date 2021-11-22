@@ -104,12 +104,19 @@ class ProductModel extends ItemModel
 						[
 							$db->quoteName('a.id'),
 							$db->quoteName('a.asset_id'),
+							$db->quoteName('a.parentid'),
+							$db->quoteName('a.track_parentid'),
 							$db->quoteName('a.title'),
+							$db->quoteName('a.product_sku'),
 							$db->quoteName('a.alias'),
+							$db->quoteName('a.title_alias'),
 							$db->quoteName('a.introtext'),
 							$db->quoteName('a.fulltext'),
 							$db->quoteName('a.state'),
+							$db->quoteName('a.price'),
+							$db->quoteName('a.product_discount'),
 							$db->quoteName('a.catid'),
+							$db->quoteName('a.artistid'),
 							$db->quoteName('a.created'),
 							$db->quoteName('a.created_by'),
 							$db->quoteName('a.created_by_alias'),
@@ -119,15 +126,24 @@ class ProductModel extends ItemModel
 							$db->quoteName('a.checked_out_time'),
 							$db->quoteName('a.publish_up'),
 							$db->quoteName('a.publish_down'),
-							$db->quoteName('a.images'),
-							$db->quoteName('a.urls'),
+							$db->quoteName('a.list_image'),
+							$db->quoteName('a.detail_image'),
 							$db->quoteName('a.attribs'),
+							$db->quoteName('a.physical'),
+							$db->quoteName('a.digital'),
 							$db->quoteName('a.version'),
 							$db->quoteName('a.ordering'),
 							$db->quoteName('a.metakey'),
 							$db->quoteName('a.metadesc'),
 							$db->quoteName('a.access'),
 							$db->quoteName('a.hits'),
+							$db->quoteName('a.product_physical'),
+							$db->quoteName('a.product_downloadable'),
+							$db->quoteName('a.product_allfiles'),
+							$db->quoteName('a.product_release_date'),
+							$db->quoteName('a.file_preview'),
+							$db->quoteName('a.special_status'),
+							$db->quoteName('a.product_in_stock'),
 							$db->quoteName('a.metadata'),
 							$db->quoteName('a.featured'),
 							$db->quoteName('a.language'),
@@ -136,13 +152,11 @@ class ProductModel extends ItemModel
 				)
 					->select(
 						[
-							$db->quoteName('fp.featured_up'),
-							$db->quoteName('fp.featured_down'),
+
 							$db->quoteName('c.title', 'category_title'),
 							$db->quoteName('c.alias', 'category_alias'),
 							$db->quoteName('c.access', 'category_access'),
 							$db->quoteName('c.language', 'category_language'),
-							$db->quoteName('fp.ordering'),
 							$db->quoteName('u.name', 'author'),
 							$db->quoteName('parent.title', 'parent_title'),
 							$db->quoteName('parent.id', 'parent_id'),
@@ -154,16 +168,18 @@ class ProductModel extends ItemModel
 							$db->quoteName('v.rating_count', 'rating_count'),
 						]
 					)
-					->from($db->quoteName('#__content', 'a'))
+					->from($db->quoteName('#__mymuse_product', 'a'))
 					->join(
 						'INNER',
 						$db->quoteName('#__categories', 'c'),
 						$db->quoteName('c.id') . ' = ' . $db->quoteName('a.catid')
 					)
-					->join('LEFT', $db->quoteName('#__content_frontpage', 'fp'), $db->quoteName('fp.content_id') . ' = ' . $db->quoteName('a.id'))
 					->join('LEFT', $db->quoteName('#__users', 'u'), $db->quoteName('u.id') . ' = ' . $db->quoteName('a.created_by'))
 					->join('LEFT', $db->quoteName('#__categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('c.parent_id'))
 					->join('LEFT', $db->quoteName('#__content_rating', 'v'), $db->quoteName('a.id') . ' = ' . $db->quoteName('v.content_id'))
+					->select('art.title AS artist_title, art.alias AS artist_alias, art.access AS artist_access')
+					->join('LEFT', '#__categories AS art on art.id = a.artistid')
+
 					->where(
 						[
 							$db->quoteName('a.id') . ' = :pk',
@@ -229,7 +245,9 @@ class ProductModel extends ItemModel
 				}
 
 				// Convert parameter fields to objects.
-				$registry = new Registry($data->attribs);
+				$registry = new Registry;
+				$registry->loadString($data->attribs);
+				$data->attribs = $registry;
 
 				$data->params = clone $this->getState('params');
 				$data->params->merge($registry);
@@ -317,7 +335,7 @@ class ProductModel extends ItemModel
 		{
 			$pk = (!empty($pk)) ? $pk : (int) $this->getState('product.id');
 
-			$table = Table::getInstance('Mymuse', 'JTable');
+			$table = Table::getInstance('ProductTable', 'Joomla\\Component\\Mymuse\\Administrator\\Table\\');
 			$table->hit($pk);
 		}
 

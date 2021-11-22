@@ -16,7 +16,7 @@ defined('JPATH_BASE') or die;
  * @subpackage	com_mymuse
  * @since		1.6
  */
-class JFormFieldModal_Product extends JFormField
+class JFormFieldModal_Productold extends JFormField
 {
 	/**
 	 * The form field type.

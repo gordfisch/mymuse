@@ -16,6 +16,8 @@ use Joomla\CMS\MVC\View\CategoryView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Registry\Registry;
+use Joomla\Component\Mymuse\Site\Model\StoreModel;
+
 
 /**
  * HTML View class for the Mymuse component
@@ -52,13 +54,13 @@ class HtmlView extends CategoryView
 	 * @var    string  Default title to use for page title
 	 * @since  3.2
 	 */
-	protected $defaultPageTitle = 'JGLOBAL_ARTICLES';
+	protected $defaultPageTitle = 'COM_MYMUSE_CATEGORY';
 
 	/**
 	 * @var    string  The name of the view to link individual items to
 	 * @since  3.2
 	 */
-	protected $viewName = 'product';
+	protected $viewName = 'category';
 
 	/**
 	 * Execute and display a template script.
@@ -73,6 +75,8 @@ class HtmlView extends CategoryView
 
 		// Flag indicates to not add limitstart=0 to URL
 		$this->pagination->hideEmptyLimitstart = true;
+
+		$this->store	= StoreModel::getStore();
 
 		// Prepare the data
 		// Get the metrics for the structural page layout.
@@ -114,10 +118,10 @@ class HtmlView extends CategoryView
 			$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
 			$results = $app->triggerEvent('onMymuseBeforeDisplay', array('com_mymuse.category', &$item, &$item->params, 0));
-			$item->event->beforeDisplayMymuse = trim(implode("\n", $results));
+			$item->event->beforeDisplayContent = trim(implode("\n", $results));
 
 			$results = $app->triggerEvent('onMymuseAfterDisplay', array('com_mymuse.category', &$item, &$item->params, 0));
-			$item->event->afterDisplayMymuse = trim(implode("\n", $results));
+			$item->event->afterDisplayContent = trim(implode("\n", $results));
 		}
 
 		// For blog layouts, preprocess the breakdown of leading, intro and linked products.

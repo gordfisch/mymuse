@@ -39,6 +39,47 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 	use AssociationServiceTrait;
 	use HTMLRegistryAwareTrait;
 	use RouterServiceTrait;
+
+	/**
+	 * The trashed condition
+	 *
+	 * @since   4.0.0
+	 */
+	const CONDITION_NAMES = [
+		self::CONDITION_PUBLISHED   => 'JPUBLISHED',
+		self::CONDITION_UNPUBLISHED => 'JUNPUBLISHED',
+		self::CONDITION_ARCHIVED    => 'JARCHIVED',
+		self::CONDITION_TRASHED     => 'JTRASHED',
+	];
+
+	/**
+	 * The archived condition
+	 *
+	 * @since   4.0.0
+	 */
+	const CONDITION_ARCHIVED = 2;
+
+	/**
+	 * The published condition
+	 *
+	 * @since   4.0.0
+	 */
+	const CONDITION_PUBLISHED = 1;
+
+	/**
+	 * The unpublished condition
+	 *
+	 * @since   4.0.0
+	 */
+	const CONDITION_UNPUBLISHED = 0;
+
+	/**
+	 * The trashed condition
+	 *
+	 * @since   4.0.0
+	 */
+	const CONDITION_TRASHED = -2;
+
 	/**
 	 * Booting the extension. This is the function to set up the environment of the extension like
 	 * registering new class loaders, etc.

@@ -674,14 +674,7 @@
                 size="40"
                 default="d F Y H:i"
         />
-        <field 
-                name="my_default_itemid" 
-                type="text" 
-                label="COM_MYMUSE_DEFAULT_ITEMID_LABEL"
-                description="COM_MYMUSE_DEFAULT_ITEMID_DESC" 
-                class="inputbox"
-                size="4"
-                />
+
         <field 
                 name="my_email_msg" 
                 type="textarea"  

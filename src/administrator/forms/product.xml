@@ -360,7 +360,7 @@
             />
             <field
                     name="isrc_code"
-                    type="hidden"
+                    type="text"
                     label="COM_MYMUSE_ISRC_LABEL"
                     description="COM_MYMUSE_ISRC_DESC"
                     class="inputbox"

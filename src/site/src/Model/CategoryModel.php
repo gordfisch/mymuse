@@ -11,6 +11,7 @@ namespace Joomla\Component\Mymuse\Site\Model;
 
 \defined('_JEXEC') or die;
 
+
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Factory;
@@ -255,12 +256,13 @@ class CategoryModel extends ListModel
 	 */
 	public function getItems()
 	{
+	
 		$limit = $this->getState('list.limit');
 
 		if ($this->_products === null && $category = $this->getCategory())
 		{
 			$model = $this->bootComponent('com_mymuse')->getMVCFactory()
-				->createModel('Articles', 'Site', ['ignore_request' => true]);
+				->createModel('Products', 'Site', ['ignore_request' => true]);
 			$model->setState('params', Factory::getApplication()->getParams());
 			$model->setState('filter.category_id', $category->id);
 			$model->setState('filter.published', $this->getState('filter.published'));

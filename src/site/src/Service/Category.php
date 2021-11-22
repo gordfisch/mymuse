@@ -29,9 +29,9 @@ class Category extends Categories
 	 */
 	public function __construct($options = array())
 	{
-		$options['table']     = '#__mymuse_products';
+		$options['table']     = '#__mymuse_product';
 		$options['extension'] = 'com_mymuse';
-
+		
 		parent::__construct($options);
 	}
 }

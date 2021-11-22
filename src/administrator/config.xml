@@ -1,732 +1,717 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 
-<fieldset name="store"
-		label="COM_MYMUSE_STORE_PAGES_LABEL"
-		description="COM_MYMUSE_STORE_PAGES_DESC"
-	>
-			<field name="store_show_title" 
+	<fieldset name="store"
+			label="COM_MYMUSE_STORE_PAGES_LABEL"
+			description="COM_MYMUSE_STORE_PAGES_DESC"
+		>
+		<field name="store_show_title" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_SHOW_TITLE_DESC"
+			label="COM_MYMUSE_SHOW_TITLE_LABEL"
+			default="1"
+				>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field 
+				name="store_link_titles" 
 				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				description="COM_MYMUSE_SHOW_TITLE_DESC"
-				label="COM_MYMUSE_SHOW_TITLE_LABEL"
-				default="1"
-					>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			<field 
-	 			name="store_link_titles" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_LINK_TITLES_LABEL" description="COM_MYMUSE_LINK_TITLES_DESC"
-	 				>
-	 			<option value="0">JNO</option>
-				<option value="1">JYES</option>
-	 		</field>
-			<field 
-				name="store_show_product_image" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
+			layout="joomla.form.field.radio.switcher"
 				default="1" 
-				label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
-				description="COM_MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
+				label="COM_MYMUSE_LINK_TITLES_LABEL" description="COM_MYMUSE_LINK_TITLES_DESC"
 					>
-	 			<option value="0">COM_MYMUSE_HIDE</option>
-	 			<option value="1">COM_MYMUSE_SHOW</option>
-	 		</field>
-	 		
-			<field 
-				name="store_product_image_height" 
-				type="text" 
-				default="0" 
-				label="COM_MYMUSE_PRODUCT_IMAGE_HEIGHT" 
-				description="COM_MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC">
-	 		</field>
-	 		<field 
-	 			name="store_show_intro_text" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_INTRO_TEXT" description="COM_MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
-	 				>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-
-			<field
-				name="store_show_readmore"
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_READMORE_DESC"
-				label="COM_MYMUSE_SHOW_READMORE_LABEL"
-					>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
-				name="store_show_readmore_title"
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				label="COM_MYMUSE_SHOW_READMORE_TITLE_LABEL"
-				description="COM_MYMUSE_SHOW_READMORE_TITLE_DESC"
-					>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-	</fieldset>
-	
-	<fieldset name="product"
-		label="COM_MYMUSE_PRODUCT_PAGES_LABEL"
-		description="COM_MYMUSE_PRODUCT_PAGES_DESC"
-	>
-	
-			<field name="show_title" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				description="COM_MYMUSE_SHOW_TITLE_DESC"
-				label="COM_MYMUSE_SHOW_TITLE_LABEL"
-				default="1"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			<field 
-				name="show_icons" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="JGLOBAL_SHOW_ICONS_DESC"
-				label="JGLOBAL_SHOW_ICONS_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_print_icon" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="JGLOBAL_SHOW_PRINT_ICON_DESC"
-				label="JGLOBAL_SHOW_PRINT_ICON_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_email_icon" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_EMAIL_ICON_DESC"
-				label="COM_MYMUSE_SHOW_EMAIL_ICON_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-<field type="spacer" name="spacer_details" label="COM_MYMUSE_PRODUCT_DETAILS" />
-			<field 
-				name="show_parent_category" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_PARENT_CATEGORY_DESC"
-				label="COM_MYMUSE_SHOW_PARENT_CATEGORY_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="link_parent_category" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="JGLOBAL_LINK_PARENT_CATEGORY_DESC"
-				label="JGLOBAL_LINK_PARENT_CATEGORY_LABEL"
-				>
 				<option value="0">JNO</option>
-				<option value="1">JYES</option>
+			<option value="1">JYES</option>
 			</field>
-
-			<field 
-				name="show_category" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_CATEGORY_DESC"
-				label="COM_MYMUSE_SHOW_CATEGORY_LABEL"
+		<field 
+			name="store_show_product_image" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1" 
+			label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
+			description="COM_MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
 				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+				<option value="0">COM_MYMUSE_HIDE</option>
+				<option value="1">COM_MYMUSE_SHOW</option>
 			</field>
-
-			<field 
-				name="link_category" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="JGLOBAL_LINK_CATEGORY_DESC"
-				label="JGLOBAL_LINK_CATEGORY_LABEL"
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
 			
-
-			<field 
-				name="show_author" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="JGLOBAL_SHOW_AUTHOR_DESC"
-				label="JGLOBAL_SHOW_AUTHOR_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+		<field 
+			name="store_product_image_height" 
+			type="text" 
+			default="0" 
+			label="COM_MYMUSE_PRODUCT_IMAGE_HEIGHT" 
+			description="COM_MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC">
 			</field>
-
 			<field 
-				name="link_author" 
+				name="store_show_intro_text" 
 				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="JGLOBAL_LINK_AUTHOR_DESC"
-				label="JGLOBAL_LINK_AUTHOR_LABEL"
-				>
-				<option value="0">JNo</option>
-				<option value="1">JYes</option>
-			</field>
-
-			<field 
-				name="show_create_date" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_CREATE_DATE_DESC"
-				label="COM_MYMUSE_SHOW_CREATE_DATE_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_modify_date" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_MODIFY_DATE_DESC"
-				label="COM_MYMUSE_SHOW_MODIFY_DATE_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_publish_date" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_PUBLISH_DATE_DESC"
-				label="COM_MYMUSE_SHOW_PUBLISH_DATE_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_hits" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_HITS_DESC"
-				label="COM_MYMUSE_SHOW_HITS_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_noauth" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_UNAUTH_LINKS_DESC"
-				label="COM_MYMUSE_SHOW_UNAUTH_LINKS_LABEL"
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field name="show_minicart" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
+			layout="joomla.form.field.radio.switcher"
 				default="1" 
-				description="COM_MYMUSE_SHOW_MINICART_DESC"
-				label="COM_MYMUSE_SHOW_MINICART_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-	<field type="spacer" name="spacer_description" label="COM_MYMUSE_PRODUCT_DESCRIPTION" />
-
-			<field 
-				name="show_recording_details" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1" 
-				label="COM_MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
-				description="COM_MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-          	</field>
-
-          	<field 
-				name="show_product_sku" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1" 
-				label="COM_MYMUSE_SHOW_SKU_PRODUCT_LABEL"
-				description="COM_MYMUSE_SHOW_SKU_PRODUCT_DESC"  
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-          	</field>
-
-          	<field 
-				name="show_release_info" 
-				type="radio"
-			    layout="joomla.form.field.radio.switcher"
-			    default="1" 
-				label="COM_MYMUSE_SHOW_RELEASE_INFO_LABEL"
-				description="COM_MYMUSE_SHOW_RELEASE_INFO_DESC"  
+				label="COM_MYMUSE_SHOW_INTRO_TEXT" description="COM_MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
 					>
+				<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+			</field>
+
+		<field
+			name="store_show_readmore"
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			description="COM_MYMUSE_SHOW_READMORE_DESC"
+			label="COM_MYMUSE_SHOW_READMORE_LABEL"
+				>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field
+			name="store_show_readmore_title"
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1"
+			label="COM_MYMUSE_SHOW_READMORE_TITLE_LABEL"
+			description="COM_MYMUSE_SHOW_READMORE_TITLE_DESC"
+				>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+	</fieldset>
+		
+	<fieldset name="basic"
+		label="COM_MYMUSE_ATTRIBS_FIELDSET_LABEL"
+		addfieldprefix="Joomla\Component\Mymuse\Administrator\Field"
+	>
+		<field
+			name="product_layout" type="componentlayout"
+			label="JGLOBAL_FIELD_LAYOUT_LABEL"
+			description="JGLOBAL_FIELD_LAYOUT_DESC"
+			class="form-select"
+			menuitems="true"
+			extension="com_mymuse"
+			view="product"
+		/>
+
+		<field name="show_minicart" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_SHOW_MINICART_DESC"
+			label="COM_MYMUSE_SHOW_MINICART_LABEL"
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field name="product_show_product_image" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
+		>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+		<field name="show_title" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_TITLE_LABEL"
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field
+			name="split_text"
+			type="list"
+			label="COM_MYMUSE_SPLIT_TEXT_LABEL"
+			description="COM_MYMUSE_SPLIT_TEXT_DESC"
+			class="form-select-color-state"
+			validate="options"
+			>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+			
+		</field>
+
+		<field name="show_readmore"
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_SHOW_READMORE_DESC"
+			label="COM_MYMUSE_SHOW_READMORE_LABEL"
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field name="show_readmore_title"
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_READMORE_TITLE_LABEL"
+			description="COM_MYMUSE_SHOW_READMORE_TITLE_DESC"
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+	  	<field
+	  		name="info_block_show"
+	  		type="list"
+	  		label="COM_MYMUSE_FIELD_INFOBLOCK_SHOW"
+	  		useglobal="true"
+	  		class="form-select-color-state"
+	  		validate="options"
+	  		
+	  		>
+	  		<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_ARTICLE_SETTINGS</option>
+	  		<option	value="0">JHIDE</option>
+	  		<option	value="1">JSHOW</option>
+	  	</field>
+
+	  	<field
+	  		name="info_block_show_title"
+	  		type="list"
+	  		label="COM_MYMUSE_FIELD_INFOBLOCK_TITLE_LABEL"
+	  		useglobal="true"
+	  		class="form-select-color-state"
+	  		validate="options"
+	  		
+	  		>
+	  		<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_ARTICLE_SETTINGS</option>
+	  		<option	value="0">JHIDE</option>
+	  		<option	value="1">JSHOW</option>
+	  	</field>
+
+	<field type="spacer" name="spacerdetails" label="COM_MYMUSE_PRODUCT_PUBLISHING_DETAILS" /> 
+
+		<field name="show_artist" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_ARTIST_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field name="link_artist" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_LINK_ARTIST_LABEL"
+			
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_category" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_CATEGORY_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field name="link_category" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="JGLOBAL_LINK_CATEGORY_LABEL"
+			
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field
+			name="show_associations"
+			type="assoc"
+			label="JGLOBAL_SHOW_ASSOCIATIONS_LABEL"
+			class="form-select-color-state"
+			
+			>
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+		</field>
+
+		<field name="show_author" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_AUTHOR"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field name="link_author" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="JGLOBAL_LINK_AUTHOR_LABEL"
+			
+		>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+
+		<field name="show_release_date" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_PRODUCT_SHOW_RELEASE_DATE_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field name="show_create_date" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_CREATE_DATE_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field name="show_modify_date" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_MODIFY_DATE_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field name="show_publish_date" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_PUBLISH_DATE_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		
+
+		<field name="show_hits" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_HITS_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<!-- field
+			name="show_vote"
+			type="votelist"
+			label="JGLOBAL_SHOW_VOTE_LABEL"
+			class="form-select-color-state"
+			validate="options"
+			>
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+		</field -->
+
+		<field
+			name="show_tags"
+			label="JGLOBAL_SHOW_TAGS_LABEL"
+			type="list"
+			class="form-select-color-state"
+			validate="options"
+			
+			>
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+		</field>
+
+		<field 
+			name="show_product_sku" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_SKU_PRODUCT_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+	  	</field>
+
+	  	<field 
+			name="show_special_status" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_SPECIAL_STATUS_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+	  	</field>
+
+	  	<field 
+			name="show_news_release_link" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_NEWS_RELEASE_LINK_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+	  	</field>
+
+	  	<field 
+			name="show_media_link" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_MEDIA_LINK_LABEL"
+			
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+	  	</field>
+
+
+	<field type="spacer" name="spacerrecording" label="COM_MYMUSE_PRODUCT_RECORDING_DETAILS" /> 	
+		
+		<field
+		    name="show_product_full_time"
+	        label="COM_MYMUSE_PRODUCT_SHOW_FULL_TIME_LABEL"
+	        type="list"
+	        useglobal="true"
+	        class="form-select-color-state"
+	        validate="options"
+	        
+	        >
+	        <option value="1">JSHOW</option>
+	        <option value="0">JHIDE</option>
+		</field>
+
+		<field
+	        name="show_product_studio"
+	        label="COM_MYMUSE_PRODUCT_SHOW_STUDIO_LABEL"
+	        type="list"
+	        useglobal="true"
+	        class="form-select-color-state"
+	        validate="options"
+	        
+	        >
+	        <option value="1">JSHOW</option>
+	        <option value="0">JHIDE</option>
+		</field>
+
+		<field
+	        name="show_product_publisher"
+	        label="COM_MYMUSE_PRODUCT_SHOW_PUBLISHER_LABEL"
+	        type="list"
+	        useglobal="true"
+	        class="form-select-color-state"
+	        validate="options"
+	        
+	        >
+	        <option value="1">JSHOW</option>
+	        <option value="0">JHIDE</option>
+		</field>
+
+		<field
+	        name="show_product_producer"
+	        label="COM_MYMUSE_PRODUCT_SHOW_PRODUCER_LABEL"
+	        type="list"
+	        useglobal="true"
+	        class="form-select-color-state"
+	        validate="options"
+	        
+	        >
+	        <option value="1">JSHOW</option>
+	        <option value="0">JHIDE</option>
+		</field>
+
+		<field
+	        name="show_product_country"
+	        label="COM_MYMUSE_PRODUCT_SHOW_COUNTRY_LABEL"
+	        type="list"
+	        useglobal="true"
+	        class="form-select-color-state"
+	        validate="options"
+	        
+	        >
+	        <option value="1">JSHOW</option>
+	        <option value="0">JHIDE</option>
+		</field>
+		
+	<field type="spacer" name="spaceritems" label="COM_MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 
+
+		<field name="product_show_quantity" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_QUANTITY" 
+				
+				>
 				
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
-          	</field>
-
-
-			<field 
-				name="show_intro" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				description="COM_MYMUSE_SHOW_INTRO_DESC"
-				label="COM_MYMUSE_SHOW_INTRO_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
 			</field>
 			
-			<field 
-				name="product_show_product_image" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1" 
-				label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
-				description="COM_MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
+			<field name="product_item_selectbox" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_ITEM_SELECTBOX" 
+				
 				>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-			<field 
-				name="product_product_image_height" 
-				type="text" 
-				default="0" 
-				label="COM_MYMUSE_PRODUCT_IMAGE_HEIGHT" 
-				description="COM_MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC">
-	 		</field>
-
-	 		<field
-				name="show_readmore"
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_READMORE_DESC"
-				label="COM_MYMUSE_SHOW_READMORE_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
-				name="show_readmore_title"
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				label="COM_MYMUSE_SHOW_READMORE_TITLE_LABEL"
-				description="COM_MYMUSE_SHOW_READMORE_TITLE_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-	 		
-			<field 
-				name="show_recommends" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				description="COM_MYMUSE_SHOW_RECOMMENDS_DESC"
-				label="COM_MYMUSE_SHOW_RECOMMENDS_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_category_recommends" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				description="COM_MYMUSE_SHOW_CATEGORY_RECOMMENDS_DESC"
-				label="COM_MYMUSE_SHOW_CATEGORY_RECOMMENDS_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-          	
-   	 <field type="spacer" name="spacer_items" label="COM_MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" />
-			
-			<field 
-	 			name="product_show_quantity" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="0" 
-	 			label="COM_MYMUSE_SHOW_QUANTITY" 
-	 			description="COM_MYMUSE_SHOW_QUANTITY_DESC">
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-
-			<field 
-	 			name="product_item_selectbox" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_ITEM_SELECTBOX" 
-	 			description="COM_MYMUSE_ITEM_SELECTBOX_DESC"
-	 			>
-	 			<option value="0">JNO</option>
+				
+				<option value="0">JNO</option>
 				<option value="1">JYES</option>
-	 		</field>
-	 		
-	<field type="spacer" name="spacer_download" label="COM_MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" />
-
-
-	 		<field 
-	 			name="product_show_tracks" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_TRACKS_LABEL" 
-	 			description="COM_MYMUSE_SHOW_TRACKS_DESC"
-	 			>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field> 
-	 		
-	 		<field name="orderby_track"
-				type="list"
-				default="alpha"
-				label="COM_MYMUSE_TRACK_ORDER_LABEL"
-				description="COM_MYMUSE_TRACK_ORDER_DESC"
-					>
-				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
-				<option value="date">JGLOBAL_OLDEST_FIRST</option>
-				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
-				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
-				<option value="hits">JGLOBAL_MOST_HITS</option>
-				<option value="rhits">JGLOBAL_LEAST_HITS</option>
-				<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
-				<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
-			</field>
+			</field>		
 			
-			<field 
-				name="order_track_date" 
-				type="list"
-				description="JGLOBAL_ORDERING_DATE_DESC"
-				label="JGLOBAL_ORDERING_DATE_LABEL"
-				default="product_made_date"
-				>
-				<option value="created">JGLOBAL_CREATED</option>
-				<option value="modified">JGLOBAL_MODIFIED</option>
-				<option value="published">JPUBLISHED</option>
-				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
-					
-			</field>
-	 				
-	 		<field 
-	 			name="product_player_type" 
-	 			type="hidden"
-	 			default="single" 
-	 			label="COM_MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
-	 			description="COM_MYMUSE_PRODUCT_PLAYERTYPE_DESC"
-	 			>
-	 			<option value="single">MYMUSE_SINGLE</option>
-	 			<option value="playlist">MYMUSE_PLAYLIST</option>
-	 			<option value="module">MYMUSE_PLAYER_IN_A_MODULE</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_player_width" 
-	 			type="hidden"
-	 			size="6" 
-	 			default="" 
-				label="COM_MYMUSE_PLAYER_WIDTH_LABEL" 
-				description="COM_MYMUSE_PLAYER_WIDTH_DESC"
-			/>
-		
-			<field 
-				name="product_player_height" 
-				type="hidden"
-				size="6" 
-				default="" 
-				label="COM_MYMUSE_PLAYER_HEIGHT_LABEL" 
-				description="COM_MYMUSE_PLAYER_HEIGHT_DESC"
-			/>
-		
-			<field 
-				name="product_show_select_column" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1" 
-				label="COM_MYMUSE_SHOW_SELECT_COLUMN" 
-				description="COM_MYMUSE_SHOW_SELECT_COLUMN_DESC"
-				>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_filesize" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_FILESIZE" 
-	 			description="COM_MYMUSE_SHOW_FILESIZE_DESC"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_filetime" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher" 
-	 			default="0" 
-	 			label="COM_MYMUSE_SHOW_FILETIME" 
-	 			description="COM_MYMUSE_SHOW_FILETIME_DESC"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-
-	 		<field 
-	 			name="product_show_sales" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-	 			label="COM_MYMUSE_SHOW_SALES" 
-	 			description="COM_MYMUSE_SHOW_SALES_DESC">
-	 			
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-
-	 		<field name="product_show_downloads" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-	 			label="COM_MYMUSE_SHOW_DOWNLOADS" 
-	 			description="COM_MYMUSE_SHOW_DOWNLOADS_DESC">
-	 			
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_cost_column" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_COST_COLUMN" 
-	 			description="COM_MYMUSE_SHOW_COST_COLUMN_DESC"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_preview_column" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_PREVIEW_COLUMN" 
-	 			description="COM_MYMUSE_SHOW_PREVIEW_COLUMN_DESC"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_cartadd" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher" 
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_CARTADD" 
-	 			description="COM_MYMUSE_SHOW_CARTADD_DESC"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		
-	 		
-	<field type="spacer" name="my_spacer" hr="true" />
+	<field type="spacer" name="spacerdownload" label="COM_MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
 
 			
-			<field 
-				name="show_item_navigation" 
-				type="hidden"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				description="COM_MYMUSE_SHOW_NAVIGATION_DESC"
-				label="COM_MYMUSE_SHOW_NAVIGATION_LABEL"
+		<field name="product_show_tracks" 
+			type="list"
+			layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_TRACKS_LABEL" 
+			description="COM_MYMUSE_SHOW_TRACKS_DESC"
+			
+		>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field> 
+			<field name="orderby_track"
+			type="list"
+			label="COM_MYMUSE_TRACK_ORDER_LABEL"
+			description="COM_MYMUSE_TRACK_ORDER_DESC"
+			
+		>
+			<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+			<option value="date">JGLOBAL_OLDEST_FIRST</option>
+			<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+			<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+			<option value="hits">JGLOBAL_MOST_HITS</option>
+			<option value="rhits">JGLOBAL_LEAST_HITS</option>
+			<option value="order">COM_MYMUSE_PRODUCT_MANAGER_ORDER</option>
+		</field>
+
+		<field 
+			name="order_track_date" 
+			type="list"
+			description="JGLOBAL_ORDERING_DATE_DESC"
+			label="JGLOBAL_ORDERING_DATE_LABEL"
+			
+		>
+			<option value="created">JGLOBAL_CREATED</option>
+			<option value="modified">JGLOBAL_MODIFIED</option>
+			<option value="published">JPUBLISHED</option>
+		</field>
+			
+
+		<field name="product_show_select_column"
+		 	type="list"
+		    layout="joomla.form.field.radio.switcher"
+		 	label="COM_MYMUSE_SHOW_SELECT_COLUMN" 
+		 	
+		 >
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="product_show_filesize" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_FILESIZE" 
+				
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="product_show_filetime" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_FILETIME" 
+				
+				>
+				<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+			</field>
+			
+			<!--field name="product_show_sales" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_SALES" 
+				>
+				
+				<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+			</field -->
+			
+			<field name="product_show_downloads" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_DOWNLOADS" 
+				
+				>
+				<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="product_show_cost_column" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_COST_COLUMN" 
+				
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 			
-			<field 
-				name="show_vote" 
-				type="hidden"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				label="COM_MYMUSE_SHOW_VOTE_LABEL"
-				description="COM_MYMUSE_SHOW_VOTE_DESC"
+			<field name="product_show_preview_column" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_PREVIEW_COLUMN" 
+				
 				>
 				<option value="0">JHIDE</option>
-				<option	value="1">JSHOW</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="product_show_cartadd" 
+				type="list"
+		    layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_CARTADD" 
+				
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
 			</field>
 
+		<field type="spacer" name="spacerrecommends" label="COM_MYMUSE_PRODUCT_RECOMMENDS" /> 		
+	  	
+	 	<field 
+			name="show_recommends" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_RECOMMENDS_LABEL"
 			
-
+		>
 			
-
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field 
+			name="show_category_recommends" 
+			type="list"
+		    layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_SHOW_CATEGORY_RECOMMENDS_LABEL"
 			
-
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
 	</fieldset>
-	
+
+
 	<fieldset name="categories" label="JGLOBAL_CATEGORIES_OPTIONS">
 
-			<field 
-				name="show_base_description" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				label="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_LABEL"
-				description="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+		<field 
+			name="show_base_description" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1"
+			label="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_LABEL"
+			description="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 
-			<field 
-				name="categories_description" 
-				type="textarea"
-				description="JGLOBAL_FIELD_CATEGORIES_DESC_DESC"
-				label="JGLOBAL_FIELD_CATEGORIES_DESC_LABEL"
-				cols="25"
-				rows="5"
-			/>
-			
-			<field 
-				name="maxLevelcat" 
-				type="list"
-				description="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_DESC"
-				label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
-				default="-1"
-				>
-				<option value="-1">JALL</option>
-				<option value="1">J1</option>
-				<option value="2">J2</option>
-				<option value="3">J3</option>
-				<option value="4">J4</option>
-				<option value="5">J5</option>
-			</field>
-			
-			<field 
-				name="show_empty_categories_cat" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
-				description="COM_MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field 
-				name="show_subcat_desc_cat" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
-				description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+		<field 
+			name="categories_description" 
+			type="textarea"
+			description="JGLOBAL_FIELD_CATEGORIES_DESC_DESC"
+			label="JGLOBAL_FIELD_CATEGORIES_DESC_LABEL"
+			cols="25"
+			rows="5"
+		/>
+		
+		<field 
+			name="maxLevelcat" 
+			type="list"
+			description="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_DESC"
+			label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
+			default="-1"
+			>
+			<option value="-1">JALL</option>
+			<option value="1">J1</option>
+			<option value="2">J2</option>
+			<option value="3">J3</option>
+			<option value="4">J4</option>
+			<option value="5">J5</option>
+		</field>
+		
+		<field 
+			name="show_empty_categories_cat" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
+			description="COM_MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field 
+			name="show_subcat_desc_cat" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+			description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 
-			<field 
-				name="subcat_desc_cat_truncate" 
-				type="text" 
-				default="" 
-				layout="joomla.form.field.radio.switcher"
-	 			label="COM_MYMUSE_TRUNCATE_DESCRIPTION_LABEL"
-	 			description="COM_MYMUSE_TRUNCATE_DESCRIPTION_DESC">
-	 		</field>
+		<field 
+			name="subcat_desc_cat_truncate" 
+			type="text" 
+			default="" 
+			layout="joomla.form.field.radio.switcher"
+			label="COM_MYMUSE_TRUNCATE_DESCRIPTION_LABEL"
+			description="COM_MYMUSE_TRUNCATE_DESCRIPTION_DESC">
+		</field>
 
-			<field 
-				name="show_cat_num_articles_cat" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				label="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_LABEL"
-				description="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field name="show_cat_subcat_image" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				description="COM_MYMUSE_SHOW_SUBCAT_IMAGE_DESC"
-				label="COM_MYMUSE_SHOW_SUBCAT_IMAGE_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field name="cat_subcat_image_height" type="text" default="0" 
-	 			label="COM_MYMUSE_CATEGORY_IMAGE_HEIGHT" 
-	 			description="COM_MYMUSE_CATEGORY_IMAGE_HEIGHT_DESC">
-	 		</field>
+		<field 
+			name="show_cat_num_articles_cat" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			label="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_LABEL"
+			description="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field name="show_cat_subcat_image" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_SHOW_SUBCAT_IMAGE_DESC"
+			label="COM_MYMUSE_SHOW_SUBCAT_IMAGE_LABEL"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field name="cat_subcat_image_height" type="text" default="0" 
+			label="COM_MYMUSE_CATEGORY_IMAGE_HEIGHT" 
+			description="COM_MYMUSE_CATEGORY_IMAGE_HEIGHT_DESC">
+		</field>
 
 	</fieldset>
 
@@ -734,229 +719,214 @@
 		label="COM_MYMUSE_CATEGORY_PAGES_LABEL"
 		description="COM_MYMUSE_CATEGORY_PAGES_DESC"
 	>
-			<field
-				name="category_layout" type="componentlayout"
-				label="JGLOBAL_FIELD_LAYOUT_LABEL"
-				description="JGLOBAL_FIELD_LAYOUT_DESC"
-				menuitems="true"
-				extension="com_mymuse"
-				view="category"
-				default = "_:default"
-			/>
+		<field
+			name="category_layout" type="componentlayout"
+			label="JGLOBAL_FIELD_LAYOUT_LABEL"
+			description="JGLOBAL_FIELD_LAYOUT_DESC"
+			menuitems="true"
+			extension="com_mymuse"
+			view="category"
+			default = "_:default"
+		/>
+
+		<field 
+			name="show_category_title" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1"
+			label="JGLOBAL_SHOW_CATEGORY_TITLE"
+			description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field 
+			name="show_description" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1"
+			description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
+			label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field
+			name="show_description_image"
+			type="list"
+			label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+			class="form-select-color-state"
+			validate="options"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field 
+			name="maxLevel" 
+			type="list"
+			description="JGLOBAL_MAXLEVEL_DESC"
+			label="JGLOBAL_MAXLEVEL_LABEL"
+			>
+			<option value="-1">JALL</option>
+			<option value="0">JNONE</option>
+			<option value="1">J1</option>
+			<option value="2">J2</option>
+			<option value="3">J3</option>
+			<option value="4">J4</option>
+			<option value="5">J5</option>
+		</field>
 		
-			<field 
-				name="show_category_title" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				label="JGLOBAL_SHOW_CATEGORY_TITLE"
-				description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+		<field name="subcat_columns" 
+			type="list"
+			description="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
+			label="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
+			default="1"
+			>
+			<option value="1">J1</option>
+			<option value="2">J2</option>
+			<option value="3">J3</option>
+			<option value="4">J4</option>
+		</field>
 
-			<field 
-				name="show_description" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
-				label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+		<field 
+			name="show_empty_categories" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
+			description="COM_MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 
-			<field 
-				name="show_description_image" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				description="JGLOBAL_SHOW_CATEGORY_IMAGE_DESC"
-				label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+		<field 
+			name="show_no_articles" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1"
+			label="COM_MYMUSE_NO_ARTICLES_LABEL"
+			description="COM_MYMUSE_NO_ARTICLES_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field 
+			name="show_subcat_image" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			label="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_LABEL"
+			description="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		
+		<field 
+			name="show_subcat_desc" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+			description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field 
+			name="subcat_desc_truncate" 
+			type="text" 
+			default="" 
+			label="COM_MYMUSE_TRUNCATE_DESCRIPTION_LABEL"
+			description="COM_MYMUSE_TRUNCATE_DESCRIPTION_DESC">
+		</field>
+
+		<field 
+			name="show_cat_num_articles" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1"
+			label="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_LABEL"
+			description="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+		<field 
+			name="category_show_all_products" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1" 
+			label="COM_MYMUSE_SHOW_ALL_PRODUCTS" 
+			description="COM_MYMUSE_SHOW_ALL_PRODUCTS_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 			
-			<field 
-				name="category_image_height" 
-				type="text" 
-				default="0" 
-	 			label="COM_MYMUSE_CATEGORY_IMAGE_HEIGHT" 
-	 			description="COM_MYMUSE_CATEGORY_IMAGE_HEIGHT_DESC">
-	 		</field>
 
-			<field 
-				name="maxLevel" 
-				type="list"
-				description="JGLOBAL_MAXLEVEL_DESC"
-				label="JGLOBAL_MAXLEVEL_LABEL"
-				>
-				<option value="-1">JALL</option>
-				<option value="0">JNONE</option>
-				<option value="1">J1</option>
-				<option value="2">J2</option>
-				<option value="3">J3</option>
-				<option value="4">J4</option>
-				<option value="5">J5</option>
-			</field>
 			
-			<field name="subcat_columns" 
-				type="list"
-				description="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
-				label="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
-				default="1"
-				>
-				<option value="1">J1</option>
-				<option value="2">J2</option>
-				<option value="3">J3</option>
-				<option value="4">J4</option>
-			</field>
-
-			<field 
-				name="show_empty_categories" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
-				description="COM_MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_no_articles" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				label="COM_MYMUSE_NO_ARTICLES_LABEL"
-				description="COM_MYMUSE_NO_ARTICLES_DESC"
-					>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field 
-				name="show_subcat_image" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				label="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_LABEL"
-				description="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			
-			<field 
-				name="show_subcat_desc" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-				label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
-				description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field 
-				name="subcat_desc_truncate" 
-				type="text" 
-				default="" 
-	 			label="COM_MYMUSE_TRUNCATE_DESCRIPTION_LABEL"
-	 			description="COM_MYMUSE_TRUNCATE_DESCRIPTION_DESC">
-	 		</field>
-
-			<field 
-				name="show_cat_num_articles" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1"
-				label="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_LABEL"
-				description="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field 
-				name="category_show_all_products" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				default="1" 
-				label="COM_MYMUSE_SHOW_ALL_PRODUCTS" 
-				description="COM_MYMUSE_SHOW_ALL_PRODUCTS_DESC"
-				>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_show_product_image" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
-	 			description="COM_MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_product_image_height" 
-	 			type="text" 
-	 			default="0" 
-	 			label="COM_MYMUSE_PRODUCT_IMAGE_HEIGHT" 
-	 			description="COM_MYMUSE_PRODUCT_IMAGE_HEIGHT"
-	 			>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_show_intro_text" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_SHOW_INTRO_TEXT" description="COM_MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_product_link_titles" 
-	 			type="radio"
-				layout="joomla.form.field.radio.switcher"
-	 			default="1" 
-	 			label="COM_MYMUSE_LINK_TITLES_LABEL" description="COM_MYMUSE_LINK_TITLES_DESC"
-	 			>
-	 			<option value="0">JNO</option>
-				<option value="1">JYES</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_show_comment_total" 
-	 			type="hidden"
-				layout="joomla.form.field.radio.switcher"
-	 			default="0" 
-	 			label="COM_MYMUSE_SHOW_COMMENT_TOTAL" description="COM_MYMUSE_SHOW_COMMENT_TOTAL_DESC"
-	 			>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 	
+		<field 
+			name="category_show_comment_total" 
+			type="hidden"
+			layout="joomla.form.field.radio.switcher"
+			default="0" 
+			label="COM_MYMUSE_SHOW_COMMENT_TOTAL" description="COM_MYMUSE_SHOW_COMMENT_TOTAL_DESC"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		 	
 	</fieldset>
-	
+		
 	<fieldset name="blog_default_parameters"
 		label="COM_MYMUSE_CONFIG_BLOG_SETTINGS_LABEL"
 		description="COM_MYMUSE_CONFIG_BLOG_SETTINGS_DESC"
+	>
+		<field 
+			name="category_show_product_image" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1" 
+			label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
+			description="COM_MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
 			>
-
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		
+			
+		<field 
+			name="category_show_intro_text" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1" 
+			label="COM_MYMUSE_SHOW_INTRO_TEXT" 
+			description="COM_MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+			
+		<field 
+			name="category_product_link_titles" 
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="1" 
+			label="COM_MYMUSE_LINK_TITLES_LABEL" 
+			description="COM_MYMUSE_LINK_TITLES_DESC"
+			>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+			</field>
 		<field 
 			name="num_leading_articles"
 			type="text"
@@ -1004,8 +974,11 @@
 			type="spacer"
 			hr="true"
 		/>
-		<field name="subcategories" type="spacer" class="spacer"
-					label="COM_MYMUSE_SUBSLIDER_BLOG_EXTENDED_LABEL"
+		<field 
+			name="subcategories" 
+			type="spacer" 
+			class="spacer"
+			label="COM_MYMUSE_SUBSLIDER_BLOG_EXTENDED_LABEL"
 		/>
 
 		<field 
@@ -1024,12 +997,12 @@
 			<option value="5">J5</option>
 		</field>
 
-		</fieldset>
+	</fieldset>
 
 	<fieldset name="list_default_parameters"
 		label="JGLOBAL_LIST_LAYOUT_OPTIONS"
 		description="COM_MYMUSE_CONFIG_LIST_SETTINGS_DESC"
-			>
+	>
 
 		<field 
 			name="show_pagination_limit"
@@ -1070,25 +1043,25 @@
 		</field>
 
 		<field name="list_show_artist" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				description="COM_MYMUSE_LIST_ARTIST_DESC"
-				label="COM_MYMUSE_LIST_ARTIST_LABEL"
-				default="1"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_LIST_ARTIST_DESC"
+			label="COM_MYMUSE_LIST_ARTIST_LABEL"
+			default="1"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
 			
 		<field name="list_show_album" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				description="COM_MYMUSE_LIST_ALBUM_DESC"
-				label="COM_MYMUSE_LIST_ALBUM_LABEL"
-				default="1"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_LIST_ALBUM_DESC"
+			label="COM_MYMUSE_LIST_ALBUM_LABEL"
+			default="1"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
 			
 		<field name="list_show_file_length" 
@@ -1096,21 +1069,21 @@
 			description="COM_MYMUSE_LIST_FILE_LENGTH_DESC"
 			label="COM_MYMUSE_LIST_FILE_LENGTH_LABEL"
 			default="0"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
 
 		<field name="list_show_date" 
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
-				description="COM_MYMUSE_SHOW_DATE_DESC"
-				label="COM_MYMUSE_SHOW_DATE_LABEL"
-				default="0"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_SHOW_DATE_DESC"
+			label="COM_MYMUSE_SHOW_DATE_LABEL"
+			default="0"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 
 		<field 
 			name="date_format"
@@ -1128,8 +1101,8 @@
 			label="JGLOBAL_LIST_HITS_LABEL"
 			description="JGLOBAL_LIST_HITS_DESC"
 			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
 		
 		<field 
@@ -1139,10 +1112,10 @@
 			default="1"
 			description="COM_MYMUSE_LIST_PRICE_DESC"
 			label="COM_MYMUSE_LIST_PRICE_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 
 		<field 
 			name="list_show_author"
@@ -1151,9 +1124,9 @@
 			default="0"
 			label="COM_MYMUSE_SHOW_AUTHOR_LABEL"
 			description="COM_MYMUSE_SHOW_AUTHOR_DESC"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
 		
 		<field name="list_show_sales" 
@@ -1162,33 +1135,35 @@
 			default="0"
 			description="COM_MYMUSE_SHOW_SALES_DESC"
 			label="COM_MYMUSE_SHOW_SALES_LABEL"
-				>	
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			>	
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
+
 		<field name="list_show_discount" 
 			type="radio" 
 			layout="joomla.form.field.radio.switcher"
 			default="0"
 			description="COM_MYMUSE_LIST_DISCOUNT_DESC"
 			label="COM_MYMUSE_LIST_DISCOUNT_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
+
 		<field name="display_num" type="list"
-				default="10"
-				description="COM_MYMUSE_NUMBER_ITEMS_LIST_DESC"
-				label="COM_MYMUSE_NUMBER_ITEMS_LIST_LABEL">
-				<option value="5">J5</option>
-				<option value="10">J10</option>
-				<option value="15">J15</option>
-				<option value="20">J20</option>
-				<option value="25">J25</option>
-				<option value="30">J30</option>
-				<option value="50">J50</option>
-				<option value="100">J100</option>
-				<option value="0">JALL</option>
+			default="10"
+			description="COM_MYMUSE_NUMBER_ITEMS_LIST_DESC"
+			label="COM_MYMUSE_NUMBER_ITEMS_LIST_LABEL">
+			<option value="5">J5</option>
+			<option value="10">J10</option>
+			<option value="15">J15</option>
+			<option value="20">J20</option>
+			<option value="25">J25</option>
+			<option value="30">J30</option>
+			<option value="50">J50</option>
+			<option value="100">J100</option>
+			<option value="0">JALL</option>
 		</field>
 		
 		<!-- field type="spacer" name="spacer_headings" label="COM_MYMUSE_TRACKS_OPTIONS" / -->
@@ -1199,9 +1174,9 @@
 			description="COM_MYMUSE_SHOW_ALPHABET_DESC"
 			label="COM_MYMUSE_SHOW_ALPHABET_LABEL"
 			default="1"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 			</field>
 			
 	 	
@@ -1212,38 +1187,38 @@
 			label="COM_MYMUSE_FEATURED_TRACKS_LABEL"
 			description="COM_MYMUSE_FEATURED_TRACKS_DESC"
 			default="0"
-				>
-				<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-			</field>
+			>
+			<option value="0">MYMUSE_HIDE</option>
+	 		<option value="1">MYMUSE_SHOW</option>
+		</field>
 
 		<field name="group_by" type="hidden"
 			label="COM_MYMUSE_GROUPBY_LABEL"
 			description="COM_MYMUSE_GROUPBY_DESC"
-				>
-				<option value=""></option>
-				<option value="a.parentid">MYMUSE_PRODUCT</option>
-				<option value="c.id">MYMUSE_CATEGORY</option>
+			>
+			<option value=""></option>
+			<option value="a.parentid">MYMUSE_PRODUCT</option>
+			<option value="c.id">MYMUSE_CATEGORY</option>
 		</field>
 		
 		<field name="product_show_artist" 
-				type="hidden"
-				layout="joomla.form.field.radio.switcher"
-				description="COM_MYMUSE_PRODUCT_SHOW_ARTIST_DESC"
-				label="COM_MYMUSE_PRODUCT_SHOW_ARTIST_LABEL"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
+			type="hidden"
+			layout="joomla.form.field.radio.switcher"
+			description="COM_MYMUSE_PRODUCT_SHOW_ARTIST_DESC"
+			label="COM_MYMUSE_PRODUCT_SHOW_ARTIST_LABEL"
+			>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 
-	 		<field
-                name="product_artist_alternate_itemid"
-                type="hidden" oldtype="menuitem"
-                label="COM_MYMUSE_PRODUCT_ARTIST_ITEMID_LABEL"
-                description="PRODUCT_ARTIST_ITEMID_DESC"
-                class="inputbox"
-                required="false"
-                />
+		<field
+		    name="product_artist_alternate_itemid"
+		    type="hidden" oldtype="menuitem"
+		    label="COM_MYMUSE_PRODUCT_ARTIST_ITEMID_LABEL"
+		    description="PRODUCT_ARTIST_ITEMID_DESC"
+		    class="inputbox"
+		    required="false"
+	    />
 
 	</fieldset>
 
@@ -1291,7 +1266,6 @@
 			description="JGLOBAL_ORDERING_DATE_DESC"
 			label="JGLOBAL_ORDERING_DATE_LABEL"
 			>
-
 			<option value="created">JGLOBAL_CREATED</option>
 			<option value="modified">JGLOBAL_MODIFIED</option>
 			<option value="published">JPUBLISHED</option>
@@ -1300,13 +1274,12 @@
 		</field>
 		
 		<field name="group_by" type="list"
-				label="COM_MYMUSE_GROUPBY_LABEL"
-				description="COM_MYMUSE_GROUPBY_DESC"
-				>
-
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="a.parentid">COM_MYMUSE_PRODUCT</option>
-				<option value="c.id">COM_MYMUSE_CATEGORY</option>
+			label="COM_MYMUSE_GROUPBY_LABEL"
+			description="COM_MYMUSE_GROUPBY_DESC"
+			>
+			<option value="">JGLOBAL_USE_GLOBAL</option>
+			<option value="a.parentid">COM_MYMUSE_PRODUCT</option>
+			<option value="c.id">COM_MYMUSE_CATEGORY</option>
 		</field>
 
 		<field 
@@ -1347,14 +1320,21 @@
 
 	</fieldset>
 
-
-
-
 	<fieldset name="integration"
 		label="JGLOBAL_INTEGRATION_LABEL"
 		description="COM_MYMUSE_CONFIG_INTEGRATION_SETTINGS_DESC"
 		>
-
+		<field
+			name="sef_ids"
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			label="JGLOBAL_SEF_NOIDS_LABEL"
+			filter="integer"
+			>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field
 			name="show_feed_link"
 			type="radio"
@@ -1363,8 +1343,8 @@
 			label="JGLOBAL_SHOW_FEED_LINK_LABEL"
 			description="JGLOBAL_SHOW_FEED_LINK_DESC"
 			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
 
 		<field
@@ -1391,25 +1371,25 @@
 		</field>
 
 	</fieldset>
-	
+
 	<fieldset name="Updates"
 		description="Update Fields"
 		label="Update Fields"
-		>
+	>
 
-			
 		<field 
 			name="downloadid" 
 			type="text"
 			size="30"
 			label="DownloadID"
 			description ="Enter the Download ID to our site in order to enable Live Updates" />
+
 	</fieldset>
-	
+
 	<fieldset name="permissions"
 		description="JCONFIG_PERMISSIONS_DESC"
 		label="JCONFIG_PERMISSIONS_LABEL"
-		>
+	>
 
 		<field 
 			name="rules" type="rules"

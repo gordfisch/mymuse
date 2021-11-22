@@ -41,23 +41,23 @@ $items_select 	= $this->params->get('product_item_selectbox',1);
 
 		}
 	</style>
-		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3>
+		<h3><?php echo JText::_('COM_MYMUSE_ITEMS'); ?></h3>
 		<table class="mymuse_cart">
 			<thead>
 		    <tr>
 		    
-        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?>
+        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('COM_MYMUSE_NAME'); ?>
 				</th>
        			<?php foreach($product->attribute_sku as $a_sku){ ?>
 						<th class="my<?php echo $a_sku->name ?>" align="left"><?php echo $a_sku->name; ?></th>
 				<?php } ?>
        			
-				<th class="myprice" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></th>
+				<th class="myprice" align="center" width="20%"><?php echo JText::_('COM_MYMUSE_COST'); ?></th>
         	<?php if ($this->params->get('product_show_quantity')) :?>
-        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
+        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_QUANTITY'); ?></th>
         		
       	    <?php endif; ?>
-      	    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+      	    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('COM_MYMUSE_SELECT'); ?></th>
       		</tr>
       		</thead>
 			<?php 

@@ -8,30 +8,33 @@
  * @author 		info@joomlamymuse.com
  * @website		http://www.joomlamymuse.com
  */
+
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 $product 	=& $this->item;
 ?>
 <!--  PRODUCT PHYSICAL -->
-		<h3><?php echo JText::_('MYMUSE_PRODUCT'); ?></h3>
+		<h3><?php echo JText::_('COM_MYMUSE_PRODUCT'); ?></h3>
 		<table class="mymuse_cart cart">
 			<thead>
 				<tr class="mymuse_cart cart">
 
-					<th class="mytitle cart" align="left" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
+					<th class="mytitle cart" align="left" width="40%"><?php echo JText::_('COM_MYMUSE_NAME'); ?></th>
 					
 				<?php  if($this->params->get('product_show_filetime', 0)) :?>
        				<th class="mytime  cart" align="center" width="10%">
-       					<?php echo JText::_('MYMUSE_TIME'); ?></th>
+       					<?php echo JText::_('COM_MYMUSE_TIME'); ?></th>
        			<?php endif; ?>
 
-					<th class="myprice  cart" align="center" width="10%"><?php echo JText::_('MYMUSE_COST'); ?></th>
+					<th class="myprice  cart" align="center" width="10%"><?php echo JText::_('COM_MYMUSE_COST'); ?></th>
 					
        			<?php if ($this->params->get('product_show_quantity')) :?>
-        			<th class="myquantity  cart" align="left" width="10%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
+        			<th class="myquantity  cart" align="left" width="10%"><?php echo JText::_('COM_MYMUSE_QUANTITY'); ?></th>
       	    	<?php endif; ?>
       	    	
-      	    		<th class="myselect  cart" align="left" width="20%"><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+      	    		<th class="myselect  cart" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></th>
 				</tr>
 			</thead>
 			<tr>

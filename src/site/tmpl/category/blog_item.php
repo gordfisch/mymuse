@@ -1,177 +1,139 @@
 <?php
 /**
- * @version     $Id$
- * @package     com_mymuse3
- * @copyright   Copyright (C) 2011. All rights reserved.
+ * @package     Joomla.Site
+ * @subpackage  com_content
+ *
+ * @copyright   (C) 2006 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Gord Fisch info@joomlamymuse.com
  */
 
-// no direct access
 defined('_JEXEC') or die;
 
-// Create a shortcut for params.
-$params = &$this->item->params;
-$canEdit	= $this->item->params->get('access-edit');
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtmlBehavior::framework();
-?>
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
-<?php if ($this->item->state == 0) : ?>
-<div class="system-unpublished">
-<?php endif; ?>
-<div class="intro-item">
+
+// Create a shortcut for params.
+$params = $this->item->params;
+$canEdit = $this->item->params->get('access-edit');
+$info    = $params->get('info_block_position', 0);
+
+// Check if associations are implemented. If they are, define the parameter.
+$assocParam = (Associations::isEnabled() && $params->get('show_associations'));
+
+$currentDate   = Factory::getDate()->format('Y-m-d H:i:s');
+$isUnpublished = ($this->item->state == MymuseComponent::CONDITION_UNPUBLISHED || $this->item->publish_up > $currentDate)
+	|| ($this->item->publish_down < $currentDate && $this->item->publish_down !== null);
+
+?>
+<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->category->id)); ?>
 <?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
 	<div class="list-image">
-		<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->category->id)); ?>"
+		<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->category->id)); ?>"
 		><img class="product-image" src="<?php echo $this->item->list_image; ?>" 
 		alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 		/></a>&nbsp;
 	</div>
 <?php endif; ?>
 
-<?php if ($params->get('show_title')) : ?>
-	<div class="title">
-		<?php if ($params->get('category_product_link_titles') && $params->get('access-view')) : ?>
-			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->category->id)); ?>">
-			<?php echo $this->escape($this->item->title); ?></a>
-		<?php else : ?>
-			<?php echo $this->escape($this->item->title); ?>
+<div class="item-content">
+	<?php if ($isUnpublished) : ?>
+		<div class="system-unpublished">
+	<?php endif; ?>
+<?php
+// Create a shortcut for params.
+
+$currentDate = Factory::getDate()->format('Y-m-d H:i:s');
+?>
+<?php 
+if ($this->item->state == 0 || $params->get('category_product_link_titles') || ($params->get('show_author') && !empty($this->item->author ))) : ?>
+	<div class="page-header">
+		<?php if ($params->get('show_title')) : ?>
+			<h2 itemprop="name">
+				<?php if ($params->get('category_product_link_titles') && ($params->get('access-view') || $params->get('show_noauth', '0') == '1')) : ?>
+					<a href="<?php echo Route::_(
+						RouteHelper::getProductRoute($this->item->slug, $this->category->id, $this->item->language)
+					); ?>" itemprop="url">
+						<?php echo $this->escape($this->item->title); ?>
+					</a>
+				<?php else : ?>
+					<?php echo $this->escape($this->item->title); ?>
+				<?php endif; ?>
+			</h2>
+		<?php endif; ?>
+
+		<?php if ($this->item->state == 0) : ?>
+			<span class="badge bg-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
+		<?php endif; ?>
+
+		<?php if ($this->item->publish_up > $currentDate) : ?>
+			<span class="badge bg-warning"><?php echo Text::_('JNOTPUBLISHEDYET'); ?></span>
+		<?php endif; ?>
+
+		<?php if ($this->item->publish_down !== null && $this->item->publish_down < $currentDate) : ?>
+			<span class="badge bg-warning"><?php echo Text::_('JEXPIRED'); ?></span>
 		<?php endif; ?>
 	</div>
 <?php endif; ?>
 
-<?php if (!$params->get('show_intro')) : ?>
-	<?php echo $this->item->event->afterDisplayTitle; ?>
-<?php endif; ?>
+	<?php if ($canEdit) : ?>
+		<?php echo LayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item)); ?>
+	<?php endif; ?>
 
-<?php echo $this->item->event->beforeDisplayContent; ?>
+	<?php // Todo Not that elegant would be nice to group the params ?>
+	<?php $useDefList = ($params->get('show_modify_date') || $params->get('show_publish_date') || $params->get('show_create_date')
+		|| $params->get('show_hits') || $params->get('show_category') || $params->get('show_parent_category') || $params->get('show_author') || $assocParam); ?>
 
+	<?php if ($useDefList && ($info == 0 || $info == 2)) : ?>
+		<?php echo LayoutHelper::render('joomla.content.info_block', array('item' => $this->item, 'params' => $params, 'position' => 'above')); ?>
+	<?php endif; ?>
+	<?php if ($info == 0 && $params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
+		<?php echo LayoutHelper::render('joomla.content.tags', $this->item->tags->itemTags); ?>
+	<?php endif; ?>
 
-<?php // to do not that elegant would be nice to group the params ?>
+	<?php if (!$params->get('show_intro')) : ?>
+		<?php // Content is generated by content plugin event "onContentAfterTitle" ?>
+		<?php echo $this->item->event->afterDisplayTitle; ?>
+	<?php endif; ?>
 
-<?php if (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date')) or ($params->get('show_parent_category')) or ($params->get('show_hits'))) : ?>
- <dl class="article-info">
- <dt class="article-info-term"><?php echo JText::_('MYMUSE_PRODUCT_INFO'); ?></dt>
-<?php endif; ?>
-<?php if ($params->get('show_parent_category') && $this->item->parent_id != 1) : ?>
-		<dd class="parent-category-name">
-			<?php $title = $this->escape($this->item->parent_title);
-				$url = '<a href="' . JRoute::_(MyMuseHelperRoute::getCategoryRoute($this->item->parent_id)) . '">' . $title . '</a>'; ?>
-			
-			<?php if ($params->get('link_parent_category')) : ?>
-				<?php echo JText::sprintf('MYMUSE_PARENT', $url); ?>
-				<?php else : ?>
-				<?php echo JText::sprintf('MYMUSE_PARENT', $title); ?>
-			<?php endif; ?>
-		</dd>
-<?php endif; ?>
-<?php if ($params->get('show_category')) : ?>
-		<dd class="category-name">
-			<?php $title = $this->escape($this->item->category_title);
-					$url = '<a href="' . JRoute::_(MyMuseHelperRoute::getCategoryRoute($this->item->catid)) . '">' . $title . '</a>'; ?>
-			<?php if ($params->get('link_category')) : ?>
-				<?php echo JText::sprintf('MYMUSE_CATEGORY', $url); ?>
-				<?php else : ?>
-				<?php echo JText::sprintf('MYMUSE_CATEGORY', $title); ?>
-			<?php endif; ?>
-		</dd>
-<?php endif; ?>
-<?php if ($params->get('show_create_date')) : 
-?>
-		<dd class="create">
-		<?php echo JText::sprintf('MYMUSE_CREATED_DATE_ON', JHtml::_('date', $this->item->created, $this->params->get('my_date_format',JText::_('DATE_FORMAT_LC3')))); 
-		 ?>
-		</dd>
-<?php endif; ?>
-<?php if ($params->get('show_modify_date')) : ?>
-		<dd class="modified">
-		<?php echo JText::sprintf('MYMUSE_LAST_UPDATED', JHtml::_('date', $this->item->modified, $this->params->get('my_date_format',JText::_('DATE_FORMAT_LC3')))); ?>
-		</dd>
-<?php endif; ?>
-<?php if ($params->get('show_publish_date')) : ?>
-		<dd class="published">
-		<?php echo JText::sprintf('MYMUSE_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, $this->params->get('my_date_format',JText::_('DATE_FORMAT_LC3')))); ?>
-		</dd>
-<?php endif; ?>
+	<?php // Content is generated by content plugin event "onContentBeforeDisplay" ?>
+	<?php echo $this->item->event->beforeDisplayContent; ?>
 
-<?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
-	<dd class="createdby">
-		<?php $author =  $this->item->author; ?>
-		<?php $author = ($this->item->created_by_alias ? $this->item->created_by_alias : $author);?>
+	<?php echo $this->item->introtext; ?>
 
-			<?php if (!empty($this->item->contactid ) &&  $params->get('link_author') == true):?>
-				<?php 	echo JText::sprintf('MYMUSE_WRITTEN_BY' ,
-				 JHtml::_('link', JRoute::_('index.php?option=com_contact&view=contact&id='.$this->item->contactid), $author)); ?>
+	<?php if ($info == 1 || $info == 2) : ?>
+		<?php if ($useDefList) : ?>
+			<?php echo LayoutHelper::render('joomla.content.info_block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
+		<?php endif; ?>
+		<?php if ($params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
+			<?php echo LayoutHelper::render('joomla.content.tags', $this->item->tags->itemTags); ?>
+		<?php endif; ?>
+	<?php endif; ?>
 
-			<?php else :?>
-				<?php echo JText::sprintf('MYMUSE_WRITTEN_BY', $author); ?>
-			<?php endif; ?>
-	</dd>
-<?php endif; ?>
-<?php if ($params->get('show_hits')) : ?>
-		<dd class="hits">
-		<?php 
-		echo JText::sprintf('MYMUSE_HITS', $this->item->hits); ?>
-		</dd>
-<?php endif; ?>
-<?php if (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date')) or ($params->get('show_parent_category')) or ($params->get('show_hits'))) :?>
- 	</dl>
-<?php endif; ?>
-
-
-<?php  if (isset($images->image_intro) and !empty($images->image_intro)) : ?>
-	<?php $imgfloat = (empty($images->float_intro)) ? $params->get('float_intro') : $images->float_intro; ?>
-	<div class="img-intro-<?php echo htmlspecialchars($imgfloat); ?>">
-	<img
-		<?php if ($images->image_intro_caption):
-			echo 'class="caption"'.' title="' .htmlspecialchars($images->image_intro_caption) .'"';
+	<?php if ($params->get('show_readmore') && $this->item->readmore) :
+		if ($params->get('access-view')) :
+			$link = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->catid, $this->item->language));
+		else :
+			$menu = Factory::getApplication()->getMenu();
+			$active = $menu->getActive();
+			$itemId = $active->id;
+			$link = new Uri(Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
+			$link->setVar('return', base64_encode(RouteHelper::getProductRoute($this->item->slug, $this->item->catid, $this->item->language)));
 		endif; ?>
-		src="<?php echo htmlspecialchars($images->image_intro); ?>" alt="<?php echo htmlspecialchars($images->image_intro_alt); ?>"/>
-	</div>
-<?php endif; ?>
 
-<?php if($params->get('category_show_intro_text')) :?>
-<?php echo $this->item->introtext; ?>
-<?php endif;
+		<?php echo LayoutHelper::render('joomla.content.readmore', array('item' => $this->item, 'params' => $params, 'link' => $link)); ?>
 
-?>
+	<?php endif; ?>
 
-<?php if ($params->get('show_readmore') && $this->item->readmore) :
-	if ($params->get('access-view')) :
-		$link = JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->slug, $this->item->catid));
-	else :
-		$menu = JFactory::getApplication()->getMenu();
-		$active = $menu->getActive();
-		$itemId = $active->id;
-		$link1 = JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
-		$returnURL = JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->slug, $this->item->catid));
-		$link = new JURI($link1);
-		$link->setVar('return', base64_encode($returnURL));
-	endif;
-?>
-		<div class="readmore">
-				<a href="<?php echo $link; ?>">
-					<?php if (!$params->get('access-view')) :
-						echo JText::_('MYMUSE_REGISTER_TO_READ_MORE');
-					elseif ($readmore = $this->item->alternative_readmore) :
-						echo $readmore;
-						if ($params->get('show_readmore_title', 0) != 0) :
-						    echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-						endif;
-					elseif ($params->get('show_readmore_title', 0) == 0) :
-						echo JText::sprintf('MYMUSE_READ_MORE_TITLE');
-					else :
-						echo JText::_('MYMUSE_READ_MORE');
-						echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-					endif; ?></a>
+	<?php if ($isUnpublished) : ?>
 		</div>
-<?php endif; ?>
-</div>
-<?php if ($this->item->state == 0) : ?>
-</div>
-<?php endif; ?>
+	<?php endif; ?>
 
-
-<?php echo $this->item->event->afterDisplayContent; ?>
+	<?php // Content is generated by content plugin event "onContentAfterDisplay" ?>
+	<?php echo $this->item->event->afterDisplayContent; ?>
+</div>

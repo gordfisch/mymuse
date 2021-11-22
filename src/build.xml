@@ -20,11 +20,15 @@
         <fileset dir="./administrator" id="admin_files">
                 <include name="**" />
         </fileset>
+        <fileset dir="./media" id="media_files">
+                <include name="**" />
+        </fileset>
         
 
         <fileset dir="${src}" id="allfiles">
                 <include name="administrator/*" />
                 <include name="site/*" />
+                <include name="media/*" />
                 <include name="mymuse.xml" />
         </fileset>
         
@@ -42,6 +46,9 @@
                 <copy todir="${test}/administrator/components/com_mymuse">
                        <fileset refid="admin_files" />
                 </copy>
+                <copy todir="${test}/media/com_mymuse">
+                       <fileset refid="media_files" />
+                </copy>
                 
                 <!--  languages -->
 
@@ -53,7 +60,38 @@
                         
                 <copy file="${src}/site/language/en-GB/com_mymuse.ini"
                         todir="${test}/language/en-GB" />
-    
+
+                <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.ini"
+                        todir="${test}/administrator/language/en-GB" /> 
+                <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.sys.ini"
+                        todir="${test}/administrator/language/en-GB" /> 
+
+                        
+                <!-- plugins -->
+                <copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
+                            todir="${test}/plugins/mymuse/audio_jplayer" /> 
+                <copy file="${src}/plugins/audio_jplayer/audio_jplayer.xml"
+                                todir="${test}/plugins/mymuse/audio_jplayer" /> 
+                <copy file="${src}/plugins/audio_jplayer/Jplayer.swf"
+                                todir="${test}/plugins/mymuse/audio_jplayer" /> 
+                <copy file="${src}/plugins/audio_jplayer/js/jplayer.playlist.min.js"
+                                todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+                <copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.inspector.js"
+                                todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+                <copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.min.js"
+                                todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.css"
+                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.orig.css"
+                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.rtl.css"
+                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.jpg"
+                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.seeking.gif"
+                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.video.play.png"
+                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
 
         </target>
 </project>

@@ -27,7 +27,7 @@ $user     = JFactory::getUser();
 ?>
 
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
-    <h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
+    <h3><?php echo JText::_('COM_MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
 <?php if (!$this->hide_player){ ?>
     <!-- PLAYER -->
@@ -40,7 +40,7 @@ $user     = JFactory::getUser();
         <?php echo $product->flash; ?>
       </div>
       <?php if($product->flash) : ?>
-      <div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span
+      <div><?php echo JText::_('COM_MYMUSE_NOW_PLAYING');?> <span
         id="jp-title-li"></span>
       </div>
       <?php endif; ?>
@@ -70,53 +70,53 @@ $user     = JFactory::getUser();
     <thead>
       <tr class="mymuse_cart cart">
         <th class="mytitle cart" align="center" width="40%">
-          <?php echo JHtml::_('grid.sort', 'MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></th>
+          <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></th>
           
           <?php  if($this->params->get('product_show_artist', 0)) :?>
             <th class="myartist cart" align="center"
               width="30%">
-            <?php echo JHtml::_('grid.sort', 'MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></th>
+            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></th>
             
           <?php endif; ?>
           
           <?php  if($this->params->get('product_show_filetime', 0)) :?>
             <th class="mytime cart" align="center" width="10%">
-            <?php echo JHtml::_('grid.sort', 'MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></th>
+            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></th>
           <?php endif; ?>
           
           <?php  if($this->params->get('product_show_filesize', 0)) :?>
             <th class="myfilesize cart" align="center"
               width="10%">
-            <?php echo JHtml::_('grid.sort', 'MYMUSE_FILE_SIZE', 'file_length', $listDirn, $listOrder); ?></th>
+            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_length', $listDirn, $listOrder); ?></th>
           <?php endif; ?>
           
           <?php if($this->params->get('product_show_sales', 0)) : ?>
             <th class="mysales cart" align="left" width="10%">
-            <?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></th>
+            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></th>
           <?php endif; ?>
           
           <?php if($this->params->get('product_show_downloads', 0)) : ?>
             <th class="mydownloads cart" align="left"
               width="10%">
-            <?php echo JHtml::_('grid.sort', 'MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></th>
+            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></th>
           <?php endif; ?>
           
           <?php  if($this->params->get('product_show_cost_column', 1)) :?>
             <th class="myprice cart" align="center" width="10%">
-            <?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></th>
+            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></th>
           <?php endif; ?>
             
             <?php if(count($this->params->get('my_formats')) > 1) :?>
-          <th class="myselect cart" align="left" width="20%"><?php echo JText::_('MYMUSE_FORMAT'); ?></th>
+          <th class="myselect cart" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></th>
           <?php endif;?>
             
             <?php  if($this->params->get('product_show_select_column', 1)) :?>
-          <th class="myselect cart" align="left" width="20%"><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+          <th class="myselect cart" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></th>
           <?php endif; ?>
 
           <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
             <th class="mypreviews cart" align="left"
-              width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
+              width="10%"><?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?></th>
           <?php endif; ?>
             
           </tr>

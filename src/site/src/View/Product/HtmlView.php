@@ -24,6 +24,9 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Helper\CartHelper;
+use Joomla\Component\Mymuse\Site\Model\StoreModel;
+
 
 /**
  * HTML product View class for the Content component
@@ -99,13 +102,23 @@ class HtmlView extends BaseHtmlView
 			return;
 		}
 
-		$app        = Factory::getApplication();
-		$user       = Factory::getUser();
+		$app        			= Factory::getApplication();
+		$user       			= Factory::getUser();
+		$jinput 				= $app->input;
 
-		$this->item  = $this->get('Item');
-		$this->print = $app->input->getBool('print', false);
-		$this->state = $this->get('State');
-		$this->user  = $user;
+		$this->item  			= $this->get('Item');
+		$this->tracks 			= $this->get('Tracks');
+		$this->print 			= $app->input->getBool('print', false);
+		$this->state 			= $this->get('State');
+		$this->user  			= $user;
+		$this->Itemid 			= $jinput->get("Itemid",'');
+		$this->sortDirection    = $this->state->get('list.direction');
+		$this->sortColumn       = $this->state->get('list.ordering');
+		$this->store			= StoreModel::getStore();
+		$MyMuseCart				= new CartHelper;
+		$this->cart 			= $MyMuseCart->cart;
+		$this->filterAlpha     	= $jinput->get('filter_alpha', '', 'STRING');
+
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -172,6 +185,8 @@ class HtmlView extends BaseHtmlView
 			if ($layout = $item->params->get('product_layout'))
 			{
 				$this->setLayout($layout);
+			}else{
+				$this->setLayout('product');
 			}
 		}
 
@@ -240,14 +255,17 @@ class HtmlView extends BaseHtmlView
 		Factory::getApplication()->triggerEvent('onContentPrepare', array('com_mymuse.product', &$item, &$item->params, $offset));
 
 		$item->event = new \stdClass;
-		$results = Factory::getApplication()->triggerEvent('onContentAfterTitle', array('com_mymuse.product', &$item, &$item->params, $offset));
+		$results = $app->triggerEvent('onProductBeforeHeader', array ('com_mymuse.product', &$item, &$this->params, $offset));
+		$item->event->beforeDisplayHeader = trim(implode("\n", $results));
+		
+		$results = $app->triggerEvent('onProductAfterTitle', array('com_mymuse.product', &$item, &$this->params, $offset));
 		$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-		$results = Factory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_mymuse.product', &$item, &$item->params, $offset));
-		$item->event->beforeDisplayContent = trim(implode("\n", $results));
+		$results = $app->triggerEvent('onProductBeforeDisplay', array('com_mymuse.product', &$item, &$this->params, $offset));
+		$item->event->beforeDisplayProduct = trim(implode("\n", $results));
 
-		$results = Factory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_mymuse.product', &$item, &$item->params, $offset));
-		$item->event->afterDisplayContent = trim(implode("\n", $results));
+		$results = $app->triggerEvent('onProductAfterDisplay', array('com_mymuse.product', &$item, &$this->params, $offset));
+		$item->event->afterDisplayProduct = trim(implode("\n", $results));
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));

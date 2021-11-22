@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_mymuse",
+  "version": "4.0.0",
+  "description": "Joomla CMS",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+ 
+    {
+      "name": "com_mymuse.admin-products-modal.es5",
+      "type": "script",
+      "uri": "com_mymuse/admin-products-modal-es5.min.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "nomodule": true,
+        "defer": true
+      },
+      "version": "872a497cd19612c3e1940b5feefdc0e14c08d4b9"
+    },
+    {
+      "name": "com_mymuse.admin-products-modal",
+      "type": "script",
+      "uri": "com_mymuse/admin-products-modal.min.js",
+      "dependencies": [
+        "com_mymuse.admin-products-modal.es5"
+      ],
+      "attributes": {
+        "type": "module"
+      },
+      "version": "b0a8df19948936e693d5c710d22673ed9ad760a3"
+    }
+  
+  ]
+}

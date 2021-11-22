@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if(count($this->recommends)) : ?>
 	<div id="mymuse-container-wrap">
-	<h3><?php echo JText::_('MYMUSE_RELATED_ITEMS'); ?></h3>
+	<h3><?php echo JText::_('COM_MYMUSE_RELATED_ITEMS'); ?></h3>
 	<div id="mymuse-container">	
 	<?php foreach($this->recommends as $item) : ?>
 		<?php if($item->list_image) :?>

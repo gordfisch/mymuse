@@ -14,7 +14,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
 jimport( 'joomla.html.parameter' );
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 /**
 * MyMuse Audio jplayer plugin
@@ -42,9 +47,9 @@ class plgMymuseAudio_jplayer extends JPlugin
 	function __construct(&$subject, $config)  {
 		parent::__construct($subject, $config);
 			
-		JHtml::_('jquery.framework',  true, true);
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication('site');
+		HTMLHelper::_('jquery.framework',  true, true);
+		$document = Factory::getDocument();
+		$app = Factory::getApplication('site');
         
         $site_url = preg_replace("#administrator/#","",JURI::base());
   
@@ -59,15 +64,15 @@ class plgMymuseAudio_jplayer extends JPlugin
         
         // ui js and css
         if ($app->isClient('site')) {
-        	if(preg_match("/https/", JURI::base())){
+        	if(preg_match("/https/", URI::base())){
         		$js_path = 'https://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
         	}else{
         		$js_path = 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
         	}
-        	JHtml::_('script',$js_path, false, true, false, false);
+        	HTMLHelper::_('script',$js_path,array('version' => '1.0.1', 'relative' => false), ['defer' => true]);
         	
         }
-        if(preg_match("/https/", JURI::base())){
+        if(preg_match("/https/", URI::base())){
         	$document->addStyleSheet('https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
         }else{
         	$document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');

@@ -27,9 +27,9 @@ if($this->params->get('show_minicart')) :?>
 	?></div>
 				<div class="mini-cart-link" id="mini-cart-link"><?php
 	if($this->cart['idx']) :
-	    echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
+	    echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>';
 	else :
-	    echo JText::_('MYMUSE_YOUR_CART_IS_EMPTY');
+	    echo JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY');
 	endif;
 	?></div>
 			</div>
@@ -60,7 +60,7 @@ if ( $this->params->get('filter_field') != 'hide' || $this->params->get('show_pa
 		<tr>
 		<?php if ($this->params->get('filter_field') != 'hide') : ?>
 			<td align="left" width="60%" nowrap="nowrap">
-				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
+				<?php echo JText::_('COM_MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
 				<input type="text" name="searchword"
 				value="<?php echo $this->escape($this->state->get('list.searchword')); ?>"
 				style="width: 80%" onchange="this.start.value=0;this.form.submit();" />
@@ -75,37 +75,7 @@ if ( $this->params->get('filter_field') != 'hide' || $this->params->get('show_pa
 
 
 
-<?php if ($this->canEdit ||  $this->params->get('show_print_icon') || $this->params->get('show_email_icon')) : ?>
-<!-- ICONS -->
-<ul class="actions">
-	<?php if (!$this->print) : ?>
-		<?php if ($this->params->get('show_print_icon')) : ?>
-			<li class="print-icon">
-			<?php echo JHtml::_('icon.print_popup',  $this->item, $this->params); ?>
-			</li>
-		<?php endif; ?>
 
-		<?php if ($this->params->get('show_email_icon')) : ?>
-			<li class="email-icon">
-			<?php echo JHtml::_('icon.email',  $this->item, $this->params); ?>
-			</li>
-		<?php endif; ?>
-
-		<?php if ($canEdit) : ?>
-			<!--  li class="edit-icon">
-			<?php echo JHtml::_('icon.edit', $this->item, $this->params); ?>
-			</li -->
-		<?php endif; ?>
-
-	<?php else : ?>
-		<li>
-		<?php echo JHtml::_('icon.print_screen',  $this->item, $this->params); ?>
-		</li>
-	<?php endif; ?>
-
-	</ul>
-<!-- END ICONS -->
-<?php endif; ?>
 
 <?php  if ( !$this->params->get('show_intro') ) :
 	echo $this->item->event->afterDisplayTitle;
@@ -121,7 +91,7 @@ endif; ?>
 <?php if ($useDefList) : ?>
 <!-- PRODUCT ATTRIBUTES -->
 <dl class="article-info">
-	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_PRODUCT_INFO'); ?></dt>
+	<dt class="article-info-term"><?php  echo JText::_('COM_MYMUSE_PRODUCT_INFO'); ?></dt>
 <?php endif; ?>
 
 <?php if ($this->params->get('show_parent_category') && $this->item->parent_slug != '1:root') : ?>
@@ -129,9 +99,9 @@ endif; ?>
 	<?php	$title = $this->escape($this->item->parent_title);
 	$url = '<a href="'.JRoute::_(myMuseHelperRoute::getCategoryRoute($this->item->parent_id)).'">'.$title.'</a>';?>
 	<?php if ($this->params->get('link_parent_category') and $this->item->parent_slug) : ?>
-		<?php echo JText::sprintf('MYMUSE_PARENT', $url); ?>
+		<?php echo JText::sprintf('COM_MYMUSE_PARENT', $url); ?>
 	<?php else : ?>
-		<?php echo JText::sprintf('MYMUSE_PARENT', $title); ?>
+		<?php echo JText::sprintf('COM_MYMUSE_PARENT', $title); ?>
 	<?php endif; ?>
 	</dd>
 <?php endif; ?>
@@ -140,19 +110,19 @@ endif; ?>
 
 <?php if ($this->params->get('show_create_date')) : ?>
 	<dd class="create">
-	<?php echo JText::sprintf('MYMUSE_CREATED_DATE_ON', JHtml::_('date', $this->item->created, JText::_('DATE_FORMAT_LC2'))); ?>
+	<?php echo JText::sprintf('COM_MYMUSE_CREATED_DATE_ON', JHtml::_('date', $this->item->created, JText::_('DATE_FORMAT_LC2'))); ?>
 	</dd>
 <?php endif; ?>
 
 <?php if ($this->params->get('show_modify_date')) : ?>
 	<dd class="modified">
-	<?php echo JText::sprintf('MYMUSE_LAST_UPDATED', JHtml::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?>
+	<?php echo JText::sprintf('COM_MYMUSE_LAST_UPDATED', JHtml::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?>
 	</dd>
 <?php endif; ?>
 
 <?php if ($this->params->get('show_publish_date')) : ?>
 	<dd class="published">
-	<?php echo JText::sprintf('MYMUSE_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC2'))); ?>
+	<?php echo JText::sprintf('COM_MYMUSE_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC2'))); ?>
 	</dd>
 <?php endif; ?>
 
@@ -166,16 +136,16 @@ endif; ?>
 		$item = $menu->getItems('link', $needle, true);
 		$cntlink = !empty($item) ? $needle . '&Itemid=' . $item->id : $needle;
 	?>
-		<?php echo JText::sprintf('MYMUSE_WRITTEN_BY', JHtml::_('link', JRoute::_($cntlink), $author)); ?>
+		<?php echo JText::sprintf('COM_MYMUSE_WRITTEN_BY', JHtml::_('link', JRoute::_($cntlink), $author)); ?>
 	<?php else: ?>
-		<?php echo JText::sprintf('MYMUSE_WRITTEN_BY', $author); ?>
+		<?php echo JText::sprintf('COM_MYMUSE_WRITTEN_BY', $author); ?>
 	<?php endif; ?>
 	</dd>
 <?php endif; ?>
 
 <?php if($this->params->get('show_hits')) : ?>
 	<dd class="hits">
-	<?php echo JText::sprintf('MYMUSE_PRODUCT_HITS', $this->item->hits); ?>
+	<?php echo JText::sprintf('COM_MYMUSE_PRODUCT_HITS', $this->item->hits); ?>
 	</dd>
 <?php endif; ?>
 

@@ -731,7 +731,7 @@ class ProductModel extends AdminModel
 		$lists['files'] 		= array();
 	
 		//attributes
-		if($this->_item->parentid){
+		if(is_numeric($this->_item->parentid)){
 			//we want the parentid
 			$pid = $this->_item->parentid;
 		}else{
@@ -741,6 +741,7 @@ class ProductModel extends AdminModel
 		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
 			product_parent_id='.$pid.'
 			ORDER BY ordering';
+
 		$this->_db->setQuery($query);
 		$lists['attribute_sku'] = $this->_db->loadObjectList();
 
@@ -1188,6 +1189,10 @@ class ProductModel extends AdminModel
 
     public function checkin($pks = array()) {
         $table = $this->getTable('Product');
+        if(is_string($pks)) {
+        	$arr[] = $pks;
+        	$pks = $arr;
+        }
         foreach($pks as $pk){
             $table->checkin($pk);
         }

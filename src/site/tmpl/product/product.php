@@ -1,6 +1,6 @@
 <?php 
 /**
- * @version		$Id: product.php 1986 2018-07-22 19:11:13Z gfisch $
+ * @version		44.01
  * @package		mymuse
  * @copyright	Copyright © 2018 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
@@ -10,24 +10,46 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-global $store, $shopper, $cart;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\CMS\Application\ApplicationHelper;
 
+
+
+
+global $shopper;
+
+$store = $this->store;
+$cart = $this->cart;
 $product 	=& $this->item;
 $items		=& $this->item->items;
+if(!is_countable($items)){ 
+	$items = array();
+}
 $tracks		=& $this->item->tracks;
+if(is_countable($tracks)){ 
+	$tracks = array();
+}
 $params 	=& $this->params;
 $user 		=& $this->user;
 $print 		= $this->print;
 $Itemid		= $this->Itemid;
 $height 	= $this->params->get('product_product_image_height',0);
-$this->check 		= 1;
+$this->check = 1;
 $count		= 0;
 $this->return_link = 'index.php?option=com_mymuse&view=product&task=product&id='.$product->id.'&catid='.$product->catid.'&Itemid='.$Itemid;
 $this->canEdit	= $this->item->params->get('access-edit',0);
 $items_select 	= $this->params->get('product_item_selectbox',0);
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $langtag = $lang->getTag();
 $listOrder	= $this->sortColumn;
 $listDirn	= $this->sortDirection;
@@ -35,21 +57,22 @@ $listDirn	= $this->sortDirection;
 
 //get artist URL if exists
 $this->item->artist_link = '';
-$db = JFactory::getDBO();
-$artist = JApplication::stringURLSafe($this->item->artist_title);
+$db = Factory::getDBO();
+$app = Factory::getApplication();
+$artist = ApplicationHelper::stringURLSafe($this->item->artist_title);
 $this->item->artist_link = '';
 if($artist){
 	$query = "SELECT link FROM #__menu WHERE alias = '$artist'";
 	$db->setQuery($query);
 	if($res = $db->loadObject()){
-		$this->item->artist_link = JRoute::_($res->link);
+		$this->item->artist_link = Route::_($res->link);
 	}
 }
 
-$uri = JFactory::getURI();
-$prod_uri = $uri->toString();
-$description = ($product->introtext != '')? $product->introtext : $product->title;
-$document 	= JFactory::getDocument();
+$uri 			= JUri::getInstance(); 
+$prod_uri 		= $uri->toString();
+$description 	= ($product->introtext != '')? $product->introtext : $product->title;
+$document 		= JFactory::getDocument();
 $document->setMetaData( 'og:site_name',$this->escape($this->store->title));
 $document->setMetaData( 'og:type', 'article');
 $document->setMetaData( 'og:url', $prod_uri);
@@ -78,7 +101,7 @@ if("1" == $this->params->get('my_price_by_product')){//price by product
 }
 
 $this->all_tracks = 0;
-if(count($tracks)){ 
+if(count((is_countable($tracks)?$tracks:[]))){
     foreach($tracks as $track){ 
         if($track->product_allfiles == 1){
             $this->all_tracks = $track;
@@ -98,11 +121,11 @@ for ($i=0;$i<$this->cart["idx"];$i++) {
 if($product->product_physical){
 	$count++;
 }
-if(count($items) && !$items_select){ 
+if(count(is_countable($items)?$items:[]) && !$items_select){ 
 	$count += count($items);
 }
 
-if(count($tracks)){ 
+if(count(is_countable($tracks)?$tracks:[])){ 
 	$count += count($tracks);
 }
 
@@ -112,7 +135,7 @@ $js = '
 function hasProduct(that, count){
 ';
 
-if($items_select && count($items)){
+if($items_select && count(is_countable($items)?$items:[])){
 $js .= 	'    item_count='.count($items).';
 	var pidselect=document.getElementById("pidselect");
     var pid = pidselect.options[pidselect.selectedIndex].value;
@@ -231,13 +254,13 @@ jQuery(document).ready(function($){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
 	
                     $("#mini-cart-text").html(" ");
-                    $("#mini-cart-link").html(\''.json_encode(JText::_('MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
                     link = "";
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300, delay:'. $params->get('my_delay_fadeout', 3000)  .' });
@@ -251,7 +274,7 @@ jQuery(document).ready(function($){
 
 
 $items_select 	= $this->params->get('product_item_selectbox',0);
-if(count($items) && $items_select){
+if(count(is_countable($items)?$items:[]) && $items_select){
 
 	$js .= '
 	jQuery(document).ready(function($){
@@ -283,13 +306,13 @@ if(count($items) && $items_select){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
 	
                     $("#mini-cart-text").html(" ");
-                    $("#mini-cart-link").html(\''.json_encode(JText::_('MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
                     link = "";
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$product->id.', delay:'. $params->get('my_delay_fadeout', 3000)  .'});
@@ -300,7 +323,7 @@ if(count($items) && $items_select){
 
 	';
 	}
-if(count($items) && !$items_select){
+if(count(is_countable($items)?$items:[]) && !$items_select){
 	foreach($items as $item){
 			$js .= '
 			jQuery(document).ready(function($){
@@ -332,13 +355,13 @@ if(count($items) && !$items_select){
 		                    }else{
 		                        txt = idx+" "+"items";
 		                    }
-		                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+		                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
 		                        $("#mini-cart-text").html(txt);
 		                        $("#mini-cart-link").html(link);
 		                    }else{
 		                    
 		                        $("#mini-cart-text").html(" ");
-		                        $("#mini-cart-link").html(\''.json_encode(JText::_('MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+		                        $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
 		                        link = "";
 		                }
 		                my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$product->id.', delay:'. $params->get('my_delay_fadeout', 3000)  .'});
@@ -350,7 +373,8 @@ if(count($items) && !$items_select){
 			';
 	}
 }
-foreach($tracks as $track){
+if(is_countable($tracks)){
+	foreach($tracks as $track){
 
 	$js .= '
 	jQuery(document).ready(function($){
@@ -387,13 +411,13 @@ foreach($tracks as $track){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
 
                     $("#mini-cart-text").html(" ");
-                    $("#mini-cart-link").html(\''.json_encode(JText::_('MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
                     link = "";
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$track->id.', delay:'. $params->get('my_delay_fadeout', 3000)  .'});
@@ -404,7 +428,7 @@ foreach($tracks as $track){
 
 	';
 	}
-
+}
 $document->addScriptDeclaration($js);
 ?>
 <!--  START PRODUCT VIEW -->
@@ -475,7 +499,7 @@ $document->addScriptDeclaration($js);
 		</li>
 		<?php endif ?>
               
-        <?php  if (!$params->get('show_intro') && $product->introtext && $product->fulltext) : ?>
+        <?php  if (!$params->get('split_text') && $product->introtext && $product->fulltext) : ?>
 		<li class="product-content-item">
 			<div class="product-description">
           
@@ -487,7 +511,7 @@ $document->addScriptDeclaration($js);
 
 
 		<li class="product-content-item">
-            <span class="name"><?php echo JText::_('MYMUSE_ARTIST'); ?></span>
+            <span class="name"><?php echo JText::_('COM_MYMUSE_ARTIST'); ?></span>
 			<span class="value">
 				<?php if($this->item->artist_link) :
 					$this->item->artist_title = '<a href="'.$this->item->artist_link.'">'.$this->item->artist_title.'</a>';
@@ -504,7 +528,7 @@ $document->addScriptDeclaration($js);
 				
 			<?php 	$title = $this->escape($this->item->category_title);
 				$url = '<a href="'.JRoute::_(myMuseHelperRoute::getCategoryRoute($this->item->catid)).'">'.$title.'</a>';?>
-				<span class="name category"><?php echo JText::_('MYMUSE_CATEGORY'); ?></span>
+				<span class="name category"><?php echo JText::_('COM_MYMUSE_CATEGORY'); ?></span>
 			<?php if ($this->params->get('link_category') and $this->item->catslug) : ?>
 				<span class="value"><?php echo $url ?></span>
 			<?php else : ?>
@@ -574,13 +598,13 @@ endif;
 	
 		
 <?php 
-if( count($items)) : 
+if( is_countable($items) && count($items)) : 
 	echo $this->loadTemplate('items');
 endif; 
 ?>
 
 <?php 
-if(count($tracks) && $params->get('product_show_tracks', 1)) : 
+if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks', 1)) : 
 	echo $this->loadTemplate('tracks');
 endif; 
 ?>

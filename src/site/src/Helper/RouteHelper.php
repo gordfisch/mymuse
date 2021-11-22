@@ -22,19 +22,20 @@ use Joomla\CMS\Language\Multilanguage;
 abstract class RouteHelper
 {
 	/**
-	 * Get the article route.
+	 * Get the product route.
 	 *
 	 * @param   integer  $id        The route of the content item.
 	 * @param   integer  $catid     The category ID.
 	 * @param   integer  $language  The language code.
 	 * @param   string   $layout    The layout value.
 	 *
-	 * @return  string  The article route.
+	 * @return  string  The product route.
 	 *
 	 * @since   1.5
 	 */
 	public static function getProductRoute($id, $catid = 0, $language = 0, $layout = null)
 	{
+		
 		// Create the link
 		$link = 'index.php?option=com_mymuse&view=product&id=' . $id;
 
@@ -63,7 +64,7 @@ abstract class RouteHelper
 	 * @param   integer  $language  The language code.
 	 * @param   string   $layout    The layout value.
 	 *
-	 * @return  string  The article route.
+	 * @return  string  The product route.
 	 *
 	 * @since   1.5
 	 */
@@ -103,7 +104,7 @@ abstract class RouteHelper
 	 *
 	 * @param   integer  $id  The form ID.
 	 *
-	 * @return  string  The article route.
+	 * @return  string  The product route.
 	 *
 	 * @since   1.5
 	 */

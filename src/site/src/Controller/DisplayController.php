@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Content\Site\Controller;
+namespace Joomla\Component\Mymuse\Site\Controller;
 
 \defined('_JEXEC') or die;
 

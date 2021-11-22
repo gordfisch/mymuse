@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="MYMUSE_CATEGORY_VIEW_BLOG_TITLE" option="MYMUSE_CATEGORY_VIEW_BLOG_OPTION">
+	<layout title="COM_MYMUSE_CATEGORY_VIEW_BLOG_TITLE" option="COM_MYMUSE_CATEGORY_VIEW_BLOG_OPTION">
 		<help
 			key = "JHELP_MENUS_MENU_ITEM_ARTICLE_CATEGORY_BLOG"
 		/>
@@ -24,13 +24,13 @@
 	</fields>
 
 	<!-- Add fields to the parameters object for the layout. -->
-<fields name="params">
-<fieldset name="category" label="JGLOBAL_CATEGORY_OPTIONS">
+	<fields name="params">
+		<fieldset name="category" label="JGLOBAL_CATEGORY_OPTIONS">
 			
 			<field name="show_category_title" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 				label="JGLOBAL_SHOW_CATEGORY_TITLE"
 				description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
 			>
@@ -42,7 +42,7 @@
 			<field name="show_description" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 				description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
 				label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
 			>
@@ -51,15 +51,17 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-
-			
-			<field name="category_image_height" 
-				type="text" 
-				default="0" 
-	 			label="MYMUSE_CATEGORY_IMAGE_HEIGHT" 
-	 			description="MYMUSE_CATEGORY_IMAGE_HEIGHT_DESC">
-	 		</field>
-	 			 
+			<field
+				name="show_description_image"
+				type="list"
+				label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>	 
 
 			<field name="maxLevel" type="list"
 				description="JGLOBAL_MAXLEVEL_DESC"
@@ -77,8 +79,8 @@
 			
 			<field name="subcat_columns" 
 				type="list"
-				description="MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
-				label="MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
+				description="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
+				label="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
 			>
 				
 				<option value="1">J1</option>
@@ -90,9 +92,9 @@
 			<field name="show_empty_categories" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
-				description="MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
+				description="COM_MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -100,10 +102,24 @@
 			</field>
 
 			
+			
+
+			<field
+				name="show_category_heading_title_text"
+				type="list"
+ 				label="JGLOBAL_SHOW_SUBCATEGORY_HEADING"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
 			<field name="show_subcat_image" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 				label="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_LABEL"
 				description="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_DESC"
 			>	
@@ -112,95 +128,102 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_subcat_desc" 
+			<field
+				name="show_subcat_desc"
 				type="list"
-				useglobal="true"
-			    class="chzn-color"
 				label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
-				description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
-			>
-				
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 			
 			<field name="subcat_desc_truncate" type="text" default="" 
-	 			label="MYMUSE_TUNCATE_DESCRIPTION_LABEL" 
-	 			description="MYMUSE_TUNCATE_DESCRIPTION_DESC">
+	 			label="COM_MYMUSE_TRUNCATE_DESCRIPTION_LABEL" 
+	 			description="COM_MYMUSE_TRUNCATE_DESCRIPTION_DESC">
 	 		</field>
 
 			<field name="show_cat_num_articles" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				label="MYMUSE_NUMBER_CATEGORY_ITEMS_LABEL"
-				description="MYMUSE_NUMBER_CATEGORY_ITEMS_DESC"
-			>
+			    class="form-select-color-state"
+				label="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_LABEL"
+				description="COM_MYMUSE_NUMBER_CATEGORY_ITEMS_DESC"
+				>
 				
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="page_subheading" type="text"
-				description="JGLOBAL_SUBHEADING_DESC"
-				label="JGLOBAL_SUBHEADING_LABEL"
-				size="20"
-			/>
-			<field name="category_show_all_products" 
-				type="list"
-				useglobal="true"
-			    class="chzn-color"
-				label="MYMUSE_SHOW_ALL_PRODUCTS" 
-				description="MYMUSE_SHOW_ALL_PRODUCTS_DESC">
-				
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		<field name="category_show_product_image" 
-				type="list"
-				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_PRODUCT_IMAGE" 
-	 			description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC">
-	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
+	</fieldset>
 
-	 		<field name="category_show_intro_text" 
-				type="list"
-				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_INTRO_TEXT" 
-	 			description="MYMUSE_SHOW_PRODUCT_INTRO_TEXT">
-	 			
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		<field 
-	 			name="category_product_link_titles" 
-				type="list"
-				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_LINK_TITLES_LABEL" 
-	 			description="MYMUSE_LINK_TITLES_DESC">
-	 			
-	 			<option value="0">JNO</option>
-				<option value="1">JYES</option>
-	 		</field>
+	<fieldset name="blog" label="JGLOBAL_BLOG_LAYOUT_OPTIONS">
 
-</fieldset>
+		<field name="num_leading_articles" 
+			type="text"
+			default="1"
+			description="COM_MYMUSE_NUM_LEADING_PRODUCTS_DESC"
+			label="COM_MYMUSE_NUM_LEADING_PRODUCTS_LABEL"
+			size="3"
+		/>
 
-<fieldset name="shared"
-		label="MYMUSE_SHARED_LABEL"
-		description="MYMUSE_SHARED_DESC"
-	>
+		<field name="num_intro_articles" 
+			type="text"
+			default="4"
+			description="COM_MYMUSE_NUM_INTRO_PRODUCTS_DESC"
+			label="COM_MYMUSE_NUM_INTRO_PRODUCTS_LABEL"
+			size="3"
+		/>
+
+		<field name="num_columns" 
+			type="text"
+			default="2"
+			description="COM_MYMUSE_NUM_COLUMNS_DESC"
+			label="COM_MYMUSE_NUM_COLUMNS_LABEL"
+			size="3"
+		/>
+
+		<field name="num_links" 
+			type="text"
+			default="4"
+			description="JGLOBAL_NUM_LINKS_DESC"
+			label="JGLOBAL_NUM_LINKS_LABEL"
+			size="3"
+		/>
+
+		<field name="multi_column_order" 
+			type="list"
+			description="JGLOBAL_MULTI_COLUMN_ORDER_DESC"
+			label="JGLOBAL_MULTI_COLUMN_ORDER_LABEL"
+		>
+			<option value="">JGLOBAL_USE_GLOBAL</option>
+			<option value="0">JGLOBAL_DOWN</option>
+			<option value="1">JGLOBAL_ACROSS</option>
+		</field>
+
+		<field
+			name="show_subcategory_content"
+			type="list"
+			label="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_LABEL"
+			useglobal="true"
+			validate="options"
+			>
+			<option value="0">JNONE</option>
+			<option value="-1">JALL</option>
+			<option value="1">J1</option>
+			<option value="2">J2</option>
+			<option value="3">J3</option>
+			<option value="4">J4</option>
+			<option value="5">J5</option>
+		</field>
+
 		<field 
 			name="orderby_pri"
 			type="list"
 			default="none"
 			label="JGLOBAL_CATEGORY_ORDER_LABEL"
-			description="JGLOBAL_CATEGORY_ORDER_DESC"
 		>
 			<option value="none">JGLOBAL_NO_ORDER</option>
 			<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
@@ -212,8 +235,7 @@
 			name="orderby_sec"
 			type="list"
 			default="rdate"
-			label="MYMUSE_PRODUCT_ORDER_LABEL"
-			description="MYMUSE_PRODUCT_ORDER_DESC"
+			label="COM_MYMUSE_PRODUCT_ORDER_LABEL"
 		>
 			<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
 			<option value="date">JGLOBAL_OLDEST_FIRST</option>
@@ -223,12 +245,12 @@
 			<option value="rauthor">JGLOBAL_AUTHOR_REVERSE_ALPHABETICAL</option>
 			<option value="hits">JGLOBAL_MOST_HITS</option>
 			<option value="rhits">JGLOBAL_LEAST_HITS</option>
-			<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
-			<option value="discount">MYMUSE_MOST_DISCOUNT</option>
-			<option value="rdiscount">MYMUSE_LEAST_DISCOUNT</option>
-			<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
-			<option value="rorder">MYMUSE_PRODUCT_MANAGER_ORDER_REVERSED</option>
-			<option value="featured">MYMUSE_FEATURED_THE_MOST_RECENT</option>
+			<option value="sales">COM_MYMUSE_MOST_SALES_ORDER</option>
+			<option value="discount">COM_MYMUSE_MOST_DISCOUNT</option>
+			<option value="rdiscount">COM_MYMUSE_LEAST_DISCOUNT</option>
+			<option value="order">COM_MYMUSE_PRODUCT_MANAGER_ORDER</option>
+			<option value="rorder">COM_MYMUSE_PRODUCT_MANAGER_ORDER_REVERSED</option>
+			<option value="featured">COM_MYMUSE_FEATURED_THE_MOST_RECENT</option>
 		</field>
 
 		<field 
@@ -242,14 +264,49 @@
 			<option value="created">JGLOBAL_CREATED</option>
 			<option value="modified">JGLOBAL_MODIFIED</option>
 			<option value="published">JPUBLISHED</option>
-			<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
+			<option value="product_made_date">COM_MYMUSE_PRODUCT_CREATED_LABEL</option>
 				
 		</field>
 
+ 		<field name="category_show_product_image" 
+			type="list"
+			useglobal="true"
+		    class="form-select-color-state"
+ 			label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
+ 			>
+ 			
+ 			<option value="0">JHIDE</option>
+ 			<option value="1">JSHOW</option>
+ 		</field>
+
+ 		<field name="category_show_intro_text" 
+			type="list"
+			useglobal="true"
+		    class="form-select-color-state"
+ 			label="COM_MYMUSE_SHOW_INTRO_TEXT" 
+ 			>
+ 			
+ 			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+ 		</field>
+ 		<field 
+ 			name="category_product_link_titles" 
+			type="list"
+			useglobal="true"
+		    class="form-select-color-state"
+ 			label="COM_MYMUSE_LINK_TITLES_LABEL" 
+ 			>
+ 			
+ 			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+ 		</field>
+		
 		<field 
 			name="show_pagination"
-			type="radio"
-			class="btn-group"
+			type="list"
+			class="form-select-color-state"
+			validate="options"
+			parentclass="stack span-1"
 			label="JGLOBAL_Pagination_Label"
 			description="JGLOBAL_Pagination_Desc"
 		>
@@ -260,8 +317,10 @@
 
 		<field 
 			name="show_pagination_results"
-			type="radio"
-			class="btn-group"
+			type="list"
+			class="form-select-color-state"
+			validate="options"
+			parentclass="stack span-1-inline"
 			label="JGLOBAL_PAGINATION_RESULTS_LABEL"
 			description="JGLOBAL_PAGINATION_RESULTS_DESC"
 		>
@@ -270,139 +329,85 @@
 			<option value="1">JSHOW</option>
 		</field>
 
+
+
+
 	</fieldset>
-	
-<fieldset name="blog" label="JGLOBAL_BLOG_LAYOUT_OPTIONS">
-				<field name="spacer4" type="spacer" class="text"
-				label="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL"
-			/>
 
-			<field name="num_leading_articles" 
-				type="text"
-				default="1"
-				description="MYMUSE_NUM_LEADING_PRODUCTS_DESC"
-				label="MYMUSE_NUM_LEADING_PRODUCTS_LABEL"
-				size="3"
-			/>
-
-			<field name="num_intro_articles" 
-				type="text"
-				default="4"
-				description="MYMUSE_NUM_INTRO_PRODUCTS_DESC"
-				label="MYMUSE_NUM_INTRO_PRODUCTS_LABEL"
-				size="3"
-			/>
-
-			<field name="num_columns" 
-				type="text"
-				default="2"
-				description="MYMUSE_NUM_COLUMNS_DESC"
-				label="MYMUSE_NUM_COLUMNS_LABEL"
-				size="3"
-			/>
-
-			<field name="num_links" 
-				type="text"
-				default="4"
-				description="JGLOBAL_NUM_LINKS_DESC"
-				label="JGLOBAL_NUM_LINKS_LABEL"
-				size="3"
-			/>
-
-			<field name="multi_column_order" 
-				type="list"
-				description="JGLOBAL_MULTI_COLUMN_ORDER_DESC"
-				label="JGLOBAL_MULTI_COLUMN_ORDER_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JGLOBAL_DOWN</option>
-				<option value="1">JGLOBAL_ACROSS</option>
-			</field>
-
-			<field name="subcategories" 
-				type="spacer" 
-				class="spacer"
-				label="MYMUSE_SUBSLIDER_BLOG_EXTENDED_LABEL"
-			/>
-
-		<field name="show_subcategory_content" 
-			type="list"
-
-			description="MYMUSE_SHOW_SUBCATEGORY_CONTENT_DESC"
-			label="MYMUSE_SHOW_SUBCATEGORY_CONTENT_LABEL"
-			>
-
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JNONE</option>
-				<option value="-1">JALL</option>
-				<option value="1">J1</option>
-				<option value="2">J2</option>
-				<option value="3">J3</option>
-				<option value="4">J4</option>
-				<option value="5">J5</option>
-			</field>
-
-</fieldset>
-
-<fieldset name="product" label="MYMUSE_ATTRIBS_FIELDSET_LABEL">
+	<fieldset name="product" 
+		label="COM_MYMUSE_PRODUCT_PAGES_LABEL"
+		description="COM_MYMUSE_PRODUCT_PAGES_DESC">
 			
+			<field
+				name="product_layout" type="componentlayout"
+				label="JGLOBAL_FIELD_LAYOUT_LABEL"
+				description="JGLOBAL_FIELD_LAYOUT_DESC"
+				class="form-select"
+				menuitems="true"
+				extension="com_mymuse"
+				view="product"
+			/>
 			<field name="show_title" 
 				type="list"
 				useglobal="true"
 			    class="chzn-color"
-				description="MYMUSE_SHOW_TITLE_DESC"
-				label="MYMUSE_SHOW_TITLE_LABEL"
+				description="COM_MYMUSE_SHOW_TITLE_DESC"
+				label="COM_MYMUSE_SHOW_TITLE_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 			
-			<field name="show_icons" 
+			<field
+				name="show_intro"
 				type="list"
+				label="JGLOBAL_SHOW_INTRO_LABEL"
 				useglobal="true"
-			    class="chzn-color"
-				description="JGLOBAL_SHOW_ICONS_DESC"
-				label="JGLOBAL_SHOW_ICONS_LABEL"
-			>
-				
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_PRODUCT_SETTINGS</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_print_icon" 
+			<field
+				name="info_block_position"
 				type="list"
+				label="COM_MYMUSE_FIELD_INFOBLOCK_POSITION_LABEL"
+				default=""
 				useglobal="true"
-			    class="chzn-color"
-				description="JGLOBAL_SHOW_PRINT_ICON_DESC"
-				label="JGLOBAL_SHOW_PRINT_ICON_LABEL"
-			>
-				
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_PRODUCT_SETTINGS</option>
+				<option value="0">COM_MYMUSE_FIELD_OPTION_ABOVE</option>
+				<option value="1">COM_MYMUSE_FIELD_OPTION_BELOW</option>
+				<option value="2">COM_MYMUSE_FIELD_OPTION_SPLIT</option>
 			</field>
 
-			<field name="show_email_icon" 
+			<field
+				name="info_block_show_title"
 				type="list"
+				label="COM_MYMUSE_FIELD_INFOBLOCK_TITLE_LABEL"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_EMAIL_ICON_DESC"
-				label="JGLOBAL_SHOW_EMAIL_ICON_LABEL"
-			>
-				
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_PRODUCT_SETTINGS</option>
+				<option	value="0">JHIDE</option>
+				<option	value="1">JSHOW</option>
 			</field>
-
 			
-	<field type="spacer" name="spacerddetails" label="MYMUSE_PRODUCT_DETAILS" /> 
+	<field type="spacer" name="spacerddetails" label="COM_MYMUSE_PRODUCT_DETAILS" /> 
 			
 			<field name="show_parent_category" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_PARENT_CATEGORY_DESC"
-				label="MYMUSE_SHOW_PARENT_CATEGORY_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_PARENT_CATEGORY_DESC"
+				label="COM_MYMUSE_SHOW_PARENT_CATEGORY_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -412,7 +417,7 @@
 			<field name="link_parent_category" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 				description="JGLOBAL_LINK_PARENT_CATEGORY_DESC"
 				label="JGLOBAL_LINK_PARENT_CATEGORY_LABEL"
 			>
@@ -424,9 +429,9 @@
 			<field name="show_category" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_CATEGORY_DESC"
-				label="MYMUSE_SHOW_CATEGORY_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_CATEGORY_DESC"
+				label="COM_MYMUSE_SHOW_CATEGORY_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -436,7 +441,7 @@
 			<field name="link_category" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 				description="JGLOBAL_LINK_CATEGORY_DESC"
 				label="JGLOBAL_LINK_CATEGORY_LABEL"
 			>
@@ -448,9 +453,9 @@
 			<field name="show_author" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_AUTHOR_DESC"
-				label="MYMUSE_SHOW_AUTHOR"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_AUTHOR_DESC"
+				label="COM_MYMUSE_SHOW_AUTHOR"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -460,7 +465,7 @@
 			<field name="link_author" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 				description="JGLOBAL_LINK_AUTHOR_DESC"
 				label="JGLOBAL_LINK_AUTHOR_LABEL"
 			>
@@ -472,9 +477,9 @@
 			<field name="show_create_date" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_CREATE_DATE_DESC"
-				label="MYMUSE_SHOW_CREATE_DATE_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_CREATE_DATE_DESC"
+				label="COM_MYMUSE_SHOW_CREATE_DATE_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -484,9 +489,9 @@
 			<field name="show_modify_date" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_MODIFY_DATE_DESC"
-				label="MYMUSE_SHOW_MODIFY_DATE_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_MODIFY_DATE_DESC"
+				label="COM_MYMUSE_SHOW_MODIFY_DATE_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -496,9 +501,9 @@
 			<field name="show_publish_date" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_PUBLISH_DATE_DESC"
-				label="MYMUSE_SHOW_PUBLISH_DATE_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_PUBLISH_DATE_DESC"
+				label="COM_MYMUSE_SHOW_PUBLISH_DATE_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -508,9 +513,9 @@
 			<field name="show_hits" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_HITS_DESC"
-				label="MYMUSE_SHOW_HITS_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_HITS_DESC"
+				label="COM_MYMUSE_SHOW_HITS_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -520,9 +525,9 @@
 			<field name="show_noauth" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_UNAUTH_LINKS_DESC"
-				label="MYMUSE_SHOW_UNAUTH_LINKS_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_UNAUTH_LINKS_DESC"
+				label="COM_MYMUSE_SHOW_UNAUTH_LINKS_LABEL"
 			>
 				
 				<option value="0">JNO</option>
@@ -532,9 +537,9 @@
           	<field name="show_minicart" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_MINICART_DESC"
-				label="MYMUSE_SHOW_MINICART_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_MINICART_DESC"
+				label="COM_MYMUSE_SHOW_MINICART_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -542,14 +547,14 @@
 			</field>
 			
 			
-	<field type="spacer" name="spacerdescription" label="MYMUSE_PRODUCT_DESCRIPTION" /> 		
+	<field type="spacer" name="spacerdescription" label="COM_MYMUSE_PRODUCT_DESCRIPTION" /> 		
 			<field 
 				name="show_recording_details" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				label="MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
-				description="MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
+			    class="form-select-color-state"
+				label="COM_MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
+				description="COM_MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
 				>
 				
 				<option value="0">JHIDE</option>
@@ -560,9 +565,9 @@
 				name="show_product_sku" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				label="MYMUSE_SHOW_SKU_PRODUCT_LABEL"
-				description="MYMUSE_SHOW_SKU_PRODUCT_DESC"  
+			    class="form-select-color-state"
+				label="COM_MYMUSE_SHOW_SKU_PRODUCT_LABEL"
+				description="COM_MYMUSE_SHOW_SKU_PRODUCT_DESC"  
 			>
 				
 				<option value="0">JHIDE</option>
@@ -573,9 +578,9 @@
 				name="show_release_info" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				label="MYMUSE_SHOW_RELEASE_INFO_LABEL"
-				description="MYMUSE_SHOW_RELEASE_INFO_DESC"  
+			    class="form-select-color-state"
+				label="COM_MYMUSE_SHOW_RELEASE_INFO_LABEL"
+				description="COM_MYMUSE_SHOW_RELEASE_INFO_DESC"  
 				>
 				
 				<option value="0">JHIDE</option>
@@ -585,9 +590,9 @@
 			<field name="show_intro" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_INTRO_DESC"
-				label="MYMUSE_SHOW_INTRO_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_INTRO_DESC"
+				label="COM_MYMUSE_SHOW_INTRO_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -597,24 +602,20 @@
 			<field name="product_show_product_image" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				label="MYMUSE_SHOW_PRODUCT_IMAGE" 
-				description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC">
+			    class="form-select-color-state"
+				label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
+				description="COM_MYMUSE_SHOW_PRODUCT_IMAGE_DESC">
 				
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field>
-			<field name="product_product_image_height" 
-				type="text" 
-				label="MYMUSE_PRODUCT_IMAGE_HEIGHT" 
-				description="MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC"
-	 		/>
+
 	 		<field name="show_readmore"
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_READMORE_DESC"
-				label="MYMUSE_SHOW_READMORE_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_READMORE_DESC"
+				label="COM_MYMUSE_SHOW_READMORE_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -624,9 +625,9 @@
 			<field name="show_readmore_title"
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				label="MYMUSE_SHOW_READMORE_TITLE_LABEL"
-				description="MYMUSE_SHOW_READMORE_TITLE_DESC"
+			    class="form-select-color-state"
+				label="COM_MYMUSE_SHOW_READMORE_TITLE_LABEL"
+				description="COM_MYMUSE_SHOW_READMORE_TITLE_DESC"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -638,10 +639,10 @@
 				name="show_recommends" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 
-				description="MYMUSE_SHOW_RECOMMENDS_DESC"
-				label="MYMUSE_SHOW_RECOMMENDS_LABEL"
+				description="COM_MYMUSE_SHOW_RECOMMENDS_DESC"
+				label="COM_MYMUSE_SHOW_RECOMMENDS_LABEL"
 			>
 				
 				<option value="0">JHIDE</option>
@@ -651,52 +652,52 @@
 				name="show_category_recommends" 
 				type="list"
 				useglobal="true"
-			    class="chzn-color"
-				description="MYMUSE_SHOW_CATEGORY_RECOMMENDS_DESC"
-				label="MYMUSE_SHOW_CATEGORY_RECOMMENDS_LABEL"
+			    class="form-select-color-state"
+				description="COM_MYMUSE_SHOW_CATEGORY_RECOMMENDS_DESC"
+				label="COM_MYMUSE_SHOW_CATEGORY_RECOMMENDS_LABEL"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 			
-	 <field type="spacer" name="spaceritems" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 		
+	 <field type="spacer" name="spaceritems" label="COM_MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 		
 			<field name="product_show_quantity" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_QUANTITY" 
-	 			description="MYMUSE_SHOW_QUANTITY_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_SHOW_QUANTITY" 
+	 			description="COM_MYMUSE_SHOW_QUANTITY_DESC">
 	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field>
 	 		
 	 		<field name="product_item_selectbox" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_ITEM_SELECTBOX" 
-	 			description="MYMUSE_ITEM_SELECTBOX_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_ITEM_SELECTBOX" 
+	 			description="COM_MYMUSE_ITEM_SELECTBOX_DESC">
 	 			
-	 			<option value="0">MYMUSE_NO</option>
-	 			<option value="1">MYMUSE_YES</option>
+	 			<option value="0">COM_MYMUSE_NO</option>
+	 			<option value="1">COM_MYMUSE_YES</option>
 	 		</field>		
 	 		
-	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
+	<field type="spacer" name="spacerdownload" label="COM_MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
 
 	 		
 			<field name="product_show_tracks" 
 				type="list"
-				label="MYMUSE_SHOW_TRACKS_LABEL" 
-				description="MYMUSE_SHOW_TRACKS_DESC">
+				label="COM_MYMUSE_SHOW_TRACKS_LABEL" 
+				description="COM_MYMUSE_SHOW_TRACKS_DESC">
 	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field> 
 	 		<field name="orderby_track"
 				type="list"
-				label="MYMUSE_TRACK_ORDER_LABEL"
-				description="MYMUSE_TRACK_ORDER_DESC"
+				label="COM_MYMUSE_TRACK_ORDER_LABEL"
+				description="COM_MYMUSE_TRACK_ORDER_DESC"
 				>
 				
 				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
@@ -705,66 +706,56 @@
 				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
 				<option value="hits">JGLOBAL_MOST_HITS</option>
 				<option value="rhits">JGLOBAL_LEAST_HITS</option>
-				<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
-				<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
+				<option value="sales">COM_MYMUSE_MOST_SALES_ORDER</option>
+				<option value="order">COM_MYMUSE_PRODUCT_MANAGER_ORDER</option>
 			</field>
 
 		<field 
 			name="order_track_date" 
 			type="list"
-			description="JGLOBAL_ORDERING_DATE_DESC"
 			label="JGLOBAL_ORDERING_DATE_LABEL"
 		>
 			
 			<option value="created">JGLOBAL_CREATED</option>
 			<option value="modified">JGLOBAL_MODIFIED</option>
 			<option value="published">JPUBLISHED</option>
-			<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
+			<option value="product_made_date">COM_MYMUSE_PRODUCT_CREATED_LABEL</option>
 				
 		</field>
 	 		
-			<field name="product_player_type" 
-				type="hidden"
-				useglobal="true"
-			    class="chzn-color"
 
-				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
-				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
-				
-	 			<option value="single">MYMUSE_SINGLE</option>
-	 		</field>
 
 		
 			<field name="product_show_select_column"
 			 	type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 
-			 	label="MYMUSE_SHOW_SELECT_COLUMN" 
-			 	description="MYMUSE_SHOW_SELECT_COLUMN_DESC">
+			 	label="COM_MYMUSE_SHOW_SELECT_COLUMN" 
+			 	description="COM_MYMUSE_SHOW_SELECT_COLUMN_DESC">
 	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field>
 	 		
 	 		<field name="product_show_filesize" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
+			    class="form-select-color-state"
 
-	 			label="MYMUSE_SHOW_FILESIZE" 
-	 			description="MYMUSE_SHOW_FILESIZE_DESC">
+	 			label="COM_MYMUSE_SHOW_FILESIZE" 
+	 			description="COM_MYMUSE_SHOW_FILESIZE_DESC">
 	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field>
 	 		
 	 		<field name="product_show_filetime" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_FILETIME" 
-	 			description="MYMUSE_SHOW_FILETIME_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_SHOW_FILETIME" 
+	 			description="COM_MYMUSE_SHOW_FILETIME_DESC">
 	 			
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -773,9 +764,9 @@
 	 		<field name="product_show_sales" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_SALES" 
-	 			description="MYMUSE_SHOW_SALES_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_SHOW_SALES" 
+	 			description="COM_MYMUSE_SHOW_SALES_DESC">
 	 			
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -784,9 +775,9 @@
 	 		<field name="product_show_downloads" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_DOWNLOADS" 
-	 			description="MYMUSE_SHOW_DOWNLOADS_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_SHOW_DOWNLOADS" 
+	 			description="COM_MYMUSE_SHOW_DOWNLOADS_DESC">
 	 			
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -795,34 +786,34 @@
 	 		<field name="product_show_cost_column" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_COST_COLUMN" 
-	 			description="MYMUSE_SHOW_COST_COLUMN_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_SHOW_COST_COLUMN" 
+	 			description="COM_MYMUSE_SHOW_COST_COLUMN_DESC">
 	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field>
 	 		
 	 		<field name="product_show_preview_column" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_PREVIEW_COLUMN" 
-	 			description="MYMUSE_SHOW_PREVIEW_COLUMN_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_SHOW_PREVIEW_COLUMN" 
+	 			description="COM_MYMUSE_SHOW_PREVIEW_COLUMN_DESC">
 	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field>
 	 		
 	 		<field name="product_show_cartadd" 
 	 			type="list"
 				useglobal="true"
-			    class="chzn-color"
-	 			label="MYMUSE_SHOW_CARTADD" 
-	 			description="MYMUSE_SHOW_CARTADD_DESC">
+			    class="form-select-color-state"
+	 			label="COM_MYMUSE_SHOW_CARTADD" 
+	 			description="COM_MYMUSE_SHOW_CARTADD_DESC">
 	 			
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
+	 			<option value="0">COM_MYMUSE_HIDE</option>
+	 			<option value="1">COM_MYMUSE_SHOW</option>
 	 		</field>
 			
 		</fieldset>

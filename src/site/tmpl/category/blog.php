@@ -10,12 +10,18 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+
+$app = Factory::getApplication();
+
 $category = $this->category;
-$uri = JFactory::getURI();
+$uri = JUri::getInstance(); 
 $cat_uri = $uri->toString();
 $description = ($this->category->description != '')? $this->category->description : $this->category->title;
-$document 	= JFactory::getDocument();
+$document 	= Factory::getDocument();
 $document->setMetaData( 'og:site_name',nl2br($this->escape($this->store->title))  );
 $document->setMetaData( 'og:type', 'article');
 $document->setMetaData( 'og:url', $cat_uri);
@@ -31,137 +37,125 @@ $document->setMetaData( 'twitter:url', $cat_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
 
+
+$this->category->text = $this->category->description;
+$app->triggerEvent('onContentPrepare', array($this->category->extension . '.categories', &$this->category, &$this->params, 0));
+$this->category->description = $this->category->text;
+
+$results = $app->triggerEvent('onContentAfterTitle', array($this->category->extension . '.categories', &$this->category, &$this->params, 0));
+$afterDisplayTitle = trim(implode("\n", $results));
+
+$results = $app->triggerEvent('onContentBeforeDisplay', array($this->category->extension . '.categories', &$this->category, &$this->params, 0));
+$beforeDisplayContent = trim(implode("\n", $results));
+
+$results = $app->triggerEvent('onContentAfterDisplay', array($this->category->extension . '.categories', &$this->category, &$this->params, 0));
+$afterDisplayContent = trim(implode("\n", $results));
+
+$htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
+
 ?>
-<!-- HEADING - TITLE -->
-<?php  echo $category->event->beforeDisplayHeader; ?>
-
-<div class="blog<?php echo $this->pageclass_sfx;?>">
-<?php if ($this->params->get('show_page_heading', 1)) : ?>
-	<h1>
-		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h1>
-<?php endif; ?>
-
-<?php if ($this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
-	<h2>
-		<?php echo $this->escape($this->params->get('page_subheading')); ?>
-		<?php if ($this->params->get('show_category_title')) : ?>
-			<span class="subheading-category"><?php echo $this->category->title;?></span>
-		<?php endif; ?>
-	</h2>
-<?php endif; ?>
-<?php echo $category->event->afterDisplayTitle; ?>
-
-
-<!-- DESCRIPTION -->
-<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
-	<div class="category-desc">
-	<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
-		<img src="<?php echo $this->category->getParams()->get('image'); ?>"
-		<?php if ($this->params->get('category_image_height')) : ?>
-			style="height: <?php echo $this->params->get('category_image_height'); ?>px; "
-		<?php endif; ?>
-		/>
-	<?php endif; ?>
-	<?php if ($this->params->get('show_description') && $this->category->description) : ?>
-		<?php echo JHtml::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
-	<?php endif; ?>
-	<div class="clearfix"></div>
-	</div>
-<?php endif; ?>
-
-
-<!-- CHILDREN - SUBCATEGORIES -->
-<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
-		<div class="cat-children cat-items">
-		<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
-			<?php echo $this->loadTemplate('children'); ?>
+<div class="com-content-category-blog blog" itemscope itemtype="https://schema.org/Blog">
+	<?php if ($this->params->get('show_page_heading')) : ?>
+		<div class="page-header">
+			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
 		</div>
-		<div class="clear"></div>
-<?php endif; ?>
+	<?php endif; ?>
 
+	<?php if ($this->params->get('show_category_title', 1)) : ?>
+	<<?php echo $htag; ?>>
+		<?php echo $this->category->title; ?>
+	</<?php echo $htag; ?>>
+	<?php endif; ?>
+	<?php echo $afterDisplayTitle; ?>
 
-<?php echo $category->event->beforeDisplayProduct; ?>
+	<?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
+		<?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
+		<?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
+	<?php endif; ?>
 
-<?php if($this->params->get('category_show_all_products')) : ?>
-<!-- ITEMS - PRODUCTS -->
-<div class="cat-items">
-<h3><?php echo JText::_("MYMUSE_PRODUCTS"); ?></h3>
-
-
-<?php $leadingcount=0 ; ?>
-<?php if (!empty($this->lead_items)) : ?>
-<!-- LEADING ITEMS-->
-<div class="items-leading">
-	<?php foreach ($this->lead_items as &$item) : ?>
-		<div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
-			<?php
-				$this->item = &$item;
-				echo $this->loadTemplate('leading');
-			?>
-		</div>
-		<?php
-			$leadingcount++;
-		?>
-	<?php endforeach; ?>
-</div>
-<div class="clear"></div>
-<?php endif; ?>
-
-
-<?php
-	$introcount=(count($this->intro_items));
-	$counter=0;
-?>
-<?php if (!empty($this->intro_items)) : ?>
-	
-	<?php foreach ($this->intro_items as $key => &$item) : ?>
-		<?php
-		$key= ($key-$leadingcount)+1;
-		$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
-		$row = $counter / $this->columns ;
-		$this->key = $key;
-		if ($rowcount==1) : ?>
-		<div
-			class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
+	<?php if ($beforeDisplayContent || $afterDisplayContent || $this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
+		<div class="category-desc clearfix">
+			<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
+				<?php $alt = empty($this->category->getParams()->get('image_alt')) && empty($this->category->getParams()->get('image_alt_empty')) ? '' : 'alt="' . htmlspecialchars($this->category->getParams()->get('image_alt'), ENT_COMPAT, 'UTF-8') . '"'; ?>
+				<img src="<?php echo $this->category->getParams()->get('image'); ?>" <?php echo $alt; ?>>
 			<?php endif; ?>
-			<div
-				class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
-				<?php
-				$this->item = &$item;
-				echo $this->loadTemplate('item');
-				?>
-			</div>
-			<?php $counter++; ?>
-			<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
-			<span class="row-separator"></span>
+			<?php echo $beforeDisplayContent; ?>
+			<?php if ($this->params->get('show_description') && $this->category->description) : ?>
+				<?php echo HTMLHelper::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
+			<?php endif; ?>
+			<?php echo $afterDisplayContent; ?>
 		</div>
+	<?php endif; ?>
+
+	<?php if (empty($this->lead_items) && empty($this->link_items) && empty($this->intro_items)) : ?>
+		<?php if ($this->params->get('show_no_articles', 1)) : ?>
+			<p><?php echo Text::_('COM_CONTENT_NO_ARTICLES'); ?></p>
 		<?php endif; ?>
-	<?php endforeach; ?>
-	<div class="clear"></div>
-<?php endif; ?>
+	<?php endif; ?>
 
-
-<?php if (!empty($this->link_items)) : ?>
-	<!-- LINK ITEMS-->
-	<?php echo $this->loadTemplate('links'); ?>
-<?php endif; ?>
-
-
-<?php if (($this->params->def('show_pagination', 1) == 1  || 
-			($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
-		<div class="pagination">
-						<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
-						<p class="counter">
-								<?php echo $this->pagination->getPagesCounter(); ?>
-						</p>
-
-				<?php endif; ?>
-				<?php echo $this->pagination->getPagesLinks(); ?>
+	<?php $leadingcount = 0; ?>
+	<?php if (!empty($this->lead_items)) : ?>
+		<div class="com-content-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">
+			<?php foreach ($this->lead_items as &$item) : ?>
+				<div class="com-content-category-blog__item blog-item"
+					itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+						<?php
+						$this->item = & $item;
+						echo $this->loadTemplate('item');
+						?>
+				</div>
+				<?php $leadingcount++; ?>
+			<?php endforeach; ?>
 		</div>
-<?php  endif; ?>
+	<?php endif; ?>
 
-	</div>
-<?php  endif; ?>
+	<?php
+	$introcount = count($this->intro_items);
+	$counter = 0;
+	?>
+
+	<?php if (!empty($this->intro_items)) : ?>
+		<?php $blogClass = $this->params->get('blog_class', ''); ?>
+		<?php if ((int) $this->params->get('num_columns') > 1) : ?>
+			<?php $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-'; ?>
+			<?php $blogClass .= (int) $this->params->get('num_columns'); ?>
+		<?php endif; ?>
+		<div class="com-content-category-blog__items blog-items <?php echo $blogClass; ?>">
+		<?php foreach ($this->intro_items as $key => &$item) : ?>
+			<div class="com-content-category-blog__item blog-item"
+				itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+					<?php
+					$this->item = & $item;
+					echo $this->loadTemplate('item');
+					?>
+			</div>
+		<?php endforeach; ?>
+		</div>
+	<?php endif; ?>
+
+	<?php if (!empty($this->link_items)) : ?>
+		<div class="items-more">
+			<?php echo $this->loadTemplate('links'); ?>
+		</div>
+	<?php endif; ?>
+
+	<?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
+		<div class="com-content-category-blog__children cat-children">
+			<?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
+				<h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
+			<?php endif; ?>
+			<?php echo $this->loadTemplate('children'); ?> </div>
+	<?php endif; ?>
+	<?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
+		<div class="com-content-category-blog__navigation w-100">
+			<?php if ($this->params->def('show_pagination_results', 1)) : ?>
+				<p class="com-content-category-blog__counter counter float-end pt-3 pe-2">
+					<?php echo $this->pagination->getPagesCounter(); ?>
+				</p>
+			<?php endif; ?>
+			<div class="com-content-category-blog__pagination">
+				<?php echo $this->pagination->getPagesLinks(); ?>
+			</div>
+		</div>
+	<?php endif; ?>
 </div>
-<?php echo $category->event->afterDisplayProduct; ?>

@@ -24,6 +24,7 @@ use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Table\Table;
 
 /**
  * This models supports retrieving lists of products.
@@ -86,61 +87,73 @@ class ProductsModel extends ListModel
 	 *
 	 * @since   3.0.1
 	 */
-	protected function populateState($ordering = 'ordering', $direction = 'ASC')
+	protected function populateState($ordering = 'a.id', $direction = 'desc')
 	{
 		$app = Factory::getApplication();
 
-		// List state information
-		$value = $app->input->get('limit', $app->get('list_limit', 0), 'uint');
-		$this->setState('list.limit', $value);
+		$forcedLanguage = $app->input->get('forcedLanguage', '', 'cmd');
 
-		$value = $app->input->get('limitstart', 0, 'uint');
-		$this->setState('list.start', $value);
-
-		$value = $app->input->get('filter_tag', 0, 'uint');
-		$this->setState('filter.tag', $value);
-
-		$orderCol = $app->input->get('filter_order', 'a.ordering');
-
-		if (!in_array($orderCol, $this->filter_fields))
+		// Adjust the context to support modal layouts.
+		if ($layout = $app->input->get('layout'))
 		{
-			$orderCol = 'a.ordering';
+			//$this->context .= '.' . $layout;
 		}
 
-		$this->setState('list.ordering', $orderCol);
-
-		$listOrder = $app->input->get('filter_order_Dir', 'ASC');
-
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		// Adjust the context to support forced languages.
+		if ($forcedLanguage)
 		{
-			$listOrder = 'ASC';
+			$this->context .= '.' . $forcedLanguage;
 		}
 
-		$this->setState('list.direction', $listOrder);
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 
-		$params = $app->getParams();
-		$this->setState('params', $params);
-		$user = Factory::getUser();
+		$featured = $this->getUserStateFromRequest($this->context . '.filter.featured', 'filter_featured', '');
+		$this->setState('filter.featured', $featured);
 
-		if ((!$user->authorise('core.edit.state', 'com_mymuse')) && (!$user->authorise('core.edit', 'com_mymuse')))
+		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+		$this->setState('filter.published', $published);
+
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		$downloadable = $this->getUserStateFromRequest($this->context . '.filter.downloadable', 'filter_downloadable');
+		$this->setState('filter.downloadable', $downloadable);
+
+        $parentid = $this->getUserStateFromRequest($this->context . '.filter.parentid', 'filter_parentid');
+        $this->setState('filter.parentid', $parentid);
+
+        $trackparentid = $this->getUserStateFromRequest($this->context . '.filter.trackparentid', 'filter_trackparentid');
+        $this->setState('filter.trackparentid', $trackparentid);
+
+		$formSubmited = $app->input->post->get('form_submited');
+
+		$access     = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
+		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
+		$artistId 	= $this->getUserStateFromRequest($this->context . '.filter.artist_id', 'filter_artist_id');
+
+		if ($formSubmited)
 		{
-			// Filter on published for those who do not have edit or edit.state rights.
-			$this->setState('filter.published', MymuseComponent::CONDITION_PUBLISHED);
+			$access = $app->input->post->get('access');
+			$this->setState('filter.access', $access);
+
+			$categoryId = $app->input->post->get('category_id');
+			$this->setState('filter.category_id', $categoryId);
+
+			$artistId = $app->input->post->get('artist_id');
+			$this->setState('filter.artist_id', $artistId);
+
 		}
 
-		$this->setState('filter.language', Multilanguage::isEnabled());
+		// List state information.
+		parent::populateState($ordering, $direction);
 
-		// Process show_noauth parameter
-		if ((!$params->get('show_noauth')) || (!ComponentHelper::getParams('com_mymuse')->get('show_noauth')))
+		// Force a language
+		if (!empty($forcedLanguage))
 		{
-			$this->setState('filter.access', true);
+			$this->setState('filter.language', $forcedLanguage);
+			$this->setState('filter.forcedLanguage', $forcedLanguage);
 		}
-		else
-		{
-			$this->setState('filter.access', false);
-		}
-
-		$this->setState('layout', $app->input->getString('layout'));
 	}
 
 	/**
@@ -181,512 +194,188 @@ class ProductsModel extends ListModel
 	}
 
 	/**
-	 * Get the master query for retrieving a list of products subject to the model state.
+	 * Build an SQL query to load the list data.
 	 *
-	 * @return  \JDatabaseQuery
-	 *
-	 * @since   1.6
+	 * @return	JDatabaseQuery
+	 * @since	1.6
 	 */
 	protected function getListQuery()
 	{
-		// Get the current user for authorisation checks
-		$user = Factory::getUser();
-
 		// Create a new query object.
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true);
-
-		$nowDate = Factory::getDate()->toSql();
-
-		$conditionArchived    = MymuseComponent::CONDITION_ARCHIVED;
-		$conditionUnpublished = MymuseComponent::CONDITION_UNPUBLISHED;
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
 				'list.select',
-				[
-					$db->quoteName('a.id'),
-					$db->quoteName('a.title'),
-					$db->quoteName('a.alias'),
-					$db->quoteName('a.introtext'),
-					$db->quoteName('a.fulltext'),
-					$db->quoteName('a.checked_out'),
-					$db->quoteName('a.checked_out_time'),
-					$db->quoteName('a.catid'),
-					$db->quoteName('a.created'),
-					$db->quoteName('a.created_by'),
-					$db->quoteName('a.created_by_alias'),
-					$db->quoteName('a.modified'),
-					$db->quoteName('a.modified_by'),
-					// Use created if publish_up is null
-					'CASE WHEN ' . $db->quoteName('a.publish_up') . ' IS NULL THEN ' . $db->quoteName('a.created')
-						. ' ELSE ' . $db->quoteName('a.publish_up') . ' END AS ' . $db->quoteName('publish_up'),
-					$db->quoteName('a.publish_down'),
-					$db->quoteName('a.images'),
-					$db->quoteName('a.urls'),
-					$db->quoteName('a.attribs'),
-					$db->quoteName('a.metadata'),
-					$db->quoteName('a.metakey'),
-					$db->quoteName('a.metadesc'),
-					$db->quoteName('a.access'),
-					$db->quoteName('a.hits'),
-					$db->quoteName('a.featured'),
-					$db->quoteName('a.language'),
-					$query->length($db->quoteName('a.fulltext')) . ' AS ' . $db->quoteName('readmore'),
-					$db->quoteName('a.ordering'),
-				]
+				'a.*'
 			)
-		)
-			->select(
-				[
-					$db->quoteName('fp.featured_up'),
-					$db->quoteName('fp.featured_down'),
-					// Published/archived product in archived category is treated as archived product. If category is not published then force 0.
-					'CASE WHEN ' . $db->quoteName('c.published') . ' = 2 AND ' . $db->quoteName('a.state') . ' > 0 THEN ' . $conditionArchived
-						. ' WHEN ' . $db->quoteName('c.published') . ' != 1 THEN ' . $conditionUnpublished
-						. ' ELSE ' . $db->quoteName('a.state') . ' END AS ' . $db->quoteName('state'),
-					$db->quoteName('c.title', 'category_title'),
-					$db->quoteName('c.path', 'category_route'),
-					$db->quoteName('c.access', 'category_access'),
-					$db->quoteName('c.alias', 'category_alias'),
-					$db->quoteName('c.language', 'category_language'),
-					$db->quoteName('c.published'),
-					$db->quoteName('c.published', 'parents_published'),
-					$db->quoteName('c.lft'),
-					'CASE WHEN ' . $db->quoteName('a.created_by_alias') . ' > ' . $db->quote(' ') . ' THEN ' . $db->quoteName('a.created_by_alias')
-						. ' ELSE ' . $db->quoteName('ua.name') . ' END AS ' . $db->quoteName('author'),
-					$db->quoteName('ua.email', 'author_email'),
-					$db->quoteName('uam.name', 'modified_by_name'),
-					$db->quoteName('parent.title', 'parent_title'),
+		);
+		$query->from('`#__mymuse_product` AS a');
+
+
+
+
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+
+		
+		// Filter by published state
+		$published = $this->getState('filter.published');
+		if (is_numeric($published)) {
+			$query->where('a.state = '.(int) $published);
+		} else if ($published === '') {
+			$query->where('(a.state IN (0, 1))');
+		}
+
+		// Filter by featured.
+		if ($featured = $this->getState('filter.featured')) {
+			if($featured == "-1"){ $featured = 0;}
+			$query->where("a.featured = '" . $featured."'");
+		}
+
+		// Filter by parentid. Default is parentid = 0
+		if ( $parentid = $this->getState('filter.parentid', 'default') ) {
+			if($parentid == 'default'){ $parentid = 0; }
+			$query->where("a.parentid = '" . $parentid."'");
+		}
+
+		// Filter by trackparentid. Default is trackparentid = 0
+		if ( $trackparentid = $this->getState('filter.trackparentid', 'default') ) {
+			if($trackparentid == 'default'){ $trackparentid = 0; }
+			$query->where("a.track_parentid = '" . $trackparentid."'");
+		}
+
+		// Join over the categories.
+		$query->select('c.title AS category_title');
+		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
+		
+		// Join over the artist categories.
+		$query->select('art.title AS artist_title');
+		$query->join('LEFT', '#__categories AS art ON art.id = a.artistid');
+
+		$query->select( [
+			$db->quoteName('parent.title', 'parent_title'),
 					$db->quoteName('parent.id', 'parent_id'),
 					$db->quoteName('parent.path', 'parent_route'),
 					$db->quoteName('parent.alias', 'parent_alias'),
 					$db->quoteName('parent.language', 'parent_language'),
 				]
 			)
-			->from($db->quoteName('#__content', 'a'))
-			->join('LEFT', $db->quoteName('#__categories', 'c'), $db->quoteName('c.id') . ' = ' . $db->quoteName('a.catid'))
-			->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'))
-			->join('LEFT', $db->quoteName('#__users', 'uam'), $db->quoteName('uam.id') . ' = ' . $db->quoteName('a.modified_by'))
-			->join('LEFT', $db->quoteName('#__categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('c.parent_id'));
+		->join('LEFT', $db->quoteName('#__categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('c.parent_id'));
 
-		$params      = $this->getState('params');
-		$orderby_sec = $params->get('orderby_sec');
-
-		// Join over the frontpage products if required.
-		$frontpageJoin = 'LEFT';
-
-		if ($this->getState('filter.frontpage'))
+		// Join over the associations.
+		if (Associations::isEnabled())
 		{
-			if ($orderby_sec === 'front')
-			{
-				$query->select($db->quoteName('fp.ordering'));
-				$frontpageJoin = 'INNER';
-			}
-			else
-			{
-				$query->where($db->quoteName('a.featured') . ' = 1');
-			}
-
-			$query->where(
-				[
-					'(' . $db->quoteName('fp.featured_up') . ' IS NULL OR ' . $db->quoteName('fp.featured_up') . ' <= :frontpageUp)',
-					'(' . $db->quoteName('fp.featured_down') . ' IS NULL OR ' . $db->quoteName('fp.featured_down') . ' >= :frontpageDown)',
-				]
-			)
-				->bind(':frontpageUp', $nowDate)
-				->bind(':frontpageDown', $nowDate);
-		}
-		elseif ($orderby_sec === 'front' || $this->getState('list.ordering') === 'fp.ordering')
-		{
-			$query->select($db->quoteName('fp.ordering'));
-		}
-
-		$query->join($frontpageJoin, $db->quoteName('#__content_frontpage', 'fp'), $db->quoteName('fp.content_id') . ' = ' . $db->quoteName('a.id'));
-
-		if (PluginHelper::isEnabled('content', 'vote'))
-		{
-			// Join on voting table
-			$query->select(
-				[
-					'COALESCE(NULLIF(ROUND(' . $db->quoteName('v.rating_sum') . ' / ' . $db->quoteName('v.rating_count') . ', 1), 0), 0)'
-						. ' AS ' . $db->quoteName('rating'),
-					'COALESCE(NULLIF(' . $db->quoteName('v.rating_count') . ', 0), 0) AS ' . $db->quoteName('rating_count'),
-				]
-			)
-				->join('LEFT', $db->quoteName('#__content_rating', 'v'), $db->quoteName('a.id') . ' = ' . $db->quoteName('v.content_id'));
-		}
-
-		// Filter by access level.
-		if ($this->getState('filter.access', true))
-		{
-			$groups = $this->getState('filter.viewlevels', $user->getAuthorisedViewLevels());
-			$query->whereIn($db->quoteName('a.access'), $groups)
-				->whereIn($db->quoteName('c.access'), $groups);
-		}
-
-		// Filter by published state
-		$condition = $this->getState('filter.published');
-
-		if (is_numeric($condition) && $condition == 2)
-		{
-			/**
-			 * If category is archived then product has to be published or archived.
-			 * Or category is published then product has to be archived.
-			 */
-			$query->where('((' . $db->quoteName('c.published') . ' = 2 AND ' . $db->quoteName('a.state') . ' > :conditionUnpublished)'
-				. ' OR (' . $db->quoteName('c.published') . ' = 1 AND ' . $db->quoteName('a.state') . ' = :conditionArchived))'
-			)
-				->bind(':conditionUnpublished', $conditionUnpublished, ParameterType::INTEGER)
-				->bind(':conditionArchived', $conditionArchived, ParameterType::INTEGER);
-		}
-		elseif (is_numeric($condition))
-		{
-			$condition = (int) $condition;
-
-			// Category has to be published
-			$query->where($db->quoteName('c.published') . ' = 1 AND ' . $db->quoteName('a.state') . ' = :condition')
-				->bind(':condition', $condition, ParameterType::INTEGER);
-		}
-		elseif (is_array($condition))
-		{
-			// Category has to be published
-			$query->where(
-				$db->quoteName('c.published') . ' = 1 AND ' . $db->quoteName('a.state')
-					. ' IN (' . implode(',', $query->bindArray($condition)) . ')'
-			);
-		}
-
-		// Filter by featured state
-		$featured = $this->getState('filter.featured');
-
-		switch ($featured)
-		{
-			case 'hide':
-				$query->where($db->quoteName('a.featured') . ' = 0');
-				break;
-
-			case 'only':
-				$query->where(
+			$subQuery = $db->getQuery(true)
+				->select('COUNT(' . $db->quoteName('asso1.id') . ') > 1')
+				->from($db->quoteName('#__associations', 'asso1'))
+				->join('INNER', $db->quoteName('#__associations', 'asso2'), $db->quoteName('asso1.key') . ' = ' . $db->quoteName('asso2.key'))
+				->where(
 					[
-						$db->quoteName('a.featured') . ' = 1',
-						'(' . $db->quoteName('fp.featured_up') . ' IS NULL OR ' . $db->quoteName('fp.featured_up') . ' <= :featuredUp)',
-						'(' . $db->quoteName('fp.featured_down') . ' IS NULL OR ' . $db->quoteName('fp.featured_down') . ' >= :featuredDown)',
+						$db->quoteName('asso1.id') . ' = ' . $db->quoteName('a.id'),
+						$db->quoteName('asso1.context') . ' = ' . $db->quote('com_content.item'),
 					]
-				)
-					->bind(':featuredUp', $nowDate)
-					->bind(':featuredDown', $nowDate);
-				break;
+				);
 
-			case 'show':
-			default:
-				// Normally we do not discriminate between featured/unfeatured items.
-				break;
+			$query->select('(' . $subQuery . ') AS ' . $db->quoteName('association'));
 		}
 
-		// Filter by a single or group of products.
-		$productId = $this->getState('filter.product_id');
+		
 
-		if (is_numeric($productId))
-		{
-			$productId = (int) $productId;
-			$type      = $this->getState('filter.product_id.include', true) ? ' = ' : ' <> ';
-			$query->where($db->quoteName('a.id') . $type . ':productId')
-				->bind(':productId', $productId, ParameterType::INTEGER);
+		$query->select($db->quoteName('ag.title', 'access_level'));
+		$query->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'));
+
+		//downloadable??
+		if ($downloadable = $this->getState('filter.downloadable')) {
+			$query->where('a.product_downloadable = 1');
 		}
-		elseif (is_array($productId))
-		{
-			$productId = ArrayHelper::toInteger($productId);
+            
 
-			if ($this->getState('filter.product_id.include', true))
-			{
-				$query->whereIn($db->quoteName('a.id'), $productId);
-			}
-			else
-			{
-				$query->whereNotIn($db->quoteName('a.id'), $productId);
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+                $query->where("title LIKE $search");
 			}
 		}
 
-		// Filter by a single or group of categories
+		// Filter by a single or group of categories.
+		$cat_query = '';
+		$baselevel = 1;
 		$categoryId = $this->getState('filter.category_id');
-
-		if (is_numeric($categoryId))
-		{
-			$type = $this->getState('filter.category_id.include', true) ? ' = ' : ' <> ';
-
-			// Add subcategory check
-			$includeSubcategories = $this->getState('filter.subcategories', false);
-
-			if ($includeSubcategories)
-			{
-				$categoryId = (int) $categoryId;
-				$levels     = (int) $this->getState('filter.max_category_levels', 1);
-
-				// Create a subquery for the subcategory list
-				$subQuery = $db->getQuery(true)
-					->select($db->quoteName('sub.id'))
-					->from($db->quoteName('#__categories', 'sub'))
-					->join(
-						'INNER',
-						$db->quoteName('#__categories', 'this'),
-						$db->quoteName('sub.lft') . ' > ' . $db->quoteName('this.lft')
-							. ' AND ' . $db->quoteName('sub.rgt') . ' < ' . $db->quoteName('this.rgt')
-					)
-					->where($db->quoteName('this.id') . ' = :subCategoryId');
-
-				$query->bind(':subCategoryId', $categoryId, ParameterType::INTEGER);
-
-				if ($levels >= 0)
-				{
-					$subQuery->where($db->quoteName('sub.level') . ' <= ' . $db->quoteName('this.level') . ' + :levels');
-					$query->bind(':levels', $levels, ParameterType::INTEGER);
-				}
-
-				// Add the subquery to the main query
-				$query->where(
-					'(' . $db->quoteName('a.catid') . $type . ':categoryId OR ' . $db->quoteName('a.catid') . ' IN (' . (string) $subQuery . '))'
-				);
-				$query->bind(':categoryId', $categoryId, ParameterType::INTEGER);
-			}
-			else
-			{
-				$query->where($db->quoteName('a.catid') . $type . ':categoryId');
-				$query->bind(':categoryId', $categoryId, ParameterType::INTEGER);
-			}
+		if (is_numeric($categoryId)) {
+			$cat_tbl = Table::getInstance('Category', 'JTable');
+			$cat_tbl->load($categoryId);
+			$rgt = $cat_tbl->rgt;
+			$lft = $cat_tbl->lft;
+			$baselevel = (int) $cat_tbl->level;
+			//$cat_query =  'c.lft >= '.(int) $lft.' AND c.rgt <= '.(int) $rgt;
+			$query->where('((c.lft >= '.(int) $lft.' AND c.rgt <= '.(int) $rgt.') OR (art.lft >= '.(int) $lft.' AND art.rgt <= '.(int) $rgt.') )' );
+			//$query->where('c.rgt <= '.(int) $rgt);
 		}
-		elseif (is_array($categoryId) && (count($categoryId) > 0))
-		{
-			$categoryId = ArrayHelper::toInteger($categoryId);
-
-			if (!empty($categoryId))
-			{
-				if ($this->getState('filter.category_id.include', true))
-				{
-					$query->whereIn($db->quoteName('a.catid'), $categoryId);
-				}
-				else
-				{
-					$query->whereNotIn($db->quoteName('a.catid'), $categoryId);
-				}
-			}
+		elseif (is_array($categoryId)) {
+			ArrayHelper::toInteger($categoryId);
+			$categoryId = implode(',', $categoryId);
+			//$cat_query =  'a.catid IN ('.$categoryId.')';
+			$query->where('a.catid IN ('.$categoryId.') OR a.artistid IN ('.$categoryId.')');
 		}
 
-		// Filter by author
-		$authorId    = $this->getState('filter.author_id');
-		$authorWhere = '';
+/*
+		// Filter by a single or group of artists.
+		$artist_query = '';
+		$baselevel = 1;
+		$artistId = $this->getState('filter.artist_id');
 
-		if (is_numeric($authorId))
-		{
-			$authorId    = (int) $authorId;
-			$type        = $this->getState('filter.author_id.include', true) ? ' = ' : ' <> ';
-			$authorWhere = $db->quoteName('a.created_by') . $type . ':authorId';
-			$query->bind(':authorId', $authorId, ParameterType::INTEGER);
+		if (is_numeric($artistId)) {
+			echo " numeric";
+			$art_tbl = Table::getInstance('Category', 'JTable');
+			$art_tbl->load($artistId);
+			$rgt = $art_tbl->rgt;
+			$lft = $art_tbl->lft;
+			$baselevel = (int) $art_tbl->level;
+			$artist_query =  'art.lft >= '.(int) $lft.' AND art.rgt <= '.(int) $rgt;
+			//$query->where('art.lft >= '.(int) $lft);
+			//$query->where('art.rgt <= '.(int) $rgt);
 		}
-		elseif (is_array($authorId))
-		{
-			$authorId = array_values(array_filter($authorId, 'is_numeric'));
-
-			if ($authorId)
-			{
-				$type        = $this->getState('filter.author_id.include', true) ? ' IN' : ' NOT IN';
-				$authorWhere = $db->quoteName('a.created_by') . $type . ' (' . implode(',', $query->bindArray($authorId)) . ')';
-			}
-		}
-
-		// Filter by author alias
-		$authorAlias      = $this->getState('filter.author_alias');
-		$authorAliasWhere = '';
-
-		if (is_string($authorAlias))
-		{
-			$type             = $this->getState('filter.author_alias.include', true) ? ' = ' : ' <> ';
-			$authorAliasWhere = $db->quoteName('a.created_by_alias') . $type . ':authorAlias';
-			$query->bind(':authorAlias', $authorAlias);
-		}
-		elseif (\is_array($authorAlias) && !empty($authorAlias))
-		{
-			$type             = $this->getState('filter.author_alias.include', true) ? ' IN' : ' NOT IN';
-			$authorAliasWhere = $db->quoteName('a.created_by_alias') . $type
-				. ' (' . implode(',', $query->bindArray($authorAlias, ParameterType::STRING)) . ')';
+		elseif (is_array($artistId)) {
+			echo " array";
+			ArrayHelper::toInteger($artistId);
+			$artistId = implode(',', $artistId);
+			$artist_query = 'a.artistid IN ('.$artistId.')';
+			//$query->where('a.artistid IN ('.$artistId.')');
 		}
 
-		if (!empty($authorWhere) && !empty($authorAliasWhere))
-		{
-			$query->where('(' . $authorWhere . ' OR ' . $authorAliasWhere . ')');
+
+		//put art and cat queries together
+		if($cat_query && $artist_query){
+			$query->where($cat_query.' OR '.$artist_query);
 		}
-		elseif (empty($authorWhere) && empty($authorAliasWhere))
-		{
-			// If both are empty we don't want to add to the query
+		elseif($cat_query){
+			$query->where($cat_query);
 		}
-		else
-		{
-			// One of these is empty, the other is not so we just add both
-			$query->where($authorWhere . $authorAliasWhere);
+		elseif($artist_query){
+			$query->where($artist_query);
 		}
+*/
 
-		// Filter by start and end dates.
-		if ((!$user->authorise('core.edit.state', 'com_mymuse')) && (!$user->authorise('core.edit', 'com_mymuse')))
-		{
-			$query->where(
-				[
-					'(' . $db->quoteName('a.publish_up') . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :publishUp)',
-					'(' . $db->quoteName('a.publish_down') . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' >= :publishDown)',
-				]
-			)
-				->bind(':publishUp', $nowDate)
-				->bind(':publishDown', $nowDate);
-		}
-
-		// Filter by Date Range or Relative Date
-		$dateFiltering = $this->getState('filter.date_filtering', 'off');
-		$dateField     = $db->escape($this->getState('filter.date_field', 'a.created'));
-
-		switch ($dateFiltering)
-		{
-			case 'range':
-				$startDateRange = $this->getState('filter.start_date_range', '');
-				$endDateRange   = $this->getState('filter.end_date_range', '');
-
-				if ($startDateRange || $endDateRange)
-				{
-					$query->where($db->quoteName($dateField) . ' IS NOT NULL');
-
-					if ($startDateRange)
-					{
-						$query->where($db->quoteName($dateField) . ' >= :startDateRange')
-							->bind(':startDateRange', $startDateRange);
-					}
-
-					if ($endDateRange)
-					{
-						$query->where($db->quoteName($dateField) . ' <= :endDateRange')
-							->bind(':endDateRange', $endDateRange);
-					}
-				}
-
-				break;
-
-			case 'relative':
-				$relativeDate = (int) $this->getState('filter.relative_date', 0);
-				$query->where(
-					$db->quoteName($dateField) . ' IS NOT NULL AND '
-					. $db->quoteName($dateField) . ' >= ' . $query->dateAdd($db->quote($nowDate), -1 * $relativeDate, 'DAY')
-				);
-				break;
-
-			case 'off':
-			default:
-				break;
-		}
-
-		// Process the filter for list views with user-entered filters
-		if (is_object($params) && ($params->get('filter_field') !== 'hide') && ($filter = $this->getState('list.filter')))
-		{
-			// Clean filter variable
-			$filter      = StringHelper::strtolower($filter);
-			$monthFilter = $filter;
-			$hitsFilter  = (int) $filter;
-			$textFilter  = '%' . $filter . '%';
-
-			switch ($params->get('filter_field'))
-			{
-				case 'author':
-					$query->where(
-						'LOWER(CASE WHEN ' . $db->quoteName('a.created_by_alias') . ' > ' . $db->quote(' ')
-						. ' THEN ' . $db->quoteName('a.created_by_alias') . ' ELSE ' . $db->quoteName('ua.name') . ' END) LIKE :search'
-					)
-						->bind(':search', $textFilter);
-					break;
-
-				case 'hits':
-					$query->where($db->quoteName('a.hits') . ' >= :hits')
-						->bind(':hits', $hitsFilter, ParameterType::INTEGER);
-					break;
-
-				case 'month':
-					if ($monthFilter != '')
-					{
-						$monthStart = date("Y-m-d", strtotime($monthFilter)) . ' 00:00:00';
-						$monthEnd   = date("Y-m-t", strtotime($monthFilter)) . ' 23:59:59';
-
-						$query->where(
-							[
-								':monthStart <= CASE WHEN a.publish_up IS NULL THEN a.created ELSE a.publish_up END',
-								':monthEnd >= CASE WHEN a.publish_up IS NULL THEN a.created ELSE a.publish_up END',
-							]
-						)
-							->bind(':monthStart', $monthStart)
-							->bind(':monthEnd', $monthEnd);
-					}
-					break;
-
-				case 'title':
-				default:
-					// Default to 'title' if parameter is not valid
-					$query->where('LOWER(' . $db->quoteName('a.title') . ') LIKE :search')
-						->bind(':search', $textFilter);
-					break;
-			}
-		}
-
-		// Filter by language
-		if ($this->getState('filter.language'))
-		{
-			$query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
-		}
-
-		// Filter by a single or group of tags.
-		$tagId = $this->getState('filter.tag');
-
-		if (is_array($tagId) && count($tagId) === 1)
-		{
-			$tagId = current($tagId);
-		}
-
-		if (is_array($tagId))
-		{
-			$tagId = ArrayHelper::toInteger($tagId);
-
-			if ($tagId)
-			{
-				$subQuery = $db->getQuery(true)
-					->select('DISTINCT ' . $db->quoteName('content_item_id'))
-					->from($db->quoteName('#__contentitem_tag_map'))
-					->where(
-						[
-							$db->quoteName('tag_id') . ' IN (' . implode(',', $query->bindArray($tagId)) . ')',
-							$db->quoteName('type_alias') . ' = ' . $db->quote('com_mymuse.product'),
-						]
-					);
-
-				$query->join(
-					'INNER',
-					'(' . (string) $subQuery . ') AS ' . $db->quoteName('tagmap'),
-					$db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
-				);
-			}
-		}
-		elseif ($tagId = (int) $tagId)
-		{
-			$query->join(
-				'INNER',
-				$db->quoteName('#__contentitem_tag_map', 'tagmap'),
-				$db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
-					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_mymuse.product')
-			)
-				->where($db->quoteName('tagmap.tag_id') . ' = :tagId')
-				->bind(':tagId', $tagId, ParameterType::INTEGER);
-		}
 
 		// Add the list ordering clause.
-		$query->order(
-			$db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC'))
-		);
+		$orderCol	= $this->state->get('list.ordering');
+		$orderDirn	= $this->state->get('list.direction');
+        if ($orderCol && $orderDirn) {
+		    $query->order($db->escape($orderCol.' '.$orderDirn));
+		}
 
+        //echo($query->__toString()); //exit;
 		return $query;
 	}
+
 
 	/**
 	 * Method to get a list of products.

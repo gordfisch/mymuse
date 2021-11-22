@@ -1,20 +1,20 @@
 <!-- START RELEASE INFO  --> 
     <ul class="product-content">
 		<li class="product-content-item">
-            <span class="name"><?php echo JText::_('MYMUSE_ARTIST'); ?></span>
+            <span class="name"><?php echo JText::_('COM_MYMUSE_ARTIST'); ?></span>
 			<span class="value"><?php echo $this->item->artist_title;?></span>
         </li>
         
         
     <?php if($this->params->get('show_category')) : ?>
         <li class="product-content-item">
-            <span class="name category"><?php echo JText::_('MYMUSE_CATEGORY'); ?></span>
+            <span class="name category"><?php echo JText::_('COM_MYMUSE_CATEGORY'); ?></span>
 			<span class="value"><?php echo $this->item->category_title;?></span>
         </li>
     <?php endif; ?>
         
         <li class="product-content-item">
-            <span class="name"><?php echo JText::_('MYMUSE_CATALOG'); ?></span>
+            <span class="name"><?php echo JText::_('COM_MYMUSE_CATALOG'); ?></span>
 			<span class="value"><?php echo $this->item->product_sku;?></span>
         </li>
 
@@ -22,7 +22,7 @@
     <?php if($this->all_tracks) : ?>
         <li class="product-content-item-actions">
             <span class="mypreviews tracks jp-gui ui-widget"><?php echo $this->item->tracks[0]->flash; ?></span>
-			<span class="value product-full product-full-title"> <a href="javascript:void(0)" id="box_<?php echo $all_tracks->id; ?>"><?php echo JText::_('MYMUSE_BUY_FULL_RELEASE'); ?> &#10010;</a></span>
+			<span class="value product-full product-full-title"> <a href="javascript:void(0)" id="box_<?php echo $all_tracks->id; ?>"><?php echo JText::_('COM_MYMUSE_BUY_FULL_RELEASE'); ?> &#10010;</a></span>
             <?php
             if($this->params->get('my_price_by_product')) :
                 foreach($this->params->get('my_formats') as $format) : 

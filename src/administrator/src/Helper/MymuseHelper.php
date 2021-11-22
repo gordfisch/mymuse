@@ -23,7 +23,12 @@ use Joomla\CMS\Uri\Uri;
 
 define('TAX_REGEX',"[\'-\/\s\\\]");
 
-
+function print_pre($var){
+		echo "<pre>";
+		print_r($var);
+		echo "</pre>";
+		return true;
+	}
 
 /**
  * MyMuse component helper.
