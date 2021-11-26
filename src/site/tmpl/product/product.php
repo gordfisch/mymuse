@@ -22,12 +22,13 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Application\ApplicationHelper;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
 
 global $shopper;
 
+$this->assocParam        = (Associations::isEnabled() && $this->params->get('show_associations'));
 $store = $this->store;
 $cart = $this->cart;
 $product 	=& $this->item;
@@ -448,183 +449,10 @@ $document->addScriptDeclaration($js);
 
 <div class="mymuse">
 
-
-
-<!-- IMAGE  -->
-<?php if( ($params->get('product_show_product_image') && $product->detail_image)) :?>
-		<div class="product-image">
-			<img <?php if($height) : ?> style="height:<?php echo $height; ?>"
-				<?php endif; ?>
-				src="<?php echo JURI::Root().$product->detail_image;?>"
-				alt="<?php echo $product->title;?>"
-				title="<?php echo $product->title;?>" 
-				id="img_<?php echo $product->id; ?>"
-				/>
-		</div>
-<?php endif; ?>
-<!-- END IMAGE  -->
-
-<div class="product-info">
-	<?php if( $params->get('show_title') ): ?>
-		<h2 class="product-title"><?php echo $product->title ?></h2>
-	<?php endif; ?>   
-
-	<?php if($product->attribs->get('special_status',0) ) : ?>
-	     <h3 class="pre-order-text"><?php echo JText::_($this->item->attribs->get('special_status')); ?></h3>
-	 <?php endif; ?>
-
-	<?php if( $params->get('show_release_info') ):
-		echo $this->loadTemplate('release');
-	endif; ?>
-
-	<ul class="product-content">
-      
-		<?php  if ($params->get('show_intro') && $product->introtext) : ?>
-		<li class="product-content-item">
-				<div class="product-description">
-            
-                <?php echo $product->introtext ?>
-            
-            
-            	<?php if($product->introtext && $product->fulltext && $params->get('show_readmore')) : ?><br />
-					<a href="#readmore" class="readon"><?php echo JText::_("MYMUSE_READ_MORE"); ?>
-	                <?php 
-	                if ($params->get('show_readmore_title', 0) != 0) :
-	                    echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-	                endif;
-	                ?></a>
-				 <?php endif; ?>
-
-				</div>
-		</li>
-		<?php endif ?>
-              
-        <?php  if (!$params->get('split_text') && $product->introtext && $product->fulltext) : ?>
-		<li class="product-content-item">
-			<div class="product-description">
-          
-			<?php  echo $product->fulltext; ?>
-              
-        	</div>
-		</li>
-		<?php endif; ?>
-
-
-		<li class="product-content-item">
-            <span class="name"><?php echo JText::_('COM_MYMUSE_ARTIST'); ?></span>
-			<span class="value">
-				<?php if($this->item->artist_link) :
-					$this->item->artist_title = '<a href="'.$this->item->artist_link.'">'.$this->item->artist_title.'</a>';
-				endif;
-				?>
-
-				<?php echo $this->item->artist_title;?></span>
-        </li>
-		        
-
-
-		<?php if ($this->params->get('show_category')) : ?>
-			<li class="product-content-item">
-				
-			<?php 	$title = $this->escape($this->item->category_title);
-				$url = '<a href="'.JRoute::_(myMuseHelperRoute::getCategoryRoute($this->item->catid)).'">'.$title.'</a>';?>
-				<span class="name category"><?php echo JText::_('COM_MYMUSE_CATEGORY'); ?></span>
-			<?php if ($this->params->get('link_category') and $this->item->catslug) : ?>
-				<span class="value"><?php echo $url ?></span>
-			<?php else : ?>
-				<span class="value"><?php echo $this->item->category_title;?></span>
-			<?php endif; ?>
-				</span>
-			</li>
-		<?php endif; ?>		 
-
-
-		<?php  if ($params->get('show_product_sku')) : ?>
-	        <li class="product-content-item">
-	            <span class="name">SKU:</span>
-	            <span class="value"><?php echo $product->product_sku;?></span>
-	        </li>
-	    <?php endif ?>
-        <?php if($product->attribs['product_coming_soon']){ ?>
-	        <li class="product-content-item">
-	            <h4 class="value"><?php echo JText::_("MYMUSE_COMING_SOON"); ?></h4>
-	        </li>
-        <?php }elseif($product->attribs['product_presale']){ ?>
-	        <li class="product-content-item">
-	            <h4 class="value"><?php echo JText::_("MYMUSE_PRODUCT_PREORDER"); ?></h4>
-	        </li>
-        <?php } ?>
-            	
-
-        <li class="product-content-item">
-			<div class="value">
-				<div class="product-description">
-					
-					<?php if($product->attribs->get('media_rls')) : ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_content&view=article&id='.$product->attribs->get('media_rls')); ?>" target="_blank">
-						  <div class="news-rls"></div></a>
-					<?php endif; ?> 
-							
-					<?php if($product->attribs->get('media_link')) : ?>
-					<a href="<?php echo $product->attribs->get('media_link'); ?>" target="_blank">
-						  <div class="pdf-rls"></div></a>
-					<?php endif; ?>     
-					
-				</div>
-			</div>
-        
-        </li>
-    </ul>
-
-
-  
-<?php 
-if( $params->get('show_recording_details') ):    
-	echo $this->loadTemplate('recording');
-endif; 
-?>
-
- </div>
-
- <div style="clear: both"></div>
-
-
-
-<?php 
-if( $product->product_physical && !count($items)) : 
-	echo $this->loadTemplate('physical');
-endif; 
-?>
-	
-		
-<?php 
-if( is_countable($items) && count($items)) : 
-	echo $this->loadTemplate('items');
-endif; 
-?>
-
-<?php 
-if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks', 1)) : 
-	echo $this->loadTemplate('tracks');
-endif; 
-?>
-
+<?php echo $this->loadTemplate('layout'); ?>
 
 </form>
 
-
-<?php 
-if($params->get('show_intro') && $product->fulltext && $params->get('show_readmore')) : ?>
-<a name="readmore"></a>
-<?php  echo $product->fulltext;
-endif;
-?>
-
-<?php if(isset($this->recommends_display)) : ?>
-<!-- START RECOMMENDS -->
-<?php echo $this->recommends_display; ?>
-<!-- END RECOMMENDS -->
-<?php endif; ?>
 
 <?php echo $this->item->event->afterDisplayProduct; ?>
 

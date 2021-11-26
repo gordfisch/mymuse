@@ -14,6 +14,7 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 $product 	=& $this->item;
+if( $product->product_physical && !count($items)) : 
 ?>
 <!--  PRODUCT PHYSICAL -->
 		<h3><?php echo JText::_('COM_MYMUSE_PRODUCT'); ?></h3>
@@ -78,3 +79,4 @@ $product 	=& $this->item;
 		</table>
 
 		<!-- END PRODUCT PHYSICAL -->
+<?php endif;  ?>

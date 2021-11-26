@@ -1,0 +1,297 @@
+stdClass Object
+(
+    [id] => 1
+    [asset_id] => 98
+    [parentid] => 0
+    [track_parentid] => 0
+    [title] => Are You My Sister
+    [product_sku] => ayms
+    [alias] => are-you-my-sister
+    [title_alias] => 
+    [introtext] => <p>The great first album</p>
+    [fulltext] => 
+    [state] => 1
+    [price] => 0.00
+    [product_discount] => 0.00
+    [catid] => 8
+    [artistid] => 11
+    [created] => 2021-09-09 19:41:20
+    [created_by] => 35
+    [created_by_alias] => 
+    [modified] => 2021-11-21 16:27:19
+    [modified_by] => 35
+    [checked_out] => 
+    [checked_out_time] => 
+    [publish_up] => 2021-09-09 19:41:20
+    [publish_down] => 
+    [list_image] => images/A_MyMuseImages/sister.jpg#joomlaImage://local-images/A_MyMuseImages/sister.jpg?width=190&height=183
+    [detail_image] => images/A_MyMuseImages/sister.jpg#joomlaImage://local-images/A_MyMuseImages/sister.jpg?width=190&height=183
+    [attribs] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [physical] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                    [product_images] => 
+                    [product_weight] => 500
+                    [product_weight_uom] => G
+                    [product_length] => 12
+                    [product_width] => 12
+                    [product_height] => 1
+                    [product_lwh_uom] => IN
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [digital] => 
+    [version] => 57
+    [ordering] => 1
+    [metakey] => iron, filings, brew
+    [metadesc] => this is a mtea description
+    [access] => 1
+    [hits] => 29
+    [product_physical] => 1
+    [product_downloadable] => 0
+    [product_allfiles] => 0
+    [product_release_date] => 2021-09-01
+    [file_preview] => 
+    [special_status] => 0
+    [product_in_stock] => 500
+    [metadata] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                    [robots] => 
+                    [author] => El Gordo
+                    [rights] => right to be had
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [featured] => 1
+    [language] => *
+    [category_title] => Traditional
+    [category_alias] => traditional
+    [category_access] => 1
+    [category_language] => *
+    [author] => Gord Fisch
+    [parent_title] => Genres
+    [parent_id] => 9
+    [parent_route] => genres
+    [parent_alias] => genres
+    [parent_language] => *
+    [rating] => 
+    [rating_count] => 
+    [artist_title] => Iron Brew
+    [artist_alias] => iron-brew
+    [artist_access] => 1
+    [params] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                    [store_show_title] => 1
+                    [store_link_titles] => 1
+                    [store_show_product_image] => 1
+                    [store_product_image_height] => 0
+                    [store_show_intro_text] => 1
+                    [store_show_readmore] => 0
+                    [store_show_readmore_title] => 1
+                    [show_title] => 1
+                    [show_icons] => 0
+                    [show_print_icon] => 0
+                    [show_email_icon] => 0
+                    [show_parent_category] => 0
+                    [link_parent_category] => 0
+                    [show_category] => 0
+                    [link_category] => 0
+                    [show_author] => 0
+                    [link_author] => 0
+                    [show_create_date] => 0
+                    [show_modify_date] => 0
+                    [show_publish_date] => 0
+                    [show_hits] => 0
+                    [show_noauth] => 0
+                    [show_minicart] => 1
+                    [show_recording_details] => 1
+                    [show_product_sku] => 1
+                    [show_release_info] => 1
+                    [show_intro] => 1
+                    [product_show_product_image] => 1
+                    [product_product_image_height] => 0
+                    [show_readmore] => 0
+                    [show_readmore_title] => 1
+                    [show_recommends] => 1
+                    [show_category_recommends] => 1
+                    [product_show_quantity] => 0
+                    [product_item_selectbox] => 1
+                    [product_show_tracks] => 1
+                    [orderby_track] => rdate
+                    [order_track_date] => created
+                    [product_player_type] => single
+                    [product_player_width] => 
+                    [product_player_height] => 
+                    [product_show_select_column] => 1
+                    [product_show_filesize] => 1
+                    [product_show_filetime] => 0
+                    [product_show_sales] => 0
+                    [product_show_downloads] => 0
+                    [product_show_cost_column] => 1
+                    [product_show_preview_column] => 1
+                    [product_show_cartadd] => 1
+                    [show_base_description] => 1
+                    [categories_description] => 
+                    [maxLevelcat] => -1
+                    [show_empty_categories_cat] => 0
+                    [show_subcat_desc_cat] => 0
+                    [show_cat_num_articles_cat] => 0
+                    [show_cat_subcat_image] => 0
+                    [cat_subcat_image_height] => 0
+                    [category_layout] => _:default
+                    [show_category_title] => 1
+                    [show_description] => 1
+                    [show_description_image] => 1
+                    [category_image_height] => 0
+                    [maxLevel] => -1
+                    [subcat_columns] => 1
+                    [show_empty_categories] => 0
+                    [show_no_articles] => 1
+                    [show_subcat_image] => 0
+                    [show_subcat_desc] => 0
+                    [subcat_desc_truncate] => 
+                    [show_cat_num_articles] => 1
+                    [category_show_all_products] => 1
+                    [category_show_product_image] => 1
+                    [category_product_image_height] => 0
+                    [category_show_intro_text] => 1
+                    [category_product_link_titles] => 1
+                    [num_leading_articles] => 0
+                    [num_intro_articles] => 10
+                    [num_columns] => 2
+                    [num_links] => 4
+                    [multi_column_order] => 1
+                    [show_subcategory_content] => -1
+                    [show_pagination_limit] => 1
+                    [filter_field] => hide
+                    [show_headings] => 1
+                    [list_show_artist] => 1
+                    [list_show_album] => 1
+                    [list_show_file_length] => 0
+                    [list_show_date] => 0
+                    [date_format] => Y-m-d
+                    [list_show_hits] => 1
+                    [list_show_price] => 1
+                    [list_show_author] => 0
+                    [list_show_sales] => 0
+                    [list_show_discount] => 0
+                    [display_num] => 10
+                    [group_by] => 
+                    [product_artist_alternate_itemid] => 
+                    [orderby_pri] => none
+                    [orderby_sec] => rdate
+                    [order_date] => product_made_date
+                    [show_pagination] => 2
+                    [show_pagination_results] => 1
+                    [sef_ids] => 1
+                    [show_feed_link] => 1
+                    [feed_summary] => 0
+                    [feed_show_readmore] => 0
+                    [downloadid] => 
+                    [show_page_heading] => 0
+                    [product_layout] => _:product
+                    [info_block_show] => 1
+                    [info_block_show_title] => 1
+                    [menu_text] => 1
+                    [menu_show] => 1
+                    [page_title] => Are You My Sister
+                    [page_description] => 
+                    [page_rights] => 
+                    [robots] => 
+                    [product_weight] => 500
+                    [product_weight_uom] => G
+                    [product_length] => 12
+                    [product_width] => 12
+                    [product_height] => 1
+                    [product_lwh_uom] => IN
+                    [access-view] => 1
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [tagLayout] => Joomla\CMS\Layout\FileLayout Object
+        (
+            [layoutId:protected] => joomla.content.tags
+            [basePath:protected] => 
+            [fullPath:protected] => 
+            [includePaths:protected] => Array
+                (
+                )
+
+            [options:protected] => Joomla\Registry\Registry Object
+                (
+                    [data:protected] => stdClass Object
+                        (
+                            [component] => com_mymuse
+                            [client] => 0
+                        )
+
+                    [initialized:protected] => 
+                    [separator] => .
+                )
+
+            [data:protected] => Array
+                (
+                )
+
+            [debugMessages:protected] => Array
+                (
+                )
+
+        )
+
+    [slug] => 1:are-you-my-sister
+    [readmore_link] => /mymuseJ4/joomla/en/component/mymuse/traditional/are-you-my-sister
+    [text] => <p>The great first album</p> 
+    [tags] => Joomla\CMS\Helper\TagsHelper Object
+        (
+            [tagsChanged:protected] => 
+            [replaceTags:protected] => 
+            [typeAlias] => 
+            [itemTags] => Array
+                (
+                )
+
+        )
+
+    [jcfields] => Array
+        (
+        )
+
+    [event] => stdClass Object
+        (
+            [beforeDisplayHeader] => 
+            [afterDisplayTitle] => 
+            [beforeDisplayProduct] => 
+            [afterDisplayProduct] => 
+        )
+
+    [items] => Array
+        (
+        )
+
+    [tracks] => 
+    [artist_link] => /mymuseJ4/joomla/en/component/mymuse/iron-brew?layout=blog
+)

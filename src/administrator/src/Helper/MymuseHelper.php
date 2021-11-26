@@ -234,6 +234,7 @@ class MymuseHelper extends ContentHelper
 			$cparams = ComponentHelper::getParams( 'com_mymuse' );
 			$params->merge( $cparams );
 			$my_formats = $params->get('my_formats');
+
 			if(isset($my_formats[0])){
 				$f_array = [];
 				foreach($my_formats as $f){
@@ -246,9 +247,14 @@ class MymuseHelper extends ContentHelper
 				$params->set('my_formats', $formats) ;
 
 			}else{
-				$params->set('my_formats', ['id'=> 1, 'format_key'=> 'mp3', 'format_value' => 'MP3', 'ordering' => 1]) ;
+				$p[0] = new stdClass;
+				$p[0]->id = 1;
+				$p[0]->format_key = 'mp3';
+				$p[0]->format_value = 'MP3';
+				$p[0]->ordering = 1;
+
+				$params->set('my_formats', $p) ;
 			}
-			
 
 			//merge app params includes menu
 			$app            = Factory::getApplication();

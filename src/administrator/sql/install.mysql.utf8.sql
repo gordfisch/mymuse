@@ -393,7 +393,9 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_format` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
+INSERT INTO `#__mymuse_format` (`id`, `format_key`, `format_value`, `ordering`) VALUES
+(1, 'MP3', 'mp3', 1),
+(2, 'WAV', 'wav', 2);
 -- --------------------------------------------------------
 
 -- 
@@ -570,6 +572,17 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_allfiles` tinyint(1) NOT NULL DEFAULT '0',
   `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
   `language` char(7) NOT NULL COMMENT 'The language code for the article.',
+  `product_release_date` date DEFAULT NULL,
+  `special_status` varchar(32) NULL,
+  `product_in_stock` int(11) NOT NULL DEFAULT '1',
+  `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
+  `recording` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
+  `physical` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
+  `digital` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
+  `file_preview` varchar(255) NOT NULL DEFAULT '',
+  `isrc_code` varchar(255) NOT NULL DEFAULT '',
+  `list_image` varchar(255) NOT NULL DEFAULT '',
+  `detail_image` varchar(255) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) unsigned NOT NULL DEFAULT '0',
   `created_by_alias` varchar(255) NOT NULL DEFAULT '',
@@ -579,17 +592,6 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `checked_out_time` datetime DEFAULT NULL,
   `publish_up` datetime DEFAULT NULL,
   `publish_down` datetime DEFAULT NULL,
-  `product_release_date` date DEFAULT NULL,
-  `special_status` varchar(32) NULL,
-  `product_in_stock` int(11) NOT NULL DEFAULT '1',
-  `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `physical` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `digital` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `file_preview` varchar(255) NOT NULL DEFAULT '',
-  `isrc_code` varchar(255) NOT NULL DEFAULT '',
-  `recording` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `list_image` varchar(255) NOT NULL DEFAULT '',
-  `detail_image` varchar(255) NOT NULL DEFAULT '',
   `metakey` text COLLATE utf8mb4_unicode_ci,
   `metadesc` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.',
@@ -1254,7 +1256,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
 
 
 INSERT IGNORE INTO `#__mymuse_store` (`id`, `title`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `params`, `currency`, `metadesc`, `metakey`, `metadata`, `state`) VALUES
-(1, 'MyMuse Store', 'mymuse-store', '<p>MyMuse Store Description</p>', 1, 0, '0000-00-00 00:00:00', 1, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"123 King Gordon","address_2":"","city":"Rockville","province":"Maryland","country":"US","zip":"20850","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_formats":["mp3"],"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymuseJ4\\/joomla\\/images\\/A_MyMuseDownloads","my_preview_dir":"images\\/A_MyMusePreviews","my_download_dir_format":"0","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_price_by_product":"0","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 1);
+(1, 'MyMuse Store', 'mymuse-store', '<p>MyMuse Store Description</p>', 1, 0, '0000-00-00 00:00:00', 1, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"123 King Gordon","address_2":"","city":"Rockville","province":"Maryland","country":"US","zip":"20850","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_formats":["1"] ,"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymuseJ4\\/joomla\\/images\\/A_MyMuseDownloads","my_preview_dir":"images\\/A_MyMusePreviews","my_download_dir_format":"0","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_price_by_product":"0","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 1);
 
 -- --------------------------------------------------------
 

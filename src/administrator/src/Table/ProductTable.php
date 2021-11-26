@@ -151,6 +151,9 @@ class ProductTable extends Table implements VersionableTableInterface
 			}
 
 		}
+		if(!isset($array['track_parentid'])){
+            $array['track_parentid'] = 0;
+        }
         if(!isset($array['product_downloadable'])){
             $array['product_downloadable'] = 0;
         }
@@ -162,9 +165,7 @@ class ProductTable extends Table implements VersionableTableInterface
 			$registry = new Registry;
 			$registry->loadArray($array['attribs']);
 			$array['attribs'] = (string)$registry;
-		}else{
-            $array['attribs'] = '';
-        }
+		}
         if(!isset($array['metadesc'])){
             $array['metadesc'] = '';
         }
@@ -658,6 +659,7 @@ class ProductTable extends Table implements VersionableTableInterface
 		}
 
 		/* STORE THE PRODUCT MAIN FILE */
+
 		$result = parent::store($updateNulls);
 
 		if($result){

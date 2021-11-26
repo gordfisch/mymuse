@@ -74,7 +74,7 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 
 			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'css', Text::_('COM_MYMUSE_EDIT_CSS')); ?>
 				<fieldset class="adminform">
-					<textarea cols="220" rows="80" name="COM_MYMUSE_css" id="COM_MYMUSE_css" style="width:100%"><?php echo $this->css; ?></textarea>
+					<textarea cols="220" rows="80" name="com_mymuse_css" id="com_mymuse_css" style="width:100%"><?php echo $this->css; ?></textarea>
 				</fieldset>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 

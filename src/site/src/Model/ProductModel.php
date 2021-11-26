@@ -135,6 +135,7 @@ class ProductModel extends ItemModel
 							$db->quoteName('a.ordering'),
 							$db->quoteName('a.metakey'),
 							$db->quoteName('a.metadesc'),
+							$db->quoteName('a.metadata'),
 							$db->quoteName('a.access'),
 							$db->quoteName('a.hits'),
 							$db->quoteName('a.product_physical'),
@@ -144,7 +145,7 @@ class ProductModel extends ItemModel
 							$db->quoteName('a.file_preview'),
 							$db->quoteName('a.special_status'),
 							$db->quoteName('a.product_in_stock'),
-							$db->quoteName('a.metadata'),
+							$db->quoteName('a.recording'),
 							$db->quoteName('a.featured'),
 							$db->quoteName('a.language'),
 						]
@@ -235,19 +236,27 @@ class ProductModel extends ItemModel
 
 				if (empty($data))
 				{
-					throw new \Exception(Text::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'), 404);
+					throw new \Exception(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
 				}
 
 				// Check for published state if filter set.
 				if ((is_numeric($published) || is_numeric($archived)) && ($data->state != $published && $data->state != $archived))
 				{
-					throw new \Exception(Text::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'), 404);
+					throw new \Exception(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
 				}
 
 				// Convert parameter fields to objects.
 				$registry = new Registry;
 				$registry->loadString($data->attribs);
 				$data->attribs = $registry;
+
+				$registry = new Registry;
+				$registry->loadString($data->physical);
+				$data->physical = $registry;
+
+				$registry = new Registry;
+				$registry->loadString($data->recording);
+				$data->recording = $registry;
 
 				$data->params = clone $this->getState('params');
 				$data->params->merge($registry);

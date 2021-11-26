@@ -23,7 +23,7 @@ $listOrder  = $this->sortColumn;
 $listDirn = $this->sortDirection;
 $user     = JFactory::getUser();
 
-
+if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks', 1)) :
 ?>
 
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
@@ -348,5 +348,7 @@ $user     = JFactory::getUser();
   </div>
   <?php endif; ?>
 
-<?php  endif; ?>
+<?php  endif; 
+endif;
+?>
 

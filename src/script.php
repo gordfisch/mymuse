@@ -392,22 +392,22 @@ class Com_MymuseInstallerScript
             <h3><?php echo JText::_('Actions'); ?></h3>
             <?php
             /* DEFAULT DOWNLOAD DIRECTORY */
-            $name = JText::_ ( "MYMUSE_MAKE_DOWNLOAD_DIR" );
+            $name = JText::_ ( "COM_MYMUSE_MAKE_DOWNLOAD_DIR" );
             $download_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseDownloads";
             if (! file_exists ( $download_dir )) {
                 if (! JFolder::create ( $download_dir )) {
-                    $alt = JText::_ ( "MYMUSE_FAILED" );
+                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message = JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$download_dir";
+                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$download_dir";
                 } else {
-                    $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message = JText::_ ( "MYMUSE_DIR_CREATED" ) . " " . $download_dir;
+                    $message = JText::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $download_dir;
                 }
             } else {
-                $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "MYMUSE_DIR_EXISTS" );
+                $message = JText::_ ( "COM_MYMUSE_DIR_EXISTS" );
             }
             $actions [] = array (
                 'name' => $name,
@@ -416,22 +416,22 @@ class Com_MymuseInstallerScript
             );
 
             // DEFAULT PREVIEW DIRECTORY
-            $name = JText::_ ( "MYMUSE_MAKE_PREVIEW_DIR" );
+            $name = JText::_ ( "COM_MYMUSE_MAKE_PREVIEW_DIR" );
             $preview_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMusePreviews";
             if (! file_exists ( $preview_dir )) {
                 if (! JFolder::create ( $preview_dir )) {
-                    $alt = JText::_ ( "MYMUSE_FAILED" );
+                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message = JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$preview_dir";
+                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$preview_dir";
                 } else {
-                    $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message = JText::_ ( "MYMUSE_DIR_CREATED" ) . " " . $preview_dir;
+                    $message = JText::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $preview_dir;
                 }
             } else {
-                $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "MYMUSE_DIR_EXISTS" );
+                $message = JText::_ ( "COM_MYMUSE_DIR_EXISTS" );
             }
             $actions [] = array (
                 'name' => $name,
@@ -440,22 +440,22 @@ class Com_MymuseInstallerScript
             );
 
             // DIRECTORY FOR GRAPHICS
-            $name = JText::_ ( "MYMUSE_MAKE_ALBUM_DIR" );
+            $name = JText::_ ( "COM_MYMUSE_MAKE_ALBUM_DIR" );
             $album_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseImages";
             if (! file_exists ( $album_dir )) {
                 if (! JFolder::create ( $album_dir )) {
-                    $alt = JText::_ ( "MYMUSE_FAILED" );
+                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message = JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$album_dir";
+                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$album_dir";
                 } else {
-                    $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message = JText::_ ( "MYMUSE_DIR_CREATED" ) . " " . $album_dir;
+                    $message = JText::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $album_dir;
                 }
             } else {
-                $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "MYMUSE_DIR_EXISTS" );
+                $message = JText::_ ( "COM_MYMUSE_DIR_EXISTS" );
             }
             $actions [] = array (
                 'name' => $name,
@@ -466,13 +466,13 @@ class Com_MymuseInstallerScript
             // copy index.html to Download Dir
             $name = Jtext::_ ( "index.html to Download Dir" );
             if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $download_dir . DIRECTORY_SEPARATOR . "index.html" )) {
-                $alt = JText::_ ( "MYMUSE_FAILED" );
+                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+                $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
             } else {
-                $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "MYMUSE_FILE_COPIED" );
+                $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
             }
             $actions [] = array (
                 'name' => $name,
@@ -486,13 +486,13 @@ class Com_MymuseInstallerScript
             } else {
                 $name = Jtext::_ ( "htaccess to Download Dir" );
                 if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "htaccess.txt", $download_dir . DIRECTORY_SEPARATOR . ".htaccess" )) {
-                    $alt = JText::_ ( "MYMUSE_FAILED" );
+                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
                 } else {
-                    $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message = JText::_ ( "MYMUSE_FILE_COPIED" );
+                    $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
                 }
 
             }
@@ -505,13 +505,13 @@ class Com_MymuseInstallerScript
             // copy index.html to Preview Dir
             $name = Jtext::_ ( "index.html to Preview Dir" );
             if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $preview_dir . DIRECTORY_SEPARATOR . "index.html" )) {
-                $alt = JText::_ ( "MYMUSE_FAILED" );
+                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+                $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
             } else {
-                $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "MYMUSE_FILE_COPIED" );
+                $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
             }
             $actions [] = array (
                 'name' => $name,
@@ -520,15 +520,15 @@ class Com_MymuseInstallerScript
             );
 
             // copy index.html to Album Dir
-            $name = Jtext::_ ( "MYMUSE_COPY_INDEX_TO_ALBUM_DIR" );
+            $name = Jtext::_ ( "COM_MYMUSE_COPY_INDEX_TO_ALBUM_DIR" );
             if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $album_dir . DIRECTORY_SEPARATOR . "index.html" )) {
-                $alt = JText::_ ( "MYMUSE_FAILED" );
+                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+                $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
             } else {
-                $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "MYMUSE_FILE_COPIED" );
+                $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
             }
             $actions [] = array (
                 'name' => $name,
@@ -537,20 +537,20 @@ class Com_MymuseInstallerScript
             );
 
             // MOVE LOGO
-            $name = JText::_ ( "MYMUSE_COPY_LOGO" ) . " /images/logo150sq.jpg";
+            $name = JText::_ ( "COM_MYMUSE_COPY_LOGO" ) . " /images/logo150sq.jpg";
             $logo = JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg";
             if (! file_exists ( $logo )) {
-                $alt = JText::_ ( "MYMUSE_FAILED" );
+                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "MYMUSE_COPY_LOGO_FAILED" ) . " File does not exist: " . $logo;
+                $message = JText::_ ( "COM_MYMUSE_COPY_LOGO_FAILED" ) . " File does not exist: " . $logo;
             } elseif (! JFile::copy ( $logo, JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg" )) {
-                $alt = JText::_ ( "MYMUSE_FAILED" );
+                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "MYMUSE_COPY_LOGO_FAILED" ) . $logo . " " . JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg";
+                $message = JText::_ ( "COM_MYMUSE_COPY_LOGO_FAILED" ) . $logo . " " . JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg";
             } else {
-                $alt = JText::_ ( "MYMUSE_INSTALLED" );
+                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "MYMUSE_COPY_LOGO_SUCCESS" );
+                $message = JText::_ ( "COM_MYMUSE_COPY_LOGO_SUCCESS" );
             }
             $actions [] = array (
                 'name' => $name,
@@ -563,7 +563,7 @@ class Com_MymuseInstallerScript
 
             // update store download dir
             $download_dir =  JPATH_ROOT.DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."A_MyMuseDownloads";
-            $name = JText::_("MYMUSE_UPDATING_STORE");
+            $name = JText::_("COM_MYMUSE_UPDATING_STORE");
             $query = "SELECT params FROM #__mymuse_store WHERE id='1'";
             $db->setQuery($query);
             $store_params = json_decode($db->loadResult(), TRUE);
@@ -579,13 +579,13 @@ class Com_MymuseInstallerScript
 
                 $db->setQuery($query);
                 if(!$db->execute()){
-                    $alt = JText::_( "MYMUSE_FAILED" );
+                    $alt = JText::_( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message =  JText::_("MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
+                    $message =  JText::_("COM_MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
                 }else{
-                    $alt = JText::_( "MYMUSE_INSTALLED" );
+                    $alt = JText::_( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message =  JText::_("MYMUSE_STORE_UPDATED");
+                    $message =  JText::_("COM_MYMUSE_STORE_UPDATED");
                 }
 
             }else{
@@ -626,7 +626,7 @@ class Com_MymuseInstallerScript
             $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
             //UPDATE PLUGINS
-            $name = JText::_("MYMUSE_ENABLE_PLUGINS");
+            $name = JText::_("COM_MYMUSE_ENABLE_PLUGINS");
             $query = "UPDATE #__extensions SET enabled=1 WHERE
                 element='payment_offline' OR
                 element='shipping_standard' OR
@@ -637,18 +637,18 @@ class Com_MymuseInstallerScript
                 ";
             $db->setQuery($query);
             if(!$db->execute()){
-                $alt = JText::_( "MYMUSE_FAILED" );
+                $alt = JText::_( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message =  JText::_("MYMUSE_ENABLE_PLUGINS_FAILED");
+                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
             }else{
-                $alt = JText::_( "MYMUSE_INSTALLED" );
+                $alt = JText::_( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message =  JText::_("MYMUSE_ENABLE_PLUGINS_SUCCESS");
+                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_SUCCESS");
             }
             $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
             //UPDATE MEDIA MANAGER TO ALLOW MP3's
-            $name = JText::_("MYMUSE_UPDATING_MEDIA_MANAGER");
+            $name = JText::_("COM_MYMUSE_UPDATING_MEDIA_MANAGER");
             $query = "SELECT params FROM #__extensions WHERE element='com_media'";
             $db->setQuery($query);
             $media_params = json_decode($db->loadResult(), TRUE);
@@ -683,13 +683,13 @@ class Com_MymuseInstallerScript
 
                 $db->setQuery($query);
                 if(!$db->execute()){
-                    $alt = JText::_( "MYMUSE_FAILED" );
+                    $alt = JText::_( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message =  JText::_("MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$db->_errorMsg;
+                    $message =  JText::_("COM_MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$db->_errorMsg;
                 }else{
-                    $alt = JText::_( "MYMUSE_INSTALLED" );
+                    $alt = JText::_( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message =  JText::_("MYMUSE_MEDIA_MANAGER_UPDATED");
+                    $message =  JText::_("COM_MYMUSE_MEDIA_MANAGER_UPDATED");
                 }
                 $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
             }
@@ -698,34 +698,34 @@ class Com_MymuseInstallerScript
             //update
             //save the old css file
 
-            $name = JText::_("MYMUSE_SAVE_CSS");
+            $name = JText::_("COM_MYMUSE_SAVE_CSS");
             $myFile = JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse_old.css';
             if($this->css != ""){
                 if(!JFILE::write($myFile, $this->css)){
-                    $alt = JText::_( "MYMUSE_FAILED" );
+                    $alt = JText::_( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message =  JText::_("MYMUSE_SAVE_CSS_FAILED");
+                    $message =  JText::_("COM_MYMUSE_SAVE_CSS_FAILED");
                 }else{
-                    $alt = JText::_( "MYMUSE_INSTALLED" );
+                    $alt = JText::_( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message =  JText::_("MYMUSE_SAVE_CSS_SUCCESS");
+                    $message =  JText::_("COM_MYMUSE_SAVE_CSS_SUCCESS");
                 }
                 $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
             }
             //UPDATE INSTALL PLUGIN
-            $name = JText::_("MYMUSE_ENABLE_PLUGINS");
+            $name = JText::_("COM_MYMUSE_ENABLE_PLUGINS");
             $query = "UPDATE #__extensions SET enabled=1 WHERE
                 element='install_mymuse'
                 ";
             $db->setQuery($query);
             if(!$db->execute()){
-                $alt = JText::_( "MYMUSE_FAILED" );
+                $alt = JText::_( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message =  JText::_("MYMUSE_ENABLE_PLUGINS_FAILED");
+                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
             }else{
-                $alt = JText::_( "MYMUSE_INSTALLED" );
+                $alt = JText::_( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message =  JText::_("MYMUSE_ENABLE_PLUGINS_SUCCESS");
+                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_SUCCESS");
             }
             $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
         }

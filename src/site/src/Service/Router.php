@@ -481,12 +481,13 @@ class Router extends RouterBase
         	return $vars;
         }
 
-        if($advanced){
+		if(strpos($segment,':')){
+        	list($id, $alias) = explode(':', $segment, 2);
+        }else{
         	//no numbers.
         	$alias = $segment;
-        }elseif(strpos($segment,':')){
-        	list($id, $alias) = explode(':', $segment, 2);
         }
+
 
     	//check if this is a product alias.
     	$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$alias.'"';

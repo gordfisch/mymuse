@@ -18,24 +18,29 @@ use Joomla\CMS\Language\Text;
 
             <?php echo $this->form->renderFieldset('identity'); ?>
 				
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('media_rls'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('media_rls'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('media_link'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('media_link'); ?>
-					</div>
-				</div>
+			<?php $fieldSets = $this->form->getFieldsets('attribs'); 
+
+				 	foreach ($fieldSets as $name => $fieldSet)
+				 	{
+
+						foreach ($this->form->getFieldset($name) as $field)
+						{
+
+							if (preg_match("/media_rls/",$field->name))
+							{
+								echo $field->renderField();
+							}
+
+							if (preg_match("/media_link/",$field->name))
+							{
+								echo $field->renderField();
+							}
+						} 
 				
-				
+			 		} 
+
+
+			 		?>
 	
 		</fieldset>
 	</div>
@@ -46,6 +51,7 @@ use Joomla\CMS\Language\Text;
 			<legend><?php echo Text::_('COM_MYMUSE_PRICE'); ?></legend>
 
 				<?php
+
 				 if( !$this->params->get('my_price_by_product')){ 
 					//price by track and physical
 					?>	
@@ -77,7 +83,7 @@ use Joomla\CMS\Language\Text;
 									$physical++;
 								}
 
-								if (preg_match("/$format/",$field->name))
+								if (preg_match("/$format->format_key/i",$field->name))
 								{
 									echo $field->renderField();
 								}

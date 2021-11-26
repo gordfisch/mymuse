@@ -194,7 +194,7 @@ class StoreTable extends Table implements VersionableTableInterface
     	}
 
     	//save the css file
-    	$mymuse_css = $jinput->get('mymuse_css','', 'RAW');
+    	$mymuse_css = $jinput->get('com_mymuse_css','', 'RAW');
 
     	if($mymuse_css){
     		$myFile = JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse.css';
@@ -202,7 +202,7 @@ class StoreTable extends Table implements VersionableTableInterface
     			$app->enqueueMessage(Text::_('MYMUSE_COULD_NOT_OPEN_CSS_FILE').' '.$myFile, 'notice');
     		}
     	}
- 	
+
     	//if my_noreg_password has changed
     	$my_noreg_password = $form['params']['my_noreg_password'];
 

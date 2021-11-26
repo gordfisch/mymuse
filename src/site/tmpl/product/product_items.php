@@ -14,6 +14,7 @@ $product 	=& $this->item;
 $items		=& $this->item->items;
 $items_select 	= $this->params->get('product_item_selectbox',1);
 
+if( is_countable($items) && count($items)) : 
 ?>
 
 <!-- ITEMS   ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
@@ -345,5 +346,6 @@ echo $js;
     
 <!--  END ITEMS -->
 
-<?php } ?>
+<?php } 
+endif; ?>
 <!--  END ITEMS -->

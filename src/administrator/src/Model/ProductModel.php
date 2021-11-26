@@ -154,9 +154,9 @@ class ProductModel extends AdminModel
 	/**
 	 * @var		object
      * @since  4.0
-
+	 */
 	protected $storage = null;
-     */
+ 
 
 	/**
 	 * The event to trigger before changing featured status one or more items.
@@ -371,7 +371,7 @@ class ProductModel extends AdminModel
 
 			if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 				$pk = 0;
-                $id = 0;
+        $id = 0;
 				$input->set('id',0);
 				
 			}
@@ -379,30 +379,24 @@ class ProductModel extends AdminModel
 
 			if ($item = parent::getItem($pk)) {
 
-
 				// Convert the attribs field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->attribs);
+				$registry = new Registry($item->attribs);
 				$item->attribs = $registry->toArray();
 
 				// Convert the metadata field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->metadata);
+				$registry = new Registry($item->metadata);
 				$item->metadata = $registry->toArray();
 
 				// Convert the physical field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->physical);
+				$registry = new Registry($item->physical);
 				$item->physical = $registry->toArray();
 
-				// Convert the physical field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->recording);
+				// Convert the recording field to an array.
+				$registry = new Registry($item->recording);
 				$item->recording = $registry->toArray();
 
 				// Convert the digital field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->digital);
+				$registry = new Registry($item->digital);
 				$item->digital = $registry->toArray();
 
 
@@ -932,7 +926,7 @@ class ProductModel extends AdminModel
 				}
 			}
 		}
-
+//print_r($data); exit;
 		// Automatic handling of alias for empty fields
 		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
 		{
@@ -947,11 +941,11 @@ class ProductModel extends AdminModel
 					$data['alias'] = \JFilterOutput::stringURLSafe($data['title']);
 				}
 
-				$table = Table::getInstance('Product', 'JTable');
+				$table = Table::getInstance('ProductTable', 'Joomla\\Component\\Mymuse\\Administrator\\Table\\');
 
 				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid'])))
 				{
-					$msg = Text::_('COM_CONTENT_SAVE_WARNING');
+					$msg = Text::_('COM_MYMUSE_SAVE_WARNING');
 				}
 
 				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);

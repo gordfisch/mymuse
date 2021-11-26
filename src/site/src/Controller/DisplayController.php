@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Content Component Controller
@@ -49,6 +50,8 @@ class DisplayController extends \Joomla\CMS\MVC\Controller\BaseController
 		{
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
+		$Doc = Factory::getDocument();
+		$Doc->addStyleSheet( Uri::base() . 'components/com_mymuse/assets/css/mymuse.css' );
 
 		parent::__construct($config, $factory, $app, $input);
 	}
