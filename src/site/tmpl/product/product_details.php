@@ -166,9 +166,49 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    <?php if( $this->params->get("show_media_link",0) ) : ?>
 		    <li class="product-detail-item">
 		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_MEDIA'); ?>:</span>
-		        <span class="value"><?php echo $this->item->recording->get('media_link',''); ?></span>
+		        <span class="value"><?php echo $this->item->attribs->get('media_link',''); ?></span>
 		    </li>
 		    <?php endif; ?>
+
+
+		    <li class="product-detail-item product-content-item-actions">
+		    <div class="product-preview-play"><?php echo isset($tracks[0]->flash)? $tracks[0]->flash : ''; ?></div>
+			    <div class="value">
+			       <?php if($this->all_tracks) : ?>
+	                <div class="product-full">
+	                    <div class="product-full-title">
+	                     
+	                        <a href="javascript:void(0)" class="box_<?php echo $this->all_tracks->id; ?>" id="box_<?php echo $this->all_tracks->id; ?>">&#10010;</a>
+	                      
+	                    </div>
+	                    <div id="mp3_<?php echo $this->all_tracks->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($this->product_price_mp3_all); ?></div>
+	                    <div id="wav_<?php echo $this->all_tracks->id; ?>" class="price" style="display:none"><?php echo MyMuseHelper::printMoneyPublic($this->product_price_wav_all); ?></div>
+	                    <div class="format"> <?php 
+	                    if(isset($this->all_tracks->variation_select)) :
+	                        echo $this->all_tracks->variation_select;
+	                    endif;
+	                    ?>
+	                    </div>
+	                </div>
+	                <?php elseif($this->item->product_physical) : ?>
+	                    <div class="product-full">
+	                        <div class="product-full-title">
+
+	                                 <a href="javascript:void(0)"
+	                                 class="box_<?php echo $this->item->id; ?>"
+	                                id="box_<?php echo $this->item->id; ?>"><?php
+	                                    if(in_array($this->item->id, $this->products)) {
+	                                        echo "&#8722";
+	                          }else{
+	                            echo "&#10010;";
+	                          }
+	                          ?></a> 
+	                            </div>
+	                        <div id="physical_<?php echo $this->item->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($this->item->price); ?></div>
+	                    </div> 
+	                <?php endif; ?>
+	            </div>
+	        </li>
 
 
 
@@ -182,85 +222,5 @@ if( ($this->params->get('info_block_show'))) : ?>
 		</div>
 <?php endif; ?>
 
-<?php 
-MymuseHelper::print_pre($this->item);
-
- ?>
-
-<?php  if ( !$this->params->get('show_intro') ) :
-	echo $this->item->event->afterDisplayTitle;
-endif; ?>
-
+<?php  //MymuseHelper::print_pre($this->item);?>
 <?php echo $this->item->event->beforeDisplayProduct; ?>
-
-
-<?php $useDefList = (($this->params->get('show_author')) or ($this->params->get('show_category')) or ($this->params->get('show_parent_category'))
-	or ($this->params->get('show_create_date')) or ($this->params->get('show_modify_date')) or ($this->params->get('show_publish_date'))
-	or ($this->params->get('show_hits'))); ?>
-
-<?php if ($useDefList) : ?>
-<!-- PRODUCT ATTRIBUTES -->
-<dl class="article-info">
-	<dt class="article-info-term"><?php  echo JText::_('COM_MYMUSE_PRODUCT_INFO'); ?></dt>
-<?php endif; ?>
-
-<?php if ($this->params->get('show_parent_category') && $this->item->parent_slug != '1:root') : ?>
-	<dd class="parent-category-name">
-	<?php	$title = $this->escape($this->item->parent_title);
-	$url = '<a href="'.JRoute::_(myMuseHelperRoute::getCategoryRoute($this->item->parent_id)).'">'.$title.'</a>';?>
-	<?php if ($this->params->get('link_parent_category') and $this->item->parent_slug) : ?>
-		<?php echo JText::sprintf('COM_MYMUSE_PARENT', $url); ?>
-	<?php else : ?>
-		<?php echo JText::sprintf('COM_MYMUSE_PARENT', $title); ?>
-	<?php endif; ?>
-	</dd>
-<?php endif; ?>
-
-
-
-
-<?php if ($this->params->get('show_create_date')) : ?>
-	<dd class="create">
-	<?php echo JText::sprintf('COM_MYMUSE_CREATED_DATE_ON', JHtml::_('date', $this->item->created, JText::_('DATE_FORMAT_LC2'))); ?>
-	</dd>
-<?php endif; ?>
-
-<?php if ($this->params->get('show_modify_date')) : ?>
-	<dd class="modified">
-	<?php echo JText::sprintf('COM_MYMUSE_LAST_UPDATED', JHtml::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?>
-	</dd>
-<?php endif; ?>
-
-<?php if ($this->params->get('show_publish_date')) : ?>
-	<dd class="published">
-	<?php echo JText::sprintf('COM_MYMUSE_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC2'))); ?>
-	</dd>
-<?php endif; ?>
-
-<?php if ($this->params->get('show_author') && !empty($this->item->author )) : ?>
-	<dd class="createdby">
-	<?php $author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author; ?>
-	<?php if (!empty($this->item->contactid) && $this->params->get('link_author') == true): ?>
-	<?php
-		$needle = 'index.php?option=com_contact&view=contact&id=' . $this->item->contactid;
-		$menu = JFactory::getApplication()->getMenu();
-		$item = $menu->getItems('link', $needle, true);
-		$cntlink = !empty($item) ? $needle . '&Itemid=' . $item->id : $needle;
-	?>
-		<?php echo JText::sprintf('COM_MYMUSE_WRITTEN_BY', JHtml::_('link', JRoute::_($cntlink), $author)); ?>
-	<?php else: ?>
-		<?php echo JText::sprintf('COM_MYMUSE_WRITTEN_BY', $author); ?>
-	<?php endif; ?>
-	</dd>
-<?php endif; ?>
-
-<?php if($this->params->get('show_hits')) : ?>
-	<dd class="hits">
-	<?php echo JText::sprintf('COM_MYMUSE_PRODUCT_HITS', $this->item->hits); ?>
-	</dd>
-<?php endif; ?>
-
-<?php if ($useDefList) : ?>
-	</dl>
-<!-- END ATTRIBUTES -->
-<?php endif; ?>
