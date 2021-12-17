@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-        <fieldset>
+        <fieldset addfieldprefix="Joomla\Component\Mymuse\Administrator\Field">
             <field
                     name="id"
                     type="number"
@@ -371,7 +371,7 @@
             />
         </fieldset>
 
-        <fieldset name="identity" label="COM_MYMUSE_PRODUCT_IDENTITY" addfieldprefix="Joomla\Component\Content\Administrator\Field">
+        <fieldset name="identity" label="COM_MYMUSE_PRODUCT_IDENTITY" addfieldprefix="Joomla\Component\Mymuse\Administrator\Field">
 
             <field
                     name="product_sku"
@@ -425,6 +425,16 @@
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
             </field>
+
+            <field
+                    name="file_time"
+                    type="text"
+                    label="COM_MYMUSE_FILE_TIME_LABEL"
+                    description="COM_MYMUSE_FILE_TIME_DESC"
+                    class="inputbox"
+                    size="20"
+                    required="false"
+            />
         </fieldset>
 
 
@@ -485,15 +495,7 @@
                     size="20"
                     required="false"
             />
-            <field
-                    name="file_time"
-                    type="text"
-                    label="COM_MYMUSE_FILE_TIME_LABEL"
-                    description="COM_MYMUSE_FILE_TIME_DESC"
-                    class="inputbox"
-                    size="20"
-                    required="false"
-            />
+            
             <field
                     name="file_ext"
                     type="text"

@@ -422,18 +422,31 @@
 	 		
 	<field type="spacer" name="spacerdownload" label="COM_MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
 
-	 		
-			<field name="product_show_tracks" 
+	 	
+			<field name="show_player" 
 				type="list"
 				useglobal="true"
 				class="chzn-color"
-				label="COM_MYMUSE_SHOW_TRACKS_LABEL" 
-				description="COM_MYMUSE_SHOW_TRACKS_DESC"
+				label="COM_MYMUSE_SHOW_PLAYER_LABEL" 
+				description="COM_MYMUSE_SHOW_PLAYER_DESC"
 				parentclass="stack span-1"
 			>
 	 			<option value="0">JHIDE</option>
 	 			<option value="1">JSHOW</option>
 	 		</field> 
+
+	 		<field name="product_show_tracks" 
+				type="list"
+				useglobal="true"
+				class="chzn-color"
+				label="COM_MYMUSE_SHOW_TRACKS_LABEL" 
+				description="COM_MYMUSE_SHOW_TRACKS_DESC"
+				parentclass="stack span-1-inline"
+			>
+	 			<option value="0">JHIDE</option>
+	 			<option value="1">JSHOW</option>
+	 		</field> 
+
 	 		<field name="orderby_track"
 				type="list"
 				label="COM_MYMUSE_TRACK_ORDER_LABEL"

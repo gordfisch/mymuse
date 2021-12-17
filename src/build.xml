@@ -66,6 +66,11 @@
                 <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.sys.ini"
                         todir="${test}/administrator/language/en-GB" /> 
 
+                <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.ini"
+                        todir="${test}/administrator/language/en-GB" /> 
+                <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.sys.ini"
+                        todir="${test}/administrator/language/en-GB" /> 
+
                         
                 <!-- plugins -->
                 <copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
@@ -92,6 +97,27 @@
                                 todir="${test}/plugins/mymuse/audio_jplayer/skin" />
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.video.play.png"
                                 todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+
+                <copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
+                            todir="${test}/plugins/mymuse/audio_amplitude" /> 
+                <copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
+                            todir="${test}/plugins/mymuse/audio_amplitude" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/amplitude.js"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/amplitude.js.map"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/amplitude.min.js"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/visualizations/bar.js"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js/visualizations" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/visualizations/circular-equalizer.js"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js/visualizations" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/visualizations/frequencyanalyzer.js"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js/visualizations" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/visualizations/michaelbromley.js"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js/visualizations" /> 
+                <copy file="${src}/plugins/audio_amplitude/js/visualizations/template.js"
+                            todir="${test}/plugins/mymuse/audio_amplitude/js/visualizations" /> 
 
         </target>
 </project>

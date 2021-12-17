@@ -417,7 +417,7 @@ class Com_MymuseInstallerScript
 
             // DEFAULT PREVIEW DIRECTORY
             $name = JText::_ ( "COM_MYMUSE_MAKE_PREVIEW_DIR" );
-            $preview_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMusePreviews";
+            $preview_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "media" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "previews";
             if (! file_exists ( $preview_dir )) {
                 if (! JFolder::create ( $preview_dir )) {
                     $alt = JText::_ ( "COM_MYMUSE_FAILED" );

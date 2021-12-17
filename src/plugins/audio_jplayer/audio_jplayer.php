@@ -20,6 +20,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
 * MyMuse Audio jplayer plugin
@@ -344,7 +345,7 @@ class plgMymuseAudio_jplayer extends JPlugin
         }
         
         $js .= '
-});
+
         	
 jQuery(document).ready(function(){
 		jQuery("#jp-title-li").html("'.addslashes($track->title).'");
@@ -498,8 +499,8 @@ jQuery(document).ready(function(){  ';
 		jQuery("#track_pause_'.$track->id.'").click( function(e) {
 			pauseOne('.$track->id.');
 			return true;
-		})
-
+		});
+});
 ';
 			$document->addScriptDeclaration($js);
 			return $text;
@@ -519,43 +520,43 @@ function pauseAll(){
 	var tracks = new Array();
 		';
 		
-		foreach ($tracks as $track){
-			$js .= '
-			tracks['.$j.'] = '.$track->id.';';
-			$j++;
-		}
+	foreach ($tracks as $track){
 		$js .= '
-			for (var i = 0; i < tracks.length; i++) {
-				pauseOne(tracks[i]);
-			}
-		}
-		';
+	tracks['.$j.'] = '.$track->id.';';
+		$j++;
+	}
+	$js .= '
+	for (var i = 0; i < tracks.length; i++) {
+		pauseOne(tracks[i]);
+	}
+}
+	';
 		
 		$js .= '
 function playOne(id,title,media){
 			
-			pauseAll();
-			jQuery("#jp-title-li").html(title);
+	pauseAll();
+	jQuery("#jp-title-li").html(title);
 
-            jQuery("#track_play_"+id).css("display","none");
-            jQuery("#track_play_li_"+id).css("display","none");
-            jQuery("#track_pause_"+id).css("display","block");
-            jQuery("#track_pause_li_"+id).css("display","block");
-            myPlayer.jPlayer("setMedia",media);
-            myPlayer.jPlayer("play");
-            
+    jQuery("#track_play_"+id).css("display","none");
+    jQuery("#track_play_li_"+id).css("display","none");
+    jQuery("#track_pause_"+id).css("display","block");
+    jQuery("#track_pause_li_"+id).css("display","block");
+    myPlayer.jPlayer("setMedia",media);
+    myPlayer.jPlayer("play");
+    
 
-			return false;
+	return false;
 		
-	}
+}
 
 function pauseOne(id){
-			jQuery("#track_play_"+id).css("display","block");
-            jQuery("#track_play_li_"+id).css("display","block");
-            jQuery("#track_pause_"+id).css("display","none");
-            jQuery("#track_pause_li_"+id).css("display","none");
-            myPlayer.jPlayer("stop");
-			return false;
+	jQuery("#track_play_"+id).css("display","block");
+    jQuery("#track_play_li_"+id).css("display","block");
+    jQuery("#track_pause_"+id).css("display","none");
+    jQuery("#track_pause_li_"+id).css("display","none");
+    myPlayer.jPlayer("stop");
+	return false;
 }
 				
 				

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1"  type="plugin" group="mymuse">
+	<name>PLG_MYMUSE_AUDIO_AMPLITUDE</name>
+	<author>Arboreta</author>
+	<creationDate>Dec 2021</creationDate>
+	<copyright>Copyright (C) 2021 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_MYMUSE_AUDIO_AMPLITUDE_DESC</description>
+	
+	<files>
+		<filename plugin="audio_amplitude">audio_amplitude.php</filename>
+		<folder>js</folder>
+	</files>
+
+	<media destination="com_mymuse" folder="media">
+		<folder>playlists</folder>
+		<folder>previews</folder>
+	</media>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/plg_mymuse_audio_amplitude.ini</language>
+		<language tag="en-GB">language/en-GB/plg_mymuse_audio_amplitude.sys.ini</language>
+	</languages>
+	<config>
+	<fields  name="params">
+		<fieldset name="basic" addfieldprefix="Joomla\Component\Mymuse\Administrator\Field">
+			<field 
+				name="mycategories" 
+				type="categorytree" 
+				extension="com_mymuse" 
+				label="COM_MYMUSE_SELECT_CATEGORIES" 
+				multiple="true"
+				description="" />
+			
+			<field 
+				name="preview_path" 
+				type="text" 
+				default="/media/com_mymuse/previews/" 
+				label="COM_MYMUSE_PREVIEW_PATH" 
+				description="COM_MYMUSE_PREVIEW_PATH_DESC" />
+
+			<field 
+				name="playlist_path" 
+				type="text" 
+				default="/media/com_mymuse/playlists/" 
+				label="COM_MYMUSE_PLAYLIST_PATH" 
+				description="COM_MYMUSE_PLAYLIST_PATH_DESC" />
+
+			<field 
+				name="first_album_art_path" 
+				type="text" 
+				default="/media/com_mymuse/images/mymuse-180x180.png" 
+				label="COM_MYMUSE_ART_PATH" 
+				description="COM_MYMUSE_ART_PATH_DESC" />
+
+		</fieldset>
+	</fields>
+	</config>
+</extension>

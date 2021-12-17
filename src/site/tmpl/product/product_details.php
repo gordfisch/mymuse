@@ -9,6 +9,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		<?php echo $this->loadTemplate('title'); ?>
 
+
 		<?php if( $this->params->get("info_block_show_title",0) ) : ?>
 			<h2 class="product-details-title"><?php echo JText::_('COM_MYMUSE_PRODUCT_DETAILS'); ?></h2>
 		<?php endif; ?>
@@ -157,16 +158,16 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		    <?php if( $this->params->get("show_news_release_link",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_NEWS_RELEASE'); ?>:</span>
-		        <span class="value"><?php echo $this->item->attribs->get('media_rls',''); ?></span>
+		        <span class="key news-release"><a href="<?php echo $this->item->attribs->get('media_rls',''); ?>"><?php echo JText::_('COM_MYMUSE_NEWS_RELEASE'); ?></a></span>
+		        
 		    </li>
 		    <?php endif; ?>
 
 
 		    <?php if( $this->params->get("show_media_link",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_MEDIA'); ?>:</span>
-		        <span class="value"><?php echo $this->item->attribs->get('media_link',''); ?></span>
+		        <span class="key media-link"><a href="<?php echo $this->item->attribs->get('media_link',''); ?>"><?php echo JText::_('COM_MYMUSE_MEDIA'); ?></a></span>
+
 		    </li>
 		    <?php endif; ?>
 
@@ -181,8 +182,30 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                        <a href="javascript:void(0)" class="box_<?php echo $this->all_tracks->id; ?>" id="box_<?php echo $this->all_tracks->id; ?>">&#10010;</a>
 	                      
 	                    </div>
-	                    <div id="mp3_<?php echo $this->all_tracks->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($this->product_price_mp3_all); ?></div>
-	                    <div id="wav_<?php echo $this->all_tracks->id; ?>" class="price" style="display:none"><?php echo MyMuseHelper::printMoneyPublic($this->product_price_wav_all); ?></div>
+	                    <?php
+	                    $first = 1;
+	                    $types = array();
+	                    foreach($this->all_tracks->digital as $file){
+	                      if(isset($file->file_format)){
+	                        $types[] = strtolower($file->file_format);
+	                      }
+	                      
+	                    }
+
+	                    foreach($this->formats as $format) :
+	                      if(in_array(strtolower($format), $types)):
+	                        $product_price = $this->all_tracks->price[$format];
+	                            echo '<div id="'.$format.'_'.$this->all_tracks->id.'" class="price"';
+	                            if(!$first):
+	                              echo ' style="display:none" ';
+	                            endif;
+	                            $first = 0;
+	                        echo '>'.MyMuseHelper::printMoneyPublic($product_price).'</div>';
+	                      endif;
+	                    endforeach;
+	                    $this->all_tracks->shown = 1;
+	                    ?>
+	                    
 	                    <div class="format"> <?php 
 	                    if(isset($this->all_tracks->variation_select)) :
 	                        echo $this->all_tracks->variation_select;

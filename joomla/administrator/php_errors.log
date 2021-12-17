@@ -34,3 +34,546 @@
 [26-Nov-2021 16:55:41 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
 [26-Nov-2021 16:55:41 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
 [26-Nov-2021 16:55:41 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:318
+[06-Dec-2021 15:33:57 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1190
+[06-Dec-2021 15:33:57 America/New_York] PHP Stack trace:
+[06-Dec-2021 15:33:57 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[06-Dec-2021 15:33:57 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[06-Dec-2021 15:33:57 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[06-Dec-2021 15:33:57 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[06-Dec-2021 15:33:57 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[06-Dec-2021 15:33:57 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[06-Dec-2021 15:33:57 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[06-Dec-2021 15:33:57 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[06-Dec-2021 15:33:57 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[06-Dec-2021 15:33:57 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:318
+[09-Dec-2021 14:57:16 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/config.xml:389: parser error : Attribute default redefined in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        &gt; in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/config.xml:402: parser error : Attribute default redefined in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        &gt; in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/config.xml:415: parser error : Attribute default redefined in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        &gt; in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/config.xml:428: parser error : Attribute default redefined in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        &gt; in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[09-Dec-2021 14:57:17 America/New_York] PHP Warning:  simplexml_load_file(): 	        ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[09-Dec-2021 14:57:17 America/New_York] PHP Stack trace:
+[09-Dec-2021 14:57:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[09-Dec-2021 14:57:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[09-Dec-2021 14:57:17 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[09-Dec-2021 14:57:17 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[09-Dec-2021 14:57:17 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[09-Dec-2021 14:57:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[09-Dec-2021 14:57:17 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[09-Dec-2021 14:57:17 America/New_York] PHP   8. Joomla\Component\Config\Administrator\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP   9. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[09-Dec-2021 14:57:17 America/New_York] PHP  10. Joomla\Component\Config\Administrator\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Controller/DisplayController.php:59
+[09-Dec-2021 14:57:17 America/New_York] PHP  11. Joomla\Component\Config\Administrator\View\Component\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[09-Dec-2021 14:57:17 America/New_York] PHP  12. Joomla\Component\Config\Administrator\View\Component\HtmlView->get() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/View/Component/HtmlView.php:75
+[09-Dec-2021 14:57:17 America/New_York] PHP  13. Joomla\Component\Config\Administrator\Model\ComponentModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:146
+[09-Dec-2021 14:57:17 America/New_York] PHP  14. Joomla\Component\Config\Administrator\Model\ComponentModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_config/src/Model/ComponentModel.php:91
+[09-Dec-2021 14:57:17 America/New_York] PHP  15. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[09-Dec-2021 14:57:17 America/New_York] PHP  16. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/forms/product.xml:4: parser error : Unescaped '&lt;' not allowed in attributes values in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():             &lt;field in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():             ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/forms/product.xml:4: parser error : attributes construct error in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():             &lt;field in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():             ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/forms/product.xml:4: parser error : Couldn't find end of Start Tag fieldset line 3 in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():             &lt;field in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():             ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/forms/product.xml:372: parser error : Opening and ending tag mismatch: form line 0 and fieldset in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():         &lt;/fieldset&gt; in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():                    ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file(): /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/forms/product.xml:374: parser error : Extra content at the end of the document in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():         &lt;fieldset name=&quot;identity&quot; label=&quot;COM_MYMUSE_PRODUCT_IDENTITY&quot; addfieldpr in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:31:03 America/New_York] PHP Warning:  simplexml_load_file():         ^ in /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php on line 764
+[14-Dec-2021 10:31:03 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:31:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:31:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:31:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:31:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:31:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:31:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:31:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:31:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:31:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:31:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:31:03 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\Model\ProductModel->getForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:96
+[14-Dec-2021 10:31:03 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\Model\ProductModel->loadForm() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php:266
+[14-Dec-2021 10:31:03 America/New_York] PHP  13. Joomla\CMS\Form\Form->loadFile() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:99
+[14-Dec-2021 10:31:03 America/New_York] PHP  14. simplexml_load_file() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:764
+[14-Dec-2021 10:34:28 America/New_York] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Field/ProducttreeField.php on line 13
+[14-Dec-2021 10:34:28 America/New_York] PHP Stack trace:
+[14-Dec-2021 10:34:28 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 10:34:28 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 10:34:28 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 10:34:28 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 10:34:28 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 10:34:28 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 10:34:28 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 10:34:28 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 10:34:28 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 10:34:28 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:692
+[14-Dec-2021 10:34:28 America/New_York] PHP  11. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/View/Product/HtmlView.php:230
+[14-Dec-2021 10:34:28 America/New_York] PHP  12. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:218
+[14-Dec-2021 10:34:28 America/New_York] PHP  13. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:429
+[14-Dec-2021 10:34:28 America/New_York] PHP  14. Joomla\Component\Mymuse\Administrator\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/tmpl/product/edit.php:50
+[14-Dec-2021 10:34:28 America/New_York] PHP  15. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:429
+[14-Dec-2021 10:34:28 America/New_York] PHP  16. Joomla\CMS\Form\Form->getLabel() /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/tmpl/product/edit_details.php:167
+[14-Dec-2021 10:34:28 America/New_York] PHP  17. Joomla\CMS\Form\Form->getField() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:519
+[14-Dec-2021 10:34:28 America/New_York] PHP  18. Joomla\CMS\Form\Form->loadField() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:227
+[14-Dec-2021 10:34:28 America/New_York] PHP  19. Joomla\CMS\Form\FormHelper::loadFieldType() /var/www/html/mymuseJ4/joomla/libraries/src/Form/Form.php:1606
+[14-Dec-2021 10:34:28 America/New_York] PHP  20. Joomla\CMS\Form\FormHelper::loadType() /var/www/html/mymuseJ4/joomla/libraries/src/Form/FormHelper.php:75
+[14-Dec-2021 10:34:28 America/New_York] PHP  21. Joomla\CMS\Form\FormHelper::loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Form/FormHelper.php:134
+[14-Dec-2021 10:34:28 America/New_York] PHP  22. class_exists() /var/www/html/mymuseJ4/joomla/libraries/src/Form/FormHelper.php:225
+[14-Dec-2021 10:34:28 America/New_York] PHP  23. spl_autoload_call() /var/www/html/mymuseJ4/joomla/libraries/src/Form/FormHelper.php:225
+[14-Dec-2021 10:34:28 America/New_York] PHP  24. Joomla\CMS\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Form/FormHelper.php:225
+[14-Dec-2021 10:34:28 America/New_York] PHP  25. Composer\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Autoload/ClassLoader.php:56
+[14-Dec-2021 10:34:28 America/New_York] PHP  26. Composer\Autoload\includeFile() /var/www/html/mymuseJ4/joomla/libraries/vendor/composer/ClassLoader.php:346
+[14-Dec-2021 13:25:58 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1190
+[14-Dec-2021 13:25:58 America/New_York] PHP Stack trace:
+[14-Dec-2021 13:25:58 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 13:25:58 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 13:25:58 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 13:25:58 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 13:25:58 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 13:25:58 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 13:25:58 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 13:25:58 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 13:25:58 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 13:25:58 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:318
+[14-Dec-2021 15:59:02 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1190
+[14-Dec-2021 15:59:02 America/New_York] PHP Stack trace:
+[14-Dec-2021 15:59:02 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 15:59:02 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 15:59:02 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 15:59:02 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 15:59:02 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 15:59:02 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 15:59:02 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 15:59:02 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 15:59:02 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[14-Dec-2021 15:59:02 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:318
+[14-Dec-2021 16:13:34 America/New_York] PHP Notice:  Undefined property: Joomla\Component\Mymuse\Administrator\Controller\ProductController::$msg in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Controller/ProductController.php on line 514
+[14-Dec-2021 16:13:34 America/New_York] PHP Stack trace:
+[14-Dec-2021 16:13:34 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[14-Dec-2021 16:13:34 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[14-Dec-2021 16:13:34 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[14-Dec-2021 16:13:34 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[14-Dec-2021 16:13:34 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[14-Dec-2021 16:13:34 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[14-Dec-2021 16:13:34 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[14-Dec-2021 16:13:34 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[14-Dec-2021 16:13:34 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->removeitem() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[16-Dec-2021 16:11:34 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1190
+[16-Dec-2021 16:11:34 America/New_York] PHP Stack trace:
+[16-Dec-2021 16:11:34 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[16-Dec-2021 16:11:34 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[16-Dec-2021 16:11:34 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[16-Dec-2021 16:11:34 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[16-Dec-2021 16:11:34 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[16-Dec-2021 16:11:34 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[16-Dec-2021 16:11:34 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[16-Dec-2021 16:11:34 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[16-Dec-2021 16:11:34 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:730
+[16-Dec-2021 16:11:34 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:318

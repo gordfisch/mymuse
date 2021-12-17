@@ -22,6 +22,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
@@ -107,7 +108,8 @@ class HtmlView extends BaseHtmlView
 		$jinput 				= $app->input;
 
 		$this->item  			= $this->get('Item');
-		$this->tracks 			= $this->get('Tracks');
+		//$this->tracks 			= $this->get('Tracks');
+
 		$this->print 			= $app->input->getBool('print', false);
 		$this->state 			= $this->get('State');
 		$this->user  			= $user;
@@ -257,6 +259,9 @@ class HtmlView extends BaseHtmlView
 		$item->event = new \stdClass;
 		$results = $app->triggerEvent('onProductBeforeHeader', array ('com_mymuse.product', &$item, &$this->params, $offset));
 		$item->event->beforeDisplayHeader = trim(implode("\n", $results));
+
+		$results = $app->triggerEvent('onProductBeforeTitle', array('com_mymuse.product', &$item, &$this->params, $offset));
+		$item->event->beforeDisplayTitle = trim(implode("\n", $results));
 		
 		$results = $app->triggerEvent('onProductAfterTitle', array('com_mymuse.product', &$item, &$this->params, $offset));
 		$item->event->afterDisplayTitle = trim(implode("\n", $results));
@@ -269,6 +274,31 @@ class HtmlView extends BaseHtmlView
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
+
+		//set  up formats
+		$this->formats = array();
+		$pformats = $this->params->get('my_formats', array());
+		foreach($pformats as $i => $f){
+			$this->formats[$f->ordering] = strtolower($f->format_key);
+		}
+		//if multiple track variations, create select box
+		if(is_countable($item->tracks) && count($item->tracks)){
+			for($i=0; $i < count($item->tracks); $i++){
+				if(is_array($item->tracks[$i]->digital) && count($item->tracks[$i]->digital) > 1){
+					$item->tracks[$i]->variation_select = '<select name="variation['.$item->tracks[$i]->id.']" 
+							id = "variation_'.$item->tracks[$i]->id.'_id" class="inputbox variation_select"
+							onchange="javascript:flip_price(\''.$item->tracks[$i]->id.'\')"
+							>
+									';
+					for($j = 0; $j < count($item->tracks[$i]->digital); $j++){
+						$item->tracks[$i]->variation_select .= '<option value="'.$j.'">'
+						.Text::_(strtoupper($item->tracks[$i]->digital[$j]->file_format)).'</option>'."\n";
+					}		
+					$item->tracks[$i]->variation_select .= "</select>";
+				}
+				
+			}
+		}
 
 		$this->_prepareDocument();
 
@@ -386,5 +416,32 @@ class HtmlView extends BaseHtmlView
 		{
 			$this->document->setMetaData('robots', 'noindex, nofollow');
 		}
+	}
+
+
+	public function makeCarousel($id=0, $path=0){
+
+		if(!$path || !$id){
+			return '';
+		}
+		$full_path = JPATH_ROOT."/images/".$path;
+		$url_path = JURI::Root()."/images/".$path;
+
+		//JFolder::files($path, $filter = '.', $recurse, $fullpath , $exclude);
+		$files = JFolder::files($full_path, $filter = '.', false, false );
+
+		$html = '
+		<div class="owl-carousel owl-theme">
+		';
+		foreach ($files as $item) : 
+			$html .= '<div>
+				<img src="images/'.$path.'/'.$item.'" onclick="updateProductImage('.$id.',\''.$url_path.'/'.$item.'\')">
+			</div>
+			';
+		endforeach;
+
+		$html .= '</div>';
+
+		return $html;
 	}
 }

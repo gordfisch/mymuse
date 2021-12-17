@@ -21,6 +21,7 @@ use Joomla\CMS\Language\Text;
  */
 class Dispatcher extends ComponentDispatcher
 {
+
 	/**
 	 * Dispatch a controller task. Redirecting the user if appropriate.
 	 *

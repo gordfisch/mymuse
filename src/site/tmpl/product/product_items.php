@@ -42,6 +42,7 @@ if( is_countable($items) && count($items)) :
 
 		}
 	</style>
+	<div class="product-items">
 		<h3><?php echo JText::_('COM_MYMUSE_ITEMS'); ?></h3>
 		<table class="mymuse_cart">
 			<thead>
@@ -345,7 +346,6 @@ echo $js;
 	} ?>
     
 <!--  END ITEMS -->
-
+</div>
 <?php } 
 endif; ?>
-<!--  END ITEMS -->

@@ -15,12 +15,48 @@ namespace Joomla\Component\Mymuse\Site\Helper;
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher;
+use Joomla\Component\Mymuse\Site\Helper\CheckoutHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Model\ProductModel;
+use Joomla\Component\Mymuse\Administrator\Table\ProductTable;
+use Joomla\Component\Categories\Administrator\Table\CategoryTable;
+use Joomla\Registry\Registry;
 
 
 class CartHelper
 {
 
+  /**
+   * @var cart
+   *
+   * array
+   */
+  var $cart = null;
+  
+  /**
+   * order object
+   *
+   * @var    order
+   */
+  var $order = null;
+
+  /**
+   * product model class
+   *
+   * @var    MyMuseProduct
+   */
+  var $MyMuseProduct = null;
+
+  
+  /**
+  * @var error
+  */
+  var $error = null;
+  
   /**
    * Constructor
    *
@@ -35,29 +71,11 @@ class CartHelper
     }else{
       $this->cart = $session->get("cart");
     }
+
+    $this->MyMuseProduct  = new ProductModel;
   }
-  
-  /**
-   * @var cart
-   *
-   * array
-   */
-  var $cart = null;
-  
-  /**
-   * order object
-   *
-   * @var    order
-   */
-  var $order = null;
-  
-  
-  /**
-  * @var error
-  */
-  var $error = null;
-  
-  
+
+
   function getError(){
     return $this->error;
   }
@@ -79,14 +97,14 @@ class CartHelper
    * @return bool
    */
   
-  function addToCart() {
+  public function addToCart() {
 
     // Process the cart preparation plugins
-    JPluginHelper::importPlugin('system');
-    $dispatcher     = JDispatcher::getInstance();
-    $results        = $dispatcher->trigger('onBeforeAddToCart', array (&$_POST, &$this->cart ));
+    $app            = Factory::getApplication();
+    PluginHelper::importPlugin('system');
+    $results        = $app->triggerEvent('onBeforeAddToCart', array (&$_POST, &$this->cart ));
 
-    $app            = JFactory::getApplication();
+    
     $jinput         = $app->input;
     $params         = MyMuseHelper::getParams();
 
@@ -96,11 +114,8 @@ class CartHelper
     $quantity       = $jinput->get('quantity',array(), 'ARRAY');
     $variation      = $jinput->get('variation',array(), 'ARRAY');
     $item_quantity  = $jinput->get('item_quantity',array(), 'ARRAY');
-    
-$debug = print_r($jinput->post->getArray(), TRUE); 
-    MyMuseHelper::logMessage( $debug  );
 
-    $db = JFactory::getDBO();   
+    $db = Factory::getDBO();   
 
     if(!$productid){
         $this->error = JText::_("MYMUSE_PLEASE_SELECT_PRODUCT");
@@ -187,7 +202,7 @@ $debug = print_r($jinput->post->getArray(), TRUE);
                 $msg = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
                 $msg .= JText::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
                 $msg .= ' '. JText::_('MYMUSE_BACKORDERED');
-                JFactory::getApplication()->enqueueMessage($msg , 'notice');
+                Factory::getApplication()->enqueueMessage($msg , 'notice');
 
             }else{
                 $this->error = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK')." ";
@@ -214,22 +229,22 @@ $debug = print_r($jinput->post->getArray(), TRUE);
             }
             $q = "SELECT 
             CASE
-            WHEN (product_made_date = '0000-00-00') THEN '0'
-            WHEN (product_made_date > CURDATE()) THEN 'future' 
-            WHEN (product_made_date <= CURDATE()) THEN 'good'
+            WHEN (product_release_date = '0000-00-00') THEN '0'
+            WHEN (product_release_date > CURDATE()) THEN 'future' 
+            WHEN (product_release_date <= CURDATE()) THEN 'good'
             ELSE 0
-            END as product_made_date ";
+            END as product_release_date ";
             $q .= "FROM #__mymuse_product ";
             $q .= "WHERE id = $res->parentid ";
 
             $db->setQuery($q);
-            $product_made_date = $db->loadResult();
+            $product_release_date = $db->loadResult();
     
             if(isset($res->attribs['special_status']) && $res->attribs['special_status'] == "MYMUSE_PREORDER" && 
-              ($product_made_date == 'future' || $product_made_date == '0') ){
+              ($product_release_date == 'future' || $product_release_date == '0') ){
               $backordered = 1;
               $msg = JText::_('MYMUSE_PREORDERED').' ';
-              JFactory::getApplication()->enqueueMessage($msg);
+              Factory::getApplication()->enqueueMessage($msg);
             }
       }
 
@@ -301,9 +316,9 @@ $debug = print_r($jinput->post->getArray(), TRUE);
      * @param array $quantity The quantities of the products
      * @return bool
      */ 
-    function updateCart( ) 
+    public function updateCart( ) 
     {
-      $app    = JFactory::getApplication();
+      $app    = Factory::getApplication();
       $jinput   = $app->input;
       $params   = MyMuseHelper::getParams();
     
@@ -317,7 +332,7 @@ $debug = print_r($jinput->post->getArray(), TRUE);
       $notes    = $jinput->get('notes', '', 'RAW');
 
  
-      $db  = JFactory::getDBO();;
+      $db  = Factory::getDBO();;
         if(!@$productid){
             $this->error = JText::_('MYMUSE_CANT_UPDATE_CART');
             return false;
@@ -374,7 +389,7 @@ $debug = print_r($jinput->post->getArray(), TRUE);
                         //$quant = 0;
                         $msg = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
                         $msg .= JText::_('MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
-                        JFactory::getApplication()->enqueueMessage($msg , 'warning');
+                        Factory::getApplication()->enqueueMessage($msg , 'warning');
                         $backordered = 1;
                     }else{
                         $this->error = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
@@ -447,8 +462,8 @@ $debug = print_r($jinput->post->getArray(), TRUE);
      * 
      * @return bool
      */    
-    function delete($product_id) {
-      $jinput = JFactory::getApplication()->input;
+    public function delete($product_id) {
+      $jinput = Factory::getApplication()->input;
       $variationid  = $jinput->get('variationid', '', 'int');
       $temp = array();
 
@@ -503,11 +518,11 @@ $debug = print_r($jinput->post->getArray(), TRUE);
     }
 
     
-    function couponadd() {
-      $db       =  JFactory::getDBO();
-      $user     =  JFactory::getUser();
+    public function couponadd() {
+      $db       =  Factory::getDBO();
+      $user     =  Factory::getUser();
       $user_id  = $user->get('id');
-      $app      = JFactory::getApplication();
+      $app      = Factory::getApplication();
       $jinput   = $app->input;
       $params   = MyMuseHelper::getParams();
       
@@ -540,7 +555,7 @@ $debug = print_r($jinput->post->getArray(), TRUE);
       }
       
       
-      $date = JFactory::getDate();
+      $date = Factory::getDate();
       $now = $date->toSQL();
 
       //see if it is expired
@@ -606,24 +621,15 @@ $debug = print_r($jinput->post->getArray(), TRUE);
     protected function _buildOrder($edit =  true )
     {
 
-      $app    = JFactory::getApplication();
-      $jinput   = $app->input;
-      $params   = MyMuseHelper::getParams();
-    
-      $MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-      $MyMuseShopper  =& MyMuse::getObject('shopper','models');
-      $shopper    = $MyMuseShopper->getShopper(); 
-      $MyMuseStore    =& MyMuse::getObject('store','models');
-      $store      = $MyMuseStore->getStore(); 
-      $MyMuseProduct  =& MyMuse::getObject('product','models');
-      $user       = JFactory::getUser();
+      $app            = Factory::getApplication();
+      $jinput         = $app->input;
+      $params         = MyMuseHelper::getParams();
+      $MyMuseCheckout = new CheckoutHelper;
+      $user           = Factory::getUser();
       $preview_tracks = array();
-      $dispatcher   = JDispatcher::getInstance();
-
-      $Itemid     = $jinput->get('Itemid', '');
-      $db       = JFactory::getDBO();
-      
-      require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
+      $Itemid         = $jinput->get('Itemid', '');
+      $db             = Factory::getDBO();
+  
 
       // just check that there is an order_item
       if ($this->cart["idx"] == 0) {
@@ -632,18 +638,18 @@ $debug = print_r($jinput->post->getArray(), TRUE);
       }
       
         // FOR THE ORDER
-      $order = new stdClass();
-      $order->order_subtotal        = 0.00;
+      $order = new \stdClass();
+      $order->order_subtotal          = 0.00;
       $order->order_subtotal_physical = 0.00;
-      $order->must_pay_now        = 0.00;
-      $order->tax_total           = 0.00;
-      $order->reservation_fee     = 0.00;
-      $order->reservation_fees    = array();
-      $order->non_res_total       = 0.00;
-      $order->order_shipping      = '';
-      $order->need_shipping       = 0;
-      $order->order_total       = 0.00;
-      $order->discount        = 0.00;
+      $order->must_pay_now            = 0.00;
+      $order->tax_total               = 0.00;
+      $order->reservation_fee         = 0.00;
+      $order->reservation_fees        = array();
+      $order->non_res_total           = 0.00;
+      $order->order_shipping          = '';
+      $order->need_shipping           = 0;
+      $order->order_total             = 0.00;
+      $order->discount                = 0.00;
       $order->shopper_group_discount  = 0.00;
       
 
@@ -677,7 +683,7 @@ $debug = print_r($jinput->post->getArray(), TRUE);
           $preview_tracks[$i] = $order->items[$i];
         }
         $ext = '';
-        $jason = json_decode($order->items[$i]->file_name);
+        $jason = json_decode($order->items[$i]->digital);
         if(is_array($jason)){
           
           $order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
@@ -762,7 +768,7 @@ $debug = print_r($jinput->post->getArray(), TRUE);
               ';
 
         // GET PRICES
-        $price = MyMuseModelProduct::getPrice($order->items[$i]); 
+        $price = MyMuseProduct::getPrice($order->items[$i]); 
 
         if("1" == $params->get('my_price_by_product')){
           $ff = isset($order->items[$i]->format)? $order->items[$i]->format: $order->items[$i]->ext;
@@ -804,8 +810,8 @@ $debug = print_r($jinput->post->getArray(), TRUE);
           $aid = $order->items[$i]->catid;
         }
 
-        $order->items[$i]->url = myMuseHelperRoute::getProductRoute($pid, $aid);
-        $order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($aid);
+        $order->items[$i]->url = RouteHelper::getProductRoute($pid, $aid);
+        $order->items[$i]->cat_url = RouteHelper::getCategoryRoute($aid);
         $order->items[$i]->flash = '';
         
       
@@ -848,9 +854,8 @@ $debug = print_r($jinput->post->getArray(), TRUE);
       }
       
       //DISCOUNTS FROM PLUGINS
-      JPluginHelper::importPlugin('mymuse');
-      $dispatcher = JDispatcher::getInstance();
-      $result = $dispatcher->trigger('onAfterBuildOrder', array(&$order, &$this->cart));
+      PluginHelper::importPlugin('mymuse');
+      $result = $app->triggerEvent('onAfterBuildOrder', array(&$order, &$this->cart));
       if(count($result)){
         foreach($result as $res){
           $order->discount += $res;
@@ -918,9 +923,9 @@ $debug = print_r($jinput->post->getArray(), TRUE);
   /**
    * getRecommended
    */
-  function getRecommended()
+  public function getRecommended()
   {
-    $db     = JFactory::getDBO();
+    $db     = Factory::getDBO();
     $params   = MyMuseHelper::getParams();
     $prods    = array();
     $recommends = array();
@@ -949,7 +954,7 @@ $debug = print_r($jinput->post->getArray(), TRUE);
       }
       
     }
-    require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
+
     $prods = array_unique($prods);
     $num = min($params->get('my_max_recommended'),count($prods));
 
@@ -989,26 +994,20 @@ $debug = print_r($jinput->post->getArray(), TRUE);
    * @param int $id The product id
    * @return object The product object
    */
-  function getProduct($id=null)
+  public function getProduct($id=null)
   {
     
 
     $params   = MyMuseHelper::getParams();;
-      
-    $MyMuseShopper  =& MyMuse::getObject('shopper','models');
-    $shopper    = $MyMuseShopper->getShopper();
     
-    $MyMuseProduct  =& MyMuse::getObject('product','models');
     
     if(!$id){
       $this->error = JText::_("MYMUSE_NO_PRODUCT_ID");
       return false;
     }
   
-    $db = JFactory::getDBO();
-    require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
-    
-    $row = new MymuseTableproduct($db);
+    $db = Factory::getDBO();
+    $row = new ProductTable($db);
 
     if(!$row->load($id)){
       echo "Error: id $id could not be loaded. ".$row->getError();
@@ -1037,14 +1036,14 @@ $debug = print_r($jinput->post->getArray(), TRUE);
     // get parent object
     if($row->parentid){
 
-      $parent = new MymuseTableproduct($db);
+      $parent = new ProductTable($db);
       $parent->load($row->parentid);
       // Convert the attribs field to an array.
-      $registry = new JRegistry;
+      $registry = new Registry;
       $registry->loadString($parent->attribs);
       $parent->attribs = $registry->toArray();
       
-      $registry = new JRegistry;
+      $registry = new Registry;
       $registry->loadString($row->attribs);
       $row->attribs = $registry->toArray();
       
@@ -1052,14 +1051,14 @@ $debug = print_r($jinput->post->getArray(), TRUE);
       $row->attribs = $parent->attribs;
       
       // Convert the metadata field to an array.
-      $registry = new JRegistry;
+      $registry = new Registry;
       $registry->loadString($parent->metadata);
       $parent->metadata = $registry->toArray();
 
       $row->parent = $parent;
       $artistid = $row->parent->artistid;
       // Get attributes
-      $attributes = $MyMuseProduct->getAttributes( $row->id, $row->parentid);
+      $attributes = $this->MyMuseProduct->getAttributes( $row->id, $row->parentid);
       if($attributes){
         foreach ($attributes as $attribute){
           $row->title .= " (" . $attribute->attribute_value . ") ";
@@ -1071,20 +1070,19 @@ $debug = print_r($jinput->post->getArray(), TRUE);
       $row->parent = null;
       $artistid = $row->artistid;
       // Convert the attribs field to an array.
-      $registry = new JRegistry;
+      $registry = new Registry;
       $registry->loadString($row->attribs);
       $row->attribs = $registry->toArray();
         
       // Convert the metadata field to an array.
-      $registry = new JRegistry;
+      $registry = new Registry;
       $registry->loadString($row->metadata);
       $row->metadata = $registry->toArray();
     }
     //$row->price = MyMuseModelProduct::getPrice($row);
     
     // get the artist object
-    require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_categories'.DS.'tables'.DS.'category.php');
-    $cat = new CategoriesTableCategory($db);
+    $cat = new CategoryTable($db);
     $cat->load($artistid);
     $row->artist = $cat;
     $row->category_name = $row->artist->title;

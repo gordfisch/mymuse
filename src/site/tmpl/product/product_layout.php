@@ -62,18 +62,26 @@ if( $this->params->get('info_block_show')) {
 </div>
 
 
-<div class="product-description"></div>
+<div class="product-description">
+	<?php echo $this->item->introtext ?>
+</div>
 
-<div class="product-physical"></div>
 
-<div class="product-items"></div>
+<?php echo $this->loadTemplate('physical'); ?>
 
-<div class="product-tracks"></div>
+
+<?php echo $this->loadTemplate('items'); ?>
+
+
+<?php echo $this->loadTemplate('tracks'); ?>
+
 
 <?php if( $this->params->get('split_text') ): ?>
-	<div class="product-fulltext"></div>
+	<div class="product-fulltext">
+		<?php echo $this->item->fulltext ?>
+	</div>
 <?php endif; ?>
 
 <?php if( $this->params->get('show_recommends') ): ?>
-	<div class="product-recommends"></div>
+	<?php echo $this->loadTemplate('recommends'); ?>
 <?php endif; ?>

@@ -113,7 +113,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-		<field name="show_title" 
+		<field 
+			name="show_title" 
 			type="list"
 		    layout="joomla.form.field.radio.switcher"
 			label="COM_MYMUSE_SHOW_TITLE_LABEL"
@@ -127,13 +128,11 @@
 			type="list"
 			label="COM_MYMUSE_SPLIT_TEXT_LABEL"
 			description="COM_MYMUSE_SPLIT_TEXT_DESC"
-			class="form-select-color-state"
-			validate="options"
+			layout="joomla.form.field.radio.switcher"
 			default="0"
 			>
-			<option value="1">JYES</option>
 			<option value="0">JNO</option>
-			
+			<option value="1">JYES</option>
 		</field>
 
 		<field name="show_readmore"
@@ -232,11 +231,12 @@
 			name="show_associations"
 			type="assoc"
 			label="JGLOBAL_SHOW_ASSOCIATIONS_LABEL"
-			class="form-select-color-state"
+			layout="joomla.form.field.radio.switcher"
 			default="0"
 			>
-			<option value="1">JSHOW</option>
 			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+			
 		</field>
 
 		<field name="show_author" 
@@ -370,12 +370,12 @@
 		    name="show_product_full_time"
 	        label="COM_MYMUSE_PRODUCT_SHOW_FULL_TIME_LABEL"
 	        type="list"
-	        class="form-select-color-state"
+	        layout="joomla.form.field.radio.switcher"
 	        validate="options"
 	        default="0"
 	        >
-	        <option value="1">JSHOW</option>
 	        <option value="0">JHIDE</option>
+	        <option value="1">JSHOW</option>
 		</field>
 
 		<field
@@ -383,12 +383,11 @@
 	        label="COM_MYMUSE_PRODUCT_SHOW_STUDIO_LABEL"
 	        type="list"
 	        default="0"
-	        class="form-select-color-state"
+	        layout="joomla.form.field.radio.switcher"
 	        validate="options"
-	        
 	        >
-	        <option value="1">JSHOW</option>
 	        <option value="0">JHIDE</option>
+	        <option value="1">JSHOW</option>
 		</field>
 
 		<field
@@ -396,12 +395,11 @@
 	        label="COM_MYMUSE_PRODUCT_SHOW_PUBLISHER_LABEL"
 	        type="list"
 	        default="0"
-	        class="form-select-color-state"
+	        layout="joomla.form.field.radio.switcher"
 	        validate="options"
-	        
 	        >
-	        <option value="1">JSHOW</option>
 	        <option value="0">JHIDE</option>
+	        <option value="1">JSHOW</option>
 		</field>
 
 		<field
@@ -409,12 +407,11 @@
 	        label="COM_MYMUSE_PRODUCT_SHOW_PRODUCER_LABEL"
 	        type="list"
 	        default="0"
-	        class="form-select-color-state"
+	        layout="joomla.form.field.radio.switcher"
 	        validate="options"
-	        
 	        >
-	        <option value="1">JSHOW</option>
 	        <option value="0">JHIDE</option>
+	        <option value="1">JSHOW</option>
 		</field>
 
 		<field
@@ -422,12 +419,11 @@
 	        label="COM_MYMUSE_PRODUCT_SHOW_COUNTRY_LABEL"
 	        type="list"
 	        default="0"
-	        class="form-select-color-state"
+	        layout="joomla.form.field.radio.switcher"
 	        validate="options"
-	        
 	        >
-	        <option value="1">JSHOW</option>
 	        <option value="0">JHIDE</option>
+	        <option value="1">JSHOW</option>
 		</field>
 		
 	<field type="spacer" name="spaceritems" label="COM_MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 
@@ -456,7 +452,17 @@
 			
 	<field type="spacer" name="spacerdownload" label="COM_MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
 
-			
+		<field name="show_player" 
+				type="list"
+				layout="joomla.form.field.radio.switcher"
+				label="COM_MYMUSE_SHOW_PLAYER_LABEL" 
+				description="COM_MYMUSE_SHOW_PLAYER_DESC"
+				default="1"
+			>
+	 			<option value="0">JHIDE</option>
+	 			<option value="1">JSHOW</option>
+	 	</field> 
+
 		<field name="product_show_tracks" 
 			type="list"
 			layout="joomla.form.field.radio.switcher"

@@ -21,6 +21,7 @@
 		<filename>joomla.asset.json</filename>
 		<folder>images</folder>
 		<folder>js</folder>
+		<folder>previews</folder>
 	</media>
 
 	<!-- Back-end files --> 
@@ -93,7 +94,8 @@
 
 	<!-- Plugins -->
 	<plugins>
-		<plugin name="audio_jplayer" folder="plugins/audio_jplayer">MyMuse Audio HTML5 jPlayer</plugin>
+		<plugin name="audio_amplitude" folder="plugins/audio_amplitude">MyMuse Audio Amplitude</plugin>
+		<!-- plugin name="audio_jplayer" folder="plugins/audio_jplayer">MyMuse Audio HTML5 jPlayer</plugin --> 
 		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
 		<plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
 		<plugin name="payment_paypal" folder="plugins/payment_paypal">Payment Paypal</plugin>

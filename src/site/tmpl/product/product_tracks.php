@@ -10,28 +10,32 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
+
 global $store, $shopper, $cart;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $product  =& $this->item;
-$items    =& $this->item->items;
 $tracks   =& $this->item->tracks;
-$params   =& $this->params;
-$user     =& $this->user;
 $listOrder  = $this->sortColumn;
 $listDirn = $this->sortDirection;
 $user     = JFactory::getUser();
 
-if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks', 1)) :
-?>
 
+if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_tracks', 1)) :
+?>
+<div class="product-tracks">
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
     <h3><?php echo JText::_('COM_MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
-<?php if (!$this->hide_player){ ?>
+
+<?php if ($this->params->get('show_player','1')) : ?>
     <!-- PLAYER -->
-    <?php if($this->params->get('product_player_type') == "single") : ?>
+    <?php 
+    if($this->params->get('product_player_type') == "single") : ?>
       <div id="product_player" 
         <?php if($this->params->get('product_player_height')) : ?>
         style="height: <?php echo $this->params->get('product_player_height'); ?>px"
@@ -63,9 +67,11 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
       <!-- END PLAYER -->
 
 
-<?php } 
+<?php endif;
 
-?><!-- TRACKS -->
+if ($this->params->get('show_tracks', '1')) : ?>
+
+<!-- TRACKS -->
   <table class="mymuse_cart cart">
     <thead>
       <tr class="mymuse_cart cart">
@@ -106,7 +112,7 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
             <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></th>
           <?php endif; ?>
             
-            <?php if(count($this->params->get('my_formats')) > 1) :?>
+            <?php if(count($this->formats) > 1) :?>
           <th class="myselect cart" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></th>
           <?php endif;?>
             
@@ -127,8 +133,8 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
       $groups = $user->getAuthorisedViewLevels();
         foreach($tracks as $track) : 
   
-            if($track->product_allfiles == 1) :
-                   // continue;
+            if($track->product_allfiles == 1 && $this->all_tracks->shown) :
+                   continue;
               endif;
 
           if(in_array($track->access, $groups)) :
@@ -180,8 +186,8 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
                 <?php 
                 if(!$track->product_allfiles && $track->file_length > 0) :
                   $first = 1;
-                  foreach($track->file_name as $file){
-                    $this_format = isset($file->file_format)? $file->file_format: $file->file_ext;
+                  foreach($track->digital as $file){
+                    $this_format = isset($file->file_format)? strtolower($file->file_format): $file->file_ext;
                     $this_length = isset($file->file_length)? $file->file_length: '';
                     echo '<div id="'.$this_format.'_length_'.$track->id.'" class="length"';
                           if(!$first):
@@ -207,11 +213,28 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
               <!--  DOWNLOADS COLUMN -->
               <?php  if($this->params->get('product_show_downloads', 0)) : ?> 
                 <td class="mydownloads cart">
-                <?php echo $track->file_downloads; ?>
+
+                <?php if(!$track->product_allfiles && $track->file_length > 0) :
+                  $first = 1;
+                  foreach($track->digital as $file){
+                    $this_downloads = isset($file->file_downloads)? $file->file_downloads: 0;
+                    $format = strtolower($file->file_format);
+                    echo '<div id="'.$format.'_downloads_'.$track->id.'" class="downloads"';
+                          if(!$first):
+                            echo ' style="display:none" ';
+                          endif;
+                          $first = 0;
+                      echo '>'.$this_downloads.'</div>';
+
+
+ 
+                  }
+                endif; ?>
+
                 </td>
               <?php endif; ?>
               
-          <!--  PRICE COLUMN -->
+              <!--  PRICE COLUMN -->
               <?php  if($this->params->get('product_show_cost_column', 1)) :?>  
                 <td class="myprice cart">
                 <?php 
@@ -219,15 +242,15 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
                 if("1" == $this->params->get('my_price_by_product')) :
                   $first = 1;
                   $types = array();
-                  foreach($track->file_name as $file){
+                  foreach($track->digital as $file){
+
                     if(isset($file->file_format)){
-                      $types[] = $file->file_format;
+                      $types[] = strtolower($file->file_format);
                     }
                     
                   }
-
-                  foreach($this->params->get('my_formats') as $format) :
-                    if(in_array($format, $types)):
+                  foreach($this->formats as $format) :
+                    if(in_array(strtolower($format), $types)):
                       $product_price = $track->price[$format];
                           echo '<div id="'.$format.'_'.$track->id.'" class="price"';
                           if(!$first):
@@ -248,7 +271,7 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
                   else :
                     if(is_array($track->free_download_link)) :
                       $first = 1;
-                      foreach($this->params->get('my_formats') as $format) :
+                      foreach($this->formats as $format) :
                         $link = $track->free_download_link[$format];
                         echo '<div id="'.$format.'_'.$track->id.'" class="price"';
                         if(!$first):
@@ -270,20 +293,20 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
                   src="<?php echo $img_link; ?>"
                   border="0" /></a><?php
                       
+                  endif;
                 endif;
-              endif;
        
 
-      else :
+              else :
         
-        echo MyMuseHelper::printMoneyPublic($track->price);
+                echo MymuseHelper::printMoneyPublic($track->price);
                 
-                endif; ?>
+              endif; ?>
                 </td>
               <?php endif; ?> 
                     
                     <!--  FORMAT COLUMN -->
-              <?php if(count($this->params->get('my_formats')) > 1) :?>
+              <?php if(count($this->formats) > 1) :?>
                 <td class="myformat cart">
                 <?php if(isset($track->variation_select)) :
                     echo $track->variation_select;
@@ -295,7 +318,7 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
                     <!--  SELECT COLUMN -->
             <?php  if($this->params->get('product_show_select_column', 1)) :?>
                 <td class="myselect cart" nowrap>
-                        <?php if($track->file_name || $track->product_allfiles) :?>
+                        <?php if($track->digital|| $track->product_allfiles) :?>
 
                         <a href="javascript:void(0)"
             id="box_<?php echo $track->id; ?>"><img
@@ -309,7 +332,7 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
                         ?>"></a>
                 <?php  endif; ?>
                         
-                <?php if($track->file_name || $track->product_allfiles) :?>
+                <?php if($track->digital || $track->product_allfiles) :?>
                 <span class="mycheckbox"><input style="display: none;"
               type="checkbox" name="productid[]"
               value="<?php echo $track->id; ?>"
@@ -333,6 +356,15 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
   </div>
   <div style="clear: both"></div>
   <!-- END TRACKS -->
+<?php 
+/*
+echo MymuseHelper::print_pre($this->params->get('my_formats'));
+echo MymuseHelper::print_pre($tracks[0]->digital); 
+echo MymuseHelper::print_pre($tracks[0]->attribs); 
+*/
+?>
+
+
   <?php // Add pagination links ?>
 <?php if (count($tracks) && isset($this->pagination)) : ?>
   <?php if (($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
@@ -348,7 +380,8 @@ if(is_countable($tracks) && count($tracks) && $params->get('product_show_tracks'
   </div>
   <?php endif; ?>
 
-<?php  endif; 
-endif;
-?>
+<?php  endif; ?>
+</div>
+<?php endif; ?>
 
+<?php endif; ?>

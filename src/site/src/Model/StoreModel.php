@@ -24,19 +24,35 @@ use Joomla\Registry\Registry;
 use Joomla\Utilities\IpHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
-abstract class StoreModel extends ItemModel
+class StoreModel extends ItemModel
 {
 	/**
      * Store store object
      *
-     * @$item->array
+     * @var object 
      */
+	var $_store = null;
 
      
 
-	static function getStore()
+	function getItem($pk = 1)
 	{
 		static $_store;
+		$db = Factory::getDBO();
+
+		if($_store == null){
+			$query = "SELECT * from #__mymuse_store WHERE id='1'";
+			$db->setQuery( $query );
+        	$_store = $db->loadObject();
+        	$params = MyMuseHelper::getParams();
+        	$_store->currency = $params->get('currency');
+		}
+        return $_store;
+	}
+
+	static function getStore()
+	{
+		static $_store; 
 		$db = Factory::getDBO();
 
 		if($_store == null){

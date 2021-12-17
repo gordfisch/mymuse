@@ -19,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
@@ -487,7 +488,7 @@ class ProductTable extends Table implements VersionableTableInterface
 					$select_file = $select_files[$i];
 
 					if($select_file){
-						//get current is exists
+						//get current if exists
 						$current = array();
 						if(isset($format_ids[$i])){
 							$query = "SELECT * FROM #__mymuse_product WHERE id='".$format_ids[$i]."'";
@@ -531,6 +532,7 @@ class ProductTable extends Table implements VersionableTableInterface
 						if(!isset($track_time)){
 							$track_time = (isset($form['file_time']))? $form['file_time']: '';
 						}
+
 						$this->id = isset($format_ids[$i])? $format_ids[$i] : '';
 
 
@@ -558,6 +560,7 @@ class ProductTable extends Table implements VersionableTableInterface
 							'file_type' => $form['file_type'],
 							'file_format' => $formats[$i]
 						);
+	
 						$registry = new Registry($digital );
 						$this->digital = (string) $registry;
 						$this->featured = 0;
@@ -580,7 +583,7 @@ class ProductTable extends Table implements VersionableTableInterface
 
 		/* ALL FILES ==========================================================*/
 		if(isset($form['product_allfiles']) && $form['product_allfiles']){
-//MymuseHelper::print_pre($params->get('my_formats')); exit;
+
 			$this->product_allfiles = 1;
 			$this->featured = 0;
 			/* CREATE OR UPDATE PARENT ALLFILES */
@@ -602,6 +605,7 @@ class ProductTable extends Table implements VersionableTableInterface
 	                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK').' '.$this->getError(), 'error');
 					return false;
 				}
+
 				$this->file_type = "audio";
 				$this->track_parentid = $this->id;
 				
@@ -679,7 +683,7 @@ class ProductTable extends Table implements VersionableTableInterface
 				foreach($form['othercats'] as $catid){
 					$query = "INSERT INTO #__mymuse_product_category_xref
         			(catid,product_id) VALUES (".$catid.",".$this->id.")";
-        			echo $query; exit;
+        			//echo $query; exit;
 					$db->setQuery($query);
 
 					if(!$db->execute()){
@@ -835,9 +839,10 @@ class ProductTable extends Table implements VersionableTableInterface
 
 
 			// onMymuseAfterSave  onFinderAfterSave
+	        PluginHelper::importPlugin('mymuse');
+			$app->triggerEvent('onFinderAfterSave', array('com_mymuse.product', &$this, false, $isNew));
+			$res = $app->triggerEvent('onMyMuseAfterSave', array('com_mymuse.product', &$this, false, $isNew));
 
-			Factory::getApplication()->triggerEvent('onFinderAfterSave', array('com_mymuse.product', &$this, false, $isNew));
-			$res = Factory::getApplication()->triggerEvent('onMyMuseAfterSave', array('com_mymuse.product', &$this, false, $isNew));
 			if(isset($res[0])){
 				$app->enqueueMessage($res[0], 'Notice');
 			}

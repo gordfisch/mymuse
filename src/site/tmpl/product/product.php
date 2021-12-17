@@ -23,37 +23,39 @@ use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
 
 
 
-global $shopper;
 
-$this->assocParam        = (Associations::isEnabled() && $this->params->get('show_associations'));
-$store = $this->store;
-$cart = $this->cart;
-$product 	=& $this->item;
-$items		=& $this->item->items;
+$this->shopper 		= MyMuse::getObject('Shopper','model')->getShopper();
+
+$this->assocParam   = (Associations::isEnabled() && $this->params->get('show_associations'));
+$store 				= $this->store;
+$cart 				= $this->cart;
+$product 			=& $this->item;
+$items				=& $this->item->items;
 if(!is_countable($items)){ 
 	$items = array();
 }
 $tracks		=& $this->item->tracks;
-if(is_countable($tracks)){ 
+if(!is_countable($tracks)){ 
 	$tracks = array();
 }
-$params 	=& $this->params;
-$user 		=& $this->user;
-$print 		= $this->print;
-$Itemid		= $this->Itemid;
-$height 	= $this->params->get('product_product_image_height',0);
-$this->check = 1;
-$count		= 0;
-$this->return_link = 'index.php?option=com_mymuse&view=product&task=product&id='.$product->id.'&catid='.$product->catid.'&Itemid='.$Itemid;
-$this->canEdit	= $this->item->params->get('access-edit',0);
-$items_select 	= $this->params->get('product_item_selectbox',0);
-$lang = Factory::getLanguage();
-$langtag = $lang->getTag();
-$listOrder	= $this->sortColumn;
-$listDirn	= $this->sortDirection;
+$params 			=& $this->params;
+$user 				=& $this->user;
+$print 				= $this->print;
+$Itemid				= $this->Itemid;
+$height 			= $this->params->get('product_product_image_height',0);
+$this->check 		= 1;
+$count				= 0;
+$this->return_link 	= 'index.php?option=com_mymuse&view=product&task=product&id='.$product->id.'&catid='.$product->catid.'&Itemid='.$Itemid;
+$this->canEdit		= $this->item->params->get('access-edit',0);
+$items_select 		= $this->params->get('product_item_selectbox',0);
+$lang 				= Factory::getLanguage();
+$langtag 			= $lang->getTag();
+$listOrder			= $this->sortColumn;
+$listDirn			= $this->sortDirection;
 
 
 //get artist URL if exists
@@ -89,14 +91,14 @@ $document->setMetaData( 'twitter:url', $prod_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$product->detail_image);
 
-
+//MymuseHelper::print_pre($this->params->get('my_formats')); exit;
 if("1" == $this->params->get('my_price_by_product')){//price by product
 	$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
 
 	foreach($this->params->get('my_formats') as $format){
-		$str = 'product_price_'.$format;
+		$str = 'product_price_'.$format->format_value;
 		$$str = array('product_price' => $this->item->attribs->get($str));
-		$str = 'product_price_'.$format.'_all';
+		$str = 'product_price_'.$format->format_value.'_all';
 		$$str = array('product_price' => $this->item->attribs->get($str));
 	}
 }
@@ -106,10 +108,11 @@ if(count((is_countable($tracks)?$tracks:[]))){
     foreach($tracks as $track){ 
         if($track->product_allfiles == 1){
             $this->all_tracks = $track;
+            $this->all_tracks->shown = 0;
         }
     }
 }
-
+//MymuseHelper::print_pre($this->all_tracks);
 $url = "index.php?option=com_mymuse&task=ajaxtogglecart";
 $this->products = array();
 for ($i=0;$i<$this->cart["idx"];$i++) {
@@ -182,22 +185,28 @@ if(count($params->get('my_formats', array())) > 1 ){
 	
 	$js .= 'function flip_price(id) {'."\n";
 	$js .= ' var formats = new Array();'."\n";
-	foreach($params->get('my_formats') as $index=>$format) {
-		$js .= 'formats['.$index.'] = "'.$format.'"'."\n";
+	foreach($params->get('my_formats') as $index => $format) {
+		$js .= 'formats['.$index.'] = "'.$format->format_value.'"'."\n";
 	}
 	foreach($params->get('my_formats') as $format) {
-		$js .= 'var  '.$format.'_id = "#'.$format.'_"+id'."\n";
+		$js .= 'var  '.$format->format_value.'_id = "#'.$format->format_value.'_"+id'."\n";
 		if($params->get('product_show_filesize', 0)) {
-			$js .= 'var  '.$format.'_length_id = "#'.$format.'_length_"+id'."\n";
+			$js .= 'var  '.$format->format_value.'_length_id = "#'.$format->format_value.'_length_"+id'."\n";
+		}
+		if($params->get('product_show_downloads', 0)) {
+			$js .= 'var  '.$format->format_value.'_downloads_id = "#'.$format->format_value.'_downloads_"+id'."\n";
 		}
 		
 	}
 	$js .= 'var select_id = "#variation_"+id+"_id"'."\n";
     
 	for($i=0; $i < count($params->get('my_formats')); $i++){
-    	$js .= 'jQuery('.$params->get('my_formats')[$i].'_id).hide();'."\n";
+    	$js .= 'jQuery('.$params->get('my_formats')[$i]->format_value.'_id).hide();'."\n";
     	if($params->get('product_show_filesize', 0)) {
-    		$js .= 'jQuery('.$params->get('my_formats')[$i].'_length_id).hide();'."\n";
+    		$js .= 'jQuery('.$params->get('my_formats')[$i]->format_value.'_length_id).hide();'."\n";
+    	}
+    	if($params->get('product_show_downloads', 0)) {
+    		$js .= 'jQuery('.$params->get('my_formats')[$i]->format_value.'_downloads_id).hide();'."\n";
     	}
     	
 	}   		
@@ -207,10 +216,12 @@ if(count($params->get('my_formats', array())) > 1 ){
 			
 	if($params->get('product_show_filesize', 0)) {
 		$js .= '
-			//alert(formats[jQuery(select_id).val()]+"_"+id);
 			jQuery("#"+formats[jQuery(select_id).val()]+"_length_"+id).show();';
 	}
-	
+	if($params->get('product_show_downloads', 0)) {
+		$js .= '
+			jQuery("#"+formats[jQuery(select_id).val()]+"_downloads_"+id).show();';
+	}
 
 	$js .= "\n}";
 }
@@ -223,9 +234,10 @@ if($product->product_physical){
 	$js .= '
 jQuery(document).ready(function($){
 		$("#box_'.$product->id.'").click(function(e){
+
 			if(typeof document.mymuseform.variation_'.$product->id.'_id !== "undefined"){
 				myvariation = document.mymuseform.variation_'.$product->id.'_id.value;
-				//alert("variation = "+myvariation);
+				alert("variation = "+myvariation);
 	
 			}else{
 				myvariation = "";
@@ -274,7 +286,6 @@ jQuery(document).ready(function($){
 }
 
 
-$items_select 	= $this->params->get('product_item_selectbox',0);
 if(count(is_countable($items)?$items:[]) && $items_select){
 
 	$js .= '
@@ -383,10 +394,10 @@ if(is_countable($tracks)){
 			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
 				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
 				//alert("variation = "+myvariation);
-
 			}else{
 				myvariation = 0;
 			}
+			alert("'.$track->id.'");
             $.post("'.$url.'",
             {
                 "productid":"'.$track->id.'",
@@ -434,10 +445,13 @@ $document->addScriptDeclaration($js);
 ?>
 <!--  START PRODUCT VIEW -->
 
+<?php echo $this->item->event->beforeDisplayProduct; ?>
+
+
 <?php echo $this->loadTemplate('heading'); ?>
 
-
-<form method="post"
+<div class="mymuse">
+	<form method="post"
 	action="<?php JRoute::_('index.php?lang='.$langtag) ?>"
 	onsubmit="return hasProduct(this,<?php echo $count; ?>);"
 	name="mymuseform">
@@ -446,19 +460,15 @@ $document->addScriptDeclaration($js);
 	<input type="hidden" name="catid" value="<?php echo $product->catid; ?>" /> 
 	<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 
+	<?php echo $this->loadTemplate('layout'); ?>
 
-<div class="mymuse">
-
-<?php echo $this->loadTemplate('layout'); ?>
-
-</form>
-
-
+	</form>
+</div>
 <?php echo $this->item->event->afterDisplayProduct; ?>
 
-<!--  end PRODUCT VIEW -->
-</div>
 
+
+	<!--  END PRODUCT VIEW -->
 <div id='my_overlay' style="display: none"></div>
 <div id='my_modal' style="display: none">
 	<div id='my_content'>No JavaScript!</div>
