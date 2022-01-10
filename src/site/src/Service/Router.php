@@ -326,237 +326,236 @@ class Router extends RouterBase
 	public function parse(&$segments)
 	{
 	
-	$vars = array();
+		$vars = array();
 
-	//Get the active menu item.
-	$app	= Factory::getApplication();
-	$jinput = $app->input;
-	$task = $jinput->get('task','');
-	if($task == "user.logout"){
-		return $segments;
-	}
+		//Get the active menu item.
+		$app	= Factory::getApplication();
+		$jinput = $app->input;
+		$task = $jinput->get('task','');
+		if($task == "user.logout"){
+			return $segments;
+		}
 
-	$menu	= $app->getMenu();
-	$item	= $menu->getActive();
-	
-	$params = MyMuseHelper::getParams();
-	$advanced	= $params->get('sef_ids', 0);
-	$dbo = Factory::getDBO();
-	
-	// Count route segments
-	$count = count($segments);
-	//MyMuseHelper::print_pre($segments); 
-	//echo "item"; MyMuseHelper::print_pre($item); 
-
-	//exit;
+		$menu	= $app->getMenu();
+		$item	= $menu->getActive();
+		
+		$params = MyMuseHelper::getParams();
+		$advanced	= $params->get('sef_ids', 0);
+		$dbo = Factory::getDBO();
+		
+		// Count route segments
+		$count = count($segments);
+		//MyMuseHelper::print_pre($segments); 
+		//echo "item"; MyMuseHelper::print_pre($item); 
 
 
-	// Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
-	// the first segment is the view and the last segment is the id of the product or category.
+		// Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
+		// the first segment is the view and the last segment is the id of the product or category.
 
-    if (!isset($item)) {
-    	if($params->get('top_menu_item','')){
-    		$item	= $menu->getItem($params->get('top_menu_item'));
-    		$jinput->set('Itemid', $params->get('top_menu_item'));
-    	}
-    }
-    if(isset($item->alias) && $item->alias == $segment){
-    	$vars['option'] = 'com_mymuse';
-    	if($count == 1){
-    		$vars['view'] = $item->query['view'];
+	    if (!isset($item)) {
+	    	if($params->get('top_menu_item','')){
+	    		$item	= $menu->getItem($params->get('top_menu_item'));
+	    		$jinput->set('Itemid', $params->get('top_menu_item'));
+	    	}
+	    }
 
-    		return $vars;
-    	}
-    	$count--;
-    	$first = array_shift($segments);
-    }
+	    if(isset($item->alias) && $item->alias == $segments[0]){
+	    	$vars['option'] = 'com_mymuse';
+	    	if($count == 1){
+	    		$vars['view'] = $item->query['view'];
+
+	    		return $vars;
+	    	}
+	    	$count--;
+	    	$first = array_shift($segments);
+	    }
 
 
 
 		$segment = array_shift($segments);
-        //shipping|addtocart|updatecart|cartdelete|showcart|checkout
-        if($segment == "checkout"){
-            $vars['option'] = 'com_mymuse';
-            $vars['view'] = 'cart';
-            $vars['task'] = 'checkout';
-            
-            return $vars;
-        }
-        if($segment == "shipping"){
-            $vars['option'] = 'com_mymuse';
-            $vars['view'] = 'cart';
-            $vars['task'] = 'shipping';
-            
-            return $vars;
-        }
-        if($segment == "addtocart"){
-            $vars['option'] = 'com_mymuse';
-            $vars['view'] = 'cart';
-            $vars['task'] = 'addtocart';
-            
-            return $vars;
-        }
-        if($segment == "updatecart"){
-            $vars['option'] = 'com_mymuse';
-            $vars['view'] = 'cart';
-            $vars['task'] = 'updatecart';
-            
-            return $vars;
-        }
-        if($segment == "cartdelete"){
-            $vars['option'] = 'com_mymuse';
-            $vars['view'] = 'cart';
-            $vars['task'] = 'cartdelete';
-            
-            return $vars;
-        }
-        if($segment == "showcart"){
-            $vars['option'] = 'com_mymuse';
-            $vars['view'] = 'cart';
-            $vars['task'] = 'showcart';
+	    //shipping|addtocart|updatecart|cartdelete|showcart|checkout
+	    if($segment == "checkout"){
+	        $vars['option'] = 'com_mymuse';
+	        $vars['view'] = 'cart';
+	        $vars['task'] = 'checkout';
+	        
+	        return $vars;
+	    }
+	    if($segment == "shipping"){
+	        $vars['option'] = 'com_mymuse';
+	        $vars['view'] = 'cart';
+	        $vars['task'] = 'shipping';
+	        
+	        return $vars;
+	    }
+	    if($segment == "addtocart"){
+	        $vars['option'] = 'com_mymuse';
+	        $vars['view'] = 'cart';
+	        $vars['task'] = 'addtocart';
+	        
+	        return $vars;
+	    }
+	    if($segment == "updatecart"){
+	        $vars['option'] = 'com_mymuse';
+	        $vars['view'] = 'cart';
+	        $vars['task'] = 'updatecart';
+	        
+	        return $vars;
+	    }
+	    if($segment == "cartdelete"){
+	        $vars['option'] = 'com_mymuse';
+	        $vars['view'] = 'cart';
+	        $vars['task'] = 'cartdelete';
+	        
+	        return $vars;
+	    }
+	    if($segment == "showcart"){
+	        $vars['option'] = 'com_mymuse';
+	        $vars['view'] = 'cart';
+	        $vars['task'] = 'showcart';
 
-            return $vars;
-        }
-        if($segment == "register"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'shopper';
-        	$vars['task'] = 'register';
-        	$vars['layout'] = 'register';
-        
-        	return $vars;
-        }
-        if($segment == "confirm"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'cart';
-        	$vars['task'] = 'confirm';
-      
-        	return $vars;
-        }
-        if($segment == "thankyou"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'cart';
-        	$vars['task'] = 'thankyou';
-       
-        	return $vars;
-        }
-        if($segment == "vieworder"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'cart';
-        	$vars['task'] = 'vieworder';
-        
-        	return $vars;
-        }
-        if($segment == "downloads"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'store';
-        	$vars['task'] = 'downloads';
-   
-        	return $vars;
-        }
-        if($segment == "accdownloads"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'store';
-        	$vars['task'] = 'downloads';
-        
-        	return $vars;
-        }
+	        return $vars;
+	    }
+	    if($segment == "register"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'shopper';
+	    	$vars['task'] = 'register';
+	    	$vars['layout'] = 'register';
+	    
+	    	return $vars;
+	    }
+	    if($segment == "confirm"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'cart';
+	    	$vars['task'] = 'confirm';
+	  
+	    	return $vars;
+	    }
+	    if($segment == "thankyou"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'cart';
+	    	$vars['task'] = 'thankyou';
+	   
+	    	return $vars;
+	    }
+	    if($segment == "vieworder"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'cart';
+	    	$vars['task'] = 'vieworder';
+	    
+	    	return $vars;
+	    }
+	    if($segment == "downloads"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'store';
+	    	$vars['task'] = 'downloads';
+
+	    	return $vars;
+	    }
+	    if($segment == "accdownloads"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'store';
+	    	$vars['task'] = 'downloads';
+	    
+	    	return $vars;
+	    }
 		if($segment == "vieworder"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'cart';
-        	$vars['task'] = 'vieworder';
-        	$vars['layout'] = 'cart';
-        	return $vars;
-        }
-        if($segment == "paycancel"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'cart';
-        	$vars['task'] = 'paycancel';
-        	$vars['layout'] = 'cart';
-        	return $vars;
-        }
-        if($segment == "downloadfile"){
-        	$vars['option'] = 'com_mymuse';
-        	$vars['view'] = 'store';
-        	$vars['task'] = 'downloadfile';
-        	return $vars;
-        }
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'cart';
+	    	$vars['task'] = 'vieworder';
+	    	$vars['layout'] = 'cart';
+	    	return $vars;
+	    }
+	    if($segment == "paycancel"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'cart';
+	    	$vars['task'] = 'paycancel';
+	    	$vars['layout'] = 'cart';
+	    	return $vars;
+	    }
+	    if($segment == "downloadfile"){
+	    	$vars['option'] = 'com_mymuse';
+	    	$vars['view'] = 'store';
+	    	$vars['task'] = 'downloadfile';
+	    	return $vars;
+	    }
 
 		if(strpos($segment,':')){
-        	list($id, $alias) = explode(':', $segment, 2);
-        }else{
-        	//no numbers.
-        	$alias = $segment;
-        }
+	    	list($id, $alias) = explode(':', $segment, 2);
+	    }else{
+	    	//no numbers.
+	    	$alias = $segment;
+	    }
 
 
-    	//check if this is a product alias.
-    	$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$alias.'"';
+		//check if this is a product alias.
+		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$alias.'"';
 
-    	$dbo->setQuery($query);
-    	if($product = $dbo->loadObject()){
-    		$vars['option'] = 'com_mymuse';
-    		$vars['view'] = 'product';
-    		$vars['id'] = (int)$product->id;
-    		$vars['catid'] = (int)$product->catid;
-    		//our work here is done
-    		return $vars;
-    	}
+		$dbo->setQuery($query);
+		if($product = $dbo->loadObject()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'product';
+			$vars['id'] = (int)$product->id;
+			$vars['catid'] = (int)$product->catid;
+			//our work here is done
+			return $vars;
+		}
 
-    	$category = '';
-    	//check if this is a category alias.
-    	$query = 'SELECT id from #__categories WHERE alias="'.$alias.'" and extension="com_mymuse"';
-  	
-    	$dbo->setQuery($query);
-    	if($category = $dbo->loadResult()){
-    		$vars['option'] = 'com_mymuse';
-    		$vars['view'] = 'category';
-    		$vars['id'] = (int)$category;
-    		if(\count($segments) == 0){
-    			//our work here is done
-    			return $vars;
-    		}
-    	}
-    	$segment = array_shift($segments);
+		$category = '';
+		//check if this is a category alias.
+		$query = 'SELECT id from #__categories WHERE alias="'.$alias.'" and extension="com_mymuse"';
+		
+		$dbo->setQuery($query);
+		if($category = $dbo->loadResult()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'category';
+			$vars['id'] = (int)$category;
+			if(\count($segments) == 0){
+				//our work here is done
+				return $vars;
+			}
+		}
+		$segment = array_shift($segments);
 
 
 
-    	//could be category/product
-    	
-    	$prodid = '';
+		//could be category/product
+		
+		$prodid = '';
 
-    	//first get category
-    	/*
-    	if($advanced){
-        	//no numbers.
-        	$cat_alias = $segment;
-        	//check if this is a category alias.
-        	$query = 'SELECT id from #__categories WHERE alias="'.$cat_alias.'" and extension="com_mymuse"';
-        	
-        	$dbo->setQuery($query);
-        	if($catid = $dbo->loadResult()){
-        		$vars['option'] = 'com_mymuse';
-        		$vars['catid'] = $catid;
-        	}
-        }elseif(strpos($segment,':')){
-        	list($catid, $cat_alias) = explode(':', $segment, 2);
-        	$category = JCategories::getInstance('Mymuse')->get($catid);
-        	if ($category && $category->alias == $alias) {
-        		$vars['option'] = 'com_mymuse';
+		//first get category
+		/*
+		if($advanced){
+	    	//no numbers.
+	    	$cat_alias = $segment;
+	    	//check if this is a category alias.
+	    	$query = 'SELECT id from #__categories WHERE alias="'.$cat_alias.'" and extension="com_mymuse"';
+	    	
+	    	$dbo->setQuery($query);
+	    	if($catid = $dbo->loadResult()){
+	    		$vars['option'] = 'com_mymuse';
+	    		$vars['catid'] = $catid;
+	    	}
+	    }elseif(strpos($segment,':')){
+	    	list($catid, $cat_alias) = explode(':', $segment, 2);
+	    	$category = JCategories::getInstance('Mymuse')->get($catid);
+	    	if ($category && $category->alias == $alias) {
+	    		$vars['option'] = 'com_mymuse';
 				$vars['catid'] = $catid;
 			}
-        }
-        */
+	    }
+	    */
 
-        if($category){
-        	//look for a product
-        	if($advanced){
-        		//no numbers.
-        		$prod_alias = $segment;
-        	}else{
+	    if($category){
+	    	//look for a product
+	    	if($advanced){
+	    		//no numbers.
+	    		$prod_alias = $segment;
+	    	}else{
 				list($id, $prod_alias) = explode(':', $segment, 2);
 			}
 
-    		$query = 'SELECT id FROM #__mymuse_product WHERE alias = "'.$prod_alias.'"';
+			$query = 'SELECT id FROM #__mymuse_product WHERE alias = "'.$prod_alias.'"';
 			$dbo->setQuery($query);
 			if($id = $dbo->loadResult()){
 				$vars['view'] = 'product';
@@ -566,13 +565,8 @@ class Router extends RouterBase
 				//MyMuseHelper::print_pre($vars); exit;
 				return $vars;
 			}
-        }		
+	    }		
 
-
-
-
-
-
-	return $vars;
+		return $vars;
 	}
 }

@@ -281,6 +281,7 @@ class HtmlView extends BaseHtmlView
 		foreach($pformats as $i => $f){
 			$this->formats[$f->ordering] = strtolower($f->format_key);
 		}
+
 		//if multiple track variations, create select box
 		if(is_countable($item->tracks) && count($item->tracks)){
 			for($i=0; $i < count($item->tracks); $i++){
@@ -288,10 +289,16 @@ class HtmlView extends BaseHtmlView
 					$item->tracks[$i]->variation_select = '<select name="variation['.$item->tracks[$i]->id.']" 
 							id = "variation_'.$item->tracks[$i]->id.'_id" class="inputbox variation_select"
 							onchange="javascript:flip_price(\''.$item->tracks[$i]->id.'\')"
-							>
+							';
+							for($j = 0; $j < count($item->tracks[$i]->digital); $j++){
+								$item->tracks[$i]->variation_select .= '
+								data-variation_'.$j.'="'.$item->tracks[$i]->digital[$j]->file_id.'"';
+							}
+							
+							$item->tracks[$i]->variation_select .= '>
 									';
 					for($j = 0; $j < count($item->tracks[$i]->digital); $j++){
-						$item->tracks[$i]->variation_select .= '<option value="'.$j.'">'
+						$item->tracks[$i]->variation_select .= '<option value="'.$j.'" >'
 						.Text::_(strtoupper($item->tracks[$i]->digital[$j]->file_format)).'</option>'."\n";
 					}		
 					$item->tracks[$i]->variation_select .= "</select>";

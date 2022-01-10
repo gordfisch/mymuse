@@ -31,12 +31,13 @@ $this->ignore_fieldsets = array('details', 'item_associations', 'jmetadata');
 $this->useCoreUI = true;
 
 // In case of modal
-$isModal = $input->get('layout') == 'modal' ? true : false;
-$layout  = $isModal ? 'modal' : 'edit';
-$tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
-$fieldsetsInContact = ['contact', 'contact2'];
-$fieldsetsInDownloads = ['downloads', 'directories'];
-$fieldsetsInStore = ['store', 'store2'];
+$isModal 				= $input->get('layout') == 'modal' ? true : false;
+$layout  				= $isModal ? 'modal' : 'edit';
+$tmpl    				= $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
+$fieldsetsInContact 	= ['contact', 'contact2'];
+$fieldsetsInDownloads 	= ['downloads', 'directories'];
+$fieldsetsInPhysical 	= ['physical'];
+$fieldsetsInStore 		= ['store', 'store2'];
 $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $fieldsetsInDownloads);
 
 
@@ -112,6 +113,22 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 					
 				</div>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'physical', Text::_('COM_MYMUSE_PHYSICAL_LABEL')); ?>
+				<div class="row">
+				<?php foreach ($fieldsetsInPhysical as $fieldset) : ?>
+						<div class="col-12 col-lg-6">
+						<fieldset id="fieldset-<?php echo $fieldset; ?>" class="options-form">
+							<legend><?php echo Text::_($this->form->getFieldsets()[$fieldset]->label); ?></legend>
+							<div>
+							<?php echo $this->form->renderFieldset($fieldset); ?>
+							</div>
+						</fieldset>
+						</div>
+				<?php endforeach; ?>
+				</div>
+			<?php echo HTMLHelper::_('uitab.endTab'); ?>
+
 
 			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Store', Text::_('COM_MYMUSE_STORE_OPTIONS_LABEL')); ?>
 				<div class="row">

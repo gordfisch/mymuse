@@ -424,11 +424,11 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order` (
   `reservation_fee` float(10,2) NOT NULL DEFAULT '0.00',
   `non_res_total` float(10,2) NOT NULL DEFAULT '0.00',
   `pay_now` float(10,2) NOT NULL DEFAULT '0.00',
-  `extra` text NOT NULL,
+  `extra` text DEFAULT NULL,
   `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `ordering` int(11) NOT NULL DEFAULT '0',
-  `licence` varchar(255) NOT NULL,
+  `licence` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1001 ;
 
@@ -446,6 +446,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order_item` (
   `id` int(11) NOT NULL auto_increment,
   `order_id` int(11) default NULL,
   `product_id` int(11) default NULL,
+  `variation_id` int(11) default NULL,
   `product_quantity` int(11) default NULL,
   `product_item_price` decimal(10,2) default NULL,
   `product_sku` varchar(254) NOT NULL,

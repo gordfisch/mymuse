@@ -24,40 +24,140 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
-use Joomla\Component\Mymuse\Site\Helper\CartHelper;
-use Joomla\Component\Mymuse\Site\Model\StoreModel;
-
+use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
 
 class HtmlView extends BaseHtmlView
 {
-	function __construct()       {
-                parent::__construct(); 
-                parent::setLayout('cart');       
-        }
+	/**
+	 * MyMuseCheckout object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseCheckout = null;
+
+	/**
+	 * MyMuseCart  object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseCart = null;
+
+	/**
+	 * cart
+	 *
+	 * @var object
+	 */
+	var $cart = null;
+
+	/**
+	 * MyMuseStore object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseStore = null;
+
+	/**
+	 * store object ref
+	 *
+	 * @var object
+	 */
+	var $store = null;
+
+	/**
+	 * currency object ref
+	 *
+	 * @var object
+	 */
+	var $currency = null;
+
+	/**
+	 * MyMuseShopper object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseShopper = null;
+
+	/**
+	 * Itemid 
+	 *
+	 * @var int
+	 */
+	var $Itemid = 0;
+
+	/**
+	 * task
+	 *
+	 * @var string
+	 */
+	var $task = '';
+
+	/**
+	 * user
+	 *
+	 * @var object
+	 */
+	var $user = null;
+
+	/**
+	 * _db database object
+	 *
+	 * @var object
+	 */
+	var $_db = null;
+
+
+	public function __construct()       {
+        parent::__construct(); 
+        parent::setLayout('cart');    
+
+        $this->MyMuseCheckout 	=& MyMuse::getObject('Checkout','helper');
+
+        $this->MyMuseCart 		=& MyMuse::getObject('Cart','helper');
+        $this->cart 			=& $this->MyMuseCart ->cart;
+
+        $this->MyMuseStore		=& MyMuse::getObject('Store','model');
+        $this->store 			= $this->MyMuseStore->getStore();
+        $this->currency 		= $currency		= $this->store->currency;
+
+        $this->MyMuseShopper  	=& MyMuse::getObject('Shopper','model');
+
+        $this->user				= Factory::getUser();
+
+        $this->_db 				= Factory::getDBO();
+    }
         
 
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		$db = Factory::getDBO();
-		$params = MyMuseHelper::getParams();
-		$jinput = Factory::getApplication()->input;
-		$this->Itemid = $jinput->get("Itemid",'');
-		$this->task = $task	= $jinput->get('task', '', 'CMD');
+
+		$this->_db 			= Factory::getDBO();
+		$params 		= MyMuseHelper::getParams();
+		$app 			= Factory::getApplication();
+		$jinput 		= $app->input;
+		$this->Itemid 	= $jinput->get("Itemid",'');
+		$this->task 	= $task	= $jinput->get('task', '', 'CMD');
 		
-	
+
 		if($task == "notify"){
 			$this->notify();
 			exit;
 		}
 		
 		if($task == 'makemail'){
-			$pp = $jinput->get('pp', '');
-			
-			$this->MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-			$order = $this->MyMuseShopper->order;
+			$pp 			= $jinput->get('pp', '');
+			$orderid 		= $jinput->get('orderid', 0);
+			$session 		= Factory::getSession();
+			$order_number 	= $session->get("order_number",0);
+			if(!$orderid && $order_number){
+				$q = "SELECT id from #__mymuse_order WHERE order_number='".$order_number."' ";
+				$this->_db->setQuery($q);
+				$orderid = $this->_db->loadResult();
+			}
+			$order = $this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
 			$order->user = Factory::getUser($order->user_id);
 			
 			//if we are using no_reg
@@ -90,14 +190,18 @@ class HtmlView extends BaseHtmlView
 						' WHERE user_id = '.(int) $order->user_id .
 						' AND profile_key LIKE \''.$profile_key.'.%\'' .
 						' ORDER BY ordering';
-				$db->setQuery($query);
-				$results = $db->loadRowList();
-					
-				// Check for a database error.
-				if ($db->getErrorNum()) {
-					$this->setError($db->getErrorMsg());
+				$this->_db->setQuery($query);
+
+				try 
+				{
+					$results = $this->_db->loadRowList();
+				}
+				catch (Exception $e)
+				{
+					$this->setError($e->getMessage());
 					return false;
 				}
+
 				// Merge the profile data.
 				$order->user->profile = array();
 				foreach ($results as $v) {
@@ -150,46 +254,29 @@ class HtmlView extends BaseHtmlView
 		
 		
 		//regular cart functions
-		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-		$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
-		$cart 			=& $MyMuseCart->cart;
-		$MyMuseStore	=& MyMuse::getObject('store','models');
-	
-		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$shopper 		= $MyMuseShopper->getShopper();
-
-		$user			= Factory::getUser();
 		$document		= Factory::getDocument();
-		$dispatcher		= JDispatcher::getInstance();
-		$currency 		= MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
-
-		$document->setTitle( JText::_('MYMUSE_SHOPPING_CART') );
+		$document->setTitle( Text::_('COM_MYMUSE_SHOPPING_CART') );
 		
 		//are we returning after buying more items? remove shipping
-		unset($cart['shipping']);
+		unset($this->cart['shipping']);
 		
-		$this->assignRef('user'  , $user);
-		$this->assignRef('params', $params);
-		$this->assignRef('task', $task);
-		$this->assignRef('shopper', $shopper);
-
-		$this->assignRef('store', $MyMuseStore->_store);
-		$this->assignRef('currency', $currency);
+		$this->params = $params;
+		$this->task = $task;
 
 		$heading 			= '';
 		$message 			= '';
 		$footer 			= '';
 		$edit 				= true;
-
+echo "task = $task";
 		// set the heading for the top of page
 		// find the order attached to the shopper object, or build it from session cart
 		switch ($task)
 		{
 				
 			case "checkout":
-				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
-				$heading 	= Jtext::_('MYMUSE_CHECKOUT');
-				$message 	= Jtext::_('MYMUSE_MAKE_ANY_FINAL_CHANGES');
+				$this->order = $order 		= $this->MyMuseCart ->buildOrder( $edit );
+				$heading 	= Text::_('COM_MYMUSE_CHECKOUT');
+				$message 	= Text::_('COM_MYMUSE_MAKE_ANY_FINAL_CHANGES');
 				if(isset($order) && is_object($order)){
 					$order->show_checkout = 0;
 					$order->show_summary  = 0;
@@ -197,13 +284,13 @@ class HtmlView extends BaseHtmlView
 				break;
 				
 			case "shipping":
-				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
+				$this->order = $order 		= $this->MyMuseCart ->buildOrder( $edit );
 				if(isset($order->need_shipping) && $order->need_shipping){
-					$heading 	= Jtext::_('MYMUSE_SHIPPING');
-					$message 	= Jtext::_('MYMUSE_CHOOSE_SHIPPING_METHOD');
+					$heading 	= Text::_('COM_MYMUSE_SHIPPING');
+					$message 	= Text::_('COM_MYMUSE_CHOOSE_SHIPPING_METHOD');
 				}else{
-					$heading 	= Jtext::_('MYMUSE_SHIPPING');
-					$message 	= Jtext::_('MYMUSE_NO_SHIPPING_NEEDED');
+					$heading 	= Text::_('COM_MYMUSE_SHIPPING');
+					$message 	= Text::_('COM_MYMUSE_NO_SHIPPING_NEEDED');
 				}
 
 				$order->show_checkout = 0;
@@ -214,27 +301,27 @@ class HtmlView extends BaseHtmlView
 
 				$edit 		= false;
 				
-				if($params->get('my_saveorder') != "after" && isset($MyMuseShopper->order->id)){
+				if($params->get('my_saveorder') != "after" && isset($this->MyMuseShopper->order->id)){
 		
-					$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
+					$this->order = $order 		= $this->MyMuseCheckout->getOrder($this->MyMuseShopper->order->id);
 					if($order->order_total == 0.00){
-						$heading 	= Jtext::_('MYMUSE_CONFIRM');
-						$message 	= Jtext::_('MYMUSE_ACCEPT_ORDER');
+						$heading 	= Text::_('COM_MYMUSE_CONFIRM');
+						$message 	= Text::_('COM_MYMUSE_ACCEPT_ORDER');
 						$order->show_checkout = 0;
 						$order->show_summary  = 0;
 						$free = 1;
 					}else{
 			
-						$heading 	= Jtext::_('MYMUSE_CONFIRM');
-						$message 	= Jtext::_('MYMUSE_CHOOSE_PAYMENT_METHOD');
+						$heading 	= Text::_('COM_MYMUSE_CONFIRM');
+						$message 	= Text::_('COM_MYMUSE_CHOOSE_PAYMENT_METHOD');
 						$order->show_checkout = 0;
 						$order->show_summary  = 0;
 					}
 				}else{
 					// this is the after payment option
-					$heading 	= Jtext::_('MYMUSE_CONFIRM');
-					$message 	= Jtext::_('MYMUSE_CHOOSE_PAYMENT_METHOD');
-					$this->order = $order 		= $MyMuseCart->buildOrder( 0, 1 );
+					$heading 	= Text::_('COM_MYMUSE_CONFIRM');
+					$message 	= Text::_('COM_MYMUSE_CHOOSE_PAYMENT_METHOD');
+					$this->order = $order 		= $this->MyMuseCart ->buildOrder( 0, 1 );
 
 					/**
 					$order->order_number 		= session_id();
@@ -243,13 +330,13 @@ class HtmlView extends BaseHtmlView
 					$session->set("order_number",$order->order_number);
 					*/
 					
-					if($cart['idx'] > 0){
+					if($this->cart['idx'] > 0){
 						$order->show_checkout = 0;
 						$order->show_summary  = 0;
 					}
 				}
 				
-				if(isset($order->notes) && $user->username == "buyer"){
+				if(isset($order->notes) && $this->user->username == "buyer"){
 
 					$registry = new JRegistry;
 					$registry->loadString($order->notes);
@@ -258,28 +345,28 @@ class HtmlView extends BaseHtmlView
 				break;
 				
 			case "makepayment":
-				$this->order = $order 	= $MyMuseShopper->order;
+				$this->order = $order 	= $this->MyMuseShopper->order;
 				$currency 	= $order->order_currency;
 				$edit 		= false;
-				$heading 	= Jtext::_('MYMUSE_THANK_YOU');
-				$message 	= Jtext::_('MYMUSE_WE_HAVE_RECEIVED_YOUR_ORDER');
+				$heading 	= Text::_('COM_MYMUSE_THANK_YOU');
+				$message 	= Text::_('COM_MYMUSE_WE_HAVE_RECEIVED_YOUR_ORDER');
 				$order->show_checkout = 0;
 				$order->show_summary  = 1;
 				break;
 				
 			case "vieworder":
 				$st 			= $jinput->get('st', '');
-				$this->order 	= $order 	= $MyMuseShopper->order;
+				$this->order 	= $order 	= $this->MyMuseShopper->order;
 				
 
 				$currency 	= $order->order_currency;
 				$edit 		= false;
-				$heading 	= Jtext::_('MYMUSE_THANK_YOU');
+				$heading 	= Text::_('COM_MYMUSE_THANK_YOU');
 				
 				if($order->downloadable && $order->order_status == "C"){
 					$message  .= $order->downloadlink;
 				}else{
-					$message   = Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
+					$message   = Text::_('COM_MYMUSE_HERE_IS_YOUR_ORDER');
 				}
 			
 				$order->show_checkout = 0;
@@ -289,21 +376,22 @@ class HtmlView extends BaseHtmlView
 			case "paycancel":
 				$edit 		= false;
 				if($params->get('my_saveorder') == "after"){
-					$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
+					$this->order = $order 		= $this->MyMuseCart ->buildOrder( $edit );
 				}else{
-					$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
+					$this->order = $order 		= $this->MyMuseCheckout->getOrder($this->MyMuseShopper->order->id);
 				}
-				$heading 	= Jtext::_('MYMUSE_CONFIRM');
-				$message 	= Jtext::_('MYMUSE_PAY_CANCEL');
+				$heading 	= Text::_('COM_MYMUSE_CONFIRM');
+				$message 	= Text::_('COM_MYMUSE_PAY_CANCEL');
 				$order->show_checkout = 1;
 				$order->show_summary  = 1;
 				break;
 				
 			default:
-				if($cart['idx'] > 0){
-					$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
+				if($this->cart['idx'] > 0){
+					$this->order = $order 		= $this->MyMuseCart ->buildOrder( $edit );
+					//MymuseHelper::print_pre($order->items[0]); exit;	
 					$order->show_checkout = 1;
-					//$footer = $MyMuseCart->getRecommended();
+					//$footer = $this->MyMuseCart ->getRecommended();
 				}
 				break;
 		}
@@ -316,12 +404,13 @@ class HtmlView extends BaseHtmlView
 		}else{
 			//get tracks
 			// TRACKS
+			/*
 			if($count = count($order->items)){
 				$count = count($order->items);
 				if(count($order->items) && $params->get('product_player_type') == "single"){
 					
 				$j = 0;
-				
+				//MyMuseHelper::print_pre($order->items[0]);
 				foreach($order->items as $i => $track) {
 					if(!isset($track->parentid) || $track->parentid == 0){
 						continue;
@@ -332,20 +421,11 @@ class HtmlView extends BaseHtmlView
 					if(isset($track->file_preview) && $track->file_preview){
 						$track->path = $site_url.$track->file_preview;
 						$track->real_path = $site_path.$track->file_preview;
-			
-						if($track->file_preview_2){
-							$track->path_2 = $site_url.$track->file_preview_2;
-							$track->real_path_2 = $site_path.$track->file_preview_2;
-						}
-						if($track->file_preview_3){
-							$track->path_3 = $site_url.$track->file_preview_3;
-							$track->real_path_3 = $site_path.$track->file_preview_3;
-						}
 							
 						if(substr_count($track->file_type,"video")){
 							//movie
 							$flash = '<!-- Begin Player -->';
-							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'single',0,0,$j) );
+							$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,'single',0,0,$j) );
 							if(is_array($results) && isset($results[0]) && $results[0] != ''){
 								$flash .= $results[0];
 							}
@@ -353,7 +433,7 @@ class HtmlView extends BaseHtmlView
 						}elseif(substr_count($track->file_type,"audio")){
 							//audio
 							$flash = '<!-- Begin Player -->';
-							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'single',0,0,$j));
+							$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,'single',0,0,$j));
 							if(is_array($results) && isset($results[0]) && $results[0] != ''){
 								$flash .= $results[0];
 							}
@@ -366,7 +446,7 @@ class HtmlView extends BaseHtmlView
 			
 				}
 				// make a controller for the play/pause buttons
-				$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$order->items) );
+				$results = $app->triggerEvent('onPrepareMyMuseMp3PlayerControl',array(&$order->items) );
 				
 				//get the player itself
 				reset($order->items);
@@ -379,7 +459,7 @@ class HtmlView extends BaseHtmlView
 						if(substr_count($track->file_type,"video") && !$video){
 							//movie
 				
-							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
+							$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
 				
 							if(is_array($results) && isset($results[0]) && $results[0] != ''){
 								$flash .= $results[0];
@@ -392,7 +472,7 @@ class HtmlView extends BaseHtmlView
 								
 						}elseif(substr_count($track->file_type,"audio") && !$audio){
 							//audio
-							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
+							$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
 				
 							if(is_array($results) && isset($results[0]) && $results[0] != ''){
 								$flash .= $results[0];
@@ -416,18 +496,19 @@ class HtmlView extends BaseHtmlView
 				}
 				}
 			}
+			*/
 
 		}
 
 				
-		$this->assignRef('order', $order);
-		$this->assignRef('currency', $currency);
+		$this->order = $order;
+		$this->currency = $currency;
 		
 		//START CAPTURING THE DISPLAY PARTS
 		
 		//download page if necessary
 		$download_page = $jinput->get('download_page','', 'RAW');
-		$this->assignRef('download_page', $download_page);
+		$this->download_page = $download_page;
 		
 		//licence if necessary
 		//display the licence if necessary
@@ -450,21 +531,21 @@ class HtmlView extends BaseHtmlView
 			}
 			$lists['licences'] = JHTML::_('select.genericlist',  $licences, 'licence', 
 					'class="inputbox" size="1" id="licence"', 'value', 'text', $this->my_licence );
-			$this->assignRef('licence', $licence);	
-			$this->assignRef('lists', $lists);
+			$this->licence = $licence;	
+			$this->lists = $lists;
 			
-			$this->assignRef('my_licence_text', $my_licence_text);
+			$this->my_licence_text = $my_licence_text;
 		}
 
 		// show the heading
 		if($heading){
-			$this->assignRef('heading', $heading);
-			$this->assignRef('message', $message);
+			$this->heading = $heading;
+			$this->message = $message;
 			ob_start();
 			parent::display('checkout_header');
 			$checkout_header = ob_get_contents();
 			ob_end_clean();
-			$this->assignRef('checkout_header', $checkout_header);
+			$this->checkout_header = $checkout_header;
 		}
 
 		// do we need an order summary? Only if we already have a saved order
@@ -473,23 +554,23 @@ class HtmlView extends BaseHtmlView
 			parent::display('order_summary');
 			$order_summary = ob_get_contents();
 			ob_end_clean();
-			$this->assignRef('order_summary', $order_summary);
+			$this->order_summary = $order_summary;
 		}
 
 		// display the cart part!
 		ob_start();
 		parent::display('cart');
-		$cart_display = ob_get_contents();
+		$this->cart_display = ob_get_contents();
 		ob_end_clean();
-		$this->assignRef('cart_display', $cart_display);
+		$this->cart_display = $this->cart_display;
 
 		//display coupon?
-		if($this->params->get("my_use_coupons") && (preg_match("/shipping|addtocart|updatecart|cartdelete|showcart|checkout/",$this->task) || $this->task == '') && !isset($this->order->coupon->id) && $user->get('id') > 0){
+		if($this->params->get("my_use_coupons") && (preg_match("/shipping|addtocart|updatecart|cartdelete|showcart|checkout/",$this->task) || $this->task == '') && !isset($this->order->coupon->id) && $this->user->get('id') > 0){
 			ob_start();
 			parent::display('coupon');
-			$cart_coupon = ob_get_contents();
+			$this->cart_coupon = ob_get_contents();
 			ob_end_clean();
-			$this->assignRef('cart_coupon', $cart_coupon);
+			$this->cart_coupon = $this->cart_coupon;
 		}
 		
 		//display the licence if necessary
@@ -497,16 +578,16 @@ class HtmlView extends BaseHtmlView
 
 			ob_start();
 			parent::display('licence');
-			$cart_licence = ob_get_contents();
+			$this->cart_licence = ob_get_contents();
 			ob_end_clean();
-			$this->assignRef('cart_licence', $cart_licence);
+			$this->cart_licence = cart_licence;
 
 		}
 
 		//display the shopper info, if we have one
 		
-		if($heading && $user->get('id') > 0){
-			if($params->get('my_notes_required',0) && !$order->notes && $user->username == 'buyer')
+		if($heading && $this->user->get('id') > 0){
+			if($params->get('my_notes_required',0) && !$order->notes && $this->user->username == 'buyer')
 			{
 				
 			}else{
@@ -515,21 +596,23 @@ class HtmlView extends BaseHtmlView
 				parent::display('shopper_info'); 
 				$shopper_info = ob_get_contents();
 				ob_end_clean();
-				$this->assignRef('shopper_info', $shopper_info);
+				$this->shopper_info = $shopper_info;
 			}
 		}
 
 		if($task == "checkout"){
+
 			if($params->get('my_use_shipping') && $order->need_shipping){
 				$task = "shipping";
-				$button = JText::_("MYMUSE_SHIPPING_BUTTON");
+				$button = Text::_('COM_MYMUSE_SHIPPING_BUTTON');
 			}else{
 				$task = "confirm";
-				$button  = JText::_("MYMUSE_CONFIRM_BUTTON");
+				$button  = Text::_('COM_MYMUSE_CONFIRM_BUTTON');
 			}
-			$this->assignRef('button', $button);
+			$this->button = $button;
+			$this->task = $task;
 			
-			if($params->get('my_notes_required',0) && !$order->notes && $user->username == 'buyer')
+			if($params->get('my_notes_required',0) && !$order->notes && $this->user->username == 'buyer')
 			{
 			
 			}else{
@@ -537,14 +620,14 @@ class HtmlView extends BaseHtmlView
 				parent::display("next_form");
 				$next_form = ob_get_contents();
 				ob_end_clean();
-				$this->assignRef('next_form', $next_form);
+				$this->next_form = $next_form;
 			}
 			
 		}elseif($task== "shipping"){
 
-			JPluginHelper::importPlugin('mymuse');
+			PluginHelper::importPlugin('mymuse');
 			
-			$results = $dispatcher->trigger('onListMyMuseShipping', 
+			$results = $app->triggerEvent('onListMyMuseShipping', 
 			array($this->shopper, $this->store, $this->order, $params) );
 			$res = array();
             if(isset($results)){
@@ -553,38 +636,38 @@ class HtmlView extends BaseHtmlView
 				}
 			}
             
-			$this->assignRef('shipMethods', $res);
-			$button = JText::_("MYMUSE_CHOOSE_SHIPPING");
-			$this->assignRef('button', $button);
+			$this->shipMethods = $res;
+			$button = Text::_('COM_MYMUSE_CHOOSE_SHIPPING');
+			$this->button = $button;
 			ob_start();
 			parent::display("shipping_form");
 			$shipping_form = ob_get_contents();
 			ob_end_clean();
-			$this->assignRef('shipping_form', $shipping_form);
+			$this->shipping_form = $shipping_form;
 			
 		}elseif($task == "confirm" || $task == "paycancel" || 
 		($task == "vieworder" && $this->order->order_status == "P") ){
 			
 			if(isset($free) && $free == 1){
 				$task = "thankyou";
-				$button = JText::_("MYMUSE_ACCEPT");
-				$this->assignRef('button', $button);
+				$button = Text::_('COM_MYMUSE_ACCEPT');
+				$this->button = $button;
 				ob_start();
 				parent::display("next_form");
 				$next_form = ob_get_contents();
 				ob_end_clean();
-				$this->assignRef('thankyou_form', $thankyou_form);
+				$this->thankyou_form = $thankyou_form;
 			}
 			
 			elseif($params->get('my_shop_test')){
 				$task = "makepayment";
-				$button = JText::_("MYMUSE_TEST_STORE");
+				$button = Text::_('COM_MYMUSE_TEST_STORE');
 				$this->assignRef('button', $button);
 				ob_start();
 				parent::display("next_form");
 				$makepayment_form = ob_get_contents();
 				ob_end_clean();
-				$this->assignRef('makepayment_form', $makepayment_form);
+				$this->makepayment_form = $makepayment_form;
 			}
 			
 			elseif(!$jinput->get('pp')){
@@ -598,18 +681,18 @@ class HtmlView extends BaseHtmlView
 				$session = Factory::getSession();
 				$session->set("order_number",$order->order_number);
 				
-				JPluginHelper::importPlugin('mymuse');
+				PluginHelper::importPlugin('COM_MYMUSE');
 			
-				$results = $dispatcher->trigger('onBeforeMyMusePayment', 
+				$results = $app->triggerEvent('onBeforeMyMusePayment', 
 				array($this->shopper, $this->store, $this->order, $params, $this->Itemid) );
 			
-				$this->assignRef('results', $results);
+				$this->results = $results;
 				
 				ob_start();
 				parent::display("payment_form");
 				$payment_form= ob_get_contents();
 				ob_end_clean();
-				$this->assignRef('payment_form', $payment_form);
+				$this->payment_form = $payment_form;
 
 			}
 		}
@@ -618,13 +701,13 @@ class HtmlView extends BaseHtmlView
 		// show the footer
 		
 		if($footer){
-			$this->assignRef('footer', $footer);
+			$this->footer = $footer;
 			
 			ob_start();
 			parent::display('checkout_footer');
 			$checkout_footer = ob_get_contents();
 			ob_end_clean();
-			$this->assignRef('checkout_footer', $checkout_footer);
+			$this->checkout_footer = $checkout_footer;
 			
 		}
 	
@@ -644,10 +727,6 @@ class HtmlView extends BaseHtmlView
 		
 		$jinput = Factory::getApplication()->input;
 		$app = Factory::getApplication();
-		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
-		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-
-		$this->Itemid = $jinput->get("Itemid",'');
 		$params = MyMuseHelper::getParams();
 		
 
@@ -661,7 +740,7 @@ class HtmlView extends BaseHtmlView
 		// see if any plugins wants to deal with notification
 		// plugin should run MyMuseHelper::orderStatusUpdate
 		$dispatcher		= JDispatcher::getInstance();
-     	$results 		= $dispatcher->trigger('onMyMuseNotify', array($params, $this->Itemid) );
+     	$results 		= $app->triggerEvent('onMyMuseNotify', array($params, $this->Itemid) );
      	foreach($results as $r){
             if($params->get('my_debug')){
      			$debug = "Result from Plugin\n" . print_r( $r, true ). "\n\n";
@@ -682,10 +761,10 @@ class HtmlView extends BaseHtmlView
   			exit;
      	}
 
-		$MyMuseStore	=& MyMuse::getObject('store','models');
-        $store = $MyMuseStore->_store;
-        $store_params = new JRegistry;
-        $store_params->loadString($store->params);
+		$this->MyMuseStore	=& MyMuse::getObject('Store','model');
+        $this->store = $this->MyMuseStore->_store;
+        $this->store_params = new JRegistry;
+        $this->store_params->loadString($this->store->params);
   		
      	// get mailer object
      	$mailer = Factory::getMailer();
@@ -887,9 +966,9 @@ class HtmlView extends BaseHtmlView
         	// update stock on sale!!
         	$debug = "** CHECK STOCK **\n";
         	if ($params->get('my_use_stock')) {
-        		$order = $MyMuseCheckout->getOrder($result['order_id']);
+        		$order = $this->MyMuseCheckout->getOrder($result['order_id']);
         		for($i = 0; $i < count($order->items); $i++) {
- 					$order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id);
+ 					$order->items[$i]->product = $this->MyMuseCart ->getProduct($order->items[$i]->product_id);
 
  					//physical but not set on pre-order
         			if($order->items[$i]->product->product_physical && 
@@ -897,8 +976,8 @@ class HtmlView extends BaseHtmlView
         				!($order->items[$i]->attribs['special_status'] == "coming_soon")
         			){
         				if (!$MyMuseHelper->updateStock($order->items[$i]->product->id, $order->items[$i]->quantity)) {
-        					$db= Factory::getDBO();
-        					$debug .= "$date Could not update stock\n".$db->getErrorMsg()."\n";
+        					$this->_db= Factory::getDBO();
+        					$debug .= "$date Could not update stock\n".$this->_db->getErrorMsg()."\n";
         				}
         				$debug .= "$date Subtracted ".$order->items[$i]->quantity. " From ".$order->items[$i]->product->title."\n\n";
         			}
@@ -935,18 +1014,15 @@ class HtmlView extends BaseHtmlView
 	{
 
 
-		$MyMuseStore	=& MyMuse::getObject('store','models');
-        $store 			= $MyMuseStore->_store;
-        $store_params 	= new JRegistry;
-        $store_params->loadString($store->params);
+        $this->store_params 	= new Registry;
+        $this->store_params->loadString($this->store->params);
         $date = date('Y-m-d h:i:s');
      	
      	$params 		= MyMuseHelper::getParams();
+     	$app 			= Factory::getApplication();
 		$jinput 		= Factory::getApplication()->input;
-		$db				= Factory::getDBO();
-		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$order 			= $MyMuseCheckout->getOrder($result['order_id']);
+
+		$order 			= $this->MyMuseCheckout->getOrder($result['order_id']);
 		$order->user	= Factory::getUser($order->user_id);
 			
 		//if we are using no_reg
@@ -972,21 +1048,25 @@ class HtmlView extends BaseHtmlView
 		}else{
 			// get user details
 		
-			$profile_key = $params->get('my_profile_key', 'mymuse');
+			$profile_key = $params->get('my_profile_key', 'COM_MYMUSE');
 		
 			// Load the profile data from the database.
 			$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 					' WHERE user_id = '.(int) $order->user_id .
 					' AND profile_key LIKE \''.$profile_key.'.%\'' .
 					' ORDER BY ordering';
-			$db->setQuery($query);
-			$results = $db->loadRowList();
-				
-			// Check for a database error.
-			if ($db->getErrorNum()) {
-				$this->setError($db->getErrorMsg());
+			$this->_db->setQuery($query);
+
+			try 
+			{
+				$results = $this->_db->loadRowList();
+			}
+			catch (Exception $e)
+			{
+				$this->setError($e->getMessage());
 				return false;
 			}
+
 			// Merge the profile data.
 			$order->user->profile = array();
 			foreach ($results as $v) {
@@ -1001,18 +1081,12 @@ class HtmlView extends BaseHtmlView
 		if(!isset($order->user->profile['shopper_group']) || $order->user->profile['shopper_group'] < 1){
 			$order->user->profile['shopper_group'] = 1;
 		}
-		$query = 'SELECT *'
-				. ' FROM #__mymuse_shopper_group'
-				. ' WHERE id = '.$order->user->profile['shopper_group']
-				;
-		
-		$db->setQuery( $query );
-		$order->user->shopper_group = $db->loadObject();
+
+		$order->user->shopper_group = $this->MyMuseShopper->getShopperGroup($order->user->profile['shopper_group']);
 		$order->user->discount = $order->user->shopper_group->discount;
 		$order->user->shopper_group_name = $order->user->shopper_group->shopper_group_name;
 		
-		
-		$user = $shopper = $order->user;
+		$this->user = $shopper = $order->user;
 		
 		if(2 == $params->get('my_price_by_product',0)){
 			$licence = explode("|", $order->licence);
@@ -1020,23 +1094,23 @@ class HtmlView extends BaseHtmlView
 
 			$my_licence_text = $params->get('my_license_'.$my_licence.'_name');
 			$my_licence_desc = $params->get('my_license_'.$my_licence.'_desc');
-			$this->assignRef('my_licence', $my_licence);
-			$this->assignRef('my_licence_text', $my_licence_text);
-			$this->assignRef('my_licence_desc', $my_licence_desc);
+			$this->my_licence = $my_licence;
+			$this->my_licence_text = $my_licence_text;
+			$this->my_licence_desc = $my_licence_desc;
 		}
 		
 
 		if(is_object($order) && $params->get('my_debug')){
 			$debug = "$date makeMail Order = ".$order->id."\n";
-			//$debug .= "makeMail user = ".print_r($user,true)."\n";
+			//$debug .= "makeMail user = ".print_r($this->user,true)."\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
 		$currency 		= $order->order_currency;
-		$heading 		= Jtext::_('MYMUSE_THANK_YOU');
-		$message 		= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
+		$heading 		= Text::_('COM_MYMUSE_THANK_YOU');
+		$message 		= Text::_('COM_MYMUSE_HERE_IS_YOUR_ORDER');
 		
-		if($order->notes && ($params->get('my_registration') == "no_reg" || $user->username == "buyer") ){
+		if($order->notes && ($params->get('my_registration') == "no_reg" || $this->user->username == "buyer") ){
 
 			$debug = "makeMail Order Notes = ".print_r($order->notes,true)."\n";
 			MyMuseHelper::logMessage( $debug  );
@@ -1045,8 +1119,8 @@ class HtmlView extends BaseHtmlView
 			$notes_params = $registry->loadString($order->notes);
 			$order->notes = $registry->toArray();
 
-			$user->set('email',$notes_params->get('email'));
-			$user->set('name',$notes_params->get('first_name')." ".$notes_params->get('last_name'));
+			$this->user->set('email',$notes_params->get('email'));
+			$this->user->set('name',$notes_params->get('first_name')." ".$notes_params->get('last_name'));
 			$shopper->name          = isset($order->notes['name'])? $order->notes['name'] : '';
 			$shopper->email         = isset($order->notes['email'])? $order->notes['email'] : '';
 			$shopper->first_name    = isset($order->notes['first_name'])? $order->notes['first_name'] : '';
@@ -1059,19 +1133,19 @@ class HtmlView extends BaseHtmlView
 			$shopper->region_name   = isset($order->notes['region_name'])? $order->notes['region_name'] : '';
 		}
 		 
-		$user_email 	= $user->email;
+		$user_email 	= $this->user->email;
 		$task = $jinput->get('task','');
-		$this->assignRef('user'  , $user);
-		$this->assignRef('params', $params);
-		$this->assignRef('task', $task);
-		$this->assignRef('shopper', $shopper);
-		$this->assignRef('store', $MyMuseStore->_store);
-		$this->assignRef('order', $order);
-		$this->assignRef('currency', $currency);
-		$this->assignRef('heading', $heading);
-		$this->assignRef('message', $message);
+
+		$this->params = $params;
+		$this->task = $task;
+		$this->shopper = $shopper;
+
+		$this->order = $order;
+		$this->currency = $currency;
+		$this->heading = $heading;
+		$this->message = $message;
 		
-		$subject =  $store->title." - ".Jtext::_('MYMUSE_ORDER_CONFIRMATION');
+		$subject =  $this->store->title." - ".Text::_('COM_MYMUSE_ORDER_CONFIRMATION');
 		
 		
 		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
@@ -1084,10 +1158,11 @@ class HtmlView extends BaseHtmlView
 		 
 		//see if there is a message
 		$my_email_msg 	= $params->get('my_email_msg');
-		$dispatcher		= JDispatcher::getInstance();
+
 		if($result['plugin']){
-			JPluginHelper::importPlugin('mymuse',$result['plugin']);
-			$results = $dispatcher->trigger('onAfterMyMusePayment', array() );
+			PluginHelper::importPlugin('mymuse',$result['plugin']);
+
+			$results = $app->triggerEvent('onAfterMyMusePayment', array() );
 			$pp = $result['plugin'];
 			foreach($results as $res){
 				//if(preg_match("/$pp/", $res)){
@@ -1097,7 +1172,7 @@ class HtmlView extends BaseHtmlView
 				//}
 			}
 		}
-		$this->assignRef('my_email_msg', $my_email_msg);
+		$this->my_email_msg = $my_email_msg;
 		
 		if($params->get('my_debug')){
 			$debug = "$date makeMail Extra Email message: $my_email_msg \n\n";
@@ -1109,7 +1184,7 @@ class HtmlView extends BaseHtmlView
 		
 		$contents  = '';
 		$do_not_display_children = 1;
-		$this->assignRef('do_not_display_children', $do_not_display_children);
+		$this->do_not_display_children = $do_not_display_children;
 		
 		ob_start();
 		parent::display('email_header');
@@ -1135,7 +1210,7 @@ class HtmlView extends BaseHtmlView
 		}
 		 
 		if($params->get('my_debug')){
-			$debug = "$date makeMail Email message: $message \n\n";
+			//$debug = "$date makeMail Email message: $message \n\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
@@ -1175,6 +1250,7 @@ class HtmlView extends BaseHtmlView
 		
 		$mailer->setSubject($subject);
 		$mailer->setBody($message);
+		
 		$rs = $mailer->Send();
 		 
 		if ($rs instanceof Exception){

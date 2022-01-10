@@ -1,0 +1,440 @@
+Cart
+Array ( [idx] => 1 [0] => Array ( [quantity] => 1 [product_id] => 3 [catid] => 14 [product_physical] => 0 [variation] => 4 [backordered] => 0 ) ) i = 0
+Product
+stdClass Object
+(
+    [id] => 3
+    [asset_id] => 221
+    [parentid] => 1
+    [track_parentid] => 0
+    [title] => Haughs of Cromdale
+    [product_sku] => ayms:haughs-of-cromdale
+    [alias] => haughs-of-cromdale
+    [title_alias] => 
+    [introtext] => 
+    [fulltext] => 
+    [state] => 1
+    [price] => Array
+        (
+            [item] => 
+            [product_price] => Array
+                (
+                    [item] => 
+                    [product_price] => 3
+                    [product_original_price] => 3
+                    [product_shoppergroup_discount] => 0
+                    [product_shoppergroup_discount_amount] => 0
+                    [product_discount] => 0.00
+                )
+
+            [mp3] => Array
+                (
+                    [product_price] => 3.99
+                    [product_original_price] => 3.99
+                    [product_shoppergroup_discount] => 0
+                    [product_shoppergroup_discount_amount] => 0
+                    [product_discount] => 0.00
+                )
+
+        )
+
+    [product_discount] => 0.00
+    [catid] => 14
+    [artistid] => 15
+    [created] => 2021-11-23 21:53:08
+    [created_by] => 35
+    [created_by_alias] => admin
+    [modified] => 2021-12-14 21:06:47
+    [modified_by] => 35
+    [checked_out] => 
+    [checked_out_time] => 
+    [publish_up] => 2021-11-23 21:53:08
+    [publish_down] => 
+    [list_image] => 
+    [detail_image] => 
+    [attribs] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                    [media_rls] => http://localhost/mymuseJ4/joomla/en/another-article
+                    [media_link] => https://bbc.com
+                    [product_price_physical] => 30.00
+                    [product_price_mp3] => 3.99
+                    [product_price_mp3_all] => 30.00
+                    [product_price_wav] => 5.99
+                    [product_price_wav_all] => 40.00
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [physical] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [digital] => stdClass Object
+        (
+            [file_name] => 02-haughs-of-cromdale.mp3
+            [file_length] => 5808335
+            [file_ext] => mp3
+            [file_downloads] => 5
+            [file_time] => 3:27
+            [file_type] => audio
+            [file_format] => MP3
+            [file_id] => 4
+        )
+
+    [version] => 9
+    [ordering] => 2
+    [metakey] => 
+    [metadesc] => 
+    [metadata] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                )
+
+            [initialized:protected] => 
+            [separator] => .
+        )
+
+    [access] => 1
+    [hits] => 0
+    [product_physical] => 0
+    [product_downloadable] => 1
+    [product_allfiles] => 0
+    [product_release_date] => 
+    [file_preview] => iron-brew-cromdale-session.mp3
+    [special_status] => 
+    [product_in_stock] => 1
+    [recording] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [featured] => 0
+    [language] => *
+    [category_title] => Traditional
+    [category_alias] => traditional
+    [category_access] => 1
+    [category_language] => *
+    [author] => Gord Fisch
+    [parent_title] => Genres
+    [parent_id] => 16
+    [parent_route] => genres
+    [parent_alias] => genres
+    [parent_language] => *
+    [rating] => 
+    [rating_count] => 
+    [artist_title] => Iron Brew
+    [artist_alias] => iron-brew
+    [artist_access] => 1
+    [params] => Joomla\Registry\Registry Object
+        (
+            [data:protected] => stdClass Object
+                (
+                    [contact_first_name] => Gord
+                    [contact_last_name] => Fisch
+                    [contact_title] => Mister
+                    [contact_email] => gord@arboreta.ca
+                    [phone] => 514-481-8524
+                    [fax] => 514-481-3333
+                    [twitter_handle] => @MyMuseforJoomla
+                    [currency] => CAD
+                    [store_thumb_image] => images/logo150sq.jpg
+                    [address_1] => 123 King Gordon
+                    [address_2] => 
+                    [city] => Rockville
+                    [province] => Maryland
+                    [country] => US
+                    [zip] => 20850
+                    [my_downloads_enable] => 1
+                    [my_formats] => Array
+                        (
+                            [0] => stdClass Object
+                                (
+                                    [id] => 1
+                                    [format_key] => MP3
+                                    [format_value] => mp3
+                                    [ordering] => 1
+                                )
+
+                            [1] => stdClass Object
+                                (
+                                    [id] => 2
+                                    [format_key] => WAV
+                                    [format_value] => wav
+                                    [ordering] => 2
+                                )
+
+                        )
+
+                    [my_download_require_release_date] => 0
+                    [my_download_allow_preorder] => 0
+                    [my_download_max] => 3
+                    [my_download_expire] => 432000
+                    [my_download_enable_status] => C
+                    [my_use_zip] => 0
+                    [my_download_dir] => /var/www/html/mymuseJ4/joomla/images/A_MyMuseDownloads
+                    [my_download_dir_format] => 0
+                    [my_preview_dir] => media/com_mymuse/previews
+                    [my_previews_in_one_dir] => 0
+                    [my_encode_filenames] => 0
+                    [my_use_string_url_safe] => 1
+                    [my_use_shipping] => 1
+                    [my_add_shipping_auto] => 0
+                    [my_use_stock] => 0
+                    [my_check_stock] => 0
+                    [my_add_stock_zero] => 0
+                    [my_saveorder] => before
+                    [my_currency_separator] => ,
+                    [my_currency_dec_point] => .
+                    [my_currency_position] => 0
+                    [my_registration_redirect] => registration
+                    [my_registration] => joomla
+                    [my_noreg_password] => buyer
+                    [my_checkout] => regular
+                    [my_profile_key] => mymuse
+                    [my_use_coupons] => 0
+                    [my_use_alias] => 0
+                    [top_menu_item] => 
+                    [my_delay_fadeout] => 4000
+                    [my_show_cart_preview] => 0
+                    [my_show_cart_player] => 0
+                    [my_price_by_product] => 1
+                    [my_disable_css] => 0
+                    [my_plugin_email] => 0
+                    [my_cc_webmaster] => 1
+                    [my_webmaster] => info@joomlamymuse.com
+                    [my_webmaster_name] => Joe Strummer
+                    [my_continue_shopping] => index.php?option=com_mymuse
+                    [my_date_format] => d M Y
+                    [my_email_msg] => 
+                    [my_max_recommended] => 4
+                    [my_show_original_price] => 0
+                    [my_show_category_name] => 1
+                    [my_show_sku] => 0
+                    [my_default_shopper_group_id] => 1
+                    [my_order_msg] => 
+                    [my_ownergid] => 3
+                    [my_owner_percent] => 100
+                    [my_shop_test] => 0
+                    [my_debug] => 0
+                    [store_show_title] => 1
+                    [store_link_titles] => 1
+                    [store_show_product_image] => 1
+                    [store_product_image_height] => 0
+                    [store_show_intro_text] => 1
+                    [store_show_readmore] => 0
+                    [store_show_readmore_title] => 1
+                    [product_layout] => _:product
+                    [show_minicart] => 1
+                    [product_show_product_image] => 1
+                    [show_title] => 1
+                    [split_text] => 1
+                    [show_readmore] => 1
+                    [show_readmore_title] => 1
+                    [info_block_show] => 1
+                    [info_block_show_title] => 1
+                    [show_artist] => 1
+                    [link_artist] => 1
+                    [show_category] => 1
+                    [link_category] => 1
+                    [show_associations] => 0
+                    [show_author] => 1
+                    [link_author] => 1
+                    [show_date] => 1
+                    [show_which_date] => product_release_date
+                    [show_hits] => 1
+                    [show_tags] => 1
+                    [show_product_sku] => 1
+                    [show_special_status] => 1
+                    [show_news_release_link] => 1
+                    [show_media_link] => 1
+                    [show_product_full_time] => 1
+                    [show_product_studio] => 1
+                    [show_product_publisher] => 1
+                    [show_product_producer] => 1
+                    [show_product_country] => 1
+                    [product_show_quantity] => 1
+                    [product_item_selectbox] => 1
+                    [show_player] => 1
+                    [product_show_tracks] => 1
+                    [orderby_track] => alpha
+                    [order_track_date] => released
+                    [product_show_select_column] => 1
+                    [product_show_filesize] => 1
+                    [product_show_filetime] => 1
+                    [product_show_downloads] => 1
+                    [product_show_cost_column] => 1
+                    [product_show_preview_column] => 1
+                    [product_show_cartadd] => 1
+                    [show_recommends] => 1
+                    [show_category_recommends] => 1
+                    [show_base_description] => 1
+                    [maxLevelcat] => -1
+                    [show_empty_categories_cat] => 0
+                    [show_subcat_desc_cat] => 0
+                    [show_cat_num_articles_cat] => 0
+                    [show_cat_subcat_image] => 0
+                    [cat_subcat_image_height] => 0
+                    [category_layout] => _:default
+                    [show_category_title] => 1
+                    [show_description] => 1
+                    [show_description_image] => 1
+                    [maxLevel] => -1
+                    [subcat_columns] => 1
+                    [show_empty_categories] => 0
+                    [show_no_articles] => 1
+                    [show_subcat_image] => 0
+                    [show_subcat_desc] => 0
+                    [show_cat_num_articles] => 1
+                    [category_show_all_products] => 1
+                    [category_show_product_image] => 1
+                    [category_show_intro_text] => 1
+                    [category_product_link_titles] => 1
+                    [num_leading_articles] => 0
+                    [num_intro_articles] => 10
+                    [num_columns] => 2
+                    [num_links] => 4
+                    [multi_column_order] => 1
+                    [show_subcategory_content] => -1
+                    [show_pagination_limit] => 1
+                    [filter_field] => hide
+                    [show_headings] => 1
+                    [list_show_artist] => 1
+                    [list_show_album] => 1
+                    [list_show_file_length] => 0
+                    [list_show_date] => 0
+                    [date_format] => Y-m-d
+                    [list_show_hits] => 1
+                    [list_show_price] => 1
+                    [list_show_author] => 0
+                    [list_show_sales] => 0
+                    [list_show_discount] => 0
+                    [display_num] => 10
+                    [product_artist_alternate_itemid] => 101
+                    [orderby_pri] => none
+                    [orderby_sec] => rdate
+                    [order_date] => product_made_date
+                    [show_pagination] => 2
+                    [show_pagination_results] => 1
+                    [sef_ids] => 0
+                    [show_feed_link] => 1
+                    [feed_summary] => 0
+                    [feed_show_readmore] => 0
+                    [show_page_heading] => 0
+                    [page_title] => MyMuse4 Test
+                    [my_currency] => CAD
+                    [my_currency_code] => CAD
+                    [my_currency_symbol] => $
+                    [my_currency_id] => 2
+                    [my_version] => 5.0.2
+                    [storage] => regular
+                    [product_player_type] => single
+                    [access-edit] => 1
+                    [access-view] => 1
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
+        )
+
+    [othercats] => Array
+        (
+        )
+
+    [flash] => 
+    [flash_type] => 
+    [tracks] => Array
+        (
+        )
+
+    [attribute_sku] => Array
+        (
+        )
+
+    [items] => Array
+        (
+        )
+
+    [category] => stdClass Object
+        (
+            [id] => 14
+            [asset_id] => 217
+            [parent_id] => 16
+            [lft] => 16
+            [rgt] => 17
+            [level] => 2
+            [path] => genres/traditional
+            [extension] => com_mymuse
+            [title] => Traditional
+            [alias] => traditional
+            [note] => 
+            [description] => 
+            [published] => 1
+            [checked_out] => 
+            [checked_out_time] => 
+            [access] => 1
+            [params] => {"category_layout":"","image":"","image_alt":""}
+            [metadesc] => 
+            [metakey] => 
+            [metadata] => {"author":"","robots":""}
+            [created_user_id] => 35
+            [created_time] => 2021-11-23 21:17:21
+            [modified_user_id] => 35
+            [modified_time] => 2021-11-23 21:23:20
+            [hits] => 0
+            [language] => *
+            [version] => 1
+            [link] => index.php?option=com_mymuse&view=category&id=14
+        )
+
+    [artist] => stdClass Object
+        (
+            [id] => 15
+            [asset_id] => 218
+            [parent_id] => 17
+            [lft] => 20
+            [rgt] => 21
+            [level] => 2
+            [path] => artists/iron-brew
+            [extension] => com_mymuse
+            [title] => Iron Brew
+            [alias] => iron-brew
+            [note] => 
+            [description] => 
+            [published] => 1
+            [checked_out] => 
+            [checked_out_time] => 
+            [access] => 1
+            [params] => {"category_layout":"","image":"","image_alt":""}
+            [metadesc] => 
+            [metakey] => 
+            [metadata] => {"author":"","robots":""}
+            [created_user_id] => 35
+            [created_time] => 2021-11-23 21:17:29
+            [modified_user_id] => 35
+            [modified_time] => 2021-11-23 21:23:12
+            [hits] => 0
+            [language] => *
+            [version] => 1
+            [parent_title] => Artists
+            [link] => index.php?option=com_mymuse&view=category&id=15
+        )
+
+    [format] => mp3
+    [variation_id] => 4
+)

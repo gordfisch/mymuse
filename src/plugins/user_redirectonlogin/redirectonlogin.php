@@ -8,6 +8,9 @@
  * @author mail	info@joomlamymuse.com
  * @website		http://www.joomlamymuse.com
  */
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Router\Route;
 
 defined('JPATH_BASE') or die;
 
@@ -17,22 +20,24 @@ defined('JPATH_BASE') or die;
  * @package		Joomla.Plugin
  * @subpackage	System.logout
  */
-class plgUserRedirectonlogin extends JPlugin
+class plgUserRedirectonlogin extends CMSPlugin 
 {
 	/**
-	 * Object Constructor.
+	 * Application object
 	 *
-	 * @access	public
-	 * @param	object	The object to observe -- event dispatcher.
-	 * @param	object	The configuration object for the plugin.
-	 * @return	void
-	 * @since	1.5
+	 * @var    CMSApplicationInterface
+	 * @since  4.0.0
 	 */
-	function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
+	protected $app;
 
-	}
+	/**
+	 * Database Driver Instance
+	 *
+	 * @var    DatabaseDriver
+	 * @since  4.0.0
+	 */
+	protected $db;
+
 
 	/**
 	 * This method should handle any login logic and report back to the subject
@@ -43,16 +48,15 @@ class plgUserRedirectonlogin extends JPlugin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	public function onUserAfterLogin($options)
+
+	public function onUserLogin($user, $options = [])
 	{
 
-		$app = JFactory::getApplication();
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$cart = $session->get('cart');
-		$user = $options['user'];
-
+print_r($cart); exit;
 		if($cart && $cart['idx'] > 0 && $user->username != ''){
-			$return = JRoute::_("index.php?option=com_mymuse&view=cart&task=showcart");
+			$return = Route::_("index.php?option=com_mymuse&view=cart&task=showcart");
 			$app->setUserState('users.login.form.return', $return);
 		}
 		return true;

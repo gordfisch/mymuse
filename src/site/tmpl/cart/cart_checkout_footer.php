@@ -16,7 +16,7 @@ if(count($this->footer)) :
 	?>
 	<div id="mymuse-container-wrap">
 	
-	<h3><?php echo JText::_('MYMUSE_WE_RECOMMEND'); ?></h3>
+	<h3><?php echo JText::_('COM_MYMUSE_WE_RECOMMEND'); ?></h3>
 	<?php foreach($this->footer as $item) : 
 
 	?>

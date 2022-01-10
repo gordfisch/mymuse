@@ -456,12 +456,11 @@ div.mymuse_button a {
     width: 100%;
 }
 .mymuse-button-left{
-	width: 47%;
+	float:  left;
 }
 
 .mymuse-button-right{
-	width: 47%;
-	text-align: right;
+	float: right;
 }
 
 .mymuse-wrap .button{

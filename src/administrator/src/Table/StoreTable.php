@@ -21,9 +21,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
+
 
 /**
  * Store Table class.
@@ -153,8 +155,8 @@ class StoreTable extends Table implements VersionableTableInterface
     	$form 	= $jinput->get('jform',array(), 'ARRAY');
 
     	
-    	//$user_plugin = JPluginHelper::getPlugin('user', 'mymuse');
-    	//$noreg_plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
+    	//$user_plugin = PluginHelper::getPlugin('user', 'mymuse');
+    	//$noreg_plugin = PluginHelper::getPlugin('user', 'mymusenoreg');
     	
     	//if registration type has changed
     	//joomla, full, jossocial, no_reg, full_guest

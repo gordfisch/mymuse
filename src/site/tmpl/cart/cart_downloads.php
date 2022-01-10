@@ -23,24 +23,24 @@ function mydownload(url,item_id){
 	window.location.href=url;
 }
 </script>
-<h1 class="cart-header"><?php echo JText::_('MYMUSE_DOWNLOAD_PAGE') ?></h1>
+<h1 class="cart-header"><?php echo JText::_('COM_MYMUSE_DOWNLOAD_PAGE') ?></h1>
 		<table  class="mymuse_cart cart">
  
         <!-- Begin Order Summary -->
         <tr class="mymuse_cart cart cart" >
-            <td colspan="2"  class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_ORDER_SUMMARY') ?></b></td>
+            <td colspan="2"  class="mymuse_cart_top"><b><?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY') ?></b></td>
         </tr>
         <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_NUMBER') ?>:</td>
+            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_NUMBER') ?>:</td>
             <td class="myordernumber cart"><?php echo sprintf("%08d", $order->id) ?></td>
         </tr>
         <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_DATE') ?>:</td>
+            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_DATE') ?>:</td>
             <td class="myorderdate cart"><?php echo $order->created ?></td>
         </tr>
         <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_STATUS') ?>:</td>
-            <td class="myorderstatus cart"><?php echo JText::_('MYMUSE_'.strtoupper($order->status_name)) ?></td>
+            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_STATUS') ?>:</td>
+            <td class="myorderstatus cart"><?php echo JText::_('COM_MYMUSE_'.strtoupper($order->status_name)) ?></td>
         </tr>
         </table>
         <br />
@@ -49,10 +49,10 @@ function mydownload(url,item_id){
 		<table class="mymuse_cart cart">
             <thead>
 			<tr>
-				<th class="mytitle cart"><?php echo JText::_('MYMUSE_FILENAME'); ?></th>
-				<th class="mydownloads cart"><?php echo JText::_('MYMUSE_NUMBER_DOWNLOADS'); ?></th>
-				<th class="myfilesize cart"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
-				<th class="myexpiry cart"><?php echo JText::_('MYMUSE_EXPIRES'); ?></th>
+				<th class="mytitle cart"><?php echo JText::_('COM_MYMUSE_FILENAME'); ?></th>
+				<th class="mydownloads cart"><?php echo JText::_('COM_MYMUSE_NUMBER_DOWNLOADS'); ?></th>
+				<th class="myfilesize cart"><?php echo JText::_('COM_MYMUSE_FILE_SIZE'); ?></th>
+				<th class="myexpiry cart"><?php echo JText::_('COM_MYMUSE_EXPIRES'); ?></th>
 			</tr>
             </thead>
             <tbody>

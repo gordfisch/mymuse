@@ -266,8 +266,9 @@ class ProductModel extends ItemModel
 				$registry->loadString($data->recording);
 				$data->recording = $registry;
 
+
 				$data->params = clone $this->getState('params');
-				//$data->params->merge($registry);
+				//$params->merge($registry);
 
 				$data->metadata = new Registry($data->metadata);
 
@@ -317,7 +318,7 @@ class ProductModel extends ItemModel
 				}
 
 				$data->price = $this->getPrice($data);
-				if($params->get('my_add_taxes')){
+				if($data->params->get('my_add_taxes')){
 					$data->price["product_price"] = MyMuseCheckout::addTax($data->price["product_price"]);
 				}
 
@@ -363,6 +364,86 @@ class ProductModel extends ItemModel
 				
 
 				/** TRACK QUERY */
+				$track_query = $db->getQuery(true);
+
+				$track_query->select(
+					$this->getState(
+						'item.select',
+						[
+							$db->quoteName('a.id'),
+							$db->quoteName('a.asset_id'),
+							$db->quoteName('a.parentid'),
+							$db->quoteName('a.track_parentid'),
+							$db->quoteName('a.title'),
+							$db->quoteName('a.product_sku'),
+							$db->quoteName('a.alias'),
+							$db->quoteName('a.title_alias'),
+							$db->quoteName('a.introtext'),
+							$db->quoteName('a.fulltext'),
+							$db->quoteName('a.state'),
+							$db->quoteName('a.price'),
+							$db->quoteName('a.product_discount'),
+							$db->quoteName('a.catid'),
+							$db->quoteName('a.artistid'),
+							$db->quoteName('a.created'),
+							$db->quoteName('a.created_by'),
+							$db->quoteName('a.created_by_alias'),
+							$db->quoteName('a.modified'),
+							$db->quoteName('a.modified_by'),
+							$db->quoteName('a.checked_out'),
+							$db->quoteName('a.checked_out_time'),
+							$db->quoteName('a.publish_up'),
+							$db->quoteName('a.publish_down'),
+							$db->quoteName('a.list_image'),
+							$db->quoteName('a.detail_image'),
+							$db->quoteName('a.attribs'),
+							$db->quoteName('a.physical'),
+							$db->quoteName('a.digital'),
+							$db->quoteName('a.version'),
+							$db->quoteName('a.ordering'),
+							$db->quoteName('a.metakey'),
+							$db->quoteName('a.metadesc'),
+							$db->quoteName('a.metadata'),
+							$db->quoteName('a.access'),
+							$db->quoteName('a.hits'),
+							$db->quoteName('a.product_physical'),
+							$db->quoteName('a.product_downloadable'),
+							$db->quoteName('a.product_allfiles'),
+							$db->quoteName('a.product_release_date'),
+							$db->quoteName('a.file_preview'),
+							$db->quoteName('a.special_status'),
+							$db->quoteName('a.product_in_stock'),
+							$db->quoteName('a.recording'),
+							$db->quoteName('a.featured'),
+							$db->quoteName('a.language'),
+						]
+					)
+				)->from($db->quoteName('#__mymuse_product', 'a'));
+
+				if($this->_item[$pk]->parentid > 0 && $this->_item[$pk]->track_parentid == 0){
+					$track_query->where(
+						[
+							$db->quoteName('a.track_parentid') . ' = ' . $pk,
+							$db->quoteName('a.product_downloadable') . ' = 1',
+							$db->quoteName('a.state') . ' = 1',
+						]
+					);
+					$this->_item[$pk]->digital = array();
+				}else{
+					//$db->quoteName('a.track_parentid') . ' = 0',
+					$track_query->where(
+						[
+
+							$db->quoteName('a.parentid') . ' = ' . $pk,
+							$db->quoteName('a.product_downloadable') . ' = 1',
+							$db->quoteName('a.state') . ' = 1',
+						]
+					);
+				}
+				
+				//echo $track_query->__toString(); exit;
+
+/*
 				$track_query = "SELECT a.*,
 				ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales
 		
@@ -375,9 +456,17 @@ class ProductModel extends ItemModel
 	        		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
 	        		GROUP BY i.product_id)
 	        		as x GROUP BY x.all_id) as s ON s.product_id = a.id
-				WHERE a.parentid='".$pk."' AND a.product_downloadable =1
+				";
+				if($this->_item[$pk]->parentid > 0 && $this->_item[$pk]->track_parentid == 0){
+					$track_query .= "WHERE a.track_parentid='".$pk."' ";
+				}else{
+					$track_query .= "WHERE a.parentid='".$pk."'  ";
+				}
+
+				$track_query .= "
+				AND a.product_downloadable =1
 				AND a.state=1
-						";
+				";
 				
 				
 				if($alpha != ''){
@@ -388,7 +477,7 @@ class ProductModel extends ItemModel
 	        		a.title LIKE ".$db->quote('%'.$searchword.'%')."
 	        		)";
 				}
-			
+		
 				$orderby = "ORDER BY $ordering $listDirn
 				";
 
@@ -397,7 +486,8 @@ class ProductModel extends ItemModel
 				}
 				$track_query .= $orderby;
 				//echo 'TRACKS QUERY'.$this->_db->replacePrefix((string) $track_query).' '; 
-
+echo $track_query;	
+*/
 				$db->setQuery($track_query);
 				$tracks = $db->loadObjectList();
 
@@ -410,19 +500,28 @@ class ProductModel extends ItemModel
 				$this->_item[$pk]->flash_type = '';
 				$preview_tracks = array();
 				$parent_tracks = array();
-				
+				$t = 0;
 				if(count($tracks)){
 
 					$root = JPATH_ROOT.DIRECTORY_SEPARATOR;
 					foreach ($tracks as $i => $track) {
+
+						if($this->_item[$pk]->parentid > 0 && $this->_item[$pk]->track_parentid == 0){
+							$this->_item[$pk]->digital[$t] = json_decode($track->digital);
+							$this->_item[$pk]->digital[$t]->file_id = $track->id;
+							$t++;
+							continue;
+						}
 						if($track->track_parentid > 0){
 							continue;
 						}
 						$track->digital = array();
+						$k = 0;
 						foreach ($tracks as $j => $jtrack) {
 							if($jtrack->track_parentid == $track->id){
-								$track->digital[] = json_decode($jtrack->digital);
-
+								$track->digital[$k] = json_decode($jtrack->digital);
+								$track->digital[$k]->file_id = $jtrack->id;
+								$k++;
 							}
 						}
 						//set some defaults
@@ -441,7 +540,7 @@ class ProductModel extends ItemModel
 							$track->file_downloads = $track->digital[0]->file_downloads;
 						}
 						
-						if($track->sales == ''){
+						if(!isset($track->sales) || $track->sales == ''){
 							$track->sales = 0;
 						}
 						//other cats
@@ -481,6 +580,8 @@ class ProductModel extends ItemModel
 							$track->flash_type = "mix";
 						}
 */			
+						$this->_item[$pk]->flash_type = 'audio';
+
 						if($track->file_preview){
 							$preview_tracks[] = $track;
 						}else{
@@ -531,7 +632,7 @@ class ProductModel extends ItemModel
 								PluginHelper::importPlugin('mymuse');
 								$ext = MyMuseHelper::getExt($track->file_preview);
 								$flash = '<!-- Begin Play -->';
-								if(substr_count($track->file_type,"video")){
+								if(isset($track->file_type) && substr_count($track->file_type,"video")){
 									//movie
 									
 									$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,$params->get('product_player_type'),0,0,$i, $count) );
@@ -540,7 +641,7 @@ class ProductModel extends ItemModel
 										$flash .= $results[0];
 									}
 									
-								}elseif(substr_count($track->file_type,"audio")){
+								}else{
 									//audio
 									
 									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'),0,0,$i, $count));
@@ -826,7 +927,7 @@ class ProductModel extends ItemModel
      * getPrice
      * 
      * @param object $product
-     * @return mixed Array or false: array [product_price] [special_shopper_group] [product_discount] [product_shopper_group_discount]
+     * @return mixed Array or false: array [product_price] [special_shoppergroup] [product_discount] [product_shoppergroup_discount]
      */
 	static function getPrice(&$product) {
 
@@ -834,11 +935,11 @@ class ProductModel extends ItemModel
 		$shopper 		= MyMuse::getObject('Shopper','model')->getShopper();
 
 		$db	= Factory::getDBO();
-		$shopper_group_discount = 0;
+		$shoppergroup_discount = 0;
 		$discount = 0;
 		$price_info = array();
 		$price_info["item"]=false;
-		$default_shopper_group_id = $params->get("my_default_shopper_group_id",1);
+		$default_shoppergroup_id = $params->get("my_default_shoppergroup_id",1);
 		$product_id = $product->id;
 		$original_price = $product->price;
 		// Get the product_parent_id for this product/item
@@ -852,17 +953,17 @@ class ProductModel extends ItemModel
 		
 		
 		// Get the shopper group id for this shopper
-		$shopper_group_id = @$shopper->shopper_group->id;
-		if($shopper_group_id == ""){
-			$shopper_group_id = $default_shopper_group_id;
-			$q = "SELECT * FROM #__mymuse_shopper_group WHERE  \n";
+		$shoppergroup_id = @$shopper->shoppergroup->id;
+		if($shoppergroup_id == ""){
+			$shoppergroup_id = $default_shoppergroup_id;
+			$q = "SELECT * FROM #__mymuse_shoppergroup WHERE  \n";
 			$q .= "id='";
-			$q .= $shopper_group_id . "'";
+			$q .= $shoppergroup_id . "'";
 
 			$db->setQuery($q);
-			$shopper->shopper_group = $db->loadObject();
+			$shopper->shoppergroup = $db->loadObject();
 		}
-		$shopper_group_discount = $shopper->shopper_group->discount;
+		$shoppergroup_discount = $shopper->shoppergroup->discount;
 		
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
@@ -919,20 +1020,21 @@ class ProductModel extends ItemModel
 					$product_price = $price_info [$format]["product_price"];
 					$price_info[$format]["product_original_price"] = round ( $price_info [$format]["product_price"], 2);
 						
-					$price_info [$format]["product_shopper_group_discount"] = $shopper_group_discount;
-					$price_info [$format]["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
-					$price_info [$format]["product_shopper_group_discount_amount"] = round ( $price_info [$format] ["product_shopper_group_discount_amount"], 2 );
+					$price_info [$format]["product_shoppergroup_discount"] = $shoppergroup_discount;
+					$price_info [$format]["product_shoppergroup_discount_amount"] = $product_price * $shoppergroup_discount / 100;
+					$price_info [$format]["product_shoppergroup_discount_amount"] = round ( $price_info [$format] ["product_shoppergroup_discount_amount"], 2 );
 						
 					$discount = isset($product->product_discount)? $product->product_discount : '';
 					$price_info[$format]["product_discount"] = $discount;
 						
-					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
+					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shoppergroup_discount/100) - $discount;
 					$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );
 				}
 				
 				return $price_info;
 				
 			} elseif(isset($product->digital) && is_countable($product->digital) && count($product->digital) ){
+
 				$formats = array();
 				$pformats = $params->get('my_formats', array());
 				foreach($pformats as $i => $f){
@@ -946,35 +1048,69 @@ class ProductModel extends ItemModel
 					$product_price = $price_info [$format]["product_price"];
 					$price_info[$format]["product_original_price"] = round ( $price_info [$format]["product_price"], 2);
 			
-					$price_info [$format]["product_shopper_group_discount"] = $shopper_group_discount;
-					$price_info [$format]["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
-					$price_info [$format]["product_shopper_group_discount_amount"] = round ( $price_info [$format] ["product_shopper_group_discount_amount"], 2 );
+					$price_info [$format]["product_shoppergroup_discount"] = $shoppergroup_discount;
+					$price_info [$format]["product_shoppergroup_discount_amount"] = $product_price * $shoppergroup_discount / 100;
+					$price_info [$format]["product_shoppergroup_discount_amount"] = round ( $price_info [$format] ["product_shoppergroup_discount_amount"], 2 );
 			
 					$discount = isset($product->product_discount)? $product->product_discount : '';
 					$price_info[$format]["product_discount"] = $discount;
 			
-					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
+					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shoppergroup_discount/100) - $discount;
 					$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );	
 
 	
 				}
 				return $price_info;
+
+			}elseif(isset($product->digital) && is_object($product->digital)){
+
+				$format = strtolower($product->digital->file_format);
+				$key = 'product_price_' . $format;
 				
+				$price_info [$format]["product_price"] = $product->attribs->get ( $key );
+				$product_price = $price_info [$format]["product_price"];
+				$price_info[$format]["product_original_price"] = round ( $price_info [$format]["product_price"], 2);
+				
+				$price_info [$format]["product_shoppergroup_discount"] = $shoppergroup_discount;
+				$price_info [$format]["product_shoppergroup_discount_amount"] = $product_price * $shoppergroup_discount / 100;
+				$price_info [$format]["product_shoppergroup_discount_amount"] = round ( $price_info [$format] ["product_shoppergroup_discount_amount"], 2 );
+				
+				$discount = isset($product->product_discount)? $product->product_discount : '';
+				$price_info[$format]["product_discount"] = $discount;
+				
+				$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shoppergroup_discount/100) - $discount;
+				$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );	
+				$price_info ["product_price"] = $price_info [$format];
+
+				return $price_info;
+
+
 			} else {
 				$price_info ["product_price"] = $product->price;
 			}
 			$product_price = $price_info ["product_price"];
+
 			$price_info["product_original_price"] = round ( $price_info ["product_price"], 2);
+
+			$price_info ["product_shoppergroup_discount"] = $shoppergroup_discount;
+
+			if(is_numeric($product_price) ){
+				$price_info ["product_shoppergroup_discount_amount"] = (float) $product_price * $shoppergroup_discount / 100;
+				$price_info ["product_shoppergroup_discount_amount"] = round ( $price_info ["product_shoppergroup_discount_amount"], 2 );
+
+			}else{
+				$price_info ["product_shoppergroup_discount_amount"] = 0.00;
+			}
 			
-			$price_info ["product_shopper_group_discount"] = $shopper_group_discount;
-			$price_info ["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
-			$price_info ["product_shopper_group_discount_amount"] = round ( $price_info ["product_shopper_group_discount_amount"], 2 );
 			
 			$discount = $product->product_discount;
 			$price_info["product_discount"] = $discount;
-			
-			$price_info["product_price"]= $price_info ["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
-			$price_info ["product_price"] = round ( $price_info ["product_price"], 2 );		
+			if(is_numeric($product_price) ){
+				$price_info["product_price"]= $price_info ["product_price"] - ( (float) $product_price * $shoppergroup_discount / 100) - $discount;
+				$price_info ["product_price"] = round ( $price_info ["product_price"], 2 );	
+			}else{
+				$price_info ["product_price"] = 0.00;
+			}
 			
 			return $price_info;
 			
@@ -1003,21 +1139,21 @@ class ProductModel extends ItemModel
 			}
 			$product->price = $price_info ["product_price"];
 			$product_price = $product->price;
-			$price_info ["product_shopper_group_discount"] = $shopper_group_discount;
-			$price_info ["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
+			$price_info ["product_shoppergroup_discount"] = $shoppergroup_discount;
+			$price_info ["product_shoppergroup_discount_amount"] = $product_price * $shoppergroup_discount / 100;
 			
 			$price_info ["product_price"] = round ( $price_info ["product_price"], 2 );
-			$price_info ["product_shopper_group_discount_amount"] = round ( $price_info ["product_shopper_group_discount_amount"], 2 );
+			$price_info ["product_shoppergroup_discount_amount"] = round ( $price_info ["product_shoppergroup_discount_amount"], 2 );
 			
 			// DISCOUNTS FROM PLUGINS
-			JPluginHelper::importPlugin ( 'mymuse' );
+			PluginHelper::importPlugin ( 'mymuse' );
 			$dispatcher = JDispatcher::getInstance ();
 			$result = $dispatcher->trigger ( 'onCalculatePrice', array (
 					&$price_info,
 					self::$cart 
 			) );
 			if (count ( $result )) {
-				// print_pre($price_info);
+				// MymuseHelper::print_pre($price_info);
 			}
 			
 			return $price_info;
@@ -1029,31 +1165,20 @@ class ProductModel extends ItemModel
 		// see if this product has a discount
 		$discount = $product->product_discount;
 		
-
-		// DEBUG
-		//echo "product:$product_id product_price: $product_price discount:$discount, shopper group id = $shopper_group_id, shopper group discount = $shopper_group_discount<BR>";
-		//print_pre($product_price);
-
-		// Getting prices
-		//
-		// If the shopper group has a price then show it, otherwise
-		// show the default price.
-
-
 		// IT'S FOR A SPECIAL SHOPPER GROUP?
-		if($shopper_group_id != $default_shopper_group_id){
+		if($shoppergroup_id != $default_shoppergroup_id){
 
 			if ($product_price && $product_price > 0) {
-				$price_info["special_shopper_group"] = True;
+				$price_info["special_shoppergroup"] = True;
 				$price_info["product_original_price"] = $product_price;
-				$price_info["product_price"] = $product_price - ($product_price*$shopper_group_discount/100)-$discount;
+				$price_info["product_price"] = $product_price - ($product_price*$shoppergroup_discount/100)-$discount;
 				$price_info["product_price"] = round($price_info["product_price"],2);
 				$price_info["product_discount"] = $discount;
-				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
-				$price_info["product_shopper_group_discount_amount"] = $product_price*$shopper_group_discount/100;
+				$price_info["product_shoppergroup_discount"] = $shoppergroup_discount;
+				$price_info["product_shoppergroup_discount_amount"] = $product_price*$shoppergroup_discount/100;
 				
 				$price_info["product_price"] = round($price_info["product_price"],2);
-				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+				$price_info["product_shoppergroup_discount_amount"] = round($price_info["product_shoppergroup_discount_amount"],2);
 				
 				return $price_info;
 			}
@@ -1066,34 +1191,34 @@ class ProductModel extends ItemModel
 			//if (isset($product_price) && $product_price > 0) {
 			if (isset($product_price)) {
 				$price_info["product_original_price"] = $product_price;
-				$price_info["product_price"]=$product_price - ($product_price*$shopper_group_discount/100)-$discount;
+				$price_info["product_price"]=$product_price - ($product_price*$shoppergroup_discount/100)-$discount;
 				$price_info["product_discount"] = $discount;
-				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
-				$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
+				$price_info["product_shoppergroup_discount"] = $shoppergroup_discount;
+				$price_info["product_shoppergroup_discount_amount"] = sprintf("%.2f",$product_price*$shoppergroup_discount/100);
 				//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
 				if($price_info["product_price"] == 0.00){
 					$price_info["product_price"] = 0;
 				}
 				$price_info["product_price"] = round($price_info["product_price"],2);
-				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
-				//print_pre($price_info);
+				$price_info["product_shoppergroup_discount_amount"] = round($price_info["product_shoppergroup_discount_amount"],2);
+				//MymuseHelper::print_pre($price_info);
 				return $price_info;
 			}
 		}
 
-		 
+
 		// Get default price
 		if ($product_price && $product_price > 0) {
 			$price_info["default"] = True;
 			$price_info["product_original_price"] = $product_price;
-			$price_info["product_price"]= $product_price - ($product_price * $shopper_group_discount/100) - $discount;
+			$price_info["product_price"]= $product_price - ($product_price * $shoppergroup_discount/100) - $discount;
 			$price_info["product_discount"] = $discount;
-			$price_info["product_shopper_group_discount"] = $shopper_group_discount;
-			$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
+			$price_info["product_shoppergroup_discount"] = $shoppergroup_discount;
+			$price_info["product_shoppergroup_discount_amount"] = sprintf("%.2f",$product_price*$shoppergroup_discount/100);
 			
 			$price_info["product_price"] = round($price_info["product_price"],2);
-			$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
-			//print_pre($price_info); 
+			$price_info["product_shoppergroup_discount_amount"] = round($price_info["product_shoppergroup_discount_amount"],2);
+			//MymuseHelper::print_pre($price_info); 
 			return $price_info;
 		}
 
@@ -1102,13 +1227,13 @@ class ProductModel extends ItemModel
 		// No price found, must be FREE
 		$price_info["default"] = True;
 		$price_info["product_original_price"] = $product_price;
-		$price_info["product_price"]=$product_price - ($product_price*$shopper_group_discount/100)-$discount;
+		$price_info["product_price"]=$product_price - ($product_price*$shoppergroup_discount/100)-$discount;
 		$price_info["product_discount"] = $discount;
-		$price_info["product_shopper_group_discount"] = $shopper_group_discount;
-		$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
+		$price_info["product_shoppergroup_discount"] = $shoppergroup_discount;
+		$price_info["product_shoppergroup_discount_amount"] = sprintf("%.2f",$product_price*$shoppergroup_discount/100);
 		
 		$price_info["product_price"] = round($price_info["product_price"],2);
-		$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+		$price_info["product_shoppergroup_discount_amount"] = round($price_info["product_shoppergroup_discount_amount"],2);
 		
 		return $price_info;
 		

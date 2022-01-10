@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
@@ -53,6 +54,11 @@ class ShopperModel extends FormModel
 	 * var object data
 	 */
 	var $data = null;
+
+	/**
+	 * var object order
+	 */
+	var $order= null;
 	
 	
 	/**
@@ -104,14 +110,14 @@ class ShopperModel extends FormModel
         			&& ($task == 'accdownloads' || $task == 'downloads') ){
         		$id = $jinput->get('id','');
         		if(!$id){
-        			$this->setError(JText::_('MYMUSE_NO_DOWNLOAD_KEY'));
+        			$this->setError(JText::_('COM_MYMUSE_NO_DOWNLOAD_KEY'));
         			return false;
         		}
         		$query = "SELECT notes from #__mymuse_order where order_number='$id'";
         		$db->setQuery($query);
         		$notes = $db->loadResult();
         		if(!$notes){
-        			$this->setError(JText::_('MYMUSE_NO_MATCHING_ORDER'));
+        			$this->setError(JText::_('COM_MYMUSE_NO_MATCHING_ORDER'));
         			return false;
         		}
       			
@@ -165,11 +171,8 @@ class ShopperModel extends FormModel
 					}
 				}
 				
-				
-				
-				
-				if(!isset($profile['shopper_group'])){
-					$profile['shopper_group'] = 1;
+				if(!isset($profile['shoppergroup'])){
+					$profile['shoppergroup'] = 1;
 				}
 				$this->_shopper->perms = 1;
 				
@@ -178,9 +181,9 @@ class ShopperModel extends FormModel
 						&& $my_profile_key != ''){
 					
 					//I want to see if any fields that are required have not been filled in
-					$plugin = JPluginHelper::getPlugin('user', $my_profile_key);
+					$plugin = PluginHelper::getPlugin('user', $my_profile_key);
 
-    				$profile_params = new JRegistry();
+    				$profile_params = new Registry();
     				if(isset($plugin->params)){
     					$profile_params->loadString($plugin->params);
 
@@ -193,7 +196,7 @@ class ShopperModel extends FormModel
     								(!isset($profile[$field]) || $profile[$field] == "")
     						) {
     							//this guy needs to update profile
-								$this->setError(JText::_('MYMUSE_MISSING').$field);
+								$this->setError(JText::_('COM_MYMUSE_MISSING').$field);
     							$this->_shopper->perms = 0;
     							return $this->_shopper;
     						}
@@ -242,8 +245,8 @@ class ShopperModel extends FormModel
 					$fields = MyMuseHelper::getNoRegFields();
 					
 					//I want to see if any fields that are required have not been filled in
-					$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
-					$profile_params = new JRegistry();
+					$plugin = PluginHelper::getPlugin('user', 'mymusenoreg');
+					$profile_params = new Registry();
 					$needed = 0;
 					if(isset($plugin->params)){
 						$profile_params->loadString($plugin->params);
@@ -285,26 +288,38 @@ class ShopperModel extends FormModel
 				
 				}
 				
-				if(!isset($profile['shopper_group']) || $profile['shopper_group'] < 1){
-						$profile['shopper_group'] = 1;
+				if(!isset($profile['shoppergroup']) || $profile['shoppergroup'] < 1){
+						$profile['shoppergroup'] = 1;
 				}
-				$query = 'SELECT *'
-				. ' FROM #__mymuse_shopper_group'
-				. ' WHERE id = '.$profile['shopper_group']
-				;
+				
+				//$query = 'SELECT *'
+				//. ' FROM #__mymuse_shoppergroup'
+				//. ' WHERE id = '.$profile['shoppergroup']
+				//;
+
+				$query	= $db->getQuery(true);
+				$query->select('a.*');
+
+				$query->from('`#__mymuse_shoppergroup` AS a');
+				$query->where('(a.state IN (0, 1))');
+				$query->where('(a.id = '.$profile['shoppergroup'].')');
+					
+				// Join usergroup on a.usergroups_id
+				$query->select('ug.title AS shoppergroup_name');
+				$query->join('LEFT', '#__usergroups AS ug ON ug.id=a.usergroups_id');
 
 				$db->setQuery( $query );
-				$this->_shopper->shopper_group = $db->loadObject();
-				$this->_shopper->discount = $this->_shopper->shopper_group->discount;
-				$this->_shopper->shopper_group_name = $this->_shopper->shopper_group->shopper_group_name;
+				$this->_shopper->shoppergroup = $db->loadObject();
+				$this->_shopper->discount = $this->_shopper->shoppergroup->discount;
+				$this->_shopper->shoppergroup_name = $this->_shopper->shoppergroup->shoppergroup_name;
 				
 			}else{
 				$this->_shopper = new CMSObject;
 				$this->_shopper->id = 0;
-				$this->_shopper->shopper_group = new CMSObject;
-				$this->_shopper->shopper_group->discount = 0;
-				$this->_shopper->shopper_group->id = $params->get("my_default_shopper_group_id");
-				$this->_shopper->shopper_group_name = 'default';
+				$this->_shopper->shoppergroup = new CMSObject;
+				$this->_shopper->shoppergroup->discount = 0;
+				$this->_shopper->shoppergroup->id = $params->get("my_default_shoppergroup_id");
+				$this->_shopper->shoppergroup_name = 'default';
 				$this->_shopper->state = null;
 				$this->_shopper->country = null;
 				$this->_shopper->perms = null;
@@ -401,19 +416,19 @@ class ShopperModel extends FormModel
 		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
-		$db->setQuery( $query);
 
-		if(!$results = $db->loadRowList()){
-
-			//return false;
+		try 
+		{
+			$db->setQuery( $query);
+			$results = $db->loadRowList();
+		}
+		catch (RuntimeException $e)
+		{
+		    $msg = $e->getMessage();
+			$this->setRedirect( JRoute::_('index.php?option=com_mymuse'), $msg );
+	        return false;
 		}
 		
-		// Check for a database error.
-		if ($db->getErrorNum())
-		{
-			$this->_subject->setError($db->getErrorMsg());
-			return false;
-		}
 	
 		// Merge the profile data.
 		$shopper->profile = array();
@@ -435,8 +450,8 @@ class ShopperModel extends FormModel
 		if(isset($shopper->profile['region']) && !isset($shopper->profile['region_name']) && $profile_key != 'mymuse'){
 			$shopper->profile['region_name'] = $shopper->profile['region'];
 		}
-		if(!isset($shopper->profile['shopper_group'])){
-			$shopper->profile['shopper_group'] = 1;
+		if(!isset($shopper->profile['shoppergroup'])){
+			$shopper->profile['shoppergroup'] = 1;
 		}
 
 		$session->set('user', $shopper);
@@ -480,7 +495,7 @@ class ShopperModel extends FormModel
         }
 
 		//I want to see if any fields that are required have not been filled in
-		$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
+		$plugin = PluginHelper::getPlugin('user', 'mymusenoreg');
 		$profile_params = new JRegistry();
 		$needed = 0;
 
@@ -685,7 +700,7 @@ class ShopperModel extends FormModel
  		}
  		
  		// Load the users plugin group.
- 		JPluginHelper::importPlugin('user');
+ 		PluginHelper::importPlugin('user');
  		
  		// Store the data.
  		if (!$user->save()) {
@@ -866,6 +881,22 @@ class ShopperModel extends FormModel
 	
 		// Load the parameters.
 		$this->setState('params', $params);
+	}
+
+
+	public function getShopperGroup ($id = 0) {
+		if(!$id){
+			return;
+		}
+		$db = Factory::getDBO();
+		$query = 'SELECT a.*, u.title as shopper_group_name '
+				. ' FROM #__mymuse_shoppergroup as a'
+				. ' LEFT JOIN #__usergroups as u ON u.id = a.usergroups_id '
+				. ' WHERE a.id = '.$id
+				;
+		$db->setQuery($query);
+		$result = $db->loadObject();
+		return $result;
 	}
 	
 	

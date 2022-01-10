@@ -23,12 +23,6 @@ use Joomla\CMS\Uri\Uri;
 
 define('TAX_REGEX',"[\'-\/\s\\\]");
 
-function print_pre($var){
-		echo "<pre>";
-		print_r($var);
-		echo "</pre>";
-		return true;
-	}
 
 /**
  * MyMuse component helper.
@@ -193,7 +187,7 @@ class MymuseHelper extends ContentHelper
 		if (ComponentHelper::isEnabled('com_fields') && ComponentHelper::getParams('com_mymuse')->get('custom_fields_enable', '1'))
 		{
 			\JHtmlSidebar::addEntry(
-				Text::_('JGLOBAL_FIELDS'),
+				Text::_('JGLOBAL_FIELDIRECTORY_SEPARATOR'),
 				'index.php?option=com_fields&context=com_mymuse.product',
 				$vName == 'fields.fields'
 			);
@@ -247,7 +241,7 @@ class MymuseHelper extends ContentHelper
 				$params->set('my_formats', $formats) ;
 
 			}else{
-				$p[0] = new stdClass;
+				$p[0] = new CMSObject;
 				$p[0]->id = 1;
 				$p[0]->format_key = 'mp3';
 				$p[0]->format_value = 'MP3';
@@ -300,7 +294,22 @@ class MymuseHelper extends ContentHelper
 		self::$_params->set($key, $val);
 	}
 	
+	/**
+	 * Log a message. Should only be done when SHOP_TEST is on
+	 * 
+	 * @param $message
+	 * @return boolean
+	 */
+	static function logMessage($message){
+		jimport('joomla.filesystem.file');
+		if($fh = fopen(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'log.txt', "a")){
+			fwrite($fh,$message."\n");
+			fclose($fh);
+		}
+		return true;
+	}
 
+	
 	/**
 	 * getStore
 	 * 

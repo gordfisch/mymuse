@@ -12,7 +12,19 @@
 namespace Joomla\Component\Mymuse\Site\Helper;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Mymuse\Administrator\Table\OrderTable;
+use Joomla\Component\Mymuse\Administrator\Table\OrderitemTable;
+use Joomla\Component\Mymuse\Administrator\Table\OrderpaymentTable;
+use Joomla\Component\Mymuse\Administrator\Table\OrdershippingTable;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
+
+
+
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -35,37 +47,83 @@ class CheckoutHelper
 	 */
 	var $_db = null;
 
+	/**
+	 * MyMuseCart  object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseCart = null;
+
+	/**
+	 * cart
+	 *
+	 * @var object
+	 */
+	var $cart = null;
+
+	/**
+	 * MyMuseStore object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseStore = null;
+
+	/**
+	 * store object ref
+	 *
+	 * @var object
+	 */
+	var $store = null;
+
+	/**
+	 * currency object ref
+	 *
+	 * @var object
+	 */
+	var $currency = null;
+
+	/**
+	 * MyMuseShopper object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseShopper = null;
+
+	/**
+	 * user
+	 *
+	 * @var object
+	 */
+	var $user = null;
+
 
 	function __construct()
 	{
 		$this->_db 	= Factory::getDBO();
+		$this->MyMuseShopper	=& MyMuse::getObject('Shopper','model');
+		$this->MyMuseStore  	=& MyMuse::getObject('Store','model');
+		$this->MyMuseCart  		=& MyMuse::getObject('Cart','helper');
+
+		$this->shopper 			= $this->MyMuseShopper->getShopper();
+		$this->store 			= $this->MyMuseStore->getStore();
+		$this->cart 			= $this->MyMuseCart->cart;
 	}
 
 	/**
-	 * add
+	 * save
 	 * Assemble all order information and add to database
 	 *
-	 * @param object $MyMuse
-	 * @param object $MyMuseShopper
-	 * @param array $cart
 	 * @return bool
 	 */
 
-	function save( ) {
+	public function save( ) {
 
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$params = MyMuseHelper::getParams();
 
-		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$MyMuseStore  	=& MyMuse::getObject('store','models');
-		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
-
-		$shopper 		=& $MyMuseShopper->getShopper();
-
-		$store 			= $MyMuseStore->getStore();
-		$cart 			= $MyMuseCart->cart;
-		$cart_order 	= $MyMuseCart->buildOrder(0,1);
+		
+		$this->cart_order 	= $this->MyMuseCart->buildOrder(0,1);
 		$d 				= $jinput->post->getArray();
 		$session 		= Factory::getSession();
 
@@ -73,7 +131,7 @@ class CheckoutHelper
 		if($params->get('my_debug')){
 			$date = date('Y-m-d h:i:s');
 			$debug = "################### \nCHECKOUT SAVE FUNCTION\n";
-			$debug .= "$date  Have a cart ". print_r($cart,true) ;
+			$debug .= "$date  Have a cart ". print_r($this->cart,true) ;
 			MyMuseHelper::logMessage( $debug );
 		}
 		$coupon_id 			= 0;
@@ -89,68 +147,74 @@ class CheckoutHelper
 
 
 		// LOOP OVER CART ITEMS TO PROCESS
-		$idx = $cart["idx"];
+		$idx = $this->cart["idx"];
 		for($i = 0; $i < $idx; $i++) {
-			if(@$cart[$i]["coupon_id"]){
-				$coupon_id = $cart[$i]["coupon_id"];
-				$d["coupon_id"] = $cart[$i]["coupon_id"];
+			if(@$this->cart[$i]["coupon_id"]){
+				$coupon_id = $this->cart[$i]["coupon_id"];
+				$d["coupon_id"] = $this->cart[$i]["coupon_id"];
 				continue;
 			}
-			if(!$cart[$i]["product_id"]){
+			if(!$this->cart[$i]["product_id"]){
 				continue;
 			}
-			$cart[$i]['product'] = $MyMuseCart->getProduct($cart[$i]["product_id"]);
+
+
+			if(isset($this->cart[$i]["variation"])){
+				$this->cart[$i]['product'] = $this->MyMuseCart->getProduct($this->cart[$i]["product_id"], $this->cart[$i]["variation"]);
+			}else{
+				$this->cart[$i]['product'] = $this->MyMuseCart->getProduct($this->cart[$i]["product_id"]);
+			}
+		
+			
 			$ext = '';
 
-			$jason = json_decode($cart[$i]['product']->file_name);
-			if(is_array($jason)){
-				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
-				$cart[$i]['product']->ext = $jason[$cart[$i]["variation"]]->file_ext;
-				$cart[$i]['product']->file_length = $jason[$cart[$i]["variation"]]->file_length;
-				$cart[$i]['product']->format = isset($jason[$cart[$i]["variation"]]->file_format)? $jason[$cart[$i]["variation"]]->file_format : $jason[$cart[$i]["variation"]]->file_ext;
-				//print_pre($jason);
+			if(is_object($this->cart[$i]['product']->digital)){
+				$this->cart[$i]['product']->file_name = $this->cart[$i]['product']->digital->file_name;
+				$this->cart[$i]['product']->ext = $this->cart[$i]['product']->digital->file_ext;
+				$this->cart[$i]['product']->file_length = $this->cart[$i]['product']->digital->file_length;
+				$this->cart[$i]['product']->format = $this->cart[$i]['product']->digital->file_format? strtolower($this->cart[$i]['product']->digital->file_format) : $this->cart[$i]['product']->digital->file_ext;
+				$this->cart[$i]['product']->variant = $this->cart[$i]['product']->digital->file_id;
+	
 			}else{
 				
-				$cart[$i]['product']->ext = pathinfo($cart[$i]['product']->file_name, PATHINFO_EXTENSION);
+				$this->cart[$i]['product']->ext = pathinfo($this->cart[$i]['product']->file_name, PATHINFO_EXTENSION);
 			}
 
-			$cart[$i]['product']->price = MyMuseModelProduct::getPrice($cart[$i]["product"]);
-			
 			if("1" == $params->get('my_price_by_product')){
-	          $ff = isset($cart[$i]['product']->format)? $cart[$i]['product']->format: $cart[$i]['product']->ext;
-	          $cart[$i]['product']->price = isset($cart[$i]['product']->price[$ff])? $cart[$i]['product']->price[$ff] : $cart[$i]['product']->price;
+	          $ff = isset($this->cart[$i]['product']->format)? $this->cart[$i]['product']->format: $this->cart[$i]['product']->ext;
+	          $this->cart[$i]['product']->price = isset($this->cart[$i]['product']->price[$ff])? $this->cart[$i]['product']->price[$ff] : $this->cart[$i]['product']->price;
 	        }
 
 
 
 			// SEE IF IT IS AN ALL_FILES and NOT ZIP, ADD ALL FILES TO CART
-			if($cart[$i]['product']->product_allfiles && !$params->get('my_use_zip')){
-				$query = "SELECT id from #__mymuse_product WHERE parentid='".$cart[$i]['product']->parentid."'
+			if($this->cart[$i]['product']->product_allfiles && !$params->get('my_use_zip')){
+				$query = "SELECT id from #__mymuse_product WHERE parentid='".$this->cart[$i]['product']->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
 				$this->_db->setQuery($query);
 				$rows = $this->_db->loadObjectList();
 				foreach($rows as $row){
-					if($cart[$i]["product_id"] == $row->id){
+					if($this->cart[$i]["product_id"] == $row->id){
 						continue;
 					}
-					$cart[$cart["idx"]]['product_id'] = $row->id;
-					$cart[$cart["idx"]]['quantity'] = 1;
-					$cart[$cart["idx"]]['catid'] = '';
-					$cart[$cart["idx"]]['product']= $MyMuseCart->getProduct($row->id);
-					$jason = json_decode($cart[$cart["idx"]]['product']->file_name);
+					$this->cart[$this->cart["idx"]]['product_id'] = $row->id;
+					$this->cart[$this->cart["idx"]]['quantity'] = 1;
+					$this->cart[$this->cart["idx"]]['catid'] = '';
+					$this->cart[$this->cart["idx"]]['product']= $this->MyMuseCart->getProduct($row->id);
+					$jason = json_decode($this->cart[$this->cart["idx"]]['product']->file_name);
 					if(is_array($jason)){
-						$cart[$cart["idx"]]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
-						$cart[$cart["idx"]]['product']->ext = $jason[$cart[$i]["variation"]]->file_ext;
-						//print_pre($jason);
+						$this->cart[$this->cart["idx"]]['product']->file_name = $jason[$this->cart[$i]["variation"]]->file_name;
+						$this->cart[$this->cart["idx"]]['product']->ext = $jason[$this->cart[$i]["variation"]]->file_ext;
+	
 					}else{
-						$cart[$cart["idx"]]['product']->ext = pathinfo($cart[$cart["idx"]]['product']->file_name, PATHINFO_EXTENSION);
+						$this->cart[$this->cart["idx"]]['product']->ext = pathinfo($this->cart[$this->cart["idx"]]['product']->file_name, PATHINFO_EXTENSION);
 					}
-					$cart[$cart["idx"]]['product']->price = array();
-					$cart[$cart["idx"]]['product']->price['product_price'] = 0;
-					$cart["idx"]++;
+					$this->cart[$this->cart["idx"]]['product']->price = array();
+					$this->cart[$this->cart["idx"]]['product']->price['product_price'] = 0;
+					$this->cart["idx"]++;
 						
 				}
-			}elseif($cart[$i]['product']->product_allfiles && $params->get('my_use_zip')){
+			}elseif($this->cart[$i]['product']->product_allfiles && $params->get('my_use_zip')){
 				
 			
 			
@@ -166,44 +230,39 @@ class CheckoutHelper
 		// TODO: add option for shipping different from billing
 		
 		if(!@$d["ship_info_id"]){
-			$d["ship_info_id"] = $shopper->id;
+			$d["ship_info_id"] = $this->shopper->id;
 		}
-		if(!$this->_db){
-			MyMuseHelper::logMessage( "Order::save: NO DB");
-		}
-		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'order.php' );
-		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderitem.php' );
-		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderpayment.php' );
-		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'ordershipping.php' );
-		$order 		= new MymuseTableorder( $this->_db );
+
+
+		$order 		= new OrderTable( $this->_db) ;
 		$config 	= Factory::getConfig();
 		$tzoffset 	= $config->get('config.offset');
 		$date 		= Factory::getDate('now', $tzoffset);
 		
-		$order->user_id 				= $shopper->id;
+		$order->user_id 				= $this->shopper->id;
 		$order->order_number 			= md5(time().mt_rand());
-		$order->store_id 				= $store->id;
-		$order->shopper_id 				= $shopper->id;
-		$order->order_subtotal 			= $cart_order->order_subtotal;
+		$order->store_id 				= $this->store->id;
+		$order->shopper_id 				= $this->shopper->id;
+		$order->order_subtotal 			= $this->cart_order->order_subtotal;
 		$order->ship_info_id 			= $d["ship_info_id"];
-		$order->order_shipping 			= @$cart_order->order_shipping->cost;
-		$order->order_currency 			= $MyMuseStore->_store->currency;
+		$order->order_shipping 			= @$this->cart_order->order_shipping->cost;
+		$order->order_currency 			= $this->store->currency;
 		$order->order_status 			= $order_status;
 		$order->coupon_id 				= 0;
 		$order->coupon_name 			= '';
 		$order->coupon_discount 		= 0;
 		$order->created 				= $date->toSql(true);
 		$order->modified 				= $date->toSql(true);
-		$order->discount 				= $cart_order->discount;
-		$order->shopper_group_discount 	= $cart_order->shopper_group_discount;
-		$order->notes 					= @$cart['notes'];
+		$order->discount 				= $this->cart_order->discount;
+		$order->shopper_group_discount 	= $this->cart_order->shopper_group_discount;
+		$order->notes 					= @$this->cart['notes'];
 
 		//check coupons
 		if($params->get('my_use_coupons') && $coupon_id){
 			MyMuseHelper::logMessage( "Order::save: coupon");
-			$order->coupon_id			= $cart_order->coupon->id;
-			$order->coupon_name 		= $cart_order->coupon->title;
-			$order->coupon_discount		= $cart_order->coupon->discount;
+			$order->coupon_id			= $this->cart_order->coupon->id;
+			$order->coupon_name 		= $this->cart_order->coupon->title;
+			$order->coupon_discount		= $this->cart_order->coupon->discount;
 			// update hit on this coupon
 			$query = "UPDATE #__mymuse_coupon SET
 			coupon_uses = coupon_uses +1
@@ -217,7 +276,7 @@ class CheckoutHelper
 		}
 		
 
-		if($shopper->username == 'buyer'){
+		if($this->shopper->username == 'buyer'){
 			$fields = MyMuseHelper::getNoRegFields();
 
 			if(isset($order->notes)){
@@ -225,13 +284,13 @@ class CheckoutHelper
 			}
 
 			foreach($fields as $field){
-				if(isset($shopper->profile[$field])){
-					$notes[$field] = $shopper->profile[$field];
-				}elseif(isset($shopper->$field)){
+				if(isset($this->shopper->profile[$field])){
+					$notes[$field] = $this->shopper->profile[$field];
+				}elseif(isset($this->shopper->$field)){
 					if($field == "name"){
-						$notes[$field] = $shopper->profile['first_name'].' '.$shopper->profile['last_name'];
+						$notes[$field] = $this->shopper->profile['first_name'].' '.$this->shopper->profile['last_name'];
 					}else{
-						$notes[$field] = $shopper->$field;
+						$notes[$field] = $this->shopper->$field;
 					}
 				}
 			}
@@ -241,57 +300,59 @@ class CheckoutHelper
 	
 		}
 
-		$order->reservation_fee 	= $cart_order->reservation_fee;
-		$order->non_res_total		= $cart_order->non_res_total;
-		$order->pay_now				= $cart_order->must_pay_now;
-		$order->extra 				= @$cart['extra'];
+		$order->reservation_fee 	= $this->cart_order->reservation_fee;
+		$order->non_res_total		= $this->cart_order->non_res_total;
+		$order->pay_now				= $this->cart_order->must_pay_now;
+		$order->extra 				= @$this->cart['extra'];
 		
 
 		//save the order number in the session
 		$session->set("order_number",$order->order_number);
 
 
-		foreach($cart_order->tax_array as $name => $amount)  {
+		foreach($this->cart_order->tax_array as $name => $amount)  {
 			$order->$name = $amount;
 		}
 		
 
-		$total_tax = $cart_order->tax_total;
+		$total_tax = $this->cart_order->tax_total;
 
 
 		// Store the order to the database
 		if (!$order->store()) {
-			JError::raiseError( 500, $this->_db->stderr() );
+			$message = Text::_('COM_MYMUSE_ORDER_COULD_NOT_BE_SAVED').': '.$order->getError();
+			Factory::getApplication()->enqueueMessage($message, 'error');
 			return false;
 		}
 
 		// LOOP OVER CART ITEMS TO STORE TO DB
 		$order->idx = 0;
-		for($i = 0; $i < $cart["idx"]; $i++) {
+		for($i = 0; $i < $this->cart["idx"]; $i++) {
 
-			if(@$cart[$i]["coupon_id"]){
+			if(@$this->cart[$i]["coupon_id"]){
 				continue;
 			}
-			if(!@$cart[$i]["product_id"]){
+			if(!@$this->cart[$i]["product_id"]){
 				continue;
 			}
 
-			$parentid = $cart[$i]['product']->parentid;
+			$parentid = $this->cart[$i]['product']->parentid;
 	
-			$order->items[$i] = new MymuseTableorderitem( $this->_db );
+			$order->items[$i] = new OrderitemTable( $this->_db );
 			$order->idx++;
 			$order->items[$i]->order_id = $order->id;
-			$order->items[$i]->product_id = $cart[$i]["product_id"];
-			$order->items[$i]->product_quantity = $cart[$i]["quantity"];
+			$order->items[$i]->product_id = $this->cart[$i]["product_id"];
+			$order->items[$i]->variation_id = isset($this->cart[$i]["variation"])? $this->cart[$i]["variation"] : '';
+			$order->items[$i]->product_quantity = $this->cart[$i]["quantity"];
 
 
-			$order->items[$i]->product_sku = $cart[$i]['product']->product_sku;
-			$order->items[$i]->product_name = $cart[$i]['product']->title;
+			$order->items[$i]->product_sku = $this->cart[$i]['product']->product_sku;
+			$order->items[$i]->product_name = $this->cart[$i]['product']->title;
 			$order->items[$i]->created = $date->toSql();
 			$order->items[$i]->modified = $date->toSql();
 
-			if( 1 == $params->get('my_downloads_enable') && ( !isset($cart[$i]["product_physical"]) || !$cart[$i]["product_physical"] ) ) {
-				$order->items[$i]->file_name = stripslashes($cart[$i]['product']->file_name);
+			if( 1 == $params->get('my_downloads_enable') && ( !isset($this->cart[$i]["product_physical"]) || !$this->cart[$i]["product_physical"] ) ) {
+				$order->items[$i]->file_name = stripslashes($this->cart[$i]['product']->file_name);
 				if($params->get('my_download_expire') == "-"){
 					$enddate = "0";
 				}else{
@@ -299,17 +360,17 @@ class CheckoutHelper
 				}
 				$order->items[$i]->end_date = $enddate;
 				$order->items[$i]->downloads = 0;
-				if($cart[$i]['product']->file_name != ''){
+				if($this->cart[$i]['product']->file_name != ''){
 					$downloadable++;
 				}
 			}
 
 
-			$order->items[$i]->product_item_price = $cart[$i]['product']->price['product_price'];
+			$order->items[$i]->product_item_price = $this->cart[$i]['product']->price['product_price'];
 
 			$order->items[$i]->product_in_stock = 1;
 
-			if(isset($cart[$i]['backordered']) && $cart[$i]['backordered']){;
+			if(isset($this->cart[$i]['backordered']) && $this->cart[$i]['backordered']){;
 				$order->items[$i]->product_in_stock = -1;
 			}
 
@@ -322,14 +383,14 @@ class CheckoutHelper
 			}
 
 			// more fields for printing
-			$order->items[$i]->product_sku = $cart[$i]['product']->product_sku;
-			$order->items[$i]->title = $cart[$i]['product']->title;
-			$order->items[$i]->file_length = MyMuseHelper::ByteSize($cart[$i]['product']->file_length);
+			$order->items[$i]->product_sku = $this->cart[$i]['product']->product_sku;
+			$order->items[$i]->title = $this->cart[$i]['product']->title;
+			$order->items[$i]->file_length = MyMuseHelper::ByteSize($this->cart[$i]['product']->file_length);
 			$order->items[$i]->product_item_subtotal = sprintf("%.2f", $order->items[$i]->product_item_price * $order->items[$i]->product_quantity);
 			 
 			// Build URLs
-			if(isset($cart[$i]['catid']) && $cart[$i]['catid'] != ''){
-				$query = "SELECT * FROM #__categories WHERE id='".$cart[$i]['catid']."'";
+			if(isset($this->cart[$i]['catid']) && $this->cart[$i]['catid'] != ''){
+				$query = "SELECT * FROM #__categories WHERE id='".$this->cart[$i]['catid']."'";
 				$this->_db->setQuery($query);
 				if($cat = $this->_db->loadObject()){
 					$order->items[$i]->category_name = $cat->title;
@@ -340,14 +401,14 @@ class CheckoutHelper
 					$pid = $order->items[$i]->product_id;
 				}
 					
-				$order->items[$i]->url = myMuseHelperRoute::getProductRoute($pid, $cart[$i]['catid']);
-				$order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($cart[$i]['catid']);
+				$order->items[$i]->url = RouteHelper::getProductRoute($pid, $this->cart[$i]['catid']);
+				$order->items[$i]->cat_url = RouteHelper::getCategoryRoute($this->cart[$i]['catid']);
 			}
 		} // end of item insertion
 
 		
 		$order->order_total = $order->order_subtotal + $order->order_shipping + $total_tax;
-		if($cart_order->order_total == 0.00){
+		if($this->cart_order->order_total == 0.00){
 			$order->order_total = 0.00;
 		}
 		 
@@ -363,24 +424,24 @@ class CheckoutHelper
 		}
 
 		//Shipping
-		if ($params->get('my_use_shipping') && $cart_order->need_shipping
-				&& isset($cart_order->order_shipping)) {
-			$order_shipping = new MymuseTableordershipping( $this->_db );
+		if ($params->get('my_use_shipping') && $this->cart_order->need_shipping
+				&& isset($this->cart_order->order_shipping)) {
+			$order_shipping = new OrdershippingTable( $this->_db );
 			$order_shipping->order_id = $order->id;
-			$order_shipping->ship_type = $cart_order->order_shipping->ship_type;
-			$order_shipping->ship_carrier_code = $cart_order->order_shipping->ship_carrier_code;
-			$order_shipping->ship_carrier_name = $cart_order->order_shipping->ship_carrier_name;
-			$order_shipping->ship_method_code = $cart_order->order_shipping->ship_method_code;
-			$order_shipping->ship_method_name = $cart_order->order_shipping->ship_method_name;
-			$order_shipping->cost = $cart_order->order_shipping->cost;
-			$order_shipping->tracking_id = $cart_order->order_shipping->tracking_id;
-			$order_shipping->ship_handling_fee = isset($cart_order->order_shipping->ship_handling_fee)? $cart_order->order_shipping->ship_handling_fee: '';
-			$order_shipping->ship_handling_type = isset($cart_order->order_shipping->ship_handling_type)? $cart_order->order_shipping->ship_handling_type : '';
-			$order_shipping->ship_handling_charge = isset($cart_order->order_shipping->ship_handling_charge)? $cart_order->order_shipping->ship_handling_charge : 0.00;
-			$order_shipping->shipmentmethod_id = isset($cart_order->order_shipping->id)? $cart_order->order_shipping->id: 0;
-			$order_shipping->order_weight = isset($cart_order->order_shipping->order_weight)? $cart_order->order_shipping->order_weight : 0;
-			$order_shipping->shipment_weight_unit = isset($cart_order->order_shipping->shipment_weight_unit)? $cart_order->order_shipping->shipment_weight_unit : '';
-			$order_shipping->tax_id = isset($cart_order->order_shipping->tax_id)? $cart_order->order_shipping->tax_id : '';
+			$order_shipping->ship_type = $this->cart_order->order_shipping->ship_type;
+			$order_shipping->ship_carrier_code = $this->cart_order->order_shipping->ship_carrier_code;
+			$order_shipping->ship_carrier_name = $this->cart_order->order_shipping->ship_carrier_name;
+			$order_shipping->ship_method_code = $this->cart_order->order_shipping->ship_method_code;
+			$order_shipping->ship_method_name = $this->cart_order->order_shipping->ship_method_name;
+			$order_shipping->cost = $this->cart_order->order_shipping->cost;
+			$order_shipping->tracking_id = $this->cart_order->order_shipping->tracking_id;
+			$order_shipping->ship_handling_fee = isset($this->cart_order->order_shipping->ship_handling_fee)? $this->cart_order->order_shipping->ship_handling_fee: '';
+			$order_shipping->ship_handling_type = isset($this->cart_order->order_shipping->ship_handling_type)? $this->cart_order->order_shipping->ship_handling_type : '';
+			$order_shipping->ship_handling_charge = isset($this->cart_order->order_shipping->ship_handling_charge)? $this->cart_order->order_shipping->ship_handling_charge : 0.00;
+			$order_shipping->shipmentmethod_id = isset($this->cart_order->order_shipping->id)? $this->cart_order->order_shipping->id: 0;
+			$order_shipping->order_weight = isset($this->cart_order->order_shipping->order_weight)? $this->cart_order->order_shipping->order_weight : 0;
+			$order_shipping->shipment_weight_unit = isset($this->cart_order->order_shipping->shipment_weight_unit)? $this->cart_order->order_shipping->shipment_weight_unit : '';
+			$order_shipping->tax_id = isset($this->cart_order->order_shipping->tax_id)? $this->cart_order->order_shipping->tax_id : '';
 
 			$order_shipping->created = $date->toSql();
 
@@ -393,20 +454,20 @@ class CheckoutHelper
 		}
 
 		//add more to the order object for printing
-		$order->idx 			= $cart["idx"];
+		$order->idx 			= $this->cart["idx"];
 		$order->do_html 		= 0;
 		$order->show_checkout 	= 0;
-		$order->tax_array 		= $cart_order->tax_array;
+		$order->tax_array 		= $this->cart_order->tax_array;
 		$order->status_name 	= MyMuseHelper::getStatusName($order->order_status );
 		$order->tax_total 		= $total_tax;
 		$order->downloadable  	= $downloadable;
-		$order->ship_method_id 	= @$cart_order->order_shipping->id;
+		$order->ship_method_id 	= @$this->cart_order->order_shipping->id;
 		$order->order_shipping  = $order_shipping;
 
 		 
 		// All done with inserting ORDER!!
 		// attach the current order to the shopper
-		$MyMuseShopper->order = $order;
+		$this->MyMuseShopper->order = $order;
 		
 		if($params->get('my_debug')){
 			$debug = "$date Order saved:  ".$order->order_number."\n\n";
@@ -418,7 +479,7 @@ class CheckoutHelper
 		jimport( 'joomla.plugin.helper' );
 		 
 		if(!$params->get('my_shop_test') && !$params->get('my_debug')){
-			$MyMuseCart->reset();
+			$this->MyMuseCart->reset();
 		}
 
 		return $order;
@@ -429,10 +490,10 @@ class CheckoutHelper
 	/**
 	 * calc_order_subtotal
 	 *
-	 * @param array $cart Cart includes product objects
+	 * @param array $this->cart Cart includes product objects
 	 * @return float
 	 */
-	function calc_order_subtotal(&$cart) {
+	public function calc_order_subtotal(&$cart) {
 
 		$subtotal = 0.00;
 		for($i = 0; $i < $cart["idx"]; $i++) {
@@ -456,17 +517,15 @@ class CheckoutHelper
 	 * @param object $order
 	 * @return array
 	 */
-	function calc_order_tax($order) {
+	public function calc_order_tax($order) {
 		 
-		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$shopper 		=& $MyMuseShopper->getShopper();
 		$params 		= MyMuseHelper::getParams();
 		$order_subtotal = $order->order_subtotal;
 
 		$taxes = array();
 		
 		// No profile?
-		if(!isset($shopper->profile['country']) && !$params->get('my_add_taxes')){
+		if(!isset($this->shopper->profile['country']) && !$params->get('my_add_taxes')){
 			return $taxes;
 		}
 		
@@ -480,7 +539,7 @@ class CheckoutHelper
 		$q = "SELECT t.*, c.country_name, s.state_name FROM #__mymuse_tax_rate as t
 		LEFT JOIN #__mymuse_country as c ON t.country = c.country_3_code
 		LEFT JOIN #__mymuse_state as s ON s.id = t.province
-		WHERE t.state = 1
+		WHERE t.published = 1
 		ORDER BY ordering";
 		$this->_db->setQuery($q);
 		$regex = TAX_REGEX;
@@ -493,8 +552,8 @@ class CheckoutHelper
 		}
 		
 		// GET USER STATE,COUNTRY, BLOC
-		$user_state 	= isset($shopper->profile['region'])? $shopper->profile['region'] : 'unknown';
-		$user_country 	= isset($shopper->profile['country'])? $shopper->profile['country'] : "unknown";
+		$user_state 	= isset($this->shopper->profile['region'])? $this->shopper->profile['region'] : 'unknown';
+		$user_country 	= isset($this->shopper->profile['country'])? $this->shopper->profile['country'] : "unknown";
 		$user_bloc 		= '';
 		
 		if($user_country != 'unknown'){
@@ -504,14 +563,14 @@ class CheckoutHelper
 		}
 		
 		// GET STORE STATE,COUNTRY, BLOC
-		$store_state	= $params->get('province');
-		$store_country	= $params->get('country');
+		$this->store_state	= $params->get('province');
+		$this->store_country	= $params->get('country');
 		
-		$query = "SELECT * FROM #__mymuse_country WHERE country_2_code='$store_country'";
+		$query = "SELECT * FROM #__mymuse_country WHERE country_2_code='$this->store_country'";
 		$this->_db->setQuery($query);
-		$store_country_res 		= $this->_db->loadObject();
-		$store_country_3_code 	= $store_country_res->country_3_code;
-		$store_bloc 			= $store_country_res->bloc;
+		$this->store_country_res 		= $this->_db->loadObject();
+		$this->store_country_3_code 	= $this->store_country_res->country_3_code;
+		$this->store_bloc 			= $this->store_country_res->bloc;
 		
 		$total_physical = 0;
 		$total_downloadable = 0;
@@ -527,7 +586,7 @@ class CheckoutHelper
 		// for European taxes, are shopper and store both in EU? Both in same country?
 		// For digital goods, you must now charge VAT based on the buyer's country,
 		// break totals up into downloadable and physical
-		if(($store_bloc == 'EU' && $user_bloc == 'EU') || $params->get('my_add_taxes')){
+		if(($this->store_bloc == 'EU' && $user_bloc == 'EU') || $params->get('my_add_taxes')){
 					
 			//do euro tax
 			
@@ -548,11 +607,11 @@ class CheckoutHelper
 			}
 			
 			//case 1: same country, always charge VAT
-			if($store_country_3_code == $user_country){
+			if($this->store_country_3_code == $user_country){
 				//same country
 				//we will use the regular calculation below
 			
-			}elseif(isset($shopper->profile['vat_number']) && $shopper->profile['vat_number'] != ''){
+			}elseif(isset($this->shopper->profile['vat_number']) && $this->shopper->profile['vat_number'] != ''){
 				//different country within union but has VAT Number so no tax
 				$taxes['VAT Exempt'] = 0.00;
 				return($taxes);
@@ -567,7 +626,7 @@ class CheckoutHelper
 						$temp_tax = $total_downloadable * $rate->tax_rate;
 						$taxes[$name] += $temp_tax;
 						$taxes[$name] = round($taxes[$name],2);
-					}elseif($rate->country == $store_country_3_code){
+					}elseif($rate->country == $this->store_country_3_code){
 						//physical items
 						$temp_tax = $total_physical * $rate->tax_rate;
 						$taxes[$name] += $temp_tax;
@@ -667,30 +726,23 @@ class CheckoutHelper
 
 
 
-	function getOrder($id=0){
+	public function getOrder($id=0){
 		$mainframe 	= Factory::getApplication();
 		$params 	= MyMuseHelper::getParams();
 		$db			= Factory::getDBO();
 
 		if(!$id){
-			$this->error = JText::_('MYMUSE_NO_ORDER_ID');
+			$this->error = JText::_('COM_MYMUSE_NO_ORDER_ID');
 			return false;
 		}
-		 
-		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$shopper 		=& $MyMuseShopper->getShopper();
-		
-		$MyMuseStore  	=& MyMuse::getObject('store','models');
-		$store 			= $MyMuseStore->getStore();
-		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
-		$cart 			= $MyMuseCart->cart;
+
 		$downloadable = 0;
 
 		// get the main order
 		$query = "SELECT * from #__mymuse_order WHERE id='$id'";
 		$db->setQuery($query);
 		$order = $db->loadObject();
-		$order->user = $shopper;
+		$order->user = $this->shopper;
 		
 		if(is_array($order->order_currency)){
 			$order->currency_code = $order->order_currency['currency_code'];
@@ -699,13 +751,13 @@ class CheckoutHelper
 		}
 
 		
-		$order->shopper_group_name = @$shopper->shopper_group_name;
+		$order->shopper_group_name = @$this->shopper->shopper_group_name;
 	
 
 		//get the taxes
 		$order->tax_array = array();
 		$order->tax_total = 0.00;
-		$q = "SELECT * FROM #__mymuse_tax_rate WHERE state=1 ORDER BY ordering";
+		$q = "SELECT * FROM #__mymuse_tax_rate WHERE published=1 ORDER BY ordering";
 		$db->setQuery($q);
 		$tax_rates = $db->loadObjectList();
 		$regex = TAX_REGEX;
@@ -727,7 +779,13 @@ class CheckoutHelper
 		$order->subtotal_before_discount = 0.00;
 
 		for($i = 0; $i < count($order->items); $i++){
-			if($order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id)){
+			if($order->items[$i]->variation_id > 0){
+				$order->items[$i]->product = $this->MyMuseCart->getProduct($order->items[$i]->product_id, $order->items[$i]->variation_id);
+			}else{
+				$order->items[$i]->product = $this->MyMuseCart->getProduct($order->items[$i]->product_id);
+			}
+			if($order->items[$i]->product){
+
 				$order->items [$i]->title = $order->items [$i]->product->title;
 				$order->items [$i]->quantity = $order->items [$i]->product_quantity;
 				$order->items [$i]->product_item_subtotal = $order->items [$i]->product_item_price * $order->items [$i]->product_quantity;
@@ -740,22 +798,15 @@ class CheckoutHelper
 					$order->items [$i]->ext = pathinfo ( $order->items [$i]->file_name, PATHINFO_EXTENSION );
 				}
 				$order->items [$i]->attribs = $order->items [$i]->product->attribs;
+		
+				if(isset($order->items[$i]->product->digital)){
 
-				$order->items[$i]->product->file = json_decode($order->items[$i]->product->file_name);
-				$variation = 0;
-				if(isset($order->items[$i]->product->file)){
-					foreach($order->items[$i]->product->file as $key => $f){
-						if($f->file_name == $order->items [$i]->file_name){
-							$variation = $key;
-						}
+					$order->items [$i]->file_length = $order->items [$i]->product->digital->file_length;
+					if(isset($order->items [$i]->product->digital->file_time)){
+						$order->items [$i]->file_time = $order->items [$i]->product->digital->file_time;
 					}
-
-					$order->items [$i]->file_length = $order->items [$i]->product->file[$variation]->file_length;
-					if(isset($order->items [$i]->product->file[$variation]->file_time)){
-						$order->items [$i]->file_time = $order->items [$i]->product->file[$variation]->file_time;
-					}
-					if(isset($order->items [$i]->product->file[$variation]->file_format)){
-						$order->items [$i]->format = $order->items [$i]->product->file[$variation]->file_format;
+					if(isset($order->items [$i]->product->digital->file_format)){
+						$order->items [$i]->format = $order->items [$i]->product->digital->file_format;
 					}
 				}
 				$order->items [$i]->backordered = 0;
@@ -773,8 +824,8 @@ class CheckoutHelper
 				
 				$catid = $order->items [$i]->product->catid;
 				
-				$order->items [$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $catid );
-				$order->items [$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $catid );
+				$order->items [$i]->url = RouteHelper::getProductRoute ( $pid, $catid );
+				$order->items [$i]->cat_url = RouteHelper::getCategoryRoute ( $catid );
 				$query = "SELECT * FROM #__categories WHERE id='" . $catid . "'";
 				$db->setQuery ( $query );
 				$cat = $db->loadObject ();
@@ -787,19 +838,23 @@ class CheckoutHelper
 				}
 			}
 		}
+
 		if($downloadable){
 			$jinput = Factory::getApplication()->input;
 			$Itemid = $jinput->get("Itemid",$params->get('mymuse_default_itemid'));
-			$download_header = '';
-			include( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_downloads.php' );
-			$order->downloadlink = $download_header;
+			
+			if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
+				$order->downloadlink = Route::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number);
+			}else{
+				$order->downloadlink = Route::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
+			}
 		}else{
 			$order->downloadlink = '';
 		}
 
 		//coupon
 		if($order->coupon_id){
-			$order->coupon = new JObject;
+			$order->coupon = new CMSObject;
 			$order->coupon->id = $order->coupon_id;
 			$order->coupon->title = $order->coupon_name;
 			$order->coupon->discount = $order->coupon_discount;
@@ -816,7 +871,7 @@ class CheckoutHelper
 		if($order->shipments = $db->loadObjectList()){
 			$order->order_shipping = $order->shipments[0];
 		}else{
-			$order->order_shipping = new JObject;
+			$order->order_shipping = new CMSObject;
 			$order->order_shipping->cost = 0;
 		}
 		
@@ -836,7 +891,8 @@ class CheckoutHelper
 		if($order->order_total < 0){
 			$order->order_total = 0.00;
 		}
-		$order->order_currency = MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
+
+		$order->order_currency = MyMuseHelper::getCurrency($this->store->currency);
 		
 		if($params->get("my_show_sku",0) >0){
 			$order->colspan=4;

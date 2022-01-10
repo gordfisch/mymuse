@@ -9,6 +9,10 @@
  * @website		htp://www.joomlamymuse.com
  */
 // no direct access
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die('Restricted access');
 
 $order		= $this->order;
@@ -93,7 +97,7 @@ jQuery(document).ready(function(){
 
 		<!-- start of basket -->
 
-		<h2><?php echo JText::_('MYMUSE_SHOPPING_CART'); ?></h2> 
+		<h2><?php echo Text::_('COM_MYMUSE_SHOPPING_CART'); ?></h2> 
 		  
 		<?php if($params->get("my_show_cart_preview") && $params->get('product_player_type') == "single" && isset($order->flash)) : ?>
 			<div id="product_player" 
@@ -115,24 +119,24 @@ jQuery(document).ready(function(){
 			<div class="" id="product_player" ></div>
 		<?php } ?>
 		
-		       
+
 	<table class="mymuse_cart cart">
 		<thead>
 		<tr class="mymuse_cart cart">
 	<?php if($params->get("my_show_cart_preview") && $got_flash): ?>  
 		<th class="mypreviews cart"></th>
 	<?php endif; ?>			
-		<th class="mytitle cart"><?php echo JText::_('MYMUSE_TITLE'); ?></th>
+		<th class="mytitle cart"><?php echo Text::_('COM_MYMUSE_TITLE'); ?></th>
 	<?php if($params->get("my_show_sku")): ?>
-		<th class="mysku cart"><?php echo JText::_('MYMUSE_CART_SKU'); ?></th>
+		<th class="mysku cart"><?php echo Text::_('COM_MYMUSE_CART_SKU'); ?></th>
 	<?php endif; ?>
-		<th class="myprice cart"><?php echo JText::_('MYMUSE_CART_PRICE'); ?></th>
+		<th class="myprice cart"><?php echo Text::_('COM_MYMUSE_CART_PRICE'); ?></th>
 	
-		<th class="myquantity cart"><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></th>
+		<th class="myquantity cart"><?php echo Text::_('COM_MYMUSE_CART_QUANTITY'); ?></th>
 	
-		<th class="mysubtotal cart"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></th>
+		<th class="mysubtotal cart"><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?></th>
 	<?php if(@$order->do_html): ?>
-		   <th class="myaction cart"><?php echo JText::_('MYMUSE_CART_ACTION'); ?>&nbsp;<?php echo $order->update_form; ?></th>		    
+		   <th class="myaction cart"><?php echo Text::_('COM_MYMUSE_CART_ACTION'); ?>&nbsp;<?php echo $order->update_form; ?></th>		    
 	<?php endif; ?>
 		</tr>
 		</thead>
@@ -161,16 +165,16 @@ jQuery(document).ready(function(){
 		        <?php echo $order_item[$i]->title; ?>
 		        
 		        <?php if(isset($order_item[$i]->format) && $order_item[$i]->format != ''){ ?>
-		        	 : <?php echo JText::_('MYMUSE_'.strtoupper($order_item[$i]->format)); ?> 
+		        	 : <?php echo strtoupper($order_item[$i]->format); ?> 
 		        <?php } elseif(isset($order_item[$i]->ext) && $order_item[$i]->ext != ''){ ?>
 		        	 : <?php echo $order_item[$i]->ext ?> 
 		        <?php } ?>
 
 		        <?php if($order->items[$i]->backordered || $order_item[$i]->product_in_stock == -1){ 
 		        		if($order->items[$i]->product_physical){
-		        			$mymuse_msg =  JText::_('MYMUSE_BACKORDERED');
+		        			$mymuse_msg =  Text::_('COM_MYMUSE_BACKORDERED');
 		        		}else{
-		        			$mymuse_msg =  JText::_('MYMUSE_PREORDERED');
+		        			$mymuse_msg =  Text::_('COM_MYMUSE_PREORDERED');
 		        		}
 
 		        	?>
@@ -205,7 +209,7 @@ jQuery(document).ready(function(){
 		    <?php }else{ ?>
 		        <td class="myquantity cart"><?php echo $order_item[$i]->quantity; 
 		        if($params->get('my_add_stock_zero',0) && $order_item[$i]->quantity == 0) {
-		        	echo " ".JText::_('MYMUSE_BACKORDERED');
+		        	echo " ".Text::_('COM_MYMUSE_BACKORDERED');
 		        }
 		        ?></td>
 		    <?php } ?>  
@@ -216,8 +220,8 @@ jQuery(document).ready(function(){
 		        </td>
 		    
 		    <?php if($order->do_html){ ?>
-		        <td class="myaction cart"><a href="<?php echo $order_item[$i]->delete_url; ?>"><span class="btn btn-danger" ><?php echo JText::_('MYMUSE_DELETE'); ?></span></a> <a href="javascript:void(0)" onclick="adminForm.submit()">
-				<span class="btn btn-info" ><?php echo JText::_('MYMUSE_UPDATE'); ?></span></a></td>
+		        <td class="myaction cart"><a href="<?php echo $order_item[$i]->delete_url; ?>"><span class="btn btn-danger" ><?php echo Text::_('COM_MYMUSE_DELETE'); ?></span></a> <a href="javascript:void(0)" onclick="adminForm.submit()">
+				<span class="btn btn-info" ><?php echo Text::_('COM_MYMUSE_UPDATE'); ?></span></a></td>
 		    <?php } ?>
 		
 		    </tr>
@@ -230,7 +234,7 @@ jQuery(document).ready(function(){
 		|| count($order->tax_array) > 0){ ?>
 		<!--  original subtotal -->
 			<tr>
-		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></td>
+		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?></td>
 		        <td class="myoriginalsubtotal cart" colspan="<?php echo $order->colspan2; ?>">
 		        	<span id="subtotal_before_discount">
 		        	<?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?>
@@ -245,7 +249,7 @@ jQuery(document).ready(function(){
 		<?php //for shopper group discount 
 		if($order->shopper_group_discount > 0.00){ ?>
 		    <tr>
-		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
+		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo Text::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $user->shopper_group->discount; ?> %</td>
 		        <td class="myshoppergroupdiscount cart" colspan="<?php echo $order->colspan2; ?>">
 		        	<span id="shopper_group_discount">(<?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?>)
@@ -260,7 +264,7 @@ jQuery(document).ready(function(){
 		<?php //for regular discount
 		if($order->discount > 0.00){ ?>
 		    <tr>
-		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_DISCOUNT'); ?>
+		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo Text::_('COM_MYMUSE_DISCOUNT'); ?>
 		    	</td>
 		        <td class="mydiscount cart" colspan="<?php echo $order->colspan2; ?>">
 		        	<span id="discount">- <?php echo MyMuseHelper::printMoney($order->discount); ?>
@@ -276,7 +280,7 @@ jQuery(document).ready(function(){
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
 		    <tr>
-		    	<td class="mobile-hide cart"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></td>
+		    	<td class="mobile-hide cart"><?php echo Text::_('COM_MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></td>
 		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan -1; ?>">&nbsp;</td>
 		        <td class="mycoupon cart" colspan="<?php echo $order->colspan2; ?>">
 		        	<span id="coupon_discount"> <?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> 
@@ -311,7 +315,7 @@ jQuery(document).ready(function(){
 		<?php // SHIPPING
 		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
 		    <tr>
-		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHIPPING') ?><span id="order_shipping_name">
+		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo Text::_('COM_MYMUSE_SHIPPING') ?><span id="order_shipping_name">
 		    <?php echo $order->order_shipping->ship_carrier_name ?> <?php echo $order->order_shipping->ship_method_name ?></span></td>
 		    <td class="myshipping cart" colspan="<?php echo $order->colspan2; ?>">
 		    	<span id="order_shipping_cost">
@@ -324,13 +328,13 @@ jQuery(document).ready(function(){
 		    </tr>
 		<?php } ?>
 		<tr>
-		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</td>
+		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo Text::_('COM_MYMUSE_CART_TOTAL') ?>:</td>
 		    <td class="mytotal cart" colspan="<?php echo $order->colspan2; ?>">
 		    	<span id="mytotal"><?php echo MyMuseHelper::printMoney($order->order_total); ?>
 		    	</span>
 		    </td>
 		    <?php if($order->do_html){ ?>
-		        <td class="mobile-hide cart" ><a href="<?php echo JRoute::_("index.php?option=com_mymuse&task=cartClear"); ?>"><?php echo JText::_('MYMUSE_CART_CLEAR') ?></a></td>
+		        <td class="mobile-hide cart" ><a href="<?php echo JRoute::_("index.php?option=com_mymuse&task=cartClear"); ?>"><?php echo Text::_('COM_MYMUSE_CART_CLEAR') ?></a></td>
 		    <?php  } ?>
 		</tr>
 		
@@ -340,7 +344,7 @@ jQuery(document).ready(function(){
 		
 		<?php  if($order->reservation_fee > 0){ ?>
 		<tr>
-		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_RESERVATION_FEE') ?>:</td>
+		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo Text::_('COM_MYMUSE_RESERVATION_FEE') ?>:</td>
 		    <td class="myreservationfee cart" colspan="<?php echo $order->colspan2; ?>" align="right">
 		    	<span id="reservation_fee"><b><?php echo MyMuseHelper::printMoney($order->reservation_fee); ?></b>
 		    	</span>
@@ -351,7 +355,7 @@ jQuery(document).ready(function(){
 		</tr>
 		<?php  if($order->non_res_total > 0){ ?>
 		<tr>
-	    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_OTHER_CHARGES') ?>:</td>
+	    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo Text::_('COM_MYMUSE_OTHER_CHARGES') ?>:</td>
 	    	<td class="myothercharges cart" colspan="<?php echo $order->colspan2; ?>" align="right">
 	    		<span id=">non_res_total"><b><?php echo MyMuseHelper::printMoney($order->non_res_total); ?></b>
 	    		</span>
@@ -361,7 +365,7 @@ jQuery(document).ready(function(){
 	        	<?php } ?>
 		</tr>
 		<tr>
-	    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_PAYNOW') ?>:</td>
+	    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo Text::_('COM_MYMUSE_PAYNOW') ?>:</td>
 	    	<td class="mypaynow cart" colspan="<?php echo $order->colspan2; ?>" align="right">
 	    		<span id="must_pay_now">
 	    		<?php echo MyMuseHelper::printMoney($order->must_pay_now); ?>
@@ -379,7 +383,7 @@ jQuery(document).ready(function(){
 		<?php 
 		//LICENCE MODEL?
 		if(2 == $params->get('my_price_by_product',0) && $user->username == 'buyer'){
-			echo '<h3>'.JText::_('MYMUSE_LICENCE').'</h3>';
+			echo '<h3>'.Text::_('COM_MYMUSE_LICENCE').'</h3>';
 
 			if(!in_array($task, $post_order) && isset($this->lists['licences'])){
 				echo $this->lists['licences'];
@@ -423,8 +427,8 @@ if($notes_required  && $user->username == 'buyer'){
 
 
     if(!in_array($task, $post_order)){ ?>		
-		<h3><?php echo JText::_($params->get("my_notes_header"))?></h3>
-        <?php echo JText::_($params->get("my_notes_msg"))?>
+		<h3><?php echo Text::_($params->get("my_notes_header"))?></h3>
+        <?php echo Text::_($params->get("my_notes_msg"))?>
         <textarea class="required" style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php 
         
         echo $notes; 
@@ -432,7 +436,7 @@ if($notes_required  && $user->username == 'buyer'){
         ?></textarea>
 <?php 
 	}elseif($notes) { ?>
-		<h3><?php echo JText::_($params->get("my_notes_header"))?></h3>
+		<h3><?php echo Text::_($params->get("my_notes_header"))?></h3>
 		<?php echo nl2br($notes);
 	}
 }
@@ -442,7 +446,7 @@ if($notes_required  && $user->username == 'buyer'){
     <!--  
         <div class="pull-left myupdate cart"><button class="button uk-button " 
 				type="submit" >
-				<?php echo JText::_('MYMUSE_UPDATE_CART'); ?></button>
+				<?php echo Text::_('COM_MYMUSE_UPDATE_CART'); ?></button>
 		</div>
 	-->
 	<?php } ?>	
@@ -459,18 +463,18 @@ if($notes_required  && $user->username == 'buyer'){
 		?> 
 	
 			<?php if($user->username == '' && $params->get('my_registration') == "full_guest"){ ?>
-				<div class="pull-left  mymuse-button-left cart">
+				<div class="mymuse-button-left cart">
 					<button class="btn btn-info" type="button"
 					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=guestcheckout&view=cart&Itemid=$Itemid") ?>'">
 					Checkout as a guest.</button>
 				</div>
 			<?php } ?>
 			
-			<div class="pull-left  mymuse-button-right cart">
+			<div class="mymuse-button-left cart">
 				<button id="continue-shopping" class="btn btn-primary pull-left" 
 				type="button" 
 				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
-				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button>
+				<?php echo Text::_('COM_MYMUSE_CONTINUE_SHOPPING'); ?></button>
 			</div>
 				
 				
@@ -480,10 +484,10 @@ if($notes_required  && $user->username == 'buyer'){
 				|| $user->username == 'buyer' && !$notes_required
 				|| $user->username != 'buyer'){ 
 	  			?>
-				<div class="pull-right mymuse-button-right cart">
+				<div class="mymuse-button-right cart">
 					<button id="checkout" class="btn btn-primary" type="button" 
 					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>'">
-					<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button>
+					<?php echo Text::_('COM_MYMUSE_CHECKOUT'); ?></button>
 				</div>
 			<?php } ?>
 			<div class="clearfix"></div>	

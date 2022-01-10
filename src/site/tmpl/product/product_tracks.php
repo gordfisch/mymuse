@@ -69,7 +69,11 @@ if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_t
 
 <?php endif;
 
-if ($this->params->get('show_tracks', '1')) : ?>
+if ($this->params->get('show_tracks', '1')) : 
+foreach($tracks as $track) : 
+  //MyMuseHelper::print_pre($track);
+endforeach;
+?>
 
 <!-- TRACKS -->
   <table class="mymuse_cart cart">
@@ -314,22 +318,23 @@ if ($this->params->get('show_tracks', '1')) : ?>
                 ?>
                 </td>
               
-                    <?php endif; ?>
-                    <!--  SELECT COLUMN -->
+               <?php endif; ?>
+
+            <!--  SELECT COLUMN -->
             <?php  if($this->params->get('product_show_select_column', 1)) :?>
                 <td class="myselect cart" nowrap>
-                        <?php if($track->digital|| $track->product_allfiles) :?>
+                  <?php if($track->digital || $track->product_allfiles) :?>
 
-                        <a href="javascript:void(0)"
-            id="box_<?php echo $track->id; ?>"><img
-              id="img_<?php echo $track->id; ?>"
-              src="<?php
-                            if(isset($this->products) && in_array($track->id, $this->products)) :
-                                echo JRoute::_("components/com_mymuse/assets/images/cart.png");
-                            else :
-                                echo JRoute::_("components/com_mymuse/assets/images/checkbox.png");
-                            endif;
-                        ?>"></a>
+                    <a href="javascript:void(0)" class="trackpicker" data-id="<?php echo $track->id; ?>"
+                      data-variation="<?php echo $track->digital[0]->file_id; ?>"
+                    id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>"
+                    src="<?php
+                      if(isset($this->products) && in_array($track->id, $this->products)) :
+                          echo JRoute::_("components/com_mymuse/assets/images/cart.png");
+                      else :
+                          echo JRoute::_("components/com_mymuse/assets/images/checkbox.png");
+                      endif;
+                      ?>"></a>
                 <?php  endif; ?>
                         
                 <?php if($track->digital || $track->product_allfiles) :?>

@@ -9,6 +9,9 @@
  * @website		http://www.joomlamymuse.com
  */
 
+use Joomla\CMS\Plugin\PluginHelper;
+
+
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 

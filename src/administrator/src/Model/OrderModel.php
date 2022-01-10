@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableModelTrait;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 
 /**
@@ -370,7 +371,7 @@ class OrderModel extends AdminModel
         $lists['currencies'] = JHTML::_('select.genericlist',  $options, 'currency', 'class="inputbox"', 'value', 'text', $value, JText::_( 'MYMUSE_CURRENCY' ));   
 
 		//payment plugins
-        JPluginHelper::importPlugin('mymuse');
+        PluginHelper::importPlugin('mymuse');
 		$query = "SELECT element as value, name as text
 		FROM #__extensions where folder='mymuse' and enabled='1' and element LIKE '%payment%'";
 		$this->_db->setQuery($query);

@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Plugin\PluginHelper;
+
+
 jimport( 'joomla.application.component.view' );
 
 class myMuseViewStore extends JViewLegacy
@@ -598,7 +601,7 @@ class myMuseViewStore extends JViewLegacy
 	
 		$offset = 0;
 		
-		JPluginHelper::importPlugin('mymuse');
+		PluginHelper::importPlugin('mymuse');
 		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.product', &$store, &$this->params, $offset));
 		$store->event->beforeDisplayHeader = trim(implode("\n", $results));
 		

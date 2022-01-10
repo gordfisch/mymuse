@@ -849,10 +849,10 @@ class ProductTable extends Table implements VersionableTableInterface
 
 			/*
 			$dispatcher = EventDispatcher::getInstance();
-			JPluginHelper::importPlugin('finder');
+			PluginHelper::importPlugin('finder');
 
 			$res = $dispatcher->trigger('onFinderAfterSave', array('com_mymuse.product', $this, $isNew));
-			JPluginHelper::importPlugin('mymuse');
+			PluginHelper::importPlugin('mymuse');
 
 			$res = $dispatcher->trigger('onMyMuseAfterSave', array('com_mymuse.product', $this, $isNew));
 			if(isset($res[0])){

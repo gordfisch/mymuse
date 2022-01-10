@@ -91,7 +91,6 @@ $document->setMetaData( 'twitter:url', $prod_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$product->detail_image);
 
-//MymuseHelper::print_pre($this->params->get('my_formats')); exit;
 if("1" == $this->params->get('my_price_by_product')){//price by product
 	$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
 
@@ -112,7 +111,7 @@ if(count((is_countable($tracks)?$tracks:[]))){
         }
     }
 }
-//MymuseHelper::print_pre($this->all_tracks);
+
 $url = "index.php?option=com_mymuse&task=ajaxtogglecart";
 $this->products = array();
 for ($i=0;$i<$this->cart["idx"];$i++) {
@@ -156,7 +155,7 @@ $js .= '	for(i = 1; i < count+1; i++)
 			return true;
 		}
 	}
-	alert("'.JText::_("MYMUSE_PLEASE_SELECT_A_PRODUCT").'");
+	alert("'.JText::_("COM_MYMUSE_PLEASE_SELECT_A_PRODUCT").'");
 	return false;
 }
 
@@ -184,44 +183,54 @@ Number.prototype.formatMoney = function(c, d, t){
 if(count($params->get('my_formats', array())) > 1 ){	
 	
 	$js .= 'function flip_price(id) {'."\n";
-	$js .= ' var formats = new Array();'."\n";
+	$js .= '    var formats = new Array();'."\n";
 	foreach($params->get('my_formats') as $index => $format) {
-		$js .= 'formats['.$index.'] = "'.$format->format_value.'"'."\n";
+		$js .= '    formats['.$index.'] = "'.$format->format_value.'"'."\n";
 	}
 	foreach($params->get('my_formats') as $format) {
-		$js .= 'var  '.$format->format_value.'_id = "#'.$format->format_value.'_"+id'."\n";
+		$js .= '    var  '.$format->format_value.'_id = "#'.$format->format_value.'_"+id'."\n";
 		if($params->get('product_show_filesize', 0)) {
-			$js .= 'var  '.$format->format_value.'_length_id = "#'.$format->format_value.'_length_"+id'."\n";
+			$js .= '    var  '.$format->format_value.'_length_id = "#'.$format->format_value.'_length_"+id'."\n";
 		}
 		if($params->get('product_show_downloads', 0)) {
-			$js .= 'var  '.$format->format_value.'_downloads_id = "#'.$format->format_value.'_downloads_"+id'."\n";
+			$js .= '    var  '.$format->format_value.'_downloads_id = "#'.$format->format_value.'_downloads_"+id'."\n";
 		}
 		
 	}
-	$js .= 'var select_id = "#variation_"+id+"_id"'."\n";
-    
+	$js .= '    var format_id = "#variation_"+id+"_id"'."\n";
+	$js .= '    var option_selected = jQuery(format_id).val()'."\n";
+	$js .= '    var select_id = "#box_"+id'."\n";
+
+	$js .= '   
+	var variation_id = jQuery(format_id).data("variation_"+option_selected);
+    //alert (variation_id+" "+select_id) '."\n";
+	
+
 	for($i=0; $i < count($params->get('my_formats')); $i++){
-    	$js .= 'jQuery('.$params->get('my_formats')[$i]->format_value.'_id).hide();'."\n";
+    	$js .= '    jQuery('.$params->get('my_formats')[$i]->format_value.'_id).hide();'."\n";
     	if($params->get('product_show_filesize', 0)) {
-    		$js .= 'jQuery('.$params->get('my_formats')[$i]->format_value.'_length_id).hide();'."\n";
+    		$js .= '    jQuery('.$params->get('my_formats')[$i]->format_value.'_length_id).hide();'."\n";
     	}
     	if($params->get('product_show_downloads', 0)) {
-    		$js .= 'jQuery('.$params->get('my_formats')[$i]->format_value.'_downloads_id).hide();'."\n";
+    		$js .= '    jQuery('.$params->get('my_formats')[$i]->format_value.'_downloads_id).hide();'."\n";
     	}
     	
 	}   		
 	$js .= '
-			//alert(formats[jQuery(select_id).val()]+"_"+id);
-			jQuery("#"+formats[jQuery(select_id).val()]+"_"+id).show();';
+			jQuery("#"+formats[jQuery(format_id).val()]+"_"+id).show();';
 			
 	if($params->get('product_show_filesize', 0)) {
 		$js .= '
-			jQuery("#"+formats[jQuery(select_id).val()]+"_length_"+id).show();';
+			jQuery("#"+formats[jQuery(format_id).val()]+"_length_"+id).show();';
 	}
 	if($params->get('product_show_downloads', 0)) {
 		$js .= '
-			jQuery("#"+formats[jQuery(select_id).val()]+"_downloads_"+id).show();';
+			jQuery("#"+formats[jQuery(format_id).val()]+"_downloads_"+id).show();';
 	}
+	
+	$js .= '
+			jQuery(select_id).attr("data-variation", variation_id);
+			';
 
 	$js .= "\n}";
 }
@@ -229,23 +238,16 @@ if(count($params->get('my_formats', array())) > 1 ){
 //set up the ajax cart add
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
 
+/* PRODUCT PHYSICAL JAVASCRIPT */
 if($product->product_physical){
-	//cart add phyical product ajax
 	$js .= '
 jQuery(document).ready(function($){
 		$("#box_'.$product->id.'").click(function(e){
 
-			if(typeof document.mymuseform.variation_'.$product->id.'_id !== "undefined"){
-				myvariation = document.mymuseform.variation_'.$product->id.'_id.value;
-				alert("variation = "+myvariation);
-	
-			}else{
-				myvariation = "";
-			}
             $.post("'.$url.'",
             {
                 "productid":"'.$product->id.'",
-                "variation['.$product->id.']":myvariation
+                "variation['.$product->id.']":"0"
 	
             },
             function(data,status)
@@ -285,7 +287,7 @@ jQuery(document).ready(function($){
 ';
 }
 
-
+/* ITEMS WITH SELECT BOX JAVASCRIPT */
 if(count(is_countable($items)?$items:[]) && $items_select){
 
 	$js .= '
@@ -335,6 +337,7 @@ if(count(is_countable($items)?$items:[]) && $items_select){
 
 	';
 	}
+/* ITEMS WITHOUT SELECT BOX JAVASCRIPT */
 if(count(is_countable($items)?$items:[]) && !$items_select){
 	foreach($items as $item){
 			$js .= '
@@ -385,7 +388,64 @@ if(count(is_countable($items)?$items:[]) && !$items_select){
 			';
 	}
 }
+/* TRACKS JAVASCRIPT */
 if(is_countable($tracks)){
+
+		$js .= '
+		jQuery(document).ready(function($){
+			$("a.trackpicker").each(function(index) {
+			    $(this).on("click", function(){
+			    	var id = $(this).data("id");
+
+					myvariation = $(this).data("variation");
+					v = "variation["+id+"]";
+	
+					//alert("productid ="+ id + " variation = "+ myvariation + " v ="+v);
+		            $.post("'.$url.'",
+		            {
+		                "productid":id,
+		                "variation":myvariation
+		                		
+		            },
+		            function(data,status)
+		            {
+		        		console.log(data);
+		        		console.log(status);
+		                var res = jQuery.parseJSON(data);
+		                idx = res.idx;
+		                msg = res.msg;
+		                action = res.action;
+		                //alert(res.msg);
+		                if(action == "deleted" || action == "failed"){
+		                    $("#img_"+id).attr("src","'.JURI::root().'components/com_mymuse/assets/images/checkbox.png");
+		                }else{
+		                    $("#img_"+id).attr("src","'.JURI::root().'components/com_mymuse/assets/images/cart.png");
+		                }
+		                if(idx){
+		                    if(idx == 1){
+		                        txt = idx+" "+"item";
+		                    }else{
+		                        txt = idx+" "+"items";
+		                    }
+		                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+		                    $("#mini-cart-text").html(txt);
+		                    $("#mini-cart-link").html(link);
+		                }else{
+
+		                    $("#mini-cart-text").html(" ");
+		                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+		                    link = "";
+		                }
+		                my_modal.open({content: msg+"<br />"+link, width: 300,target:id, delay:'. $params->get('my_delay_fadeout', 3000)  .'});
+		            });
+
+				});
+			});
+
+		});
+
+		';
+	/*
 	foreach($tracks as $track){
 
 	$js .= '
@@ -397,7 +457,7 @@ if(is_countable($tracks)){
 			}else{
 				myvariation = 0;
 			}
-			alert("'.$track->id.'");
+			//alert("'.$track->id.'");
             $.post("'.$url.'",
             {
                 "productid":"'.$track->id.'",
@@ -440,6 +500,7 @@ if(is_countable($tracks)){
 
 	';
 	}
+	*/
 }
 $document->addScriptDeclaration($js);
 ?>

@@ -17,6 +17,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher;
 use Joomla\Component\Mymuse\Site\Helper\CheckoutHelper;
@@ -25,6 +27,7 @@ use Joomla\Component\Mymuse\Site\Model\ProductModel;
 use Joomla\Component\Mymuse\Administrator\Table\ProductTable;
 use Joomla\Component\Categories\Administrator\Table\CategoryTable;
 use Joomla\Registry\Registry;
+use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
 
 
 class CartHelper
@@ -72,7 +75,7 @@ class CartHelper
       $this->cart = $session->get("cart");
     }
 
-    $this->MyMuseProduct  = new ProductModel;
+    $this->MyMuseProduct = MyMuse::getObject('Product','model');
   }
 
 
@@ -83,6 +86,12 @@ class CartHelper
 
   public function getCart(){
     return self::cart;
+  }
+
+  public function setCart(){
+    $session = Factory::getSession();
+    $session->set("cart",$this->cart);
+
   }
 
   
@@ -127,7 +136,7 @@ class CartHelper
         $productid = array();
         $productid["0"] = $prod_id;
     }
-    
+
     if(!$quantity){
         foreach($productid as $pid){
           $quantity[$pid] = 1;
@@ -171,8 +180,11 @@ class CartHelper
             $this->error = JText::_('MYMUSE_INVALID_QUANTITY');
             return False; 
       }
-
-      $res = $this->getProduct($product_id);
+      $v = 0;
+      if(isset($variation[$val])){
+        $v = $variation[$val];
+      }
+      $res = $this->getProduct($product_id, $v);
       $category_id = $res->catid;
       $product_physical = $res->product_physical;
 
@@ -318,6 +330,7 @@ class CartHelper
      */ 
     public function updateCart( ) 
     {
+
       $app    = Factory::getApplication();
       $jinput   = $app->input;
       $params   = MyMuseHelper::getParams();
@@ -453,6 +466,7 @@ class CartHelper
         if($notes){
           $this->cart['notes'] = $notes;
         }
+        $this->setCart();
         $this->buildOrder(1,1);
         return True;
     }
@@ -468,7 +482,7 @@ class CartHelper
       $temp = array();
 
       $j = 0;
-      for ($i=0;$i<$this->cart["idx"];$i++) {
+      for ($i=0; $i < $this->cart["idx"]; $i++) {
 
         if (isset($this->cart[$i]['product_id']) && $this->cart[$i]['product_id'] != $product_id){
           if(isset($this->cart[$i]['variationid']) && $this->cart[$i]['variationid'] != $variationid){
@@ -480,6 +494,7 @@ class CartHelper
       }
       $temp["idx"] = $j;
       $this->cart = $temp;
+      $this->setCart();
       $this->buildOrder(1,1);
       return True;
     }
@@ -492,7 +507,6 @@ class CartHelper
      * @return bool
      */   
     function reset() { 
-
       $this->cart = array();
       $this->cart["idx"]=0;
       return True;
@@ -508,7 +522,7 @@ class CartHelper
     function shipping_needed() { 
 
       $shipping_needed = false;
-      for ($i=0;$i<$this->cart["idx"];$i++) {
+      for ($i=0; $i < $this->cart["idx"]; $i++) {
         if(!isset($this->cart[$i]["product_id"]) ){ continue;}
         if($this->cart[$i]['product_physical']){
           $shipping_needed = true;
@@ -594,8 +608,8 @@ class CartHelper
       
       // put it in the cart 
       $this->cart[$this->cart["idx"]]["coupon_id"] = $coupon->id;
-        $this->cart["idx"]++;
-    $this->buildOrder(1,1);
+      $this->cart["idx"]++;
+      $this->buildOrder(1,1);
       return true;
     }
     
@@ -625,6 +639,8 @@ class CartHelper
       $jinput         = $app->input;
       $params         = MyMuseHelper::getParams();
       $MyMuseCheckout = new CheckoutHelper;
+      $MyMuseProduct  = MyMuse::getObject('Product','Model');
+
       $user           = Factory::getUser();
       $preview_tracks = array();
       $Itemid         = $jinput->get('Itemid', '');
@@ -633,7 +649,7 @@ class CartHelper
 
       // just check that there is an order_item
       if ($this->cart["idx"] == 0) {
-        $this->error = JText::_("MYMUSE_YOUR_CART_IS_EMPTY");
+        $this->error = Text::_("COM_MYMUSE_YOUR_CART_IS_EMPTY");
         return false;
       }
       
@@ -678,24 +694,26 @@ class CartHelper
         }
 
         //get product
-        $order->items[$i] = $this->getProduct($this->cart[$i]['product_id']);
+        $order->items[$i] = $this->getProduct($this->cart[$i]['product_id'], $this->cart[$i]["variation"] );
+
         if($order->items[$i]->product_downloadable){
           $preview_tracks[$i] = $order->items[$i];
         }
         $ext = '';
-        $jason = json_decode($order->items[$i]->digital);
+
+        $jason = $order->items[$i]->digital;
         if(is_array($jason)){
           
           $order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
             id = "variationid_'.$this->cart[$i]['product_id'].'" class="inputbox myformatselect cart ">';
-                      
+
           //if multiple variations, create select box
           for($j=0; $j < count($jason); $j++){
             $order->items[$i]->variation_select .= '<option value="'.$j.'" ';
             if($j == $this->cart[$i]["variation"]){
               $order->items[$i]->variation_select .= 'SELECTED=SELECTED';
             } 
-            $ff = isset($jason[$j]->file_format)? JText::_('MYMUSE_'.strtoupper($jason[$j]->file_format)): $jason[$j]->file_ext;
+            $ff = isset($jason[$j]->file_format)? Text::_('MYMUSE_'.strtoupper($jason[$j]->file_format)): $jason[$j]->file_ext;
             $order->items[$i]->variation_select .= '>'.$ff.'</option>'."\n";
           }
           $order->items[$i]->variation_select  .= "</select>";
@@ -706,8 +724,10 @@ class CartHelper
             $jason[$this->cart[$i]["variation"]]->file_ext : '';
           $order->items[$i]->format = isset($jason[$this->cart[$i]["variation"]]->file_format)?
             $jason[$this->cart[$i]["variation"]]->file_format : '';
+
+
         }else{
-          $order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
+          $order->items[$i]->ext = '';
         }
     
         //physical
@@ -768,14 +788,14 @@ class CartHelper
               ';
 
         // GET PRICES
-        $price = MyMuseProduct::getPrice($order->items[$i]); 
+        $price = $order->items[$i]->price;
 
         if("1" == $params->get('my_price_by_product')){
-          $ff = isset($order->items[$i]->format)? $order->items[$i]->format: $order->items[$i]->ext;
+          $ff = isset($order->items[$i]->format)? strtolower($order->items[$i]->format): $order->items[$i]->ext;
           $price = isset($price[$ff])? $price[$ff] : $price;
         }
+        
 
-//print_pre($price);
         $order->items[$i]->product_item_price = $price['product_price'];
 
 
@@ -799,12 +819,12 @@ class CartHelper
         $order->items[$i]->delete_url .= "&task=cartdelete&view=cart";
         $order->items[$i]->delete_url .= "&product_id=".$order->items[$i]->id;
         $order->items[$i]->delete_url .= "&Itemid=$Itemid";
-        $order->items[$i]->delete_url = JRoute::_($order->items[$i]->delete_url);
+        $order->items[$i]->delete_url = Route::_($order->items[$i]->delete_url);
 
         // Build URL 
         if ($order->items[$i]->parentid){
           $pid = $order->items[$i]->parentid;
-          $aid = $order->items[$i]->parent->catid;
+          $aid = $order->items[$i]->artistid;
         }else{
           $pid = $order->items[$i]->id;
           $aid = $order->items[$i]->catid;
@@ -812,9 +832,7 @@ class CartHelper
 
         $order->items[$i]->url = RouteHelper::getProductRoute($pid, $aid);
         $order->items[$i]->cat_url = RouteHelper::getCategoryRoute($aid);
-        $order->items[$i]->flash = '';
-        
-      
+        $order->items[$i]->flash = ''; 
       
       } //end of cart items
       $order->subtotal_before_discount = $order->order_subtotal;
@@ -992,9 +1010,10 @@ class CartHelper
    * getProduct
    * 
    * @param int $id The product id
+   * @param int $variation The product variation id
    * @return object The product object
    */
-  public function getProduct($id=null)
+  public function getProduct($id=null, $variation=0)
   {
     
 
@@ -1002,43 +1021,47 @@ class CartHelper
     
     
     if(!$id){
-      $this->error = JText::_("MYMUSE_NO_PRODUCT_ID");
+      $this->error = JText::_("COM_MYMUSE_NO_PRODUCT_ID");
       return false;
     }
   
     $db = Factory::getDBO();
-    $row = new ProductTable($db);
+    $model= new ProductModel();
 
-    if(!$row->load($id)){
-      echo "Error: id $id could not be loaded. ".$row->getError();
+    if(!$row = $model->getItem($id)){
+      $this->error =  "Error: id $id could not be loaded. ".$model->getError();
       $this->delete($id);
       return false;
     }
-
-    // take out the file_contents
-    $row->file_contents = null;
     
-    //TODO: check this is the right array index
-    if($name = json_decode($row->file_name) && isset($name[0]->file_length)){
-      $row->file_length = $name[0]->file_length;
-      $row->ext = $name[0]->file_ext;
-    }else{
-      $row->file_length = 0;
-
+    if($variation){
+      $var = $model->getItem($variation);
+      if($var->digital){
+        $row->digital = array();
+        $row->digital = json_decode($var->digital);
+        $row->digital->file_id = $variation;
+        $row->format = strtolower($row->digital->file_format);
+        $row->variation = $variation;
+        $row->product_sku = $var->product_sku;
+      }
     }
-    
+
+
     if(isset($shopper->shopper_group_id)){
       $shopper_group_id = $shopper->shopper_group_id;
     }else{
       $shopper_group_id = $params->get("my_default_shopper_group_id");
     }
 
+//DO I NEED THE PARENT????
+    /*
     // get parent object
     if($row->parentid){
 
-      $parent = new ProductTable($db);
-      $parent->load($row->parentid);
+      $parent = $model->getItem($row->parentid);
+      //$parent->load($row->parentid);
       // Convert the attribs field to an array.
+
       $registry = new Registry;
       $registry->loadString($parent->attribs);
       $parent->attribs = $registry->toArray();
@@ -1079,14 +1102,19 @@ class CartHelper
       $registry->loadString($row->metadata);
       $row->metadata = $registry->toArray();
     }
-    //$row->price = MyMuseModelProduct::getPrice($row);
     
+ */   
     // get the artist object
+    /*
     $cat = new CategoryTable($db);
     $cat->load($artistid);
     $row->artist = $cat;
     $row->category_name = $row->artist->title;
+    */
 
+    $row->price = ProductModel::getPrice($row);
+    //MyMuseHelper::print_pre($row); exit;
     return $row;
+
   }
 }

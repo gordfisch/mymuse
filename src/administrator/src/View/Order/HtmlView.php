@@ -20,6 +20,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Mymuse\Administrator\Model\OrderModel;
 
 /**
@@ -98,7 +99,7 @@ class HtmlView extends BaseHtmlView
 				// Process order plugins
     			$dispatcher				= JDispatcher::getInstance();
     			$extra 					= '';
-				JPluginHelper::importPlugin('system');
+				PluginHelper::importPlugin('system');
 				$results 				= $dispatcher->trigger('onRenderOrder', array ( ));
 				if(isset($results[0])){
 					$extra = $results[0];
@@ -106,7 +107,7 @@ class HtmlView extends BaseHtmlView
 				$this->extra = $extra;
 
 
-				JPluginHelper::importPlugin('mymuse');
+				PluginHelper::importPlugin('mymuse');
 				$results 				= $dispatcher->trigger('onAfterMyMusePayment', array() );
 				$my_email_msg 			= '';
 				foreach($results as $res){

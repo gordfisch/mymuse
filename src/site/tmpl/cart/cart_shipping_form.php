@@ -1,4 +1,4 @@
-<?php 
+h<?php 
 /**
  * @version		$Id$
  * @package		mymuse
@@ -13,11 +13,11 @@
 defined('_JEXEC') or die('Restricted access');
 $params 	= $this->params;
 ?>
-<h2 class="my-title"><?php echo Jtext::_('MYMUSE_SHIPPING'); ?></h2>
+<h2 class="my-title"><?php echo Jtext::_('COM_MYMUSE_SHIPPING'); ?></h2>
 
 
 <?php if($this->order->need_shipping && count($this->shipMethods) == 0){ ?>
-	<div class="message alert"><?php echo JText::_('MYMUSE_NO_SHIPPING_AVAILABLE'); ?></div>
+	<div class="message alert"><?php echo JText::_('COM_MYMUSE_NO_SHIPPING_AVAILABLE'); ?></div>
 <?php  }else{ ?>
 
 
@@ -30,9 +30,9 @@ method="post" name="adminForm">
 <table class="mymuse_cart">
 	<thead>
 	<tr>
-		<th class="myselect" width="50"><b><?php echo JText::_('MYMUSE_SELECT'); ?></b></th>
-		<th class="myshipmethod"><b><?php echo JText::_('MYMUSE_SHIP_METHOD'); ?></b></th>
-		<th class="myprice"><b><?php echo JText::_('MYMUSE_COST'); ?></b></th>
+		<th class="myselect" width="50"><b><?php echo JText::_('COM_MYMUSE_SELECT'); ?></b></th>
+		<th class="myshipmethod"><b><?php echo JText::_('COM_MYMUSE_SHIP_METHOD'); ?></b></th>
+		<th class="myprice"><b><?php echo JText::_('COM_MYMUSE_COST'); ?></b></th>
 	</tr>
 	</thead>
 <?php foreach($this->shipMethods as $sm){ ?>
@@ -56,7 +56,7 @@ method="post" name="adminForm">
 
 <?php  }else{ ?>
 	<input type="hidden" name="shipmethodid" value="60">
-		<?php echo JText::_('MYMUSE_NO_SHIPPING_NEEDED')?> <input type="submit" class="btn uk-button btn-primary" name="confirm" value="<?php echo JText::_('Next'); ?>">
+		<?php echo JText::_('COM_MYMUSE_NO_SHIPPING_NEEDED')?> <input type="submit" class="btn uk-button btn-primary" name="confirm" value="<?php echo JText::_('Next'); ?>">
 <?php }?>
 </form>
 
