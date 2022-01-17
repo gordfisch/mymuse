@@ -2,8 +2,10 @@
 /**
  * @package     Joomla.Site
  * @subpackage  com_mymuse
- *
- * @copyright   Copyright (C) 2021 Arboreta Internet Services. All rights reserved.
+ * @author		Gordon Fisch
+ * @author mail	info@joomlamymuse.com
+ * @website		http://www.joomlamymuse.com
+ * @copyright   Copyright (C) 2022 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -11,14 +13,15 @@ namespace Joomla\Component\Mymuse\Site\View\Product;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;

@@ -214,9 +214,6 @@ class ProductsModel extends ListModel
 		);
 		$query->from('`#__mymuse_product` AS a');
 
-
-
-
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
@@ -248,12 +245,20 @@ class ProductsModel extends ListModel
 			$query->where("a.track_parentid = '" . $trackparentid."'");
 		}
 
+		//readmore
+
+		$query->select($query->length($db->quoteName('a.fulltext')) . ' AS ' . $db->quoteName('readmore'),
+					$db->quoteName('a.ordering'));
+
 		// Join over the categories.
 		$query->select('c.title AS category_title');
+		$query->select('c.alias AS category_alias');
+		$query->select($db->quoteName('c.language', 'category_language'));
 		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
 		
 		// Join over the artist categories.
 		$query->select('art.title AS artist_title');
+		$query->select('art.alias AS artist_alias');
 		$query->join('LEFT', '#__categories AS art ON art.id = a.artistid');
 
 		$query->select( [
@@ -504,7 +509,7 @@ class ProductsModel extends ListModel
 			else
 			{
 				// If no access filter is set, the layout takes some responsibility for display of limited information.
-				if ($item->catid == 0 || $item->category_access === null)
+				if ($item->catid == 0 || !isset($item->category_access ) || $item->category_access === null)
 				{
 					$item->params->set('access-view', in_array($item->access, $groups));
 				}

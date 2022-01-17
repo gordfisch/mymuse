@@ -18,13 +18,14 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\CMS\Table\Table;
-use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\IpHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Helper\QueryHelper;
 
-class StoreModel extends ItemModel
+class StoreModel extends ProductsModel
 {
 	/**
      * Store store object
@@ -83,18 +84,31 @@ class StoreModel extends ItemModel
 	protected function populateState($ordering = null, $direction = null)
 	{
 		parent::populateState($ordering, $direction);
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$jinput 	= $app->input;
+		$params 	= ComponentHelper::getParams('com_mymuse');
+
+		// Get list ordering default from the parameters
+		if ($menu = $app->getMenu()->getActive())
+		{
+			$menuParams = $menu->getParams();
+		}
+		else
+		{
+			$menuParams = new Registry;
+		}
+
+		$mergedParams = clone $params;
+		$mergedParams->merge($menuParams);
 
 		// List state information
 		$limitstart = $jinput->get('limitstart', 0, '', 'int');
 		$this->setState('list.start', $limitstart);
 
-		$params = $this->state->params;
-
-		$limit = $params->get('num_leading_articles') + $params->get('num_intro_articles') + $params->get('num_links');
+		
+		$limit = $mergedParams->get('num_leading_articles') + $mergedParams->get('num_intro_articles') + $mergedParams->get('num_links');
 		$this->setState('list.limit', $limit);
-		$this->setState('list.links', $params->get('num_links'));
+		$this->setState('list.links', $mergedParams->get('num_links'));
 
 		$this->setState('filter.frontpage', true);
 
@@ -108,10 +122,11 @@ class StoreModel extends ItemModel
 		}
 
 		// check for category selection
-		if ($params->get('featured_categories') && implode(',', $params->get('featured_categories'))  == true) {
-			$featuredCategories = $params->get('featured_categories');
+		if ($mergedParams->get('featured_categories') && implode(',', $mergedParams->get('featured_categories'))  == true) {
+			$featuredCategories = $mergedParams->get('featured_categories');
  			$this->setState('filter.frontpage.categories', $featuredCategories);
  		}
+ 		$this->setState('params', $mergedParams);
 	}
 
 	/**
@@ -126,7 +141,9 @@ class StoreModel extends ItemModel
 		if ($limit > 0)
 		{
 			$this->setState('list.limit', $limit);
-			return parent::getItems();
+			$items =  parent::getItems();
+			
+			return $items;
 		}
 		return array();
 
@@ -161,8 +178,8 @@ class StoreModel extends ItemModel
 		$articleOrderby = $params->get('orderby_sec', 'rdate');
 		$articleOrderDate = $params->get('order_date');
 		$categoryOrderby = $params->def('orderby_pri', '');
-		$secondary = ProductHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
-		$primary = ProductHelperQuery::orderbyPrimary($categoryOrderby);
+		$secondary = QueryHelper::orderbySecondary($articleOrderby, $articleOrderDate) . ', ';
+		$primary = QueryHelper::orderbyPrimary($categoryOrderby);
 
 		$orderby = $primary . ' ' . $secondary . ' a.created DESC ';
 		$this->setState('list.ordering', $orderby);
@@ -171,7 +188,6 @@ class StoreModel extends ItemModel
 		$query = parent::getListQuery();
 
 		$query->where('a.featured = 1');
-
 
 		return $query;
 	}

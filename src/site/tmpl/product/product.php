@@ -81,7 +81,7 @@ $document->setMetaData( 'og:type', 'article');
 $document->setMetaData( 'og:url', $prod_uri);
 $document->setMetaData( 'og:title', $this->escape($product->title));
 $document->setMetaData( 'og:description', strip_tags($description));
-$document->setMetaData( 'og:image', JURI::Root().$product->detail_image);
+$document->setMetaData( 'og:image', URI::Root().$product->detail_image);
 
 $document->setMetaData( 'twitter:title', $this->escape($product->title));
 $document->setMetaData( 'twitter:card', 'summary_large_image');
@@ -89,7 +89,7 @@ $document->setMetaData( 'twitter:site', $this->params->get('twitter_handle'));
 $document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'));
 $document->setMetaData( 'twitter:url', $prod_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
-$document->setMetaData( 'twitter:image', JURI::Root().$product->detail_image);
+$document->setMetaData( 'twitter:image', URI::Root().$product->detail_image);
 
 if("1" == $this->params->get('my_price_by_product')){//price by product
 	$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
@@ -236,7 +236,7 @@ if(count($params->get('my_formats', array())) > 1 ){
 }
 
 //set up the ajax cart add
-$url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
+$url = URI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
 
 /* PRODUCT PHYSICAL JAVASCRIPT */
 if($product->product_physical){
@@ -259,9 +259,9 @@ jQuery(document).ready(function($){
                 action = res.action;
                 //alert(res.msg);
                 if(action == "deleted" || action == "failed"){
-                    $("#cart_image_'.$product->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/checkbox.png");
+                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
                 }else{
-                    $("#cart_image_'.$product->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/cart.png");
+                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
                 }
                 if(idx){
                     if(idx == 1){
@@ -269,7 +269,7 @@ jQuery(document).ready(function($){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
@@ -309,9 +309,9 @@ if(count(is_countable($items)?$items:[]) && $items_select){
 
                 //alert(res.msg);
                 if(action == "deleted" || action == "failed"){
-                    $("#cart_image").attr("src","'.JURI::root().'components/com_mymuse/assets/images/checkbox.png");
+                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
                 }else{
-                    $("#cart_image").attr("src","'.JURI::root().'components/com_mymuse/assets/images/cart.png");
+                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
                 }
 
                 if(idx){
@@ -320,7 +320,7 @@ if(count(is_countable($items)?$items:[]) && $items_select){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
@@ -359,9 +359,9 @@ if(count(is_countable($items)?$items:[]) && !$items_select){
 
 		                //alert(res.msg);
 		                if(action == "deleted" || action == "failed"){
-		                    $("#img_'.$item->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/checkbox.png");
+		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
 		                }else{
-		                    $("#img_'.$item->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/cart.png");
+		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
 		                }
 
 		                if(idx){
@@ -370,7 +370,7 @@ if(count(is_countable($items)?$items:[]) && !$items_select){
 		                    }else{
 		                        txt = idx+" "+"items";
 		                    }
-		                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+		                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
 		                        $("#mini-cart-text").html(txt);
 		                        $("#mini-cart-link").html(link);
 		                    }else{
@@ -417,9 +417,9 @@ if(is_countable($tracks)){
 		                action = res.action;
 		                //alert(res.msg);
 		                if(action == "deleted" || action == "failed"){
-		                    $("#img_"+id).attr("src","'.JURI::root().'components/com_mymuse/assets/images/checkbox.png");
+		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
 		                }else{
-		                    $("#img_"+id).attr("src","'.JURI::root().'components/com_mymuse/assets/images/cart.png");
+		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
 		                }
 		                if(idx){
 		                    if(idx == 1){
@@ -427,7 +427,7 @@ if(is_countable($tracks)){
 		                    }else{
 		                        txt = idx+" "+"items";
 		                    }
-		                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+		                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
 		                    $("#mini-cart-text").html(txt);
 		                    $("#mini-cart-link").html(link);
 		                }else{
@@ -473,9 +473,9 @@ if(is_countable($tracks)){
                 action = res.action;
                 //alert(res.msg);
                 if(action == "deleted" || action == "failed"){
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/checkbox.png");
+                    $("#img_'.$track->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
                 }else{
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/cart.png");
+                    $("#img_'.$track->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
                 }
                 if(idx){
                     if(idx == 1){
@@ -483,7 +483,7 @@ if(is_countable($tracks)){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
@@ -513,7 +513,7 @@ $document->addScriptDeclaration($js);
 
 <div class="mymuse">
 	<form method="post"
-	action="<?php JRoute::_('index.php?lang='.$langtag) ?>"
+	action="<?php Route::_('index.php?lang='.$langtag) ?>"
 	onsubmit="return hasProduct(this,<?php echo $count; ?>);"
 	name="mymuseform">
 	<input type="hidden" name="option" value="com_mymuse" /> 

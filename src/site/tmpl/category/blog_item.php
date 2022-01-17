@@ -1,139 +1,114 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_content
- *
- * @copyright   (C) 2006 Open Source Matters, Inc. <https://www.joomla.org>
+ * @version     $Id$
+ * @package     com_mymuse4
+ * @copyright   Copyright (C) 2022. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Gord Fisch info@joomlamymuse.com
  */
 
+// no direct access
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
 
 // Create a shortcut for params.
-$params = $this->item->params;
-$canEdit = $this->item->params->get('access-edit');
-$info    = $params->get('info_block_position', 0);
-
-// Check if associations are implemented. If they are, define the parameter.
-$assocParam = (Associations::isEnabled() && $params->get('show_associations'));
-
-$currentDate   = Factory::getDate()->format('Y-m-d H:i:s');
-$isUnpublished = ($this->item->state == MymuseComponent::CONDITION_UNPUBLISHED || $this->item->publish_up > $currentDate)
-	|| ($this->item->publish_down < $currentDate && $this->item->publish_down !== null);
+$params 	= &$this->item->params;
+$canEdit	= $this->item->params->get('access-edit');
+$lang 		= Factory::getLanguage();
 
 ?>
-<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->category->id)); ?>
-<?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
-	<div class="list-image">
-		<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->category->id)); ?>"
-		><img class="product-image" src="<?php echo $this->item->list_image; ?>" 
-		alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
-		/></a>&nbsp;
-	</div>
+
+<?php if ($this->item->state == 0) : ?>
+<div class="system-unpublished">
 <?php endif; ?>
 
-<div class="item-content">
-	<?php if ($isUnpublished) : ?>
-		<div class="system-unpublished">
-	<?php endif; ?>
-<?php
-// Create a shortcut for params.
-
-$currentDate = Factory::getDate()->format('Y-m-d H:i:s');
-?>
 <?php 
-if ($this->item->state == 0 || $params->get('category_product_link_titles') || ($params->get('show_author') && !empty($this->item->author ))) : ?>
-	<div class="page-header">
-		<?php if ($params->get('show_title')) : ?>
-			<h2 itemprop="name">
-				<?php if ($params->get('category_product_link_titles') && ($params->get('access-view') || $params->get('show_noauth', '0') == '1')) : ?>
-					<a href="<?php echo Route::_(
-						RouteHelper::getProductRoute($this->item->slug, $this->category->id, $this->item->language)
-					); ?>" itemprop="url">
-						<?php echo $this->escape($this->item->title); ?>
-					</a>
-				<?php else : ?>
-					<?php echo $this->escape($this->item->title); ?>
-				<?php endif; ?>
-			</h2>
-		<?php endif; ?>
 
-		<?php if ($this->item->state == 0) : ?>
-			<span class="badge bg-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
+$link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, '');
+if ($params->get('store_show_title')) : ?>
+	<div class="feature-title">
+	<h3>
+		<?php if ($params->get('store_link_titles') && $params->get('access-view')) : ?>
+			<a href="<?php echo Route::_($link); ?>">
+			<?php echo $this->escape($this->item->title); ?></a>
+		<?php else : ?>
+			<?php echo $this->escape($this->item->title); ?>
 		<?php endif; ?>
-
-		<?php if ($this->item->publish_up > $currentDate) : ?>
-			<span class="badge bg-warning"><?php echo Text::_('JNOTPUBLISHEDYET'); ?></span>
-		<?php endif; ?>
-
-		<?php if ($this->item->publish_down !== null && $this->item->publish_down < $currentDate) : ?>
-			<span class="badge bg-warning"><?php echo Text::_('JEXPIRED'); ?></span>
-		<?php endif; ?>
+	</h3>
 	</div>
 <?php endif; ?>
 
-	<?php if ($canEdit) : ?>
-		<?php echo LayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item)); ?>
-	<?php endif; ?>
+<?php if ($params->get('store_show_product_image') && $this->item->list_image): 
 
-	<?php // Todo Not that elegant would be nice to group the params ?>
-	<?php $useDefList = ($params->get('show_modify_date') || $params->get('show_publish_date') || $params->get('show_create_date')
-		|| $params->get('show_hits') || $params->get('show_category') || $params->get('show_parent_category') || $params->get('show_author') || $assocParam); ?>
+	?>
+	<div class="list_image">
+		<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, 'product')); ?>"
+		><img src="<?php echo $this->item->list_image; ?>" 
+		alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
+		<?php if ($params->get('store_product_image_height', 0)) : ?>
+		style="height: <?php echo $params->get('store_product_image_height'); ?>px"
+		<?php endif; ?>
+		/></a>
+	</div>
+<?php endif; ?>
 
-	<?php if ($useDefList && ($info == 0 || $info == 2)) : ?>
-		<?php echo LayoutHelper::render('joomla.content.info_block', array('item' => $this->item, 'params' => $params, 'position' => 'above')); ?>
-	<?php endif; ?>
-	<?php if ($info == 0 && $params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
-		<?php echo LayoutHelper::render('joomla.content.tags', $this->item->tags->itemTags); ?>
-	<?php endif; ?>
 
-	<?php if (!$params->get('show_intro')) : ?>
-		<?php // Content is generated by content plugin event "onContentAfterTitle" ?>
-		<?php echo $this->item->event->afterDisplayTitle; ?>
-	<?php endif; ?>
 
-	<?php // Content is generated by content plugin event "onContentBeforeDisplay" ?>
-	<?php echo $this->item->event->beforeDisplayContent; ?>
+<?php if (!$params->get('store_show_intro_text')) : ?>
+	<?php echo $this->item->event->afterDisplayTitle; ?>
+<?php endif; ?>
 
+<?php echo $this->item->event->beforeDisplayContent; ?>
+
+
+<?php if($params->get('store_show_intro_text')) :?>
 	<?php echo $this->item->introtext; ?>
+<?php endif; ?>
 
-	<?php if ($info == 1 || $info == 2) : ?>
-		<?php if ($useDefList) : ?>
-			<?php echo LayoutHelper::render('joomla.content.info_block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
-		<?php endif; ?>
-		<?php if ($params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
-			<?php echo LayoutHelper::render('joomla.content.tags', $this->item->tags->itemTags); ?>
-		<?php endif; ?>
-	<?php endif; ?>
 
-	<?php if ($params->get('show_readmore') && $this->item->readmore) :
-		if ($params->get('access-view')) :
-			$link = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->catid, $this->item->language));
-		else :
-			$menu = Factory::getApplication()->getMenu();
-			$active = $menu->getActive();
-			$itemId = $active->id;
-			$link = new Uri(Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
-			$link->setVar('return', base64_encode(RouteHelper::getProductRoute($this->item->slug, $this->item->catid, $this->item->language)));
-		endif; ?>
+<?php 
+if ($params->get('store_show_readmore') && $this->item->readmore) :
+	if ($params->get('access-view')) :
+		$link = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->catid));
+	else :
+		$menu = Factory::getApplication()->getMenu();
+		$active = $menu->getActive();
+		$itemId = $active->id;
+		$link1 = Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
+		$returnURL = Route::_(MyMuseHelperRoute::getProductRoute($this->item->slug, $this->item->catid));
+		$link = new URI($link1);
+		$link->setVar('return', base64_encode($returnURL));
+	endif;
+?>
+		<p class="readmore">
+				<a href="<?php echo $link; ?>">
+					<?php if (!$params->get('access-view')) :
+						echo Text::_('COM_MYMUSE_REGISTER_TO_READ_MORE');
+					elseif ($readmore = $this->item->alternative_readmore) :
+						echo $readmore;
+						if ($params->get('store_show_readmore_title', 0) != 0) :
+						    echo HtmlHelper::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+						endif;
+					elseif ($params->get('show_readmore_title', 0) == 0) :
+						echo Text::sprintf('COM_MYMUSE_READ_MORE_TITLE');
+					else :
+						echo Text::_('COM_MYMUSE_READ_MORE').' ';
+						echo HtmlHelper::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+					endif; ?></a>
+		</p>
+<?php endif; ?>
 
-		<?php echo LayoutHelper::render('joomla.content.readmore', array('item' => $this->item, 'params' => $params, 'link' => $link)); ?>
-
-	<?php endif; ?>
-
-	<?php if ($isUnpublished) : ?>
-		</div>
-	<?php endif; ?>
-
-	<?php // Content is generated by content plugin event "onContentAfterDisplay" ?>
-	<?php echo $this->item->event->afterDisplayContent; ?>
+<?php if ($this->item->state == 0) : ?>
 </div>
+<?php endif; ?>
+
+<div class="item-separator"></div>
+<?php echo $this->item->event->afterDisplayContent; ?>

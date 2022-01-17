@@ -1,5 +1,6 @@
 <?php 
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
@@ -11,11 +12,11 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 
 		<?php if( $this->params->get("info_block_show_title",0) ) : ?>
-			<h2 class="product-details-title"><?php echo JText::_('COM_MYMUSE_PRODUCT_DETAILS'); ?></h2>
+			<h2 class="product-details-title"><?php echo Text::_('COM_MYMUSE_PRODUCT_DETAILS'); ?></h2>
 		<?php endif; ?>
 
 		<?php if( $this->params->get("show_special_status",0) && $this->item->special_status) : ?>
-			<h3 class="pre-order-text"><?php echo JText::_($this->item->special_status); ?></h3>
+			<h3 class="pre-order-text"><?php echo Text::_($this->item->special_status); ?></h3>
 
 		<?php endif; ?>
 
@@ -25,8 +26,9 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 			<?php if( $this->params->get("show_artist",0) ) : ?>
 			<li class="product-detail-item">
-		        <span class="key artist"><?php echo JText::_('COM_MYMUSE_ARTIST'); ?>:</span>
+		        <span class="key artist"><?php echo Text::_('COM_MYMUSE_ARTIST'); ?>:</span>
 		        <span class="value">
+		        	<?php echo RouteHelper::getCategoryRoute($this->item->artistid); ?>
 		        	<?php if( $this->params->get("link_artist",0) ) :
 		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($this->item->artistid)).'">'.$this->item->artist_title.'</a>';
 		                else:
@@ -40,8 +42,9 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		    <?php if( $this->params->get("show_category",0) ) : ?>
 			<li class="product-detail-item">
-		        <span class="key category"><?php echo JText::_('COM_MYMUSE_CATEGORY'); ?>:</span>
+		        <span class="key category"><?php echo Text::_('COM_MYMUSE_CATEGORY'); ?>:</span>
 		        <span class="value">
+		        	<?php echo RouteHelper::getCategoryRoute($this->item->catid); ?>
 		        	<?php if( $this->params->get("link_category",0) ) :
 		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($this->item->catid)).'">'.$this->item->category_title.'</a>';
 		                else:
@@ -80,7 +83,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    		$date_string = 'COM_MYMUSE_DATE_'.strtoupper($date_type); 
 		    		?>
 		    <li class="product-detail-item">
-		        <span class="key date"><?php echo JText::_($date_string); ?>:</span>
+		        <span class="key date"><?php echo Text::_($date_string); ?>:</span>
 		        <span class="value"><?php echo $this->item->$date_type; ?></span>
 		    </li>
 		    <?php endif; ?>
@@ -90,42 +93,42 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		    <?php if( $this->params->get("show_product_full_time",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key full-time"><?php echo JText::_('COM_MYMUSE_PRODUCT_FULL_TIME_LABEL'); ?>:</span>
+		        <span class="key full-time"><?php echo Text::_('COM_MYMUSE_PRODUCT_FULL_TIME_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_full_time','0'); ?></span>
 		    </li>
 		    <?php endif; ?>
 
 		    <?php if( $this->params->get("show_product_studio",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_PRODUCT_STUDIO_LABEL'); ?>:</span>
+		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_STUDIO_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_studio',''); ?></span>
 		    </li>
 		    <?php endif; ?>
 
 		    <?php if( $this->params->get("show_product_publisher",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_PRODUCT_PUBLISHER_LABEL'); ?>:</span>
+		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_PUBLISHER_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_publisher',''); ?></span>
 		    </li>
 		    <?php endif; ?>
 
 		    <?php if( $this->params->get("show_product_producer",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_PRODUCT_PRODUCER_LABEL'); ?>:</span>
+		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_PRODUCER_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_producer',''); ?></span>
 		    </li>
 		    <?php endif; ?>
 
 		    <?php if( $this->params->get("show_product_country",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_PRODUCT_COUNTRY_LABEL'); ?>:</span>
+		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_COUNTRY_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_country',''); ?></span>
 		    </li>
 		    <?php endif; ?>
 
 		   <?php if( $this->params->get("show_author",0) ) : ?>
 			<li class="product-detail-item">
-		        <span class="key author"><?php echo JText::_('JAUTHOR'); ?>:</span>
+		        <span class="key author"><?php echo Text::_('JAUTHOR'); ?>:</span>
 		        <span class="value">
 		        	<?php $author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author; ?>
 		        	<?php if (!empty($this->item->contactid) && $this->params->get('link_author') == true): ?>
@@ -145,7 +148,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		    <?php if( $this->params->get("show_hits",0) ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key hits"><?php echo JText::_('COM_MYMUSE_HITS_FILTER_LABEL'); ?>:</span>
+		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_HITS_FILTER_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->hits; ?></span>
 		    </li>
 		    <?php endif; ?>
@@ -156,17 +159,17 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    	<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_news_release_link",0) ) : ?>
+		    <?php if( $this->params->get("show_news_release_link",0) && $this->item->attribs->get('media_rls','') ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key news-release"><a href="<?php echo $this->item->attribs->get('media_rls',''); ?>"><?php echo JText::_('COM_MYMUSE_NEWS_RELEASE'); ?></a></span>
+		        <span class="key news-release"><a href="<?php echo $this->item->attribs->get('media_rls',''); ?>"><?php echo Text::_('COM_MYMUSE_NEWS_RELEASE'); ?></a></span>
 		        
 		    </li>
 		    <?php endif; ?>
 
 
-		    <?php if( $this->params->get("show_media_link",0) ) : ?>
+		    <?php if( $this->params->get("show_media_link",0) && $this->item->attribs->get('media_link','') ) : ?>
 		    <li class="product-detail-item">
-		        <span class="key media-link"><a href="<?php echo $this->item->attribs->get('media_link',''); ?>"><?php echo JText::_('COM_MYMUSE_MEDIA'); ?></a></span>
+		        <span class="key media-link"><a href="<?php echo $this->item->attribs->get('media_link',''); ?>"><?php echo Text::_('COM_MYMUSE_MEDIA'); ?></a></span>
 
 		    </li>
 		    <?php endif; ?>

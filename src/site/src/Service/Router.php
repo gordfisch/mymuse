@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_mymuse
  *
- * @copyright   Copyright (C) 2021 Arboreta Internet Services. All rights reserved.
+ * @copyright   Copyright (C) 2022 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -11,562 +11,303 @@ namespace Joomla\Component\Mymuse\Site\Service;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Component\Router\RouterBase;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Categories\CategoryFactoryInterface;
+use Joomla\CMS\Categories\CategoryInterface;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Component\Router\RouterView;
+use Joomla\CMS\Component\Router\RouterViewConfiguration;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\Component\Mymuse\Site\Service\MymuseNomenuRules as NomenuRules;
+//use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
+use Joomla\CMS\Menu\AbstractMenu;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Categories\Categories;
 
 /**
- * Routing class from com_banners
+ * Routing class of com_mymuse
  *
  * @since  3.3
  */
-class Router extends RouterBase
+class Router extends RouterView
 {
+	/**
+	 * Flag to remove IDs
+	 *
+	 * @var    boolean
+	 */
+	protected $noIDs = false;
 
 	/**
-	 * Build the route for the com_mymuse component
+	 * The category factory
 	 *
-	 * @param   array  $query  An array of URL arguments
+	 * @var CategoryFactoryInterface
 	 *
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
-	 *
-	 * @since   3.3
+	 * @since  4.0.0
 	 */
-	public function build(&$query)
+	private $categoryFactory;
+
+	/**
+	 * The category cache
+	 *
+	 * @var  array
+	 *
+	 * @since  4.0.0
+	 */
+	private $categoryCache = [];
+
+	/**
+	 * The db
+	 *
+	 * @var DatabaseInterface
+	 *
+	 * @since  4.0.0
+	 */
+	private $db;
+
+	/**
+	 * Mymuse Component router constructor
+	 *
+	 * @param   SiteApplication           $app              The application object
+	 * @param   AbstractMenu              $menu             The menu object to work with
+	 * @param   CategoryFactoryInterface  $categoryFactory  The category object
+	 * @param   DatabaseInterface         $db               The database object
+	 */
+	public function __construct(SiteApplication $app, AbstractMenu $menu, CategoryFactoryInterface $categoryFactory, DatabaseInterface $db)
 	{
-		//MymuseHelper::print_pre($query); 
-		/* ex product: index.php?option=com_mymuse&view=category&layout=blog&id=11 */
+		$this->categoryFactory = $categoryFactory;
+		$this->db              = $db;
 
-	$params = MyMuseHelper::getParams();
-	$menu		= Factory::getApplication()->getMenu();
-	$advanced	= $params->get('sef_ids', 0);
-	$segments = array();
-	$dbo = Factory::getDbo();
-	static $home_id;
+		$params = MymuseHelper::getParams('com_mymuse');
+		$this->noIDs = (bool) $params->get('sef_ids');
 
-	if(!$home_id){
-		$q = 'SELECT id from #__menu WHERE home=1';
-		$dbo->setQuery($q);
-		$home_id = $dbo->loadResult();
-	}
+		$categories = new RouterViewConfiguration('categories');
+		$categories->setKey('id');
+		$this->registerView($categories);
 
-	
-	if($params->get('top_menu_item',0)){
-		$q = 'SELECT alias from #__menu WHERE id="'.$params->get('top_menu_item').'"';
-		$dbo->setQuery($q);
-		if($alias = $dbo->loadResult()){
-			$segments[] = $alias;
-			$query['Itemid'] = $params->get('top_menu_item');
-		}
+		$category = new RouterViewConfiguration('category');
+		$category->setKey('id')->setParent($categories, 'catid')->setNestable()->addLayout('blog');
+		$this->registerView($category);
 
-	}
+		$product = new RouterViewConfiguration('product');
+		$product->setKey('id')->setParent($category, 'catid');
+		$this->registerView($product);
 
-	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
-	if (empty($query['Itemid'])) {
-		$menuItem = $menu->getActive();
-		$menuItemGiven = false;
-	}
-	else {
-		$menuItem = $menu->getItem($query['Itemid']);
-		$menuItemGiven = true;
-		//$query = $menuItem->query;
-	}
-//echo 'menuItemGiven: '.$menuItemGiven;
-	// we need to have a view in the query or it is an invalid URL
-	if (isset($query['view'])) {
-		$view = $query['view'];
-	}
-	else {
-		return $segments;
-	}
-	
-	// is there a top menu item specified?
+		$this->registerView(new RouterViewConfiguration('store'));
+		$this->registerView(new RouterViewConfiguration('cart'));
+		$this->registerView(new RouterViewConfiguration('mymuse'));
+		$this->registerView(new RouterViewConfiguration('reports'));
+		$this->registerView(new RouterViewConfiguration('shopper'));
+		$this->registerView(new RouterViewConfiguration('tracks'));
+
+		$form = new RouterViewConfiguration('form');
+		$form->setKey('a_id');
+		$this->registerView($form);
+
+		parent::__construct($app, $menu);
 
 
-	//echo $query['Itemid'];
-    if(isset($query['task']) && $query['task'] == "checkout"){
-    	unset($query['task']);
-    	unset($query['view']);
-        $segments[] = "checkout";
-        return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "shipping"){
-    	unset($query['task']);
-    	unset($query['view']);
-        $segments[] = "shipping";
-        return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "addtocart"){
-    	unset($query['task']);
-    	unset($query['view']);
-        $segments[] = "addtocart";
-        return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "updatecart"){
-    	unset($query['task']);
-    	unset($query['view']);
-        $segments[] = "updatecart";
-        return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "cartdelete"){
-    	unset($query['task']);
-    	unset($query['view']);
-        $segments[] = "cartdelete";
-        return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "showcart"){
-    	unset($query['task']);
-    	unset($query['view']);
-        $segments[] = "showcart";
-        return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "register"){
-
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "register";
-    	return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "confirm"){
-    
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "confirm";
-    	return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "thankyou"){
-
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "thankyou";
-    	return $segments;
-    }	
-    if(isset($query['task']) && $query['task'] == "vieworder"){
-    
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "vieworder";
-    	return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "accdownloads"){
-    	
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "accdownloads";
-    	return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "downloads"){
-    
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "downloads";
-    	return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "vieworder"){
-    
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "vieworder";
-    	return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "paycancel"){
-    
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "paycancel";
-    	return $segments;
-    }
-    if(isset($query['task']) && $query['task'] == "downloadfile"){
-    
-    	unset($query['task']);
-    	unset($query['view']);
-    	$segments[] = "downloadfile";
-    	return $segments;
-    }
-
-	// are we dealing with an product or category that is attached to a menu item?
-	if ($menuItemGiven && 
-		$menuItem->query['view'] == $query['view'] && isset($query['id']) 
-			&& isset($menuItem->query['id']) && $menuItem->query['id'] == intval($query['id'])) {
-
-		unset($query['view']);
-
-		if (isset($query['id'])) {
-			unset($query['id']);
-		}
+		$this->attachRule(new MenuRules($this));
+		$this->attachRule(new StandardRules($this));
+		$this->attachRule(new NomenuRules($this));
 		
-		if (isset($query['layout'])) {
-			unset($query['layout']);
-		}
-
-		unset($query['id']);
-
-		return $segments;
 	}
-	//Array([option]=com_mymuse,[view]=product,[id]=1,[catid]=9,[lang]=en-GB,[Itemid]=90)
-	if ($view == 'category' || $view == 'product')
+
+	/**
+	 * Method to get the segment(s) for a category
+	 *
+	 * @param   string  $id     ID of the category to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 */
+	public function getCategorySegment($id, $query)
 	{
-		if($params->get('top_menu_item','')){
-			$query['Itemid'] = $params->get('top_menu_item');
-		}
-		
-		unset($query['view']);
-		
-		if ($view == 'product') {
-			
-			if($params->get('my_use_alias','')){
-					$aquery = $dbo->setQuery($dbo->getQuery(true)
-						->select('alias')
-						->from('#__mymuse_product')
-						->where('id='.(int)$query['id'])
-					);
-					$alias = $dbo->loadResult();
-					$segments[] = $alias;
-					unset($query['id']);
-					unset($query['catid']);
-					return $segments;
-			}
-			
-			
-			
-			if (isset($query['id']) && isset($query['catid']) && $query['catid']) {
-				$catid = $query['catid'];
-				
-				// Make sure we have the id and the alias
-				if (strpos($query['id'], ':') === false) {
-					
-					$aquery = $dbo->setQuery($dbo->getQuery(true)
-						->select('alias')
-						->from('#__mymuse_product')
-						->where('id='.(int)$query['id'])
-					);
-					$alias = $dbo->loadResult();
-					$query['id'] = $query['id'].':'.$alias;
-					
+		$category = $this->getCategories(['access' => true])->get($id);
+
+		if ($category)
+		{
+			$path = array_reverse($category->getPath(), true);
+			$path[0] = '1:root';
+
+			if ($this->noIDs)
+			{
+				foreach ($path as &$segment)
+				{
+					list($id, $segment) = explode(':', $segment, 2);
 				}
-			} else {
-				// we should have these two set for this view.  If we don't, it is an error
-				return $segments;
-			}
-		}
-		else {
-			if (isset($query['id'])) {
-				$catid = $query['id'];
-			} else {
-				// we should have id set for this view.  If we don't, it is an error
-				return $segments;
-			}
-		}
-
-
-		if ($menuItemGiven && isset($menuItem->query['id'])) {
-			$mCatid = $menuItem->query['id'];
-		} else {
-			$mCatid = 0;
-		}
-
-		$categories = Categories::getInstance('Mymuse');
-		$category = $categories->get($catid);
-
-		if (!$category) {
-			// we couldn't find the category we were given.  Bail.
-			return $segments;
-		}
-
-		$path = array_reverse($category->getPath());
-		$array = array();
-		foreach($path as $id) {
-			if ((int)$id == (int)$mCatid) {
-				break;
 			}
 
-			list($tmp, $id) = explode(':', $id, 2);
-
-			$array[] = $id;
+			return $path;
 		}
 
-		$array = array_reverse($array);
-		if($params->get('my_use_alias')){
-
-		}elseif (!$advanced && count($array)) {
-			$array[0] = (int)$catid.':'.$array[0];
-		}
-		$array = [array_pop($array)];
-		$segments = array_merge($segments, $array);
-	
-		if ($view == 'product') {
-			if ($advanced || $params->get('my_use_alias')) {
-				list($tmp, $id) = explode(':', $query['id'], 2);
-			}
-			else {
-				$id = $query['id'];
-			}
-			$segments[] = $id;
-		}
-		unset($query['id']);
-		unset($query['catid']);
-		unset($query['Itemid']);
-	}
-
-//print_r($segments);
-
-		return $segments;
+		return array();
 	}
 
 	/**
-	 * Parse the segments of a URL.
+	 * Method to get the segment(s) for a category
 	 *
-	 * @param   array  $segments  The segments of the URL to parse.
+	 * @param   string  $id     ID of the category to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
 	 *
-	 * @return  array  The URL attributes to be used by the application.
-	 *
-	 * @since   3.3
+	 * @return  array|string  The segments of this item
 	 */
-	public function parse(&$segments)
+	public function getCategoriesSegment($id, $query)
 	{
-	
-		$vars = array();
+		return $this->getCategorySegment($id, $query);
+	}
 
-		//Get the active menu item.
-		$app	= Factory::getApplication();
-		$jinput = $app->input;
-		$task = $jinput->get('task','');
-		if($task == "user.logout"){
-			return $segments;
+	/**
+	 * Method to get the segment(s) for a product
+	 *
+	 * @param   string  $id     ID of the product to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 */
+	public function getProductSegment($id, $query)
+	{
+		if (!strpos($id, ':'))
+		{
+			$id      = (int) $id;
+			$dbquery = $this->db->getQuery(true);
+			$dbquery->select($this->db->quoteName('alias'))
+				->from($this->db->quoteName('#__mymuse_product'))
+				->where($this->db->quoteName('id') . ' = :id')
+				->bind(':id', $id, ParameterType::INTEGER);
+			$this->db->setQuery($dbquery);
+
+			$id .= ':' . $this->db->loadResult();
 		}
 
-		$menu	= $app->getMenu();
-		$item	= $menu->getActive();
-		
-		$params = MyMuseHelper::getParams();
-		$advanced	= $params->get('sef_ids', 0);
-		$dbo = Factory::getDBO();
-		
-		// Count route segments
-		$count = count($segments);
-		//MyMuseHelper::print_pre($segments); 
-		//echo "item"; MyMuseHelper::print_pre($item); 
+		if ($this->noIDs)
+		{
+			list($void, $segment) = explode(':', $id, 2);
 
-
-		// Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
-		// the first segment is the view and the last segment is the id of the product or category.
-
-	    if (!isset($item)) {
-	    	if($params->get('top_menu_item','')){
-	    		$item	= $menu->getItem($params->get('top_menu_item'));
-	    		$jinput->set('Itemid', $params->get('top_menu_item'));
-	    	}
-	    }
-
-	    if(isset($item->alias) && $item->alias == $segments[0]){
-	    	$vars['option'] = 'com_mymuse';
-	    	if($count == 1){
-	    		$vars['view'] = $item->query['view'];
-
-	    		return $vars;
-	    	}
-	    	$count--;
-	    	$first = array_shift($segments);
-	    }
-
-
-
-		$segment = array_shift($segments);
-	    //shipping|addtocart|updatecart|cartdelete|showcart|checkout
-	    if($segment == "checkout"){
-	        $vars['option'] = 'com_mymuse';
-	        $vars['view'] = 'cart';
-	        $vars['task'] = 'checkout';
-	        
-	        return $vars;
-	    }
-	    if($segment == "shipping"){
-	        $vars['option'] = 'com_mymuse';
-	        $vars['view'] = 'cart';
-	        $vars['task'] = 'shipping';
-	        
-	        return $vars;
-	    }
-	    if($segment == "addtocart"){
-	        $vars['option'] = 'com_mymuse';
-	        $vars['view'] = 'cart';
-	        $vars['task'] = 'addtocart';
-	        
-	        return $vars;
-	    }
-	    if($segment == "updatecart"){
-	        $vars['option'] = 'com_mymuse';
-	        $vars['view'] = 'cart';
-	        $vars['task'] = 'updatecart';
-	        
-	        return $vars;
-	    }
-	    if($segment == "cartdelete"){
-	        $vars['option'] = 'com_mymuse';
-	        $vars['view'] = 'cart';
-	        $vars['task'] = 'cartdelete';
-	        
-	        return $vars;
-	    }
-	    if($segment == "showcart"){
-	        $vars['option'] = 'com_mymuse';
-	        $vars['view'] = 'cart';
-	        $vars['task'] = 'showcart';
-
-	        return $vars;
-	    }
-	    if($segment == "register"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'shopper';
-	    	$vars['task'] = 'register';
-	    	$vars['layout'] = 'register';
-	    
-	    	return $vars;
-	    }
-	    if($segment == "confirm"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'cart';
-	    	$vars['task'] = 'confirm';
-	  
-	    	return $vars;
-	    }
-	    if($segment == "thankyou"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'cart';
-	    	$vars['task'] = 'thankyou';
-	   
-	    	return $vars;
-	    }
-	    if($segment == "vieworder"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'cart';
-	    	$vars['task'] = 'vieworder';
-	    
-	    	return $vars;
-	    }
-	    if($segment == "downloads"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'store';
-	    	$vars['task'] = 'downloads';
-
-	    	return $vars;
-	    }
-	    if($segment == "accdownloads"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'store';
-	    	$vars['task'] = 'downloads';
-	    
-	    	return $vars;
-	    }
-		if($segment == "vieworder"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'cart';
-	    	$vars['task'] = 'vieworder';
-	    	$vars['layout'] = 'cart';
-	    	return $vars;
-	    }
-	    if($segment == "paycancel"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'cart';
-	    	$vars['task'] = 'paycancel';
-	    	$vars['layout'] = 'cart';
-	    	return $vars;
-	    }
-	    if($segment == "downloadfile"){
-	    	$vars['option'] = 'com_mymuse';
-	    	$vars['view'] = 'store';
-	    	$vars['task'] = 'downloadfile';
-	    	return $vars;
-	    }
-
-		if(strpos($segment,':')){
-	    	list($id, $alias) = explode(':', $segment, 2);
-	    }else{
-	    	//no numbers.
-	    	$alias = $segment;
-	    }
-
-
-		//check if this is a product alias.
-		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$alias.'"';
-
-		$dbo->setQuery($query);
-		if($product = $dbo->loadObject()){
-			$vars['option'] = 'com_mymuse';
-			$vars['view'] = 'product';
-			$vars['id'] = (int)$product->id;
-			$vars['catid'] = (int)$product->catid;
-			//our work here is done
-			return $vars;
+			return array($void => $segment);
 		}
 
-		$category = '';
-		//check if this is a category alias.
-		$query = 'SELECT id from #__categories WHERE alias="'.$alias.'" and extension="com_mymuse"';
-		
-		$dbo->setQuery($query);
-		if($category = $dbo->loadResult()){
-			$vars['option'] = 'com_mymuse';
-			$vars['view'] = 'category';
-			$vars['id'] = (int)$category;
-			if(\count($segments) == 0){
-				//our work here is done
-				return $vars;
+		return array((int) $id => $id);
+	}
+
+	/**
+	 * Method to get the segment(s) for a form
+	 *
+	 * @param   string  $id     ID of the product form to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 *
+	 * @since   3.7.3
+	 */
+	public function getFormSegment($id, $query)
+	{
+		return $this->getProductSegment($id, $query);
+	}
+
+	/**
+	 * Method to get the id for a category
+	 *
+	 * @param   string  $segment  Segment to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 */
+	public function getCategoryId($segment, $query)
+	{
+		if (isset($query['id']))
+		{
+			$category = $this->getCategories(['access' => false])->get($query['id']);
+
+			if ($category)
+			{
+				foreach ($category->getChildren() as $child)
+				{
+					if ($this->noIDs)
+					{
+						if ($child->alias == $segment)
+						{
+							return $child->id;
+						}
+					}
+					else
+					{
+						if ($child->id == (int) $segment)
+						{
+							return $child->id;
+						}
+					}
+				}
 			}
 		}
-		$segment = array_shift($segments);
 
+		return false;
+	}
 
+	/**
+	 * Method to get the segment(s) for a category
+	 *
+	 * @param   string  $segment  Segment to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 */
+	public function getCategoriesId($segment, $query)
+	{
+		return $this->getCategoryId($segment, $query);
+	}
 
-		//could be category/product
-		
-		$prodid = '';
+	/**
+	 * Method to get the segment(s) for an product
+	 *
+	 * @param   string  $segment  Segment of the product to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 */
+	public function getProductId($segment, $query)
+	{
+		if ($this->noIDs)
+		{
+			$dbquery = $this->db->getQuery(true);
+			$dbquery->select($this->db->quoteName('id'))
+				->from($this->db->quoteName('#__content'))
+				->where(
+					[
+						$this->db->quoteName('alias') . ' = :alias',
+						$this->db->quoteName('catid') . ' = :catid',
+					]
+				)
+				->bind(':alias', $segment)
+				->bind(':catid', $query['id'], ParameterType::INTEGER);
+			$this->db->setQuery($dbquery);
 
-		//first get category
-		/*
-		if($advanced){
-	    	//no numbers.
-	    	$cat_alias = $segment;
-	    	//check if this is a category alias.
-	    	$query = 'SELECT id from #__categories WHERE alias="'.$cat_alias.'" and extension="com_mymuse"';
-	    	
-	    	$dbo->setQuery($query);
-	    	if($catid = $dbo->loadResult()){
-	    		$vars['option'] = 'com_mymuse';
-	    		$vars['catid'] = $catid;
-	    	}
-	    }elseif(strpos($segment,':')){
-	    	list($catid, $cat_alias) = explode(':', $segment, 2);
-	    	$category = JCategories::getInstance('Mymuse')->get($catid);
-	    	if ($category && $category->alias == $alias) {
-	    		$vars['option'] = 'com_mymuse';
-				$vars['catid'] = $catid;
-			}
-	    }
-	    */
+			return (int) $this->db->loadResult();
+		}
 
-	    if($category){
-	    	//look for a product
-	    	if($advanced){
-	    		//no numbers.
-	    		$prod_alias = $segment;
-	    	}else{
-				list($id, $prod_alias) = explode(':', $segment, 2);
-			}
+		return (int) $segment;
+	}
 
-			$query = 'SELECT id FROM #__mymuse_product WHERE alias = "'.$prod_alias.'"';
-			$dbo->setQuery($query);
-			if($id = $dbo->loadResult()){
-				$vars['view'] = 'product';
-				$vars['catid'] = $category;
-				$vars['id'] = (int)$id;
+	/**
+	 * Method to get categories from cache
+	 *
+	 * @param   array  $options   The options for retrieving categories
+	 *
+	 * @return  CategoryInterface  The object containing categories
+	 *
+	 * @since   4.0.0
+	 */
+	public function getCategories(array $options = []): CategoryInterface
+	{
+		$key = serialize($options);
 
-				//MyMuseHelper::print_pre($vars); exit;
-				return $vars;
-			}
-	    }		
+		if (!isset($this->categoryCache[$key]))
+		{
+			$this->categoryCache[$key] = $this->categoryFactory->createCategory($options);
+		}
 
-		return $vars;
+		return $this->categoryCache[$key];
 	}
 }

@@ -1,32 +1,109 @@
 <?php
 /**
- * @version		$Id$
- * @package		mymuse
- * @copyright		Copyright © 2010 - Arboreta Internet Services - All rights reserved.
- * @license		GNU/GPL
- * @author			Gordon Fisch
- * @author mail		info@joomlamymuse.com
- * @website			http://www.joomlamymuse.com
+ * @package     Joomla.Site
+ * @subpackage  com_mymuse
+ * @author		Gordon Fisch
+ * @author mail	info@joomlamymuse.com
+ * @website		http://www.joomlamymuse.com
+ * @copyright   Copyright (C) 2022 Arboreta Internet Services. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Joomla\Component\Mymuse\Site\View\Shopper;
 
-jimport( 'joomla.application.component.view' );
+\defined('_JEXEC') or die;
 
-class myMuseViewShopper extends JViewLegacy
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Helper\CartHelper;
+use Joomla\Component\Mymuse\Site\Model\StoreModel;
+use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
+
+
+class HtmlView extends BaseHtmlView
 {
+
+	/**
+	 * MyMuseShopper object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseShopper = null;
+
+	/**
+	 * shopper object ref
+	 *
+	 * @var object
+	 */
+	var $shopper = null;
+
+	/**
+	 * MyMuseCart  object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseCart = null;
+
+	/**
+	 * cart
+	 *
+	 * @var object
+	 */
+	var $cart = null;
+
+	/**
+	 * MyMuseStore object ref
+	 *
+	 * @var object
+	 */
+	var $MyMuseStore = null;
+
+	/**
+	 * store object ref
+	 *
+	 * @var object
+	 */
+	var $store = null;
+
+	/**
+	 * user
+	 *
+	 * @var object
+	 */
+	var $user = null;
+
+
 	function __construct()       {
     	parent::__construct();
     	
-        $layout = JFactory::getApplication()->input->get('layout', 'register');
-         parent::setLayout($layout);         
+        $layout = Factory::getApplication()->input->get('layout', 'register');
+        parent::setLayout($layout);  
+
+        $this->MyMuseShopper  	=& MyMuse::getObject('Shopper','model');
+        $this->MyMuseShopper  	=& MyMuse::getObject('Shopper','model');
+        $this->shopper 			= $this->MyMuseShopper->getShopper();
+        $this->MyMuseCart  		= MyMuse::getObject('cart','helper');
+        $this->MyMuseStore  	= MyMuse::getObject('store','model');
+        $this->store 			= $this->MyMuseStore->_store;
+        $this->user				= Factory::getUser();
+
     }
         
 	function display($tpl = null){
-		$jinput 	= JFactory::getApplication()->input;
-		$mainframe = JFactory::getApplication();
-		$params = MyMuseHelper::getParams();
+
+		$jinput 		= Factory::getApplication()->input;
+		$app 			= Factory::getApplication();
+		$params 		= MyMuseHelper::getParams();
+		$return 		= $jinput->get('return','');
 		
 		// Get the view data.
 		$this->data		= $this->get('Data');
@@ -34,46 +111,37 @@ class myMuseViewShopper extends JViewLegacy
 		$this->state	= $this->get('State');
 		$this->params	= $this->state->get('params');
 
-		$MyMuseShopper  = MyMuse::getObject('shopper','models');
-		$shopper 		=& $MyMuseShopper->getShopper();
-		$MyMuseStore  	= MyMuse::getObject('store','models');
-		$store 			= $MyMuseStore->_store;
-		$MyMuseCart  	= MyMuse::getObject('cart','helpers');
-		$return 		= $jinput->get('return','');
-		$user			= JFactory::getUser();
-		if(!$shopper->id && $user->get('id')){
+		//MyMuseHelper::print_pre($this->shopper); exit;
+		if(!$this->shopper->id && $this->user->get('id')){
 			// not a shopper but already user
 			// try to make first and last names
-			list($shopper->first_name, $shopper->last_name) = explode(" ", $user->get('name'), 2);
+			list($shopper->first_name, $shopper->last_name) = explode(" ", $this->user->get('name'), 2);
 
 		}
 	
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 		
-		$document		= JFactory::getDocument();
-		$dispatcher		= JDispatcher::getInstance();
-		$pathway		= $mainframe->getPathway();
+		$document		= Factory::getDocument();
+		$pathway		= $app->getPathway();
 		$Itemid			= $jinput->get('Itemid', 0, 'INT');
 		
-    	$this->assignRef('Itemid', $Itemid);
-		$this->assignRef('user'  , $user);
-		$this->assignRef('params', $params);
-		$this->assignRef('store', $store);
-		$this->assignRef('return', $return);
-		$this->assignRef('shopper', $shopper);
+    	$this->Itemid = $Itemid;
+		$this->params = $params;
+		$this->return = $return;
+
 		
 
 		if($this->getLayout() == "thank_you"){
 			$st 		= $jinput->get('st', 0);
-			$heading 	= Jtext::_('MYMUSE_THANK_YOU');
-			$message 	= Jtext::_('MYMUSE_WE_HAVE_RECEIVED_YOUR_ORDER');
+			$heading 	= Jtext::_('COM_MYMUSE_THANK_YOU');
+			$message 	= Jtext::_('COM_MYMUSE_WE_HAVE_RECEIVED_YOUR_ORDER');
 
-			if(isset($MyMuseShopper->order->payments[0]->plugin) && $MyMuseShopper->order->payments[0]->plugin == "paypal"){
-				$message .= Jtext::_('MYMUSE_PAYPAL_THANKYOU');
+			if(isset($this->MyMuseShopper->order->payments[0]->plugin) && $this->MyMuseShopper->order->payments[0]->plugin == "paypal"){
+				$message .= Jtext::_('COM_MYMUSE_PAYPAL_THANKYOU');
 			}
 
 			$link 		= "index.php?option=com_mymuse&task=vieworder&orderid=";
-			$link 		.= $MyMuseShopper->order->id;
+			$link 		.= $this->MyMuseShopper->order->id;
 
 			
 			if($Itemid){
@@ -82,24 +150,24 @@ class myMuseViewShopper extends JViewLegacy
 			if($st){
 				$link 		.= "&st=$st";
 			}
-			$message 	= $message.'<br /><a href="'.$link.'">'.Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER').'</a>';
-			$this->assignRef('heading', $heading);
-			$this->assignRef('message', $message);
+			$message 	= $message.'<br /><a href="'.$link.'">'.Jtext::_('COM_MYMUSE_HERE_IS_YOUR_ORDER').'</a>';
+			$this->heading = $heading;
+			$this->message = $message;
 			parent::display();
 			return true;
 		}
 		if($this->getLayout() == "waiting"){
-			$heading 	= Jtext::_('MYMUSE_THANK_YOU');
+			$heading 	= Jtext::_('COM_MYMUSE_THANK_YOU');
 			$link 		= "index.php?option=com_mymuse&task=thankyou";
 		
 			if($Itemid){
 				$link 		.= "&Itemid=$Itemid";
 			}
 			$link 		.= "&st=10";
-			$message 	= '<a href="'.$link.'">'.Jtext::_('MYMUSE_CHECK_ORDER_WAITING').'</a>';
+			$message 	= '<a href="'.$link.'">'.Jtext::_('COM_MYMUSE_CHECK_ORDER_WAITING').'</a>';
 				
-			$this->assignRef('heading', $heading);
-			$this->assignRef('message', $message);
+			$this->heading = $heading;
+			$this->message = $message;
 			$this->setLayout("thank_you");
 			parent::display();
 			return true;
@@ -110,10 +178,10 @@ class myMuseViewShopper extends JViewLegacy
 			if($params->get('my_registration') == "no_reg"){
 				return false;
 			}
-			$model = $this->getModel();
-			$orders = $model->getOrders();
+
+			$orders = $this->MyMuseShopper->getOrders();
 			
-			$this->assignRef('orders', $orders);
+			$this->orders = $orders;
 			parent::display();
 			return true;
 		}
@@ -122,10 +190,10 @@ class myMuseViewShopper extends JViewLegacy
 
 		}
 		$continue = 1;
-		if(!$MyMuseCart->cart['idx']){
+		if(!$this->MyMuseCart->cart['idx']){
 			$continue = 0;
 		}
-		$this->assignRef('continue', $continue); 
+		$this->continue = $continue; 
 
 		parent::display($tpl);
 

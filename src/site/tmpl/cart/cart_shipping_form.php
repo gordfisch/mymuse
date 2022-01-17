@@ -9,6 +9,8 @@ h<?php
  * @website		http://www.joomlamymuse.com
  */
 
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 $params 	= $this->params;

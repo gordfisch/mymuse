@@ -78,7 +78,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
 
             $mycategories           = $this->params->get('mycategories', array());
- 
+
             foreach($mycategories as $key => $val){
                 $alias = '';
                 $query = "SELECT alias from #__categories WHERE id=$val";
@@ -97,18 +97,26 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             $app        = Factory::getApplication();
             $menu       = $app->getMenu();
             $front      = 0;
+            $jinput     = $app->input;
+            $option = $jinput->get('option');
 
             if ($menu->getActive() == $menu->getDefault()) {
                 $front = 1;
             }
-        
-            $jinput = $app->input;
-            $option = $jinput->get('option');
-
+        //MymuseHelper::print_pre($this->catalogs);
+        //MymuseHelper::print_pre($jinput->get('catid')); exit;
+        /*
+            [language] => en-GB
+            [option] => com_mymuse
+            [view] => product
+            [Itemid] => 132
+            [id] => 1
+            [catid] => 14
+        */
             if($jinput->get('view') == "category" && null !== $jinput->get('id') && array_key_exists($jinput->get('id'),$this->catalogs)){
                 $filename = $this->catalogs[$jinput->get('id')];
             }elseif($jinput->get('view') == "product" && null !== $jinput->get('id') && $jinput->get('catid')){
-                $filename = self::$catalogs[$jinput->get('catid')];
+                $filename = $this->catalogs[$jinput->get('catid')];
             }elseif($front){
                 $filename = "homepage.js";
             }else{

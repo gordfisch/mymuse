@@ -377,10 +377,21 @@ class CheckoutHelper
 
 
 			// Store the item to the database
+			try {
+				$order->items[$i]->store();
+			} catch (Exception $e) {
+				$msg = $e->getMessage(); // Returns "Normally you would have other code...
+				Factory::getApplication()->enqueueMessage($msg, 'error');
+
+			}
+			/*
 			if (!$order->items[$i]->store()) {
 				JError::raiseError( 500, $this->_db->stderr() );
 				return false;
 			}
+			*/
+
+
 
 			// more fields for printing
 			$order->items[$i]->product_sku = $this->cart[$i]['product']->product_sku;
@@ -699,20 +710,20 @@ class CheckoutHelper
 		if(!$price){
 			return false;
 		}
-		$db	= Factory::getDBO();
+
 		$params = MyMuseHelper::getParams();
 		$query = "SELECT country_3_code FROM #__mymuse_country WHERE country_2_code='".$params->get('country')."'";
-		$db->setQuery($query);
-		$country_3 = $db->loadResult();
+		$this->_db->setQuery($query);
+		$country_3 = $this->_db->loadResult();
 		$new_price = $price;
 		$taxes = array();
 		$query = "SELECT tax_rate FROM #__mymuse_tax_rate WHERE state = '1' 
 		AND country='".$country_3."'";
 		//echo $query;
-		$db->setQuery($query);
+		$this->_db->setQuery($query);
 		$regex = TAX_REGEX;
 
-		if($tax_rate = $db->loadResult()){
+		if($tax_rate = $this->_db->loadResult()){
 			$temp_tax = 0;
 			
 				$temp_tax = $price * $tax_rate;
@@ -729,7 +740,6 @@ class CheckoutHelper
 	public function getOrder($id=0){
 		$mainframe 	= Factory::getApplication();
 		$params 	= MyMuseHelper::getParams();
-		$db			= Factory::getDBO();
 
 		if(!$id){
 			$this->error = JText::_('COM_MYMUSE_NO_ORDER_ID');
@@ -740,8 +750,8 @@ class CheckoutHelper
 
 		// get the main order
 		$query = "SELECT * from #__mymuse_order WHERE id='$id'";
-		$db->setQuery($query);
-		$order = $db->loadObject();
+		$this->_db->setQuery($query);
+		$order = $this->_db->loadObject();
 		$order->user = $this->shopper;
 		
 		if(is_array($order->order_currency)){
@@ -758,8 +768,8 @@ class CheckoutHelper
 		$order->tax_array = array();
 		$order->tax_total = 0.00;
 		$q = "SELECT * FROM #__mymuse_tax_rate WHERE published=1 ORDER BY ordering";
-		$db->setQuery($q);
-		$tax_rates = $db->loadObjectList();
+		$this->_db->setQuery($q);
+		$tax_rates = $this->_db->loadObjectList();
 		$regex = TAX_REGEX;
 
 		foreach($tax_rates as $rate){
@@ -774,8 +784,8 @@ class CheckoutHelper
 
 		//build up the items
 		$query = "SELECT * from #__mymuse_order_item WHERE order_id=$id ORDER BY id";
-		$db->setQuery($query);
-		$order->items = $db->loadObjectList();
+		$this->_db->setQuery($query);
+		$order->items = $this->_db->loadObjectList();
 		$order->subtotal_before_discount = 0.00;
 
 		for($i = 0; $i < count($order->items); $i++){
@@ -827,8 +837,8 @@ class CheckoutHelper
 				$order->items [$i]->url = RouteHelper::getProductRoute ( $pid, $catid );
 				$order->items [$i]->cat_url = RouteHelper::getCategoryRoute ( $catid );
 				$query = "SELECT * FROM #__categories WHERE id='" . $catid . "'";
-				$db->setQuery ( $query );
-				$cat = $db->loadObject ();
+				$this->_db->setQuery ( $query );
+				$cat = $this->_db->loadObject ();
 				
 				$order->items [$i]->category_name = $cat->title;
 				if ($params->get ( 'my_downloads_enable' ) == "1") {
@@ -862,13 +872,13 @@ class CheckoutHelper
 
 		//add payments
 		$query = "SELECT * from #__mymuse_order_payment WHERE order_id=$id ORDER BY id";
-		$db->setQuery($query);
-		$order->payments = $db->loadObjectList();
+		$this->_db->setQuery($query);
+		$order->payments = $this->_db->loadObjectList();
 
 		//add shipments
 		$query = "SELECT * from #__mymuse_order_shipping WHERE order_id=$id ORDER BY id";
-		$db->setQuery($query);
-		if($order->shipments = $db->loadObjectList()){
+		$this->_db->setQuery($query);
+		if($order->shipments = $this->_db->loadObjectList()){
 			$order->order_shipping = $order->shipments[0];
 		}else{
 			$order->order_shipping = new CMSObject;

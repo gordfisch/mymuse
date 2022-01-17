@@ -9,15 +9,29 @@
  * @website		http://www.joomlamymuse.com
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Joomla\Component\Mymuse\Site\View\Store;
 
+\defined('_JEXEC') or die;
+
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Helper\CartHelper;
+use Joomla\Component\Mymuse\Site\Model\StoreModel;
+use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
 
 
-jimport( 'joomla.application.component.view' );
-
-class myMuseViewStore extends JViewLegacy
+class HtmlView extends BaseHtmlView
 {
 	protected $state = null;
 	protected $item = null;
@@ -38,7 +52,7 @@ class myMuseViewStore extends JViewLegacy
 	function display($tpl = null)
 	{
 		
-		$jinput 	= JFactory::getApplication()->input;
+		$jinput 	= Factory::getApplication()->input;
 		$task 		= $jinput->get('task','');
 		$state 		= $this->get('State');
 		$store 		= $this->get('Store');
@@ -46,8 +60,8 @@ class myMuseViewStore extends JViewLegacy
 		$this->params = $params;
 		$this->params->merge($state->params);
 		$Itemid 	= $jinput->get('Itemid');
-		$user 		= JFactory::getUser();
-        $app        = JFactory::getApplication();
+		$user 		= Factory::getUser();
+        $app        = Factory::getApplication();
    
 		// Present a list of downloadable files
         if($task == "downloads"){
@@ -62,7 +76,7 @@ class myMuseViewStore extends JViewLegacy
         		return false;
         	}
 
-        	$db	= JFactory::getDBO();
+        	$db	= Factory::getDBO();
         	$query = "SELECT * FROM #__mymuse_order WHERE order_number = '$id'";
         	$db->setQuery($query);
         	$row = $db->loadObject();
@@ -132,7 +146,7 @@ class myMuseViewStore extends JViewLegacy
   
         // trying to download a file!!
         if($task == "downloadfile"){
-        	$jinput 	= JFactory::getApplication()->input;
+        	$jinput 	= Factory::getApplication()->input;
         	$id = $jinput->get('id',0);
 
         	// make sure we have a download key
@@ -151,7 +165,7 @@ class myMuseViewStore extends JViewLegacy
         	}
 
         	
-        	$db	= JFactory::getDBO();
+        	$db	= Factory::getDBO();
 			$query = "SELECT * FROM #__mymuse_order WHERE order_number = '$id'";
 			$db->setQuery($query);
 			$row = $db->loadObject();
@@ -165,7 +179,7 @@ class myMuseViewStore extends JViewLegacy
 	
         	// make sure it's the same person who ordered!
         	$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-        	$user = JFactory::getUser($MyMuseShopper->_shopper->user_id);
+        	$user = Factory::getUser($MyMuseShopper->_shopper->user_id);
         	$user_id = $user->get('id');
 
         	if(isset($user->first_name) && isset($user->last_name) ){
@@ -329,7 +343,7 @@ class myMuseViewStore extends JViewLegacy
                 $overwrite =  true;
                 if(!$res = $zip->create_zip($files,$destination,$overwrite)){
                     $msg = "Could not Create Zip. Please contact the webmaster.";
-                    JFactory::getApplication()->enqueueMessage($msg, 'warning');
+                    Factory::getApplication()->enqueueMessage($msg, 'warning');
                     return false;
                 }
         		sleep(3);
@@ -424,8 +438,8 @@ class myMuseViewStore extends JViewLegacy
         	$mymuse = $jinput->get('mymuse',0);
         	$free = 0;
         	$owned = 0;
-        	$db	= JFactory::getDBO();
-        	$user = JFactory::getUser();
+        	$db	= Factory::getDBO();
+        	$user = Factory::getUser();
         	$user_id = $user->get('id');
         	$format = $jinput->get('format','');
 
@@ -577,12 +591,12 @@ class myMuseViewStore extends JViewLegacy
         
         //JUST VIEW THE STORE
 		// Initialise variables.
-		$user = JFactory::getUser();
-		$app = JFactory::getApplication();
+		$user = Factory::getUser();
+		$app = Factory::getApplication();
 
 		$items 		= $this->get('Items');
 		$pagination	= $this->get('Pagination');
-
+//MymuseHelper::print_pre($pagination ); exit;
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseWarning(500, implode("\n", $errors));
@@ -592,8 +606,8 @@ class myMuseViewStore extends JViewLegacy
 		//
 		// Process the mymuse plugins.
 		//
-		$dispatcher	= JDispatcher::getInstance();
-		$store->event = new stdClass();
+
+		$store->event = new CMSObject;
 		$store->text = $store->description;
 		$store->catid = 1;
 		$store->list_image = '';
@@ -602,16 +616,16 @@ class myMuseViewStore extends JViewLegacy
 		$offset = 0;
 		
 		PluginHelper::importPlugin('mymuse');
-		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.product', &$store, &$this->params, $offset));
+		$results = $app->triggerEvent('onProductBeforeHeader', array ('com_mymuse.product', &$store, &$this->params, $offset));
 		$store->event->beforeDisplayHeader = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductAfterTitle', array('com_mymuse.product', &$store, &$this->params, $offset));
+		$results = $app->triggerEvent('onProductAfterTitle', array('com_mymuse.product', &$store, &$this->params, $offset));
 		$store->event->afterDisplayTitle = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductBeforeDisplay', array('com_mymuse.product', &$store, &$this->params, $offset));
+		$results = $app->triggerEvent('onProductBeforeDisplay', array('com_mymuse.product', &$store, &$this->params, $offset));
 		$store->event->beforeDisplayProduct = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductAfterDisplay', array('com_mymuse.product', &$store, &$this->params, $offset));
+		$results = $app->triggerEvent('onProductAfterDisplay', array('com_mymuse.product', &$store, &$this->params, $offset));
 		$store->event->afterDisplayProduct = trim(implode("\n", $results));
 						
 
@@ -633,22 +647,20 @@ class myMuseViewStore extends JViewLegacy
 				$item->parent_slug = null;
 			}
 
-			$item->event = new stdClass();
-
-			$dispatcher = JDispatcher::getInstance();
+			$item->event = new CMSObject;
 
 			// Ignore content plugins on links.
 			if ($i < $numLeading + $numIntro)
 			{
-				$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'com_content.featured');
+				$item->introtext = HTMLHelper::_('content.prepare', $item->introtext, '', 'com_content.featured');
 
-				$results = $dispatcher->trigger('onContentAfterTitle', array('com_mymuse.product', &$item, &$item->params, 0));
+				$results = $app->triggerEvent('onContentAfterTitle', array('com_mymuse.product', &$item, &$item->params, 0));
 				$item->event->afterDisplayTitle = trim(implode("\n", $results));
 				
-				$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_mymuse.product', &$item, &$item->params, 0));
+				$results = $app->triggerEvent('onContentBeforeDisplay', array('com_mymuse.product', &$item, &$item->params, 0));
 				$item->event->beforeDisplayContent = trim(implode("\n", $results));
 				
-				$results = $dispatcher->trigger('onContentAfterDisplay', array('com_mymuse.product', &$item, &$item->params, 0));
+				$results = $app->triggerEvent('onContentAfterDisplay', array('com_mymuse.product', &$item, &$item->params, 0));
 				$item->event->afterDisplayContent = trim(implode("\n", $results));
 			}
 		}
@@ -690,11 +702,10 @@ class myMuseViewStore extends JViewLegacy
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-		$this->assignRef('params', $params);
-		$this->assignRef('items', $items);
-		$this->assignRef('store', $store);
-		$this->assignRef('pagination', $pagination);
-		$this->assignRef('user', $user);
+		$this->items 		= $items;
+		$this->store 		= $store;
+		$this->pagination 	= $pagination;
+		$this->user 		= $user;
 
 		$this->_prepareDocument();
 
@@ -707,13 +718,13 @@ class myMuseViewStore extends JViewLegacy
 
 	protected  function _logDownload($user, $product, $order_item = '')
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$user_id = $user->get('id');
 		$user_name = $user->get('name');
 		$user_email = $user->get('email');
 		$product_id = $product->id;
 		$filename = $product->realname;
-		$date = JFactory::getDate()->format('Y-m-d H:i:s');
+		$date = Factory::getDate()->format('Y-m-d H:i:s');
 		$order_id = (isset($order_item->order_id))? $order_item->order_id : '';
 		
 		
@@ -723,7 +734,7 @@ class myMuseViewStore extends JViewLegacy
 			$db->setQuery($query);
 			if(!$db->execute()){
                 $msg = $db->getErrorMessage();
-                JFactory::getApplication()->enqueueMessage($msg, 'warning');
+                Factory::getApplication()->enqueueMessage($msg, 'warning');
                 return false;
             }
 		}
@@ -740,7 +751,7 @@ class myMuseViewStore extends JViewLegacy
 			$db->setQuery($query);
 			if(!$db->execute()){
                 $msg = $db->getErrorMessage();
-                JFactory::getApplication()->enqueueMessage($msg, 'warning');
+                Factory::getApplication()->enqueueMessage($msg, 'warning');
                 return false;
             }
 		}
@@ -759,7 +770,7 @@ class myMuseViewStore extends JViewLegacy
 			return true;
 		}else{
 			$msg = $db->getErrorMessage();
-			JFactory::getApplication()->enqueueMessage($msg, 'warning');
+			Factory::getApplication()->enqueueMessage($msg, 'warning');
 			return false;
 		}
 	}
@@ -768,7 +779,7 @@ class myMuseViewStore extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$title 		= null;
 

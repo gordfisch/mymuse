@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_mymuse
  *
- * @copyright   Copyright (C) 2021 Arboreta Internet Services. All rights reserved.
+ * @copyright   Copyright (C) 2022 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 

@@ -168,6 +168,7 @@ class DisplayController extends BaseController
 		ini_set("log_errors", 1);
 		ini_set("error_log", "php-error.log");
 
+
 	}
 	/**
 	 * Returns a reference to a global MyMuse object, only creating it if it
@@ -216,6 +217,7 @@ class DisplayController extends BaseController
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
+
 		$safeurlparams = array(
 			'catid' => 'INT',
 			'id' => 'INT',
@@ -234,7 +236,9 @@ class DisplayController extends BaseController
 			'lang' => 'CMD',
 			'productid' => 'INT',
 			'variation' => 'ARRAY',
-			'Itemid' => 'INT');
+			'Itemid' => 'INT',
+			'view' => 'STRING',
+			'layout' => 'STRING');
 
 
 		$task  = $this->input->get('task');
@@ -242,7 +246,6 @@ class DisplayController extends BaseController
 		if('ajaxtogglecart' == $task){
 			$cachable = false;
 			$vName = 'cart';
-			print_r($this->input); exit;
 			$this->input->set('view', $vName);
 			$this->ajaxtogglecart();
 			return;
@@ -621,6 +624,8 @@ class DisplayController extends BaseController
 	public function shipping()
 	{
 
+		$app = Factory::getApplication();
+
 		if(!isset($this->shopper->perms)){
 			$url = Route::_(URI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
         	$return = base64_encode($url);
@@ -631,9 +636,8 @@ class DisplayController extends BaseController
 		}else{
 
 			PluginHelper::importPlugin('mymuse');
-			$dispatcher		= JDispatcher::getInstance();
 			$this->order		= $this->MyMuseCart->buildOrder();
-			$results = $dispatcher->trigger('onListMyMuseShipping',
+			$results = $app->triggerEvent('onListMyMuseShipping',
 					array($this->shopper, $this->store, $this->order, $this->params) );
 
 			$res = array();
@@ -668,7 +672,8 @@ class DisplayController extends BaseController
 	public function confirm()
 	{
 		
-		
+		$app = Factory::getApplication();
+
 		// are they logged in?
 		if(!$this->shopper->perms){
 			$url = Route::_(URI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
@@ -689,9 +694,9 @@ class DisplayController extends BaseController
 			}else{
                 $order 		= $this->MyMuseCart->buildOrder( 0, 1 );
                 $this->MyMuseCart->cart['shipmethodid'] = $shipmethodid;
-                $dispatcher		= JDispatcher::getInstance();
+
                 PluginHelper::importPlugin('mymuse');
-                $results = $dispatcher->trigger('onCaclulateMyMuseShipping', array($order, $shipmethodid ));
+                $results = $app->triggerEvent('onCaclulateMyMuseShipping', array($order, $shipmethodid ));
   
 				$this->MyMuseCart->cart['shipping'] = $results[0];
 

@@ -156,6 +156,8 @@ class ProductModel extends ItemModel
 							$db->quoteName('a.recording'),
 							$db->quoteName('a.featured'),
 							$db->quoteName('a.language'),
+							$query->length($db->quoteName('a.fulltext')) . ' AS ' . $db->quoteName('readmore'),
+							$db->quoteName('a.ordering'),
 						]
 					)
 				)

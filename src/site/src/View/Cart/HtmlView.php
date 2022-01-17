@@ -1,12 +1,12 @@
 <?php
 /**
- * @version		$Id$
- * @package		mymuse
- * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
- * @license		GNU/GPL
+ * @package     Joomla.Site
+ * @subpackage  com_mymuse
  * @author		Gordon Fisch
  * @author mail	info@joomlamymuse.com
  * @website		http://www.joomlamymuse.com
+ * @copyright   Copyright (C) 2022 Arboreta Internet Services. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Mymuse\Site\View\Cart;
@@ -82,6 +82,13 @@ class HtmlView extends BaseHtmlView
 	var $MyMuseShopper = null;
 
 	/**
+	 * shopper object
+	 *
+	 * @var object
+	 */
+	var $shopper = null;
+
+	/**
 	 * Itemid 
 	 *
 	 * @var int
@@ -124,7 +131,7 @@ class HtmlView extends BaseHtmlView
         $this->currency 		= $currency		= $this->store->currency;
 
         $this->MyMuseShopper  	=& MyMuse::getObject('Shopper','model');
-
+        $this->shopper			= $this->MyMuseShopper->getShopper();
         $this->user				= Factory::getUser();
 
         $this->_db 				= Factory::getDBO();
@@ -502,7 +509,7 @@ echo "task = $task";
 
 				
 		$this->order = $order;
-		$this->currency = $currency;
+		$this->currency = $this->store->currency;
 		
 		//START CAPTURING THE DISPLAY PARTS
 		

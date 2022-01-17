@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		mymuse
- * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
+ * @copyright	Copyright © 2022 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
  * @author mail	info@joomlamymuse.com
@@ -12,7 +12,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
+
+
 ?>
 <?php echo $this->store->event->beforeDisplayHeader; ?>
 <div class="clear"></div>
@@ -33,7 +37,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 	
 <?php 
 if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->link_items) ) : ?>
-	<h2><?php echo JText::_("MYMUSE_FEATURED") ?></h2>
+	<h2><?php echo JText::_("COM_MYMUSE_FEATURED") ?></h2>
 <?php endif; ?>
 
 <div class="cat-items">
@@ -92,8 +96,10 @@ if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->lin
 
 	<?php echo $this->loadTemplate('links'); ?>
 
-<?php endif; ?>
-<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+<?php endif; 
+
+?>
+<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
 		<div class="pagination">
 						<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
 						<p class="counter">

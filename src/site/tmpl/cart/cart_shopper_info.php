@@ -205,7 +205,7 @@ if($params->get('my_use_shipping') && isset($this->order->need_shipping)
                 	<input type="hidden" name="layout" value="edit">
                 	<input type="hidden" name="user_id" value="<?php echo $this->user->id;?>">
                 	<input type="hidden" name="return" value="<?php echo $return;?>">
-                	<input type="submit" name="submit" class="button uk-button btn-primary" value="<?php echo JText::_("COM_MYMUSE_EDIT_PROFILE");?>">
+                	<input type="submit" name="submit" class="button btn btn-primary" value="<?php echo JText::_("COM_MYMUSE_EDIT_PROFILE");?>">
                 	</form></td>
                 </tr>
         <?php }?>

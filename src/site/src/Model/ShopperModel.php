@@ -16,6 +16,7 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
@@ -780,7 +781,7 @@ class ShopperModel extends FormModel
 	
 			$this->data	= new CMSObject();
 			$app	= Factory::getApplication();
-			$params	= JComponentHelper::getParams('com_users');
+			$params	= ComponentHelper::getParams('com_users');
 	
 			// Override the base user data with any data in the session.
 			$temp = (array)$app->getUserState('com_users.registration.data', array());
@@ -855,7 +856,7 @@ class ShopperModel extends FormModel
 	 */
 	protected function preprocessForm(Form $form, $data, $group = 'user')
 	{
-		$userParams	= JComponentHelper::getParams('com_users');
+		$userParams	= ComponentHelper::getParams('com_users');
 	
 		//Add the choice for site language at registration time
 		if ($userParams->get('site_language') == 1 && $userParams->get('frontend_userparams') == 1)
