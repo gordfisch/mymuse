@@ -51,7 +51,7 @@ $inner_span = floor(12 / $inner_cols);
 <?php if (empty($this->items)) : ?>
 
 	<?php if ($this->params->get('show_no_products', 1)) : ?>
-	<p><?php echo JText::_('MYMUSE_NO_PRODUCTS'); ?></p>
+	<p><?php echo JText::_('COM_MYMUSE_NO_PRODUCTS'); ?></p>
 	<?php endif; ?>
 
 <?php else : ?>
@@ -66,7 +66,7 @@ $inner_span = floor(12 / $inner_cols);
 		<tr>
 		<?php if ($this->params->get('filter_field') != 'hide') : ?>
 			<td align="left" width="60%" nowrap="nowrap">
-				<?php echo JText::_('MYMUSE_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?>
+				<?php echo JText::_('COM_MYMUSE_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?>
 				<input type="text" name="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" 
 				class="inputbox" 
 				onchange="this.start.value=0;this.form.submit();" />
@@ -76,7 +76,7 @@ $inner_span = floor(12 / $inner_cols);
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
 			<td  nowrap="nowrap">
 			<?php
-				echo '&nbsp;&nbsp;&nbsp;'.JText::_('MYMUSE_DISPLAY_NUM').'&nbsp;';
+				echo '&nbsp;&nbsp;&nbsp;'.JText::_('COM_MYMUSE_DISPLAY_NUM').'&nbsp;';
 				echo $this->pagination->getLimitBox();
 			?>
 			</td>
@@ -91,7 +91,7 @@ $inner_span = floor(12 / $inner_cols);
 <?php if ($this->params->get('show_headings')) :?>
 <div class="row-fluid mymuse_cart_top hidden-phone">
 	<div class="span4 cols-md-4">
-		<div class="list-image "><?php echo JText::_('MYMUSE_IMAGE'); ?></div>
+		<div class="list-image "><?php echo JText::_('COM_MYMUSE_IMAGE'); ?></div>
 	</div>
 	<div class="span4 cols-md-4">
 
@@ -104,13 +104,13 @@ $inner_span = floor(12 / $inner_cols);
 					?>
 				<div class="list-date  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>">
 					<?php if ($date == "created") : ?>
-						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "modified") : ?>
-						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "published") : ?>
-						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "product_made_date") : ?>
-						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.product_made_date', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.product_made_date', $listDirn, $listOrder); ?>
 					<?php endif; ?></div>
 			<?php endif; ?>
 			<?php if ($this->params->get('list_show_author')) : ?>
@@ -120,13 +120,13 @@ $inner_span = floor(12 / $inner_cols);
 				<div class="list-hits  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?></div>
 			<?php endif; ?>
 			<?php if ($this->params->get('list_show_price')) : ?>
-				<div class="list-price  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?></div>
+				<div class="list-price  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?></div>
 			<?php endif; ?>
 			<?php if ($this->params->get('list_show_discount')) : ?>
-				<div class="list-discount  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?></div>
+				<div class="list-discount  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?></div>
 			<?php endif; ?>
 			<?php if ($this->params->get('list_show_sales')) : ?>
-				<div class="list-sales  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?></div>
+				<div class="list-sales  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?></div>
 			<?php endif; ?>
 			<?php if (!$this->params->get('category_show_comment_total', 0) && file_exists($comments)) : ?>
 			<div class="list-comments  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JText::_('COMMENTS_LIST_HEADER'); ?></div>
@@ -179,16 +179,16 @@ $inner_span = floor(12 / $inner_cols);
 					<div class="readmore">
 							<a href="<?php echo $link; ?>">
 								<?php if (!$product->access) :
-									echo JText::_('MYMUSE_REGISTER_TO_READ_MORE');
+									echo JText::_('COM_MYMUSE_REGISTER_TO_READ_MORE');
 								elseif ($readmore = $product->alternative_readmore) :
 									echo $readmore;
 									if ($thisparams->get('show_readmore_title', 0) != 0) :
 									    echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
 									endif;
 								elseif ($this->params->get('show_readmore_title', 0) == 0) :
-									echo JText::sprintf('MYMUSE_READ_MORE_TITLE');
+									echo JText::sprintf('COM_MYMUSE_READ_MORE_TITLE');
 								else :
-									echo JText::_('MYMUSE_READ_MORE').' ';
+									echo JText::_('COM_MYMUSE_READ_MORE').' ';
 									echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
 								endif; ?></a>
 					</div>

@@ -85,7 +85,7 @@ $lists = $this->lists;
 <!--  DETAILS TAB -->
 <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', Text::_('COM_MYMUSE_DETAILS', true)); ?>
 
-            <div class="row">
+   <div class="row">
     <div class="col-12 col-lg-6">
         <fieldset id="fieldset-details" class="options-form">
             <legend><?php echo Text::_('COM_MYMUSE_DETAILS'); ?></legend>

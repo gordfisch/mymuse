@@ -23,12 +23,9 @@ use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 
-
-
-$this->shopper 		= MyMuse::getObject('Shopper','model')->getShopper();
 
 $this->assocParam   = (Associations::isEnabled() && $this->params->get('show_associations'));
 $store 				= $this->store;
@@ -38,7 +35,7 @@ $items				=& $this->item->items;
 if(!is_countable($items)){ 
 	$items = array();
 }
-$tracks		=& $this->item->tracks;
+$tracks				=& $this->item->tracks;
 if(!is_countable($tracks)){ 
 	$tracks = array();
 }
@@ -72,10 +69,10 @@ if($artist){
 	}
 }
 
-$uri 			= JUri::getInstance(); 
+$uri 			= Uri::getInstance(); 
 $prod_uri 		= $uri->toString();
 $description 	= ($product->introtext != '')? $product->introtext : $product->title;
-$document 		= JFactory::getDocument();
+$document 		= Factory::getDocument();
 $document->setMetaData( 'og:site_name',$this->escape($this->store->title));
 $document->setMetaData( 'og:type', 'article');
 $document->setMetaData( 'og:url', $prod_uri);

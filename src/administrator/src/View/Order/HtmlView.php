@@ -22,7 +22,8 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Mymuse\Administrator\Model\OrderModel;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 /**
  * View to edit an order.
  *
@@ -75,12 +76,15 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): void
 	{
-		/** @var MymuseModel $model */
-		$model       = $this->getModel();
-		$this->form  = $model->getForm();
-		$this->item  = $model->getItem();
-		$this->state = $model->getState();
-		$this->lists = $this->get('Lists');
+
+		$model       	= $this->getModel();
+		$this->form  	= $model->getForm();
+		$this->item  	= $model->getItem();
+		$this->state 	= $model->getState();
+		$this->lists 	= $this->get('Lists');
+		$app 			= Factory::getApplication();
+		$task 			= $app->input->get('task', '', 'CMD');
+		$this->params 	= MymuseHelper::getParams();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -92,15 +96,16 @@ class HtmlView extends BaseHtmlView
 		{
 			case "mailcustomer":
 			{
-				include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'mymuse.class.php' );
-				$MyMuseStore	=& MyMuse::getObject('store','models');
+
+				$MyMuseStore			=& Mymuse::getObject('Store','model');
 				$this->store			= $MyMuseStore->getStore();
+				$app = Factory::getApplication();
 				
 				// Process order plugins
-    			$dispatcher				= JDispatcher::getInstance();
+
     			$extra 					= '';
 				PluginHelper::importPlugin('system');
-				$results 				= $dispatcher->trigger('onRenderOrder', array ( ));
+				$results 				= $app->triggerEvent('onRenderOrder', array ( ));
 				if(isset($results[0])){
 					$extra = $results[0];
 				}
@@ -108,7 +113,7 @@ class HtmlView extends BaseHtmlView
 
 
 				PluginHelper::importPlugin('mymuse');
-				$results 				= $dispatcher->trigger('onAfterMyMusePayment', array() );
+				$results 				= $app->triggerEvent('onAfterMyMusePayment', array() );
 				$my_email_msg 			= '';
 				foreach($results as $res){
 					$arr = explode(":",$res);
@@ -162,7 +167,7 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		$input  = JFactory::getApplication()->input;
+		$input  = Factory::getApplication()->input;
 		$input->set('hidemainmenu', true);
 
 		$user       = Factory::getUser();

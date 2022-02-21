@@ -38,6 +38,7 @@ use Joomla\Component\Mymuse\Site\Model\MymuseModel;
 use Joomla\Component\Mymuse\Site\Model\ProductModel;
 use Joomla\Component\Mymuse\Site\Model\ProductsModel;
 use Joomla\Component\Mymuse\Site\Model\StoreModel;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 /**
  * Mymuse Component Controller
@@ -156,12 +157,12 @@ class DisplayController extends BaseController
 
 		parent::__construct($config, $factory, $app, $input);
 
-		$this->MyMuseCart		= $this->getObject('Cart');
-		$this->MyMuseShopper	= $this->getObject('Shopper','model');
+		$this->MyMuseCart		= Mymuse::getObject('Cart');
+		$this->MyMuseShopper	= Mymuse::getObject('Shopper','model');
 		$this->shopper 			= $this->MyMuseShopper->getShopper();
-		$this->MyMuseStore		= $this->getObject('Store', 'model');
-		$this->MyMuseProduct	= $this->getObject('Product', 'model');
-		$this->MyMuseCheckout	= $this->getObject('Checkout');
+		$this->MyMuseStore		= Mymuse::getObject('Store', 'model');
+		$this->MyMuseProduct	= Mymuse::getObject('Product', 'model');
+		$this->MyMuseCheckout	= Mymuse::getObject('Checkout');
 
 		ini_set('memory_limit',"512M");
 		ini_set('max_execution_time',"120");
@@ -873,7 +874,7 @@ class DisplayController extends BaseController
 				$db->setQuery($q);
 				$orderid = $db->loadResult();
 				if($this->params->get('my_debug')){
-					$debug = "$date: Got orderid from transaction: $orderid";
+					$debug = "Thankyou: Got orderid from transaction: $orderid";
 					MyMuseHelper::logMessage( $debug  );
 				}
 			}
@@ -885,7 +886,7 @@ class DisplayController extends BaseController
 				$db->setQuery($q1);
 				$orderid = $db->loadResult();
 				if($this->params->get('my_debug')){
-					$debug = "$date: Got last orderid : $orderid";
+					$debug = "Thankyou: Got last orderid : $orderid";
 					MyMuseHelper::logMessage( $debug  );
 				}
 			}elseif(!$orderid && $pp !== 'paymentoffline'){
@@ -1125,7 +1126,7 @@ class DisplayController extends BaseController
 	{
 		
 		$shopper = $this->shopper;
-		$uri = Factory::getURI();
+		$uri = Uri::getInstance();
 		$current = $uri->toString();
 
 		if(!$shopper->perms){

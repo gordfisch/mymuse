@@ -40,65 +40,64 @@ if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->lin
 	<h2><?php echo JText::_("COM_MYMUSE_FEATURED") ?></h2>
 <?php endif; ?>
 
-<div class="cat-items">
-<?php $leadingcount=0 ; ?>
-<?php if (!empty($this->lead_items)) : ?>
-<div class="items-leading">
-	<?php foreach ($this->lead_items as &$item) : ?>
-		<div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
-			<?php
-				$this->item = &$item;
-				echo $this->loadTemplate('item');
-			?>
+	<?php $leadingcount = 0; ?>
+	<?php if (!empty($this->lead_items)) : ?>
+		<div class="com-content-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">
+			<?php foreach ($this->lead_items as &$item) : ?>
+				<div class="com-content-category-blog__item blog-item"
+					itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+						<?php
+						$this->item = & $item;
+						echo $this->loadTemplate('leading');
+						?>
+				</div>
+				<?php $leadingcount++; ?>
+			<?php endforeach; ?>
 		</div>
-		<?php
-			$leadingcount++;
-		?>
-	<?php endforeach; ?>
-</div>
-<?php endif; ?>
+	<?php endif; ?>
+
+	<?php
+	$introcount = count($this->intro_items);
+	$counter = 0;
+	?>
 
 
 <?php
 	$introcount=(count($this->intro_items));
 	$counter=0;
 ?>
-<?php if (!empty($this->intro_items)) : ?>
-	
-	<?php foreach ($this->intro_items as $key => &$item) : ?>
-	<?php
-		$key= ($key-$leadingcount)+1;
-		$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
-		$row = $counter / $this->columns ;
-		$this->key = $key;
-		if ($rowcount==1) : ?>
-	<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
-	<?php endif; ?>
-	<div class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
-		<?php
-			$this->item = &$item;
-			echo $this->loadTemplate('item');
-		?>
-	</div>
-	<?php $counter++; ?>
-		<?php if (($rowcount == $this->columns) or ($counter == $introcount)): ?>
-				<span class="row-separator"></span>
-				</div>
-
+	<?php if (!empty($this->intro_items)) : ?>
+		<?php $blogClass = $this->params->get('blog_class', ''); ?>
+		<?php if ((int) $this->params->get('num_columns') > 1) : ?>
+			<?php $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-'; ?>
+			<?php $blogClass .= (int) $this->params->get('num_columns'); ?>
 		<?php endif; ?>
-	<?php endforeach; ?>
+		<div class="com-content-category-blog__items blog-items <?php echo $blogClass; ?>">
+		<?php foreach ($this->intro_items as $key => &$item) : ?>
+			<div class="com-content-category-blog__item blog-item"
+				itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+					<?php
+					$this->item = & $item;
+					echo $this->loadTemplate('item');
+					?>
+			</div>
+		<?php endforeach; ?>
+		</div>
+	<?php endif; ?>
+
+	<?php if (!empty($this->link_items)) : ?>
+		<div class="items-more">
+			<?php echo $this->loadTemplate('links'); ?>
+		</div>
+	<?php endif; ?>
 
 
-<?php endif; ?>
-</div>
-<div class="clear"></div>
-<?php if (!empty($this->link_items)) : ?>
 
-	<?php echo $this->loadTemplate('links'); ?>
 
-<?php endif; 
 
-?>
+
+
+
 <?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
 		<div class="pagination">
 						<?php  if ($this->params->def('show_pagination_results', 1)) : ?>

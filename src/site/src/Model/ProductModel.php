@@ -24,7 +24,7 @@ use Joomla\Utilities\IpHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\ShopperHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 
 /**
@@ -136,6 +136,7 @@ class ProductModel extends ItemModel
 							$db->quoteName('a.publish_down'),
 							$db->quoteName('a.list_image'),
 							$db->quoteName('a.detail_image'),
+							$db->quoteName('a.product_images'),
 							$db->quoteName('a.attribs'),
 							$db->quoteName('a.physical'),
 							$db->quoteName('a.digital'),
@@ -934,7 +935,7 @@ echo $track_query;
 	static function getPrice(&$product) {
 
 		$params 		= MyMuseHelper::getParams();
-		$shopper 		= MyMuse::getObject('Shopper','model')->getShopper();
+		$shopper 		= Mymuse::getObject('Shopper','model')->getShopper();
 
 		$db	= Factory::getDBO();
 		$shoppergroup_discount = 0;
@@ -1013,7 +1014,7 @@ echo $track_query;
 				foreach($pformats as $i => $f){
 					$formats[$f->ordering] = strtolower($f->format_key);
 				}
-				
+		
 				foreach($formats as $format) {
 						
 					$key = 'product_price_' . $format . '_all';

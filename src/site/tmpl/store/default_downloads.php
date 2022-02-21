@@ -9,6 +9,8 @@
  * @website		http://www.joomlamymuse.com
  */
 
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $order = $this->order;
@@ -23,24 +25,24 @@ function mydownload(url,item_id){
 	window.open(url, "_download");
 }
 </script>
-<h1 class="cart-header"><?php echo JText::_('MYMUSE_DOWNLOAD_PAGE') ?></h1>
+<h1 class="cart-header"><?php echo JText::_('COM_MYMUSE_DOWNLOAD_PAGE') ?></h1>
 		<table  class="mymuse_cart cart">
  
         <!-- Begin Order Summary -->
         <tr class="mymuse_cart cart" >
-            <th colspan="2"  class="mytitle cart"><?php echo JText::_('MYMUSE_ORDER_SUMMARY') ?></th>
+            <th colspan="2"  class="mytitle cart"><?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY') ?></th>
         </tr>
         <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_NUMBER') ?>:</td>
+            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_NUMBER') ?>:</td>
             <td class="myordernumber cart"><?php echo sprintf("%08d", $order->id) ?></td>
         </tr>
         <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_DATE') ?>:</td>
+            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_DATE') ?>:</td>
             <td class="myorderdate cart"><?php echo $order->created ?></td>
         </tr>
         <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_STATUS') ?>:</td>
-            <td class="myorderstatus cart"><?php echo JText::_('MYMUSE_'.strtoupper($order->status_name)) ?></td>
+            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_STATUS') ?>:</td>
+            <td class="myorderstatus cart"><?php echo JText::_('COM_MYMUSE_'.strtoupper($order->status_name)) ?></td>
         </tr>
         </table>
         <br />
@@ -49,10 +51,10 @@ function mydownload(url,item_id){
 		<table class="mymuse_cart cart">
             <thead>
 			<tr>
-				<th class="mytitle cart"><?php echo JText::_('MYMUSE_FILENAME'); ?></th>
-				<th class="mydownloads cart"><?php echo JText::_('MYMUSE_NUMBER_DOWNLOADS'); ?></th>
-				<th class="myfilesize cart"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
-				<th class="myexpiry cart"><?php echo JText::_('MYMUSE_EXPIRES'); ?></th>
+				<th class="mytitle cart"><?php echo JText::_('COM_MYMUSE_FILENAME'); ?></th>
+				<th class="mydownloads cart"><?php echo JText::_('COM_MYMUSE_NUMBER_DOWNLOADS'); ?></th>
+				<th class="myfilesize cart"><?php echo JText::_('COM_MYMUSE_FILE_SIZE'); ?></th>
+				<th class="myexpiry cart"><?php echo JText::_('COM_MYMUSE_EXPIRES'); ?></th>
 			</tr>
             </thead>
             <tbody>
@@ -75,7 +77,7 @@ function mydownload(url,item_id){
 				$my_download_max = $params->get('my_download_max')? $params->get('my_download_max') : ($item->downloads+1)*2;
 
 				if($item->product_in_stock == "-1"){
-						?><span class="mymuse_msg"><?php echo JText::_('MYMUSE_PREORDERED'); ?></span><?php
+						?><span class="mymuse_msg"><?php echo JText::_('COM_MYMUSE_PREORDERED'); ?></span><?php
 
 				}elseif($item->downloads < $my_download_max && $end_date > time()){
 						$url = JRoute::_('index.php?option=com_mymuse&view=store&task=downloadfile&id='.$id.'&item_id='.$item->id);

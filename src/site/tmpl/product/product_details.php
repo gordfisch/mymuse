@@ -24,11 +24,11 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		<ul class="product-detail-list">
 
-			<?php if( $this->params->get("show_artist",0) ) : ?>
+			<?php if( $this->params->get("show_artist",0) && $this->item->artistid ) : ?>
 			<li class="product-detail-item">
 		        <span class="key artist"><?php echo Text::_('COM_MYMUSE_ARTIST'); ?>:</span>
 		        <span class="value">
-		        	<?php echo RouteHelper::getCategoryRoute($this->item->artistid); ?>
+		        	<?php //echo RouteHelper::getCategoryRoute($this->item->artistid); ?>
 		        	<?php if( $this->params->get("link_artist",0) ) :
 		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($this->item->artistid)).'">'.$this->item->artist_title.'</a>';
 		                else:
@@ -40,11 +40,11 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_category",0) ) : ?>
+		    <?php if( $this->params->get("show_category",0) && $this->item->catid ) : ?>
 			<li class="product-detail-item">
 		        <span class="key category"><?php echo Text::_('COM_MYMUSE_CATEGORY'); ?>:</span>
 		        <span class="value">
-		        	<?php echo RouteHelper::getCategoryRoute($this->item->catid); ?>
+		        	<?php //echo RouteHelper::getCategoryRoute($this->item->catid); ?>
 		        	<?php if( $this->params->get("link_category",0) ) :
 		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($this->item->catid)).'">'.$this->item->category_title.'</a>';
 		                else:
@@ -81,45 +81,48 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    <?php if( $this->params->get("show_date",0) ) : 
 		    		$date_type = $this->params->get("show_which_date","release");
 		    		$date_string = 'COM_MYMUSE_DATE_'.strtoupper($date_type); 
+
+		    		if( $this->item->$date_type ) :
 		    		?>
-		    <li class="product-detail-item">
-		        <span class="key date"><?php echo Text::_($date_string); ?>:</span>
-		        <span class="value"><?php echo $this->item->$date_type; ?></span>
-		    </li>
+				    <li class="product-detail-item">
+				        <span class="key date"><?php echo Text::_($date_string); ?>:</span>
+				        <span class="value"><?php echo $this->item->$date_type; ?></span>
+				    </li>
+		    	<?php endif; ?>
 		    <?php endif; ?>
 
 
 		    <!-- recording details -->
 
-		    <?php if( $this->params->get("show_product_full_time",0) ) : ?>
+		    <?php if( $this->params->get("show_product_full_time",0) && $this->item->recording->get('product_full_time','0') ) : ?>
 		    <li class="product-detail-item">
 		        <span class="key full-time"><?php echo Text::_('COM_MYMUSE_PRODUCT_FULL_TIME_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_full_time','0'); ?></span>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_studio",0) ) : ?>
+		    <?php if( $this->params->get("show_product_studio",0) && $this->item->recording->get('product_studio','') ) : ?>
 		    <li class="product-detail-item">
 		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_STUDIO_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_studio',''); ?></span>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_publisher",0) ) : ?>
+		    <?php if( $this->params->get("show_product_publisher",0) && $this->item->recording->get('product_publisher','') ) : ?>
 		    <li class="product-detail-item">
 		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_PUBLISHER_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_publisher',''); ?></span>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_producer",0) ) : ?>
+		    <?php if( $this->params->get("show_product_producer",0) && $this->item->recording->get('product_producer','') ) : ?>
 		    <li class="product-detail-item">
 		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_PRODUCER_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_producer',''); ?></span>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_country",0) ) : ?>
+		    <?php if( $this->params->get("show_product_country",0) && $this->item->recording->get('product_country','') ) : ?>
 		    <li class="product-detail-item">
 		        <span class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_COUNTRY_LABEL'); ?>:</span>
 		        <span class="value"><?php echo $this->item->recording->get('product_country',''); ?></span>
@@ -175,6 +178,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    <?php endif; ?>
 
 
+		    <?php if(isset($tracks[0]->flash) || $this->all_tracks ) : ?>
 		    <li class="product-detail-item product-content-item-actions">
 		    <div class="product-preview-play"><?php echo isset($tracks[0]->flash)? $tracks[0]->flash : ''; ?></div>
 			    <div class="value">
@@ -182,7 +186,12 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                <div class="product-full">
 	                    <div class="product-full-title">
 	                     
-	                        <a href="javascript:void(0)" class="box_<?php echo $this->all_tracks->id; ?>" id="box_<?php echo $this->all_tracks->id; ?>">&#10010;</a>
+	                        <a class="trackpicker" href="javascript:void(0)" class="box_<?php echo $this->all_tracks->id; ?>" 
+	                        	id="box_<?php echo $this->all_tracks->id; ?>"
+	                        	data-id="<?php echo $this->all_tracks->id; ?>"
+	                        	data-variation="<?php echo $this->all_tracks->digital[0]->file_id; ?>"
+
+	                        	>&#10010;</a>
 	                      
 	                    </div>
 	                    <?php
@@ -217,11 +226,15 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                    </div>
 	                </div>
 	                <?php elseif($this->item->product_physical) : ?>
-	                    <div class="product-full">
+	                    <!-- div class="product-full">
 	                        <div class="product-full-title">
 
 	                                 <a href="javascript:void(0)"
 	                                 class="box_<?php echo $this->item->id; ?>"
+
+	                                 data-id="<?php echo $track->id; ?>"
+                      				data-variation="<?php echo $track->digital[0]->file_id; ?>"
+
 	                                id="box_<?php echo $this->item->id; ?>"><?php
 	                                    if(in_array($this->item->id, $this->products)) {
 	                                        echo "&#8722";
@@ -231,17 +244,15 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                          ?></a> 
 	                            </div>
 	                        <div id="physical_<?php echo $this->item->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($this->item->price); ?></div>
-	                    </div> 
+	                    </div --> 
 	                <?php endif; ?>
 	            </div>
 	        </li>
+	        <?php endif; ?>
+	    </ul>
 
 
-
-"show_vote"
-
-
-"show_product_sku" 
+<!-- "show_vote" "show_product_sku" -->
 
 
 

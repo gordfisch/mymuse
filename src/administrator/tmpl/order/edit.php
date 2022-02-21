@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
@@ -96,30 +96,30 @@ if($print){
 					<div class="card-body">
 
 	<fieldset class="adminform">
-		<h2><?php echo JText::_('MYMUSE_CUSTOMER') ?></h2>
+		<h2><?php echo JText::_('COM_MYMUSE_CUSTOMER') ?></h2>
 		<table class="admintable" width="100%">
 			<tr VALIGN=top>
 				<td width=50%><!-- Begin BillTo -->
 
 				<table class="adminlist">
 					<tr>
-						<td COLSPAN=2><b><?php echo JText::_('MYMUSE_BILLING_ADDRESS') ?></b></td>
+						<td COLSPAN=2><b><?php echo JText::_('COM_MYMUSE_BILLING_ADDRESS') ?></b></td>
 					</tr>
 
 					<tr>
-						<td><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_FULL_NAME') ?>:</td>
 						<td><?php echo $this->item->user->name ?></td>
 					</tr>
 					<?php if(isset($this->item->user->profile['address1'])){ ?>
 					<tr valign="top">
-						<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_ADDRESS') ?>:</td>
 						<td><?php echo $this->item->user->profile['address1'] ?> <BR>
 						<?php echo isset($this->item->user->profile['address2'])? $this->item->user->profile['address2'] : '' ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['city'])){ ?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_CITY') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_CITY') ?>:</td>
 						<td><?php echo $this->item->user->profile['city'] ?></td>
 					</tr>
 					<?php }?>
@@ -139,35 +139,35 @@ if($print){
 							
 						?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_STATE') ?>:</td>
 						<td><?php echo $this->item->user->profile['region_name'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['postal_code'])){ ?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_ZIP') ?>:</td>
 						<td><?php echo $this->item->user->profile['postal_code'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['country'])){ ?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_COUNTRY') ?>:</td>
 						<td><?php echo $this->item->user->profile['country'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['phone'])){ ?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_PHONE') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_PHONE') ?>:</td>
 						<td><?php echo $this->item->user->profile['phone'] ?></td>
 					</tr>
 					<?php }?>
 					
 					<tr>
-						<td><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_EMAIL') ?>:</td>
 						<td><?php echo $this->item->user->email ?></td>
 					</tr>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_SHOPPER_GROUP') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_SHOPPERGROUP') ?>:</td>
 						<td><?php echo $this->item->user->shopper_group_name ?> (<?php echo $this->item->user->shopper_group_discount; ?>%)</td>
 					</tr>
 				</table>
@@ -178,17 +178,17 @@ if($print){
 					?>
 				<table class="adminlist">
 					<tr>
-						<td COLSPAN=2><b><?php echo JText::_('MYMUSE_SHIPPING_ADDRESS') ?></b></td>
+						<td COLSPAN=2><b><?php echo JText::_('COM_MYMUSE_SHIPPING_ADDRESS') ?></b></td>
 					</tr>
 					<?php  if(isset($this->item->user->profile['shipping_company'])){?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_COMPANY') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_COMPANY') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_company'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['shipping_first_name'] )){?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_FULL_NAME') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_first_name'] ?> 
 						<?php 
 						if(isset($this->item->user->profile['shipping_last_name'])){
@@ -199,14 +199,14 @@ if($print){
 					<?php }?>
 					<?php if(isset($this->item->user->profile['shipping_address1'] )){?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_ADDRESS') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_address1'] ?> <BR>
 						<?php echo $this->item->user->profile['shipping_address2'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['shipping_city'] )){?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_CITY') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_CITY') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_city'] ?></td>
 					</tr>
 					<?php }?>
@@ -229,19 +229,19 @@ if($print){
 					<tr>
 					
 					<tr>
-						<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_STATE') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_region_name'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['shipping_postal_code'] )){?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_ZIP') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_postal_code'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['shipping_country'] )){?>
 					<tr>
-						<td><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
+						<td><?php echo JText::_('COM_MYMUSE_COUNTRY') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_country'] ?></td>
 					</tr>
 					<?php } ?>
@@ -254,7 +254,7 @@ if($print){
 
 
 		<fieldset class="adminform">
-				<h2><?php echo JText::_('MYMUSE_ORDER_ITEMS') ?></h2>
+				<h2><?php echo JText::_('COM_MYMUSE_ORDER_ITEMS') ?></h2>
 		<?php $string = '
         		<table class="adminlist" cellpadding="5">
 		<tr>
@@ -263,16 +263,16 @@ if($print){
      $colspan = 3;
      if($this->params->get("my_show_sku")){ 
          $string .= '
-		<th><b>'. JText::_('MYMUSE_SKU') .'</b></th>
+		<th><b>'. JText::_('COM_MYMUSE_SKU') .'</b></th>
         ';
         $colspan = 4;
      }
      $string .= '
-		<th align="right"><b>'. JText::_('MYMUSE_PRICE') .'</b></th>
-		<th align="right"><b>'. JText::_('MYMUSE_QUANTITY') .'</b></th>
-		<th align="right"><b>'. JText::_('MYMUSE_SUBTOTAL') .'</b></th> 
-		<th align="right"><b>'. JText::_('MYMUSE_DOWNLOADS') .'</b></th> 
-		<th align="right"><b>'. JText::_('MYMUSE_EXPIRES') .'</b></th> 
+		<th align="right"><b>'. JText::_('COM_MYMUSE_PRICE') .'</b></th>
+		<th align="right"><b>'. JText::_('COM_MYMUSE_QUANTITY') .'</b></th>
+		<th align="right"><b>'. JText::_('COM_MYMUSE_SUBTOTAL') .'</b></th> 
+		<th align="right"><b>'. JText::_('COM_MYMUSE_DOWNLOADS') .'</b></th> 
+		<th align="right"><b>'. JText::_('COM_MYMUSE_EXPIRES') .'</b></th> 
 		</tr>
 		';
 		
@@ -301,7 +301,7 @@ if($print){
 		    	$string .= '<a id="shipit" href="index.php?option=com_mymuse&view=order&layout=edit&task=order.shipitem&item_id='.$this->item->items[$i]->id.'&id='.$this->item->id.'">[Ship]</a> ';
 		    }
 		        
-		    if($this->item->items[$i]->category_name != '' && $this->params->get('mymuse_show_category')){
+		    if($this->item->items[$i]->category_name != '' && $this->params->get('COM_MYMUSE_show_category')){
 		    	$string .= $this->item->items[$i]->category_name .' : ';
 		    }
 		    if($this->item->items[$i]->parent_name != ''){
@@ -343,7 +343,7 @@ if($print){
 	 		   '; 
 	$string .= '
 			<tr">
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_SUBTOTAL').':</td>
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('COM_MYMUSE_SUBTOTAL').':</td>
 		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal + @$this->item->coupon_discount + @$this->item->discount).'</td>
 		        <td>&nbsp;</td>
 				<td>&nbsp;</td>
@@ -353,7 +353,7 @@ if($print){
 	if($this->item->discount > 0.00){
 		$string .= '
 		    <tr>
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_DISCOUNT').':
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('COM_MYMUSE_DISCOUNT').':
 		    	</td>
 		        <td align="right">'.MyMuseHelper::printMoney($this->item->discount).'</td>
 		        <td>&nbsp;</td>
@@ -366,14 +366,14 @@ if($print){
 		if($this->item->shopper_group_discount > 0.00){
 			$string .= '
 			<tr>
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL').':</td>
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('COM_MYMUSE_CART_ORIGINAL_SUBTOTAL').':</td>
 		        <td align="right">'.MyMuseHelper::printMoney($this->item->shopper_group_discount + $this->item->order_subtotal).'</td>
 		        <td>&nbsp;</td>
 				<td>&nbsp;</td>
 		    </tr>
 
 		    <tr>
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT').':
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT').':
 		    	'.$this->item->user->shopper_group_name.' '.$this->item->user->shopper_group_discount.' %</td>
 		        <td align="right">'.MyMuseHelper::printMoney($this->item->shopper_group_discount).'</td>
 		        <td>&nbsp;</td>
@@ -399,7 +399,7 @@ if($print){
 				($this->params->get('my_use_coupons') && $this->item->coupon_name) || 
 				$this->item->shopper_group_discount > 0.00){
 			$string .= '<tr>
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_CART_NEW_SUBTOTAL').':</td>
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('COM_MYMUSE_CART_NEW_SUBTOTAL').':</td>
 		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal).'</td>
 		        <td>&nbsp;</td>
 				<td>&nbsp;</td>
@@ -410,7 +410,7 @@ if($print){
 		if ($this->params->get('my_use_shipping') && $this->item->order_shipping > 0 && $this->item->order_shipments) { 
 			$string .= '
 		    <tr>
-		    <td colspan="'.$colspan.'" align="right">' .JText::_('MYMUSE_SHIPPING'). ': '
+		    <td colspan="'.$colspan.'" align="right">' .JText::_('COM_MYMUSE_SHIPPING'). ': '
 							.$this->item->order_shipments[0]->ship_carrier_name.': '
 							.$this->item->order_shipments[0]->ship_method_name.'
 		    </td>
@@ -440,7 +440,7 @@ if($print){
 		
 		$string .= '
 		<tr>
-		    <td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('MYMUSE_TOTAL'). ':</b></td>
+		    <td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('COM_MYMUSE_TOTAL'). ':</b></td>
 		    <td colspan="1" align="right" class="textbox2"><b>' .MyMuseHelper::printMoney($this->item->order_total). ' 
 		    ' .$this->item->order_currency.'</b></td>
 		    <td></td>
@@ -458,7 +458,7 @@ if($print){
 		    <td></td>
 		</tr>
 		<tr>
-		    <td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('MYMUSE_RESERVATION_FEE'). ':</b></td>
+		    <td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('COM_MYMUSE_RESERVATION_FEE'). ':</b></td>
 		    <td colspan="1" align="right" class="textbox2"><b>' .MyMuseHelper::printMoney($this->item->reservation_fee). ' </b></td>
 		    <td></td>
 		    <td></td>
@@ -467,7 +467,7 @@ if($print){
 		if($this->item->non_res_fee > 0.00){
 			$string .= '
 			<tr>
-		    	<td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('MYMUSE_OTHER_CHARGES'). ':</b></td>
+		    	<td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('COM_MYMUSE_OTHER_CHARGES'). ':</b></td>
 		    	<td colspan="1" align="right" class="textbox2"><b>' .MyMuseHelper::printMoney($this->item->non_res_fee). ' </b></td>
 		    	<td></td>
 		    	<td></td>
@@ -478,13 +478,13 @@ if($print){
 		$owing = $this->item->order_total - $this->item->paid_to_date; 
 		$string .= '
 		<tr>
-			<td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('MYMUSE_PAID_TO_DATE'). ':</b></td>
+			<td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('COM_MYMUSE_PAID_TO_DATE'). ':</b></td>
 			<td colspan="1" align="right" class="textbox2"><b>' .MyMuseHelper::printMoney($this->item->paid_to_date). ' </b></td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
-		    <td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('MYMUSE_OWING'). ':</b></td>
+		    <td colspan="'.$colspan.'" align="right" class="textbox2"><b>' .JText::_('COM_MYMUSE_OWING'). ':</b></td>
 		    <td colspan="1" align="right" class="textbox2"><b>' .MyMuseHelper::printMoney($owing). ' </b></td>
 		    <td></td>
 		    <td></td>
@@ -504,7 +504,7 @@ if($print){
  		<tr>
             <td>
             <fieldset class="adminform">
-			  <h2><?php echo JText::_('MYMUSE_DOWNLOADS') ?></h2>
+			  <h2><?php echo JText::_('COM_MYMUSE_DOWNLOADS') ?></h2>
 			  <table class="admintable">
 			    <tr>
 			    <td width="600" valign="top">
@@ -514,8 +514,8 @@ if($print){
         		<tr>
 			    <td width="600" valign="top">
         			<a 
-href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=<?php echo $this->item->id; ?>">
-<?php echo JText::_('MYMUSE_RESET_DOWNLOADS') ?></a>
+href="index.php?option=com_mymuse&view=order&layout=edit&task=order.resetDownloads&id=<?php echo $this->item->id; ?>">
+<?php echo JText::_('COM_MYMUSE_RESET_DOWNLOADS') ?></a>
         		</td>
         		</tr>
         	  </table>
@@ -559,38 +559,38 @@ href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=
 		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'payments', Text::_('COM_MYMUSE_PAYMENTS')); ?>
 		<fieldset class="adminform">
 
-			<legend><?php echo JText::_('MYMUSE_PAYMENTS') ?></legend>
+			<legend><?php echo JText::_('COM_MYMUSE_PAYMENTS') ?></legend>
 				<?php 
 					  		$row1 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_ID').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_ID').'</td>';
 					  		$row2 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_DATE').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_DATE').'</td>';
 					  		$row3 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_METHOD').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_METHOD').'</td>';
 					  		$row4 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_AMOUNT').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_AMOUNT').'</td>';
 					  		$row5 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_CURRENCY').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_CURRENCY').'</td>';
 					  		$row6 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_RATE').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_RATE').'</td>';
 					  		$row7 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_FEES').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_FEES').'</td>';
 					  		$row8 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_TRANS_ID').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_TRANS_ID').'</td>';
 					  		$row9 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_STATUS').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_STATUS').'</td>';
 					  		$row10 = '	
 					  		<tr>
-					  			<td valign="top">'.JText::_('MYMUSE_DESCRIPTION').'</td>';
+					  			<td valign="top">'.JText::_('COM_MYMUSE_DESCRIPTION').'</td>';
 				
 			
 				if(count($this->item->order_payments)){
@@ -628,7 +628,7 @@ href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=
 					    $row2 .= '	
 					  			<td valign="top" nowrap="nowrap">'.$this->form->getInput('payment_date').'</td>';
 					    $row3 .= '	
-					  			<td>'.$this->lists['plugins'].'<br />'.JText::_('MYMUSE_OTHER').'<br />
+					  			<td>'.$this->lists['plugins'].'<br />'.JText::_('COM_MYMUSE_OTHER').'<br />
 					    	<input type="text" name="payment_institution" value="" size="10" /></td>';
 					    $row4 .= '	
 					  			<td><input type="text" name="payment_amountin" value="" size="6" /></td>';

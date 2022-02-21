@@ -123,8 +123,8 @@ class HtmlView extends BaseHtmlView
 			$query = "SELECT count(*) from #__mymuse_order_item WHERE order_id=".$item->id."
 			AND product_in_stock='-1' AND file_name = ''";
 
-			$db->setQuery($query);
-			$res = $db->loadResult();
+			$this->db->setQuery($query);
+			$res = $this->db->loadResult();
 			if($res){
 				$item->backordered = 1;
 			}
@@ -133,8 +133,8 @@ class HtmlView extends BaseHtmlView
 			$query = "SELECT count(*) from #__mymuse_order_item WHERE order_id=".$item->id."
 			AND product_in_stock='-1' AND file_name != ''";
 
-			$db->setQuery($query);
-			$res = $db->loadResult();
+			$this->db->setQuery($query);
+			$res = $this->db->loadResult();
 			if($res){
 				$item->preordered = 1;
 			}

@@ -107,7 +107,7 @@ class ProductModel extends AdminModel
 	 * @var		array of product(format) objects
 	 * @since	1.6
 	 */
-	protected $_formats = null;
+	protected $_formats = array();
 	
 	/**
 	 * @var		array of product(item) objects
@@ -366,7 +366,7 @@ class ProductModel extends AdminModel
 		if(!$this->_item){
 			$input = Factory::getApplication()->input;
 			$task = $input->get('task','');
-			$parentid= $input->get('parentid','');
+			$parentid = $input->get('parentid',NULL);
 			$id = $input->get('id','');
 
 			if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
@@ -375,9 +375,18 @@ class ProductModel extends AdminModel
 				$input->set('id',0);
 				
 			}
-			
+
 
 			if ($item = parent::getItem($pk)) {
+				$item->parentid = $parentid ?? $item->parentid;
+
+				if($item->parentid){
+					$this->_parent = parent::getItem($item->parentid);
+					$item->parent = $this->_parent;
+					$item->catid = $item->parent->catid;
+					$item->artistid = $item->parent->artistid;
+				}
+
 
 				// Convert the attribs field to an array.
 				$registry = new Registry($item->attribs);
@@ -400,26 +409,30 @@ class ProductModel extends AdminModel
 				$item->digital = $registry->toArray();
 
 
+				if($task == "additem"){
+
+					$registry = new Registry($item->parent->physical);
+					$item->physical = $registry->toArray();
+
+					//price if item && my_price_by_product
+					if($this->_params->get('my_price_by_product',0)) {
+						$registry = new Registry($item->parent->attribs);
+						$attribs = $registry->toArray();
+						$item->price = $attribs['product_price_physical'];
+						$item->attribs = $item->parent->attribs;
+					}
+					$item->list_image = $item->parent->list_image;
+					$item->detail_image = $item->parent->detail_image;
+					$item->product_physical = 1;
+
+				}
+
 				$item->articletext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
 
-                if($parentid && $parentid != $id){
-                    $item->parentid = $parentid;
-                }
+
 				
 
-				if($item->parentid){
-					$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
-					$this->_db->setQuery($q);
-					$this->_parent = $this->_db->loadObject();
-					$item->parent = $this->_parent;
-					$item->catid = $item->parent->catid;
-					$item->artistid = $item->parent->artistid;
-
-				}else{
-					//set the parent id for the tracks and items
-					//$mainframe = Factory::getApplication();
-                    //$item->parentid = $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
-				}
+				
 				$item->flash_type = '';
 
 				if($task == "addfile" || $task == "new_allfiles"){
@@ -472,7 +485,7 @@ class ProductModel extends AdminModel
 	      	$form->removeField('author_id', 'filter');
 	      	$this->filterForm = $form;
 
-			$model->setState('filter.published', $this->getState('filter.published'));
+				$model->setState('filter.published', $this->getState('filter.published'));
 	   		$model->setState('filter.access', $this->getState('filter.access'));
 	   		$model->setState('filter.language', $this->getState('filter.language'));
 	   		$model->setState('list.ordering', $this->getState('item.ordering'));
@@ -534,7 +547,7 @@ class ProductModel extends AdminModel
 
     	$limit 				= $this->getState('list.limit');
   
-    	if ($this->_formats === null && $track = $this->getItem()) {
+    	if (!isset($this->_formats[$id]) || $this->_formats[$id] === null) {
 
 	      	$model = ListModel::getInstance('Products', 'MyMuse', array('ignore_request' => true));
 	      	$form = $model->getFilterForm(array(), true);
@@ -545,7 +558,7 @@ class ProductModel extends AdminModel
 	      	$form->removeField('author_id', 'filter');
 	      	$this->filterForm = $form;
 
-			$model->setState('filter.published', $this->getState('filter.published'));
+				$model->setState('filter.published', $this->getState('filter.published'));
 	   		$model->setState('filter.access', $this->getState('filter.access'));
 	   		$model->setState('filter.language', $this->getState('filter.language'));
 	   		$model->setState('list.ordering', $this->getState('item.ordering'));
@@ -561,22 +574,22 @@ class ProductModel extends AdminModel
     		$model->setState('filter.downloadable', 1);
 
     		if ($limit >= 0) {
-    			$this->_formats = $model->getItems();
+    			$this->_formats[$id] = $model->getItems();
 
-    			if ($this->_formats  === false) {
+    			if ($this->_formats[$id]  === false) {
     				$this->setError($model->getError());
     			}
-    			foreach($this->_formats as $f){
+    			foreach($this->_formats[$id] as $f){
     				$f->file_data = json_decode($f->digital);
     			}
     		}
     		else {
-    			$this->_formats =array();
+    			$this->_formats[$id] =array();
     		}
     
     	}
 
-    	return $this->_formats;
+    	return $this->_formats[$id];
     }
     /**
     * Get the items for the product
@@ -591,7 +604,7 @@ class ProductModel extends AdminModel
    	$input = $app->input;
    	$option = 'com_mymuse';
 
-   	$this->_params = $this->getState()->get('params');
+   	//$this->_params = $this->getState()->get('params');
    	$limit = $this->getState('list.limit');
    	$id = $input->get('id');
    
@@ -633,6 +646,19 @@ class ProductModel extends AdminModel
    		//get attributes
    		$db = Factory::getDBO();
    		for($i = 0; $i<count($this->_items); $i++){
+
+   			// Convert the attribs field to an array.
+   			$registry = new Registry($this->_items[$i]->attribs);
+   			$this->_items[$i]->attribs = $registry->toArray();
+
+   			// Convert the metadata field to an array.
+   			$registry = new Registry($this->_items[$i]->metadata);
+   			$this->_items[$i]->metadata = $registry->toArray();
+
+   			// Convert the physical field to an array.
+   			$registry = new Registry($this->_items[$i]->physical);
+   			$this->_items[$i]->physical = $registry->toArray();
+
    		
    			if(!$this->_attribute_skus && $product->id){
    				$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE product_parent_id='.$product->id;
@@ -668,12 +694,11 @@ class ProductModel extends AdminModel
 	/**
      * Method to get the product lists
      *
-     * @access    public
      * @return    array
      *
      * @since 3.0
    */
-   function getLists()
+   public function getLists()
    {
     	global $option;
     	$app 				= Factory::getApplication();
@@ -682,94 +707,94 @@ class ProductModel extends AdminModel
     	$subtype			= $input->get('subtype', '');
 
     	$filter_state 		= $app->getUserStateFromRequest( $option.'filter_state', 'filter_state', '', 'word' );
-		$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
-		$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
-		$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-		$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+			$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
+			$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
+			$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+			$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 
-		$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-		$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-		
-		$this->setState('file.ordering', $filter_order);
-		$this->setState('file.direction', $filter_order_Dir);
-		
-		$this->setState('item.ordering', $filter_order);
-		$this->setState('item.direction', $filter_item_order_Dir);
-		
-		$lists['order'] = $filter_order;
-		$lists['order_Dir'] = $filter_order_Dir;
-		$edit = $input->get('edit', 0);
-
-		//other categories
-		$selectedCats = array();
-		if($id){
-			$query = "SELECT * FROM #__mymuse_product_category_xref WHERE product_id=".$id;
-			$this->_db->setQuery($query);
-			$cats =  $this->_db->loadObjectList();
-			if($cats){
-				foreach($cats as $cat){
-					$selectedCats[] = $cat->catid;
-				}
-			}
-		}	
-
-		$query = "SELECT id,title FROM #__categories WHERE extension='com_mymuse'";
-		$this->_db->setQuery($query);
-		$lists['other_cats'] = $this->_db->loadObjectList();
-		
-		
-		// Items, Attributes, Files
-		$lists['attributes'] 	= array();
-		$lists['attribute_sku'] = array();
-		$lists['items'] 		= array();
-		$lists['files'] 		= array();
-	
-		//attributes
-		if(is_numeric($this->_item->parentid)){
-			//we want the parentid
-			$pid = $this->_item->parentid;
-		}else{
-			$pid = $id;
-		}
-
-		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
-			product_parent_id='.$pid.'
-			ORDER BY ordering';
-
-		$this->_db->setQuery($query);
-		$lists['attribute_sku'] = $this->_db->loadObjectList();
-
-		// items
-		$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-			AND product_downloadable='1'";
-		if($filter_item_order){
-			$query .= "ORDER BY $filter_item_order ";
-		}
-		if($filter_item_order && $filter_item_order_Dir){
-			$query .= "$filter_item_order_Dir";
-		}
+			$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+			$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 			
-		$this->_db->setQuery($query);
+			$this->setState('file.ordering', $filter_order);
+			$this->setState('file.direction', $filter_order_Dir);
+			
+			$this->setState('item.ordering', $filter_order);
+			$this->setState('item.direction', $filter_item_order_Dir);
+			
+			$lists['order'] = $filter_order;
+			$lists['order_Dir'] = $filter_order_Dir;
+			$edit = $input->get('edit', 0);
 
-		if($lists['items'] = $this->_db->loadObjectList()){
+			//other categories
+			$selectedCats = array();
+			if($id){
+				$query = "SELECT * FROM #__mymuse_product_category_xref WHERE product_id=".$id;
+				$this->_db->setQuery($query);
+				$cats =  $this->_db->loadObjectList();
+				if($cats){
+					foreach($cats as $cat){
+						$selectedCats[] = $cat->catid;
+					}
+				}
+			}	
 
-			foreach($lists['items'] as $item){
-				foreach($lists['attribute_sku'] as $a_sku){
-					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
-						AND product_attribute_sku_id='.$a_sku->id;
+			$query = "SELECT id,title FROM #__categories WHERE extension='com_mymuse'";
+			$this->_db->setQuery($query);
+			$lists['other_cats'] = $this->_db->loadObjectList();
+			
+			
+			// Items, Attributes, Files
+			$lists['attributes'] 	= array();
+			$lists['attribute_sku'] = array();
+			$lists['items'] 		= array();
+			$lists['files'] 		= array();
+		
+			//attributes
+			if($this->_item->parentid > 0){
+				//we want the parentid
+				$pid = $this->_item->parentid;
+			}else{
+				$pid = $id;
+			}
+
+			$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
+				product_parent_id='.$pid.'
+				ORDER BY ordering';
+
+			$this->_db->setQuery($query);
+			$lists['attribute_sku'] = $this->_db->loadObjectList();
+
+			// items
+			$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
+				AND product_downloadable='1'";
+			if($filter_item_order){
+				$query .= "ORDER BY $filter_item_order ";
+			}
+			if($filter_item_order && $filter_item_order_Dir){
+				$query .= "$filter_item_order_Dir";
+			}
+				
+			$this->_db->setQuery($query);
+
+			if($lists['items'] = $this->_db->loadObjectList()){
+
+				foreach($lists['items'] as $item){
+					foreach($lists['attribute_sku'] as $a_sku){
+						$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
+							AND product_attribute_sku_id='.$a_sku->id;
+					
+						$this->_db->setQuery($query);
+						$item->attributes[$a_sku->name] = $this->_db->loadResult();
+					}
+					$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
 				
 					$this->_db->setQuery($query);
-					$item->attributes[$a_sku->name] = $this->_db->loadResult();
+					$lists['attributes'][$item->id] = $this->_db->loadObjectList();
+
 				}
-				$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
-			
-				$this->_db->setQuery($query);
-				$lists['attributes'][$item->id] = $this->_db->loadObjectList();
-
 			}
-		}
 
-		return $lists;
+			return $lists;
     }
     
     /**
@@ -890,7 +915,7 @@ class ProductModel extends AdminModel
 		$input  		= Factory::getApplication()->input;
 		$filter 		= \JFilterInput::getInstance();
 		$db     		= $this->getDbo();
-		$user			= Factory::getUser();
+		$user				= Factory::getUser();
 
 
 
@@ -926,7 +951,7 @@ class ProductModel extends AdminModel
 				}
 			}
 		}
-//print_r($data); exit;
+
 		// Automatic handling of alias for empty fields
 		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
 		{
@@ -978,18 +1003,19 @@ class ProductModel extends AdminModel
 	 * @return array
 	 */
 	function getAttributes(){
+
 		$db = Factory::getDBO();
-		if(!$this->_attribute_skus){
+		//if(!$this->_attribute_skus){
 			$this->getAttributeskus();
-		}
-		$app 	= Factory::getApplication();
+		//}
+
+		$app 		= Factory::getApplication();
 		$input 	= $app->input;
-		$id 	= $input->get('id',0);
+		$id 		= $input->get('id',0);
 		if($id){
 			foreach($this->_attribute_skus as $a_sku){
 				$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$id.'
 				AND product_attribute_sku_id='.$a_sku->id;
-
 				$db->setQuery($query);
 				$this->_item->attributes[$a_sku->name] = $db->loadResult();
 			}
@@ -1011,22 +1037,24 @@ class ProductModel extends AdminModel
 		$app 	= Factory::getApplication();
 		$input 	= $app->input;
 		$pid	= $input->get( 'parentid', null );
+
 		if(!$pid){
 			//see if we can get the parent from the item id
 			$item = $this->getItem();
+
 			if(isset($item->id)){
 				$query = "SELECT parentid from #__mymuse_product WHERE id=".$item->id;
 				$this->_db->setQuery($query);
 				$pid = $this->_db->loadResult();
 			}else{
-				$this->setError(JText::_('MYMUSE_COULD_NOT_FIND_PARENT'));
+				$this->setError(Text::_('COM_MYMUSE_COULD_NOT_FIND_PARENT'));
             	return false;
 			}
 		}
 		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE product_parent_id='.$pid;
 		$db->setQuery($query);
 		$this->_attribute_skus = $db->loadObjectList();
-
+		
 		return $this->_attribute_skus;
 
 	}
@@ -1042,20 +1070,16 @@ class ProductModel extends AdminModel
 		$input 				= Factory::getApplication()->input;
 		$post 				= $input->post->getArray();
 		$itemid				= $input->get('itemid','');
-
-		if(!$input->get('attribute_value',0) || !$input->get('attribute_name',0) || !isset($itemid)){
-			return;
-		}
-
-
-		if(!$itemid){
-			return;
-		}
 		$db = Factory::getDBO();
+
 		$attribute_values		= $input->getVar('attribute_value', array());
 		$attribute_names		= $input->getVar('attribute_name', array());
 
+		if(!count($attribute_values) || !count($attribute_names) || !isset($itemid)){
+			return;
+		}
 
+		
 		$query = "DELETE FROM #__mymuse_product_attribute
 			WHERE product_id='".$itemid."'";
 		//echo $query;
@@ -1105,21 +1129,34 @@ class ProductModel extends AdminModel
 
 			//is it an item?
 			if($item){
+
 				// Reset the ID because we are making a copy
 				$this->table->id 										= 0;
 				$input      												= Factory::getApplication()->input;
 				$this->table->parentid 							= $oldid;
 				$this->table->product_physical 			= 1;
 				$this->table->product_downloadable 	= 0;
+				$this->table->product_sku 					= $this->table->product_sku . $input->get('item_title');
 				$this->table->title 								= $this->table->title . $input->get('item_title');
 				$old_alias													= $this->table->alias;
 				$this->table->alias 								= ApplicationHelper::stringURLSafe($this->table->title);
 				$this->table->state 								= 1;
+				//price if item && my_price_by_product
+				if($this->_params->get('my_price_by_product',0)) {
+					$registry = new Registry($this->table->attribs);
+					$attribs = $registry->toArray();
+					$this->table->price = $attribs['product_price_physical'];
+				}
 				if(isset($this->table->product_images) && $this->table->product_images != '' && $input->get('color',0)){
 					$detail_image = "images/".$this->table->product_images.'/'.$old_alias.'-'.$input->get('color',0).'.png';
 					if(file_exists(JPATH_ROOT.'/'.$detail_image)){
 						$this->table->detail_image = $detail_image;
 					}
+					$list_image = "images/".$this->table->product_images.'/'.$old_alias.'-'.$input->get('color',0).'.png';
+					if(file_exists(JPATH_ROOT.'/'.$list_image)){
+						$this->table->list_image = $list_image;
+					}
+					echo $detail_image."<br />";
 				}
 			}else{
 				// Alter the title & alias

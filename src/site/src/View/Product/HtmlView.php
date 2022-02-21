@@ -19,6 +19,7 @@ use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -30,7 +31,7 @@ use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 use Joomla\Component\Mymuse\Site\Model\StoreModel;
-
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 /**
  * HTML product View class for the Content component
@@ -119,8 +120,9 @@ class HtmlView extends BaseHtmlView
 		$this->Itemid 			= $jinput->get("Itemid",'');
 		$this->sortDirection    = $this->state->get('list.direction');
 		$this->sortColumn       = $this->state->get('list.ordering');
-		$this->store			= StoreModel::getStore();
-		$MyMuseCart				= new CartHelper;
+		$this->store			= Mymuse::getObject('Store','model')->getStore();
+		$this->shopper 			= Mymuse::getObject('Shopper','model')->getShopper();
+		$MyMuseCart				= Mymuse::getObject('Cart','helper');
 		$this->cart 			= $MyMuseCart->cart;
 		$this->filterAlpha     	= $jinput->get('filter_alpha', '', 'STRING');
 
@@ -435,10 +437,10 @@ class HtmlView extends BaseHtmlView
 			return '';
 		}
 		$full_path = JPATH_ROOT."/images/".$path;
-		$url_path = JURI::Root()."/images/".$path;
+		$url_path = URI::Root()."/images/".$path;
 
 		//JFolder::files($path, $filter = '.', $recurse, $fullpath , $exclude);
-		$files = JFolder::files($full_path, $filter = '.', false, false );
+		$files = Folder::files($full_path, $filter = '.', false, false );
 
 		$html = '
 		<div class="owl-carousel owl-theme">

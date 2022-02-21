@@ -26,7 +26,7 @@ use Joomla\Component\Mymuse\Site\Model\ProductModel;
 use Joomla\Component\Mymuse\Administrator\Table\ProductTable;
 use Joomla\Component\Categories\Administrator\Table\CategoryTable;
 use Joomla\Registry\Registry;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 
 class CartHelper
@@ -74,7 +74,7 @@ class CartHelper
       $this->cart = $session->get("cart");
     }
 
-    $this->MyMuseProduct = MyMuse::getObject('Product','model');
+    $this->MyMuseProduct = Mymuse::getObject('Product','model');
   }
 
 

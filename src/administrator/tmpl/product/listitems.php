@@ -4,9 +4,9 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
-
-$params 	= $this->state->get('params');
+$params 	= $this->params;
 $lists 		= $this->lists;
 $listOrder	= $this->escape($this->state->get('item.ordering'));
 $listDirn	= $this->escape($this->state->get('item.direction'));
@@ -30,6 +30,7 @@ if(isset($lists['isNew'])){
 $ordering = ($listOrder == 'a.ordering');
 
 
+
 ?>
 <!-- product listitems.php -->
 <script type="text/javascript">
@@ -50,46 +51,7 @@ Joomla.orderTable = function()
 }
 
 </script>
-<div id="attributes" class="row">
 
-	<div class="col-md-1"></div>
-	<div class="col-md-11">
-    <?php if(isset($lists['attribute_sku']) && is_array($lists['attribute_sku'])){ ?>
-    	<h2><?php echo JText::_('COM_MYMUSE_ITEM_ATTRIBUTES'); ?></h2>
-    	<table class="table table-striped" id="articleList">
-			<thead>
-				<tr>
-					<th class="">
-						<?php echo Text::_('COM_MYMUSE_NAME'); ?>
-					</th>
-					<th class="">
-						<?php echo Text::_('COM_MYMUSE_BASE'); ?>
-					</th>
-					<th  class="">
-						<?php echo Text::_('COM_MYMUSE_CSS'); ?>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-
-    	<?php 
-    	foreach($lists['attribute_sku'] as $a_sku){ ?>
-						<tr>
-							<td><?php echo $a_sku->name; ?></td>
-							<td><?php echo $a_sku->extra_base; ?></td>
-							<td><?php echo $a_sku->extra_css; ?></td>
-						</tr>
-		<?php } ?>
-			</tbody>
-		</table>
-
-		<a href="index.php?option=com_mymuse&task=product.create_items&view=product&layout=listitems&id=<?php echo $this->item->id; ?>"><button class="btn btn-small button-apply btn-warning">
-			<?php echo Text::_('COM_MYMUSE_CREATE_ITEMS'); ?></button></a><br />
-			<?php echo Text::_('COM_MYMUSE_CREATE_ITEMS_DESC'); ?>
-
-	<?php } ?>
-	</div>
-</div>
 <div id="items" class="row">
 
 	<h2><?php echo JText::_( 'COM_MYMUSE_ITEMS' ); ?></h2>
@@ -107,7 +69,12 @@ Joomla.orderTable = function()
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<input type="hidden" name="filter_item_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_item_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo HtmlHelper::_('form.token'); ?>
+	<?php echo HtmlHelper::_('form.token'); 
+
+for ($i=0, $n=count( $this->items ); $i < $n; $i++){
+
+}
+	?>
 	
 	<div id="j-main-container">
 
@@ -131,15 +98,15 @@ Joomla.orderTable = function()
 					<th class="title" width="10%">
 						<?php echo HTMLHelper::_('grid.sort', 'COM_MYMUSE_PRICE', 'a.price', $listDirn, $listOrder); ?>
 					</th>
-					<th class="title" width="10%">
+					<th class="text-right" width="10%">
 						<?php echo HTMLHelper::_('grid.sort', 'COM_MYMUSE_DISCOUNT', 'a.discount', $listDirn, $listOrder); ?>
 					</th>
-					<th class="title" width="10%">
+					<th class="title text-right" width="10%">
 						<?php echo HTMLHelper::_('grid.sort', 'COM_MYMUSE_PRODUCT_IN_STOCK_LABEL', 'a.product_in_stock', $listDirn, $listOrder); ?>
 					</th>
 		
 					<?php foreach($lists['attribute_sku'] as $a_sku){ ?>
-						<th><?php echo $a_sku->name; ?>
+						<th class="text-center"><?php echo $a_sku->name; ?>
 						</th>
 					<?php } ?>
 					<th width="1%" class="title">
@@ -160,8 +127,9 @@ Joomla.orderTable = function()
 			{
 				
 				$item = &$this->items[$i];
+
 				$item->checked_out = 0;
-				$link 	= 'index.php?option=com_mymuse&task=product.edit&type=item&id='. $item->id;
+				$link 	= 'index.php?option=com_mymuse&task=product.edititem&type=item&id='. $item->id;
 				$checked 	= JHTML::_('grid.checkedout',  $item, $i );
 				$alt = "p";
 				
@@ -215,7 +183,7 @@ Joomla.orderTable = function()
 					
 					<td align="right"><?php echo $item->product_in_stock; ?></td>
 					<?php foreach($lists['attribute_sku'] as $a_sku){?>
-						<td align="center"><?php echo $item->attributes[$a_sku->name]; ?>
+						<td class="text-center"><?php echo $item->attributes[$a_sku->name]; ?>
 						</td>
 					<?php } ?>
 					<td>
@@ -231,6 +199,49 @@ Joomla.orderTable = function()
 <?php } ?>
 			</tbody>
 			</table>
+		</form>
 
+</div>
+<hr>
+<hr>
+<div id="attributes" class="row">
+	<div class="col-md-11">
+    <?php 
+
+    if(isset($lists['attribute_sku']) && is_array($lists['attribute_sku'])){ ?>
+    	<h2><?php echo JText::_('COM_MYMUSE_ITEM_ATTRIBUTES'); ?></h2>
+    	<table class="table table-striped" id="articleList">
+			<thead>
+				<tr>
+					<th class="">
+						<?php echo Text::_('COM_MYMUSE_NAME'); ?>
+					</th>
+					<th class="">
+						<?php echo Text::_('COM_MYMUSE_BASE'); ?>
+					</th>
+					<th  class="">
+						<?php echo Text::_('COM_MYMUSE_CSS'); ?>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+
+    	<?php 
+    	foreach($lists['attribute_sku'] as $a_sku){ ?>
+						<tr>
+							<td><?php echo $a_sku->name; ?></td>
+							<td><?php echo $a_sku->extra_base; ?></td>
+							<td><?php echo $a_sku->extra_css; ?></td>
+						</tr>
+		<?php } ?>
+			</tbody>
+		</table>
+
+		<a href="index.php?option=com_mymuse&task=product.create_items&view=product&layout=listitems&id=<?php echo $this->item->id; ?>"><button class="btn btn-small button-apply btn-warning">
+			<?php echo Text::_('COM_MYMUSE_CREATE_ITEMS'); ?></button></a><br />
+			<?php echo Text::_('COM_MYMUSE_CREATE_ITEMS_DESC'); ?>
+
+	<?php } ?>
+	</div>
 </div>
 <?php } ?>

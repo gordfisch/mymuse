@@ -11,13 +11,20 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
+
 $row = $this->item;
 $params = $this->params;
 $attribute_skus = $this->attribute_skus;
 $attributes = $this->attributes;
 $lists = $this->lists;
 JFilterOutput::objectHTMLSafe( $row );
-JHTML::_('behavior.tooltip');
+
 
 ?>
 <!-- product edititems.php -->
@@ -36,9 +43,9 @@ JHTML::_('behavior.tooltip');
 			// do field validation
 
 			if (form.title.value == ""){
-				alert( "<?php echo JText::_( 'MYMUSE_ITEM_MUST_HAVE_A_TITLE', true ); ?>" );
+				alert( "<?php echo Text::_( 'COM_MYMUSE_ITEM_MUST_HAVE_A_TITLE', true ); ?>" );
 			} else if (form.product_sku.value == ""){
-				alert( "<?php echo JText::_( 'MYMUSE_ITEM_MUST_HAVE_AN_SKU', true ); ?>" );
+				alert( "<?php echo Text::_( 'COM_MYMUSE_ITEM_MUST_HAVE_AN_SKU', true ); ?>" );
 
 			} else {
 
@@ -47,25 +54,22 @@ JHTML::_('behavior.tooltip');
 		}
 		//-->
 		</script>
-
-		<h3><?php echo isset($row->parent->title)? $row->parent->title : ''; ?></h3>
+		<?php $title = empty($this->item->id) ? Text::_('COM_MYMUSE_NEW_ITEM') : Text::_('COM_MYMUSE_EDIT_ITEM').' '. $this->item->title; ?>
+		<h3><?php echo isset($row->parent->title)? $row->parent->title : ''; ?>
+			<?php echo $title; ?>
+		</h3>
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
-<div id="j-main-container" class="span10">
+<div id="j-main-container">
 
-	<?php 
-		echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'item')); 
+		<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-		$title = empty($this->item->id) ? JText::_('MYMUSE_NEW_ITEM') : JText::_('MYMUSE_EDIT_ITEM').' '. $this->item->title; 
-		echo JHtml::_('bootstrap.addTab', 'myTab', 'item', $title, true); 
-	?>
+		<!--  DETAILS TAB -->
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', Text::_('COM_MYMUSE_DETAILS', true)); ?>
 
-
-
-
-	<div class="pull-left">
-		<fieldset class="adminform form-horizontal">
-
-			<legend><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_ITEM') : JText::_('MYMUSE_EDIT_ITEM').' '. $this->item->title; ?></legend>
+		<div class="row">
+    		<div class="col-12 col-lg-6">
+    			<fieldset id="fieldset-details" class="options-form">
+				<legend><?php echo Text::_('COM_MYMUSE_DETAILS'); ?></legend>
 				<div class="control-group">
 					<div class="control-label">
 						<?php echo $this->form->getLabel('id'); ?>
@@ -142,99 +146,55 @@ JHTML::_('behavior.tooltip');
 						<?php echo $this->form->getInput('product_default'); ?>
 					</div>
 				</div>
-	
-		</fieldset>
-	</div>
-	<div class="pull-right">
-		<fieldset class="adminform form-horizontal">
-			<legend><?php echo JText::_('MYMUSE_ITEM_ATTRIBUTES'); ?></legend>
+				</fieldset>
+			</div>
+		
+			<div class="col-12 col-lg-6">
+				<fieldset id="fieldset-attributes" class="options-form">
+				<legend><?php echo Text::_('COM_MYMUSE_ITEM_ATTRIBUTES'); ?></legend>
 		
 			<?php
 			foreach($attribute_skus as $attribute_sku){
 					?>
-			<div class="control-group">
-					<div class="control-label"><?php echo $attribute_sku->name; ?>
-			</div>
-			<div class="controls">
-				<input class="inputbox" type="text"
-					name="attribute_value[<?php echo $attribute_sku->id; ?>]"
-					id="attribute_value.<?php echo $attribute_sku->id; ?>" size="30"
-					maxlength="255" value="<?php echo @$this->attributes[$attribute_sku->name]; ?>" /> 
-					<input
-					type="hidden"
-					name="attribute_name[<?php echo $attribute_sku->id; ?>]"
-					value="<?php echo $attribute_sku->name ?>" />
-			</div>
+				<div class="control-group">
+						<div class="control-label"><?php echo $attribute_sku->name; ?>
+				</div>
+				<div class="controls">
+					<input class="inputbox" type="text"
+						name="attribute_value[<?php echo $attribute_sku->id; ?>]"
+						id="attribute_value.<?php echo $attribute_sku->id; ?>" size="30"
+						maxlength="255" value="<?php echo @$this->attributes[$attribute_sku->name]; ?>" /> 
+						<input
+						type="hidden"
+						name="attribute_name[<?php echo $attribute_sku->id; ?>]"
+						value="<?php echo $attribute_sku->name ?>" />
+				</div>
 			<?php } ?>
 	
-		</fieldset>
-	</div>
+				</fieldset>
+			</div>
+		</div>
 
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'dimensions', JText::_('MYMUSE_DIMENSIONS', true)); ?>
-		<div class="pull-left span5">
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('product_weight'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('product_weight'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('product_weight_uom'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('product_weight_uom'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('product_length'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('product_length'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('product_width'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('product_width'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('product_height'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('product_height'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('product_lwh_uom'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('product_lwh_uom'); ?>
-					</div>
-				</div>
+		<!--  DIMENSIONS TAB -->
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'tracks', Text::_('COM_MYMUSE_DIMENSIONS', true)); ?>
+		<div class="row">
+			<div class="col-12">
+				<?php echo $this->form->renderFieldset('physical'); ?>
+				
+			</div>
 		</div>
 
 
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-
-
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('MYMUSE_IMAGES', true)); ?>
+		<!--  IMAGES TAB -->
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'tracks', Text::_('COM_MYMUSE_IMAGES', true)); ?>
 			
 		<fieldset class="adminform form-horizontal">
 
-			<legend><?php echo JText::_('MYMUSE_IMAGES') ?></legend>
+			<legend><?php echo JText::_('COM_MYMUSE_IMAGES') ?></legend>
 			<div class="pull-left span5">
 
 				<!-- div class="control-group">
@@ -262,7 +222,7 @@ JHTML::_('behavior.tooltip');
 
 		</fieldset>
 
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
 
 		<input type="hidden" name="jform[product_physical]" value="1">
@@ -280,6 +240,6 @@ JHTML::_('behavior.tooltip');
 		<input type="hidden" name="subtype" value="item" />
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="task" value="" />
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 		</form>
 </div>

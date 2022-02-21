@@ -18,6 +18,7 @@ use Joomla\CMS\Categories\CategoryServiceTrait;
 use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Administrator\Service\HTML\AdministratorService;
 use Joomla\Component\Mymuse\Administrator\Service\HTML\Icon;
 use Psr\Container\ContainerInterface;
@@ -109,6 +110,11 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 		MyMuseHelper::setParam('storage', $GLOBALS['mymuseStorage']->type);
 		*/
         MymuseHelper::setParam('storage', 'regular');
+
+        
+        $Doc = Factory::getDocument();
+        $Doc->addStyleSheet( Uri::base() . 'components/com_mymuse/assets/css/mymuse.css' );
+
 
 	}
 

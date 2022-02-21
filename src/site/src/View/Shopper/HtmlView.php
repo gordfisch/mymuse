@@ -26,8 +26,7 @@ use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 use Joomla\Component\Mymuse\Site\Model\StoreModel;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
-
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 class HtmlView extends BaseHtmlView
 {
@@ -88,11 +87,11 @@ class HtmlView extends BaseHtmlView
         $layout = Factory::getApplication()->input->get('layout', 'register');
         parent::setLayout($layout);  
 
-        $this->MyMuseShopper  	=& MyMuse::getObject('Shopper','model');
-        $this->MyMuseShopper  	=& MyMuse::getObject('Shopper','model');
+        $this->MyMuseShopper  	=& Mymuse::getObject('Shopper','model');
+        $this->MyMuseShopper  	=& Mymuse::getObject('Shopper','model');
         $this->shopper 			= $this->MyMuseShopper->getShopper();
-        $this->MyMuseCart  		= MyMuse::getObject('cart','helper');
-        $this->MyMuseStore  	= MyMuse::getObject('store','model');
+        $this->MyMuseCart  		= Mymuse::getObject('cart','helper');
+        $this->MyMuseStore  	= Mymuse::getObject('store','model');
         $this->store 			= $this->MyMuseStore->_store;
         $this->user				= Factory::getUser();
 

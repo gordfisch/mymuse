@@ -26,7 +26,7 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
 /**
- * Methods supporting a list of taxrate records.
+ * Methods supporting a list of product records.
  *
  * @since  5.0.0
  */

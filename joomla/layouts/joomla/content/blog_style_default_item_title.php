@@ -22,14 +22,7 @@ $currentDate = Factory::getDate()->format('Y-m-d H:i:s');
 ?>
 <?php if ($displayData->state == 0 || $params->get('show_title') || ($params->get('show_author') && !empty($displayData->author ))) : ?>
 	<div class="page-header">
-		<?php if ($params->get('show_title')) : 
-$thing = RouteHelper::getArticleRoute($displayData->slug, $displayData->catid, $displayData->language);
-echo $thing;
-echo "<br />".Route::_($thing);
-
-
-
-			?>
+		<?php if ($params->get('show_title')) : ?>
 			<h2 itemprop="name">
 				<?php if ($params->get('link_titles') && ($params->get('access-view') || $params->get('show_noauth', '0') == '1')) : ?>
 					<a href="<?php echo Route::_(

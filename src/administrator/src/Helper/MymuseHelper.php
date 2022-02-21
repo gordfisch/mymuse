@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\HTML\Helpers\Sidebar;
 
 
 define('TAX_REGEX',"[\'-\/\s\\\]");
@@ -118,68 +118,70 @@ class MymuseHelper extends ContentHelper
 	{
 		
 		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE'),
+			Text::_('COM_MYMUSE'),
 			'index.php?option=com_mymuse',
 			$vName == 'welcome'
 		);
 
 		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_STORE'),
+			Text::_('COM_MYMUSE_TITLE_ORDERS'),
+			'index.php?option=com_mymuse&view=orders',
+			$vName == 'orders'
+		);
+
+		\JHtmlSidebar::addEntry(
+			Text::_('COM_MYMUSE_TITLE_STORE'),
 			'index.php?option=com_mymuse&view=store&task=store.edit&id=1',
 			$vName == 'stores'
 		);
 		
 		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_CATEGORIES'),
+			Text::_('COM_MYMUSE_TITLE_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_mymuse',
 			$vName == 'categories'
 		);
 		
 		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_PRODUCTS'),
+			Text::_('COM_MYMUSE_TITLE_PRODUCTS'),
 			'index.php?option=com_mymuse&view=products',
 			$vName == 'products'
 		);
 
 		
-		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_ORDERS'),
-			'index.php?option=com_mymuse&view=orders',
-			$vName == 'orders'
-		);
+		
 		
 		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_TAXRATES'),
+			Text::_('COM_MYMUSE_TITLE_TAXRATES'),
 			'index.php?option=com_mymuse&view=taxrates',
 			$vName == 'taxrates'
 		);
 
 		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_COUPONS'),
+			Text::_('COM_MYMUSE_TITLE_COUPONS'),
 			'index.php?option=com_mymuse&view=coupons',
 			$vName == 'coupons'
 		);
 		
 		\JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_SHOPPERGROUPS'),
+			Text::_('COM_MYMUSE_TITLE_SHOPPERGROUPS'),
 			'index.php?option=com_mymuse&view=shoppergroups',
 			$vName == 'shoppergroups'
 		);
 
 		\JHtmlSidebar::addEntry(
-			JText::_('MYMUSE_MYMUSE_REPORTS'),
+			Text::_('MYMUSE_MYMUSE_REPORTS'),
 			'index.php?option=com_mymuse&view=reports',
 			$vName == 'reports'
 		);
 		
 		\JHtmlSidebar::addEntry(
-			JText::_('MYMUSE_PLUGINS'),
+			Text::_('MYMUSE_PLUGINS'),
 			'index.php?option=com_plugins&view=plugins&filter_folder=mymuse',
 			$vName == 'plugins'
 		);
 		
 		\JHtmlSidebar::addEntry(
-			JText::_('MYMUSE_PLUGINS_USER'),
+			Text::_('MYMUSE_PLUGINS_USER'),
 			'index.php?option=com_plugins&view=plugins&filter_folder=user',
 			$vName == 'plugins'
 		);
@@ -302,6 +304,10 @@ class MymuseHelper extends ContentHelper
 	 */
 	static function logMessage($message){
 		jimport('joomla.filesystem.file');
+
+		$date = date('Y-m-d h:i:s');
+		$message = "################### \n$date\n".$message;
+
 		if($fh = fopen(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'log.txt', "a")){
 			fwrite($fh,$message."\n");
 			fclose($fh);
@@ -862,7 +868,7 @@ class MymuseHelper extends ContentHelper
 		$db->setQuery($q);
 		$current_stock = $db->loadResult();
 		if($current_stock < $quantity){
-			$this->error = JText::_('MYMUSE_STOCK_LESS_THAN_QUANTITY');
+			$this->error = Text::_('MYMUSE_STOCK_LESS_THAN_QUANTITY');
 			return false;
 		}
 

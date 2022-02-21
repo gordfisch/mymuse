@@ -10,6 +10,22 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
+
+
 $product 	=& $this->item;
 $items		=& $this->item->items;
 $items_select 	= $this->params->get('product_item_selectbox',1);
@@ -23,7 +39,7 @@ if( is_countable($items) && count($items)) :
 	@media (max-width: 767px) { 
 
 	<?php foreach($product->attribute_sku as $a_sku){ ?>
-		td.my<?php echo $a_sku->name ?>:before { content: "<?php echo JText::_($a_sku->name); ?>";}
+		td.my<?php echo $a_sku->name ?>:before { content: "<?php echo Text::_($a_sku->name); ?>";}
 		td.my<?php echo $a_sku->name ?>{
 			text-align: left;
 		}
@@ -43,23 +59,23 @@ if( is_countable($items) && count($items)) :
 		}
 	</style>
 	<div class="product-items">
-		<h3><?php echo JText::_('COM_MYMUSE_ITEMS'); ?></h3>
+		<h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3>
 		<table class="mymuse_cart">
 			<thead>
 		    <tr>
 		    
-        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('COM_MYMUSE_NAME'); ?>
+        		<th class="mytitle" align="left" width="55%" ><?php echo Text::_('COM_MYMUSE_NAME'); ?>
 				</th>
        			<?php foreach($product->attribute_sku as $a_sku){ ?>
 						<th class="my<?php echo $a_sku->name ?>" align="left"><?php echo $a_sku->name; ?></th>
 				<?php } ?>
        			
-				<th class="myprice" align="center" width="20%"><?php echo JText::_('COM_MYMUSE_COST'); ?></th>
+				<th class="myprice" align="center" width="20%"><?php echo Text::_('COM_MYMUSE_COST'); ?></th>
         	<?php if ($this->params->get('product_show_quantity')) :?>
-        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_QUANTITY'); ?></th>
+        		<th class="myquantity" align="left" width="20%"><?php echo Text::_('COM_MYMUSE_QUANTITY'); ?></th>
         		
       	    <?php endif; ?>
-      	    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('COM_MYMUSE_SELECT'); ?></th>
+      	    	<th class="myselect" align="left" width="5%" ><?php echo Text::_('COM_MYMUSE_SELECT'); ?></th>
       		</tr>
       		</thead>
 			<?php 
@@ -221,7 +237,7 @@ $js .= "</script>\n";
 echo $js;
 ?>
 <div class="mymuse">
-<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
+<h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3> 
     <div class="product-items">
     <ul class="product-content">
         <li class="product-content-item-actions">

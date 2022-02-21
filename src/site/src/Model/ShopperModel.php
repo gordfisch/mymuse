@@ -19,8 +19,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
-
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -92,7 +91,7 @@ class ShopperModel extends FormModel
         	$db 	= Factory::getDBO();
         	$session = Factory::getSession();
         	$guestcheckout = $session->get('guestcheckout');
-        	$MyMuseCart		= MyMuse::getObject('Cart');
+        	$MyMuseCart		= Mymuse::getObject('Cart');
 			$cart = $MyMuseCart->cart;
 
         	$shipping_needed = 0;
@@ -486,7 +485,7 @@ class ShopperModel extends FormModel
 		// Save the data in the session.
 		$app->setUserState('com_users.registration.data', $post);
 
-		$MyMuseCart		=& MyMuse::getObject('cart','helpers');
+		$MyMuseCart		=& Mymuse::getObject('cart','helper');
         $cart = $MyMuseCart->cart;
         $shipping_needed = 0;
         for ($i=0;$i<$cart["idx"];$i++) {
@@ -579,7 +578,7 @@ class ShopperModel extends FormModel
 
 
 		//save the currrent cart
-		$MyMuseCart = MyMuse::getObject('cart','helpers');
+		$MyMuseCart = Mymuse::getObject('cart','helper');
 		$currentCart = $MyMuseCart->cart;
 		
 		//perform the login action
@@ -648,7 +647,7 @@ class ShopperModel extends FormModel
 
 	function getOrders()
 	{
-		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
+		$MyMuseCheckout =& Mymuse::getObject('checkout','helper');
 		$user		= Factory::getUser();
 		$user_id 	= $user->get('id');
 		$db			= Factory::getDBO();

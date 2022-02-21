@@ -149,7 +149,7 @@ class ProductController extends FormController
 			$subtype = 'allfiles';
 			$table->product_allfiles = 1;
 		}elseif(!isset($post['subtype']) || $post['subtype'] == ""){
-			$subtype = 'item';
+			$subtype = 'file';
 		}
 
 		$task = $this->input->get('task');
@@ -158,7 +158,7 @@ class ProductController extends FormController
         if($task == "save2copy"){
             $this->input->set('task', "apply");
         }
-
+echo $subtype; exit;
         
 		if($subtype == "file" || $subtype == "allfiles"){
 	        /* SAVING A FILE */
@@ -243,8 +243,14 @@ class ProductController extends FormController
             }
 			//now we have an id, update the attributes
 			$this->input->set('itemid',$this->id);
-			$model->updateAttributes();
+			
+            if($subtype == "details") {
+                $this->app->enqueueMessage(Text::_('COM_MYMUSE_ITEM_SAVED' ), 'notice');
+                $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='. $this->id.'&subtype='.$post['subtype'] );
 
+
+            } else{
+            $model->updateAttributes();
         	switch ( $oldtask )
 			{
                 case 'save2copy':
@@ -282,6 +288,7 @@ class ProductController extends FormController
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='. $this->parentid."&subtype=item" );
 					break;
 				}
+            }
 
         } else {
             $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ERROR_SAVING_ITEM' ).' : '.$model->getError(), 'error');
@@ -290,6 +297,37 @@ class ProductController extends FormController
         }
 
     }
+
+
+    /*
+    * check for errors on the way to edit items
+    *
+    * @return  mixed
+    *
+    * @since   4.0
+    */    
+    function edititem() 
+    {
+        //MymuseHelper::print_pre($this->input); exit;
+        $task   = $this->input->get('task');
+        $id     = $this->input->get('id');
+        $app    = Factory::getApplication();
+        $model  = $this->getModel();
+echo "id = $id<br />";
+        if($task == "additem") {
+            $this->attribute_skus = $model->getAttributeskus();
+
+            if(!count($this->attribute_skus)){
+                //no attributes yet!!
+                $app->enqueueMessage(Text::_("COM_MYMUSE_CREATE_ATTRIBUTE_FIRST"), 'notice');
+                $this->setRedirect( "index.php?option=com_mymuse&view=product&layout=listitems&id=".$id);
+                return;
+            }
+        }
+        $this->display();
+
+    }
+
 
 
     /*
@@ -366,12 +404,12 @@ class ProductController extends FormController
     function create_items ()
     {
 
-        $this->input      = Factory::getApplication()->input;
-        $db         = Factory::getDBO();
-        $id         = $this->input->get('id');
-        $model      = $this->getModel('product');
-        $num_items  = 1;
+        $db             = Factory::getDBO();
+        $id             = $this->input->get('id');
+        $model          = $this->getModel('product');
+        $num_items      = 1;
         $this->input->set('parentid', $id);
+
 
 /*      
 [option] => com_mymuse
@@ -403,17 +441,26 @@ class ProductController extends FormController
                 $colorid = $att->id;
             }
         }
+
         $this->input->set( 'attribute_name', $attribute_name );
         $values = array();
 
         foreach($keys[$att_skus[0]->id] as $vals_0){
-            foreach($keys[$att_skus[1]->id] as $vals_1){
+            if(isset($att_skus[1])){
+                foreach($keys[$att_skus[1]->id] as $vals_1){
+                    $res[] = array(
+                        $att_skus[0]->id => $vals_0, 
+                        $att_skus[1]->id => $vals_1
+                    );
+                }
+            }else{
                 $res[] = array(
-                    $att_skus[0]->id => $vals_0, 
-                    $att_skus[1]->id => $vals_1
+                        $att_skus[0]->id => $vals_0
                 );
             }
+            
         }
+
 
         for($i = 0; $i < $num_items; $i++){
             $item_title = '';
@@ -526,7 +573,6 @@ class ProductController extends FormController
      */
     public function saveOrderAjax()
     {
-    	//MyMuseHelper::logMessage("here we are Ajax\n");
     	// Get the input
     	$pks = $this->input->post->get('cid', array(), 'array');
     	$order = $this->input->post->get('order', array(), 'array');

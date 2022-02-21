@@ -20,6 +20,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Model\ProductModel;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
@@ -90,6 +91,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): void
 	{
+
 		$this->input = Factory::getApplication()->input;
 		/** @var MymuseModel $model */
 		$model       	= $this->getModel();
@@ -101,14 +103,15 @@ class HtmlView extends BaseHtmlView
 
 
 		$this->task 	= $task 	= $this->input->get('task', 'edit');
-		
+		$this->type 	= $type 	= $this->input->get('subtype', 'product');
+
 		if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 			$this->input->set('id',0);
 		}
 
 		$app 			= Factory::getApplication();
 		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
-		$subtype 		='details';
+
 		$view 			= $this->input->get('view');
 		
         $isNew  		= ($this->item->id < 1);
@@ -161,30 +164,39 @@ class HtmlView extends BaseHtmlView
         }
      
         //item
+        elseif($task == "edititem" || $task == "product.edititem"){
+        	$this->layout 			= 'edititems';
+        	$this->attribute_skus 	= $model->getAttributeskus();
+        	$this->attributes 		= $model->getAttributes();
+        }
         elseif($task == "additem" || $task == "product.additem"){
-        
-        	$this->layout = 'edititems';
-        	$this->setLayout('edititems');
-        	$this->attribute_skus = $model->getAttributeskus();
-        	$this->attributes = $model->getAttributes();
-        	
-        	if(!count($this->attribute_skus)){
-        		//no attributes yet!!
-        		$msg = Text::_("MYMUSE_CREATE_ATTRIBUTE_FIRST");
-        		$url = "index.php?option=com_mymuse&view=product&layout=listitems&id=".$this->item->parentid;
-        		$app->redirect($url, $msg);
-                //$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id), 'error');
-                //$this->setRedirect(Route::_('index.php?option=com_mywalk&view=mywalk_datess', false));
-        		exit;
+
+        	if(!$this->item->id){
+        		$this->item->catid = $this->item->parent->catid;
+        		$this->item->artistid = $this->item->parent->artistid;
+        		if($this->params->get('my_price_by_product',0)) {
+        			$registry = new Registry($this->item->parent->attribs);
+        			$attribs = $registry->toArray();
+        			$this->item->price = $attribs['product_price_physical'];
+        		}
+        		$this->item->detail_image = $this->item->parent->detail_image;
+        		$registry = new Registry($this->item->parent->physical);
+        		$this->item->physical = $registry->toArray();
+        		$this->item->product_in_stock = $this->item->parent->product_in_stock;
         	}
-        	
-        	
+
+        	$this->layout 			= 'edititems';
+        	$this->attribute_skus 	= $model->getAttributeskus();
+        	$this->attributes 		= $model->getAttributes();
         	$isNew  = (@$items->id < 1);
-        	$this->lists['isNew'] = $isNew;
+        	$this->lists['isNew'] 	= $isNew;
+        	$this->setLayout('edititems');
         	$this->input->set('subtype','item');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
-        	
+
         }
+
+
         //listtracks
         if($this->layout == "listtracks"){
         	$this->tracks 		= $model->getTracks();
@@ -203,8 +215,13 @@ class HtmlView extends BaseHtmlView
         //listitems
         if($this->layout == "listitems"){
         	
-        	$this->items 	= $model->getItems();
-        	$this->itemPagination = $model->getItemPagination();
+        	$this->items 			= $model->getItems();
+        	$this->itemPagination 	= $model->getItemPagination();
+        	$this->id 				= $this->input->get('id');
+        	$this->input->set('parentid',$this->id);
+        	
+        	$this->attribute_skus 	= $model->getAttributeskus();
+        	$this->attributes 		= $model->getAttributes();
         }
         $this->setLayout($this->layout);
 
@@ -223,10 +240,10 @@ class HtmlView extends BaseHtmlView
 		{
 			throw new GenericDataException(implode("\n", $errors), 500);
 		}
-
+MymuseHelper::print_pre($this->item);
 		//MymuseHelper::print_pre($this->item);
 
-		$this->addToolbar($subtype,$this->item->parentid);
+		$this->addToolbar($type,$this->item->parentid);
 		parent::display($tpl);
 	}
 
@@ -238,7 +255,7 @@ class HtmlView extends BaseHtmlView
 	 * @since   1.6
 	 * @throws  Exception
 	 */
-	protected function addToolbar($subtype='', $parentid=0): void
+	protected function addToolbar($type='', $parentid=0): void
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
@@ -309,7 +326,7 @@ class HtmlView extends BaseHtmlView
 
 			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-items?tmpl=component');
 			
-		}elseif($subtype == "file" && $parentid){
+		}elseif($type == "file" && $parentid){
 			//TRACK
 
 			// If not checked out, can save the item.
@@ -330,7 +347,7 @@ class HtmlView extends BaseHtmlView
 			}
 			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component#new-edit-track');			
 		
-		}elseif($subtype == "allfiles" && $parentid){
+		}elseif($type == "allfiles" && $parentid){
 			// ALLFILES
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
@@ -347,7 +364,7 @@ class HtmlView extends BaseHtmlView
 			}
 			ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-tracks?tmpl=component#tracks-all-tracks');		
 		
-		}elseif( $subtype == 'item' ){
+		}elseif( $type == 'item' ){
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{

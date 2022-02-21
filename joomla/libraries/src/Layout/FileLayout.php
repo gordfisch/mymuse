@@ -126,7 +126,6 @@ class FileLayout extends BaseLayout
 
 		ob_start();
 		include $path;
-
 		$layoutOutput .= ob_get_contents();
 		ob_end_clean();
 

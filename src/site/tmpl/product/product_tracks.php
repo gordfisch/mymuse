@@ -18,15 +18,16 @@ global $store, $shopper, $cart;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
-$product  =& $this->item;
-$tracks   =& $this->item->tracks;
+$product    =& $this->item;
+$tracks     =& $this->item->tracks;
 $listOrder  = $this->sortColumn;
-$listDirn = $this->sortDirection;
-$user     = JFactory::getUser();
+$listDirn   = $this->sortDirection;
+$user       = JFactory::getUser();
 
 
 if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_tracks', 1)) :
 ?>
+
 <div class="product-tracks">
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
     <h3><?php echo JText::_('COM_MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
@@ -50,103 +51,115 @@ if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_t
       <?php endif; ?>
     <?php endif; ?>
     
-    <?php if($this->params->get('product_player_type') == "playlist" && isset($product->flash)){ ?>
+    <?php if($this->params->get('product_player_type') == "playlist" && isset($product->flash)) : ?>
       <div id="product_player"><?php echo $product->flash; ?>
       </div>
-    <?php } ?>
+    <?php endif; ?>
     
     <div style="clear: both"></div>
 
     <div class=""
-      <?php if($this->params->get('product_player_type') == "each"){ ?>
-      id="product_player" <?php } ?>>
+      <?php if($this->params->get('product_player_type') == "each") : ?>
+      id="product_player" 
+      <?php endif; ?>>
 
       <div class="track-count"><?php echo count($tracks); 
         if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
             <?php echo $word; ?> Total</div>
+        <?php endif; ?>
       <!-- END PLAYER -->
+  
+<?php
+$cols = 1;
+if($this->params->get('product_show_artist', 0)) :
+  $cols++;
+endif;
+if($this->params->get('product_show_filetime', 0)) :
+  $cols++;
+endif;
+if($this->params->get('product_show_filesize', 0)) :
+  $cols++;
+endif;
+if($this->params->get('product_show_sales', 0)) : 
+  $cols++;
+endif;
+if($this->params->get('product_show_downloads', 0)) : 
+  $cols++;
+endif;
+if($this->params->get('product_show_cost_column', 1)) :
+  $cols++;
+endif;
+if(count($this->formats) > 1) :
+  $cols++;
+endif;
+if($this->params->get('product_show_select_column', 1)) :
+  $cols++;
+endif;
+if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : 
+  $cols++;
+endif;
 
-
-<?php endif;
-
-if ($this->params->get('show_tracks', '1')) : 
-foreach($tracks as $track) : 
-  //MyMuseHelper::print_pre($track);
-endforeach;
 ?>
 
 <!-- TRACKS -->
-  <table class="mymuse_cart cart">
-    <thead>
-      <tr class="mymuse_cart cart">
-        <th class="mytitle cart" align="center" width="40%">
-          <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></th>
-          
-          <?php  if($this->params->get('product_show_artist', 0)) :?>
-            <th class="myartist cart" align="center"
-              width="30%">
-            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></th>
-            
-          <?php endif; ?>
-          
-          <?php  if($this->params->get('product_show_filetime', 0)) :?>
-            <th class="mytime cart" align="center" width="10%">
-            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></th>
-          <?php endif; ?>
-          
-          <?php  if($this->params->get('product_show_filesize', 0)) :?>
-            <th class="myfilesize cart" align="center"
-              width="10%">
-            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_length', $listDirn, $listOrder); ?></th>
-          <?php endif; ?>
-          
-          <?php if($this->params->get('product_show_sales', 0)) : ?>
-            <th class="mysales cart" align="left" width="10%">
-            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></th>
-          <?php endif; ?>
-          
-          <?php if($this->params->get('product_show_downloads', 0)) : ?>
-            <th class="mydownloads cart" align="left"
-              width="10%">
-            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></th>
-          <?php endif; ?>
-          
-          <?php  if($this->params->get('product_show_cost_column', 1)) :?>
-            <th class="myprice cart" align="center" width="10%">
-            <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></th>
-          <?php endif; ?>
-            
-            <?php if(count($this->formats) > 1) :?>
-          <th class="myselect cart" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></th>
-          <?php endif;?>
-            
-            <?php  if($this->params->get('product_show_select_column', 1)) :?>
-          <th class="myselect cart" align="left" width="20%"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></th>
-          <?php endif; ?>
+  <div class="cart-container columns-<?php echo $cols; ?>">
 
-          <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
-            <th class="mypreviews cart" align="left"
-              width="10%"><?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?></th>
-          <?php endif; ?>
-            
-          </tr>
-        </thead>
+    <div class="header"><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></div>
 
-          
-      <?php 
-      $groups = $user->getAuthorisedViewLevels();
-        foreach($tracks as $track) : 
+    <?php  if($this->params->get('product_show_artist', 0)) :?>
+      <div class="myartist header">
+      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></div>
+    <?php endif; ?>
+    
+    <?php  if($this->params->get('product_show_filetime', 0)) :?>
+      <div class="mytime header">
+      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></div>
+    <?php endif; ?>
+    
+    <?php  if($this->params->get('product_show_filesize', 0)) :?>
+      <div class="myfilesize header">
+      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_lengdiv', $listDirn, $listOrder); ?></div>
+    <?php endif; ?>
+    
+    <?php if($this->params->get('product_show_sales', 0)) : ?>
+      <div class="mysales header">
+      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></div>
+    <?php endif; ?>
+    
+    <?php if($this->params->get('product_show_downloads', 0)) : ?>
+      <div class="mydownloads header">
+      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></div>
+    <?php endif; ?>
+    
+    <?php  if($this->params->get('product_show_cost_column', 1)) :?>
+      <div class="myprice header">
+      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></div>
+    <?php endif; ?>
+      
+      <?php if(count($this->formats) > 1) :?>
+    <div class="myselect header"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></div>
+    <?php endif;?>
+      
+      <?php  if($this->params->get('product_show_select_column', 1)) :?>
+    <div class="myselect header"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
+    <?php endif; ?>
+
+    <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
+      <div class="mypreviews header"><?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?></div>
+    <?php endif; ?>
+
+
+<?php
+  $groups = $user->getAuthorisedViewLevels();
+  foreach($tracks as $track) : 
   
-            if($track->product_allfiles == 1 && $this->all_tracks->shown) :
-                   continue;
-              endif;
+    if($track->product_allfiles == 1 && $this->all_tracks->shown) :
+      continue;
+    endif;
 
-          if(in_array($track->access, $groups)) :
-              ?>
-            <tr>
-          <!--  TITLE COLUMN -->
-          <td class="mytitle cart"> 
-              <?php if($track->detail_image && $track->detail_image != '') :
+    if(in_array($track->access, $groups)) :
+?>
+    <div class="mytitle myrow"><?php if($track->detail_image && $track->detail_image != '') :
                 echo '<span class="track-img"><img src="'.$track->detail_image.'"></span>';
               endif; 
               ?>
@@ -158,14 +171,10 @@ endforeach;
               <?php if($track->introtext && $track->introtext != $track->title) :
                 echo '<br /><span class="track-text">'.$track->introtext.'</span>';
               endif; 
-              ?>
+              ?></div>
 
-                            
-                           
-                </td>
-              <?php  if($this->params->get('product_show_artist', 0)) :?>
-              <!-- GENRE COLUMN -->
-          <td class="myartist cart"><a
+    <?php  if($this->params->get('product_show_artist', 0)) :?>
+      <div class="myartist myrow"><a
             href="<?php 
             echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->catid, true));?>">
             <?php if(!empty($track->category_name )) { echo $track->category_name; } ?></a>
@@ -174,20 +183,17 @@ endforeach;
             href="<?php
                 echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($id, true));?>">
                 <?php echo $name ?></a>
-            <?php endforeach; ?>
-              </td>
-              <?php endif; ?>   
-              <!--  TIME COLUMN -->
-              <?php  if($this->params->get('product_show_filetime', 0)) : ?>  
-                <td class="mytime cart">
-                <?php echo $track->file_time ?>
-                </td>
-              <?php endif; ?>
-              
-              <!--  FILE SIZE COLUMN -->
-              <?php  if($this->params->get('product_show_filesize', 0)) : ?>  
-                <td class="myfilesize cart">
-                <?php 
+            <?php endforeach; ?></div>
+    <?php endif; ?>
+    
+    <?php  if($this->params->get('product_show_filetime', 0)) :?>
+      <div class="mytime myrow">
+      <?php echo $track->file_time ?></div>
+    <?php endif; ?>
+    
+    <?php  if($this->params->get('product_show_filesize', 0)) :?>
+      <div class="myfilesize myrow">
+      <?php 
                 if(!$track->product_allfiles && $track->file_length > 0) :
                   $first = 1;
                   foreach($track->digital as $file){
@@ -203,22 +209,17 @@ endforeach;
 
  
                   }
-                endif; ?>
-                </td>
-              <?php endif; ?>
-              
-              <!--  SALES COLUMN -->
-              <?php  if($this->params->get('product_show_sales', 0)) : ?> 
-                <td class="mysales cart">
-                <?php echo $track->sales; ?>
-                </td>
-              <?php endif; ?>
-              
-              <!--  DOWNLOADS COLUMN -->
-              <?php  if($this->params->get('product_show_downloads', 0)) : ?> 
-                <td class="mydownloads cart">
-
-                <?php if(!$track->product_allfiles && $track->file_length > 0) :
+                endif; ?></div>
+    <?php endif; ?>
+    
+    <?php if($this->params->get('product_show_sales', 0)) : ?>
+      <div class="mysales myrow">
+      <?php echo $track->sales; ?></div>
+    <?php endif; ?>
+    
+    <?php if($this->params->get('product_show_downloads', 0)) : ?>
+      <div class="mydownloads myrow">
+      <?php if(!$track->product_allfiles && $track->file_length > 0) :
                   $first = 1;
                   foreach($track->digital as $file){
                     $this_downloads = isset($file->file_downloads)? $file->file_downloads: 0;
@@ -233,15 +234,12 @@ endforeach;
 
  
                   }
-                endif; ?>
-
-                </td>
-              <?php endif; ?>
-              
-              <!--  PRICE COLUMN -->
-              <?php  if($this->params->get('product_show_cost_column', 1)) :?>  
-                <td class="myprice cart">
-                <?php 
+                endif; ?></div>
+    <?php endif; ?>
+    
+    <?php  if($this->params->get('product_show_cost_column', 1)) :?>
+      <div class="myprice myrow">
+      <?php 
 
                 if("1" == $this->params->get('my_price_by_product')) :
                   $first = 1;
@@ -305,25 +303,18 @@ endforeach;
         
                 echo MymuseHelper::printMoneyPublic($track->price);
                 
-              endif; ?>
-                </td>
-              <?php endif; ?> 
-                    
-                    <!--  FORMAT COLUMN -->
-              <?php if(count($this->formats) > 1) :?>
-                <td class="myformat cart">
-                <?php if(isset($track->variation_select)) :
+              endif; ?></div>
+    <?php endif; ?>
+      
+      <?php if(count($this->formats) > 1) :?>
+    <div class="myselect myrow"><?php if(isset($track->variation_select)) :
                     echo $track->variation_select;
                    endif;
-                ?>
-                </td>
-              
-               <?php endif; ?>
-
-            <!--  SELECT COLUMN -->
-            <?php  if($this->params->get('product_show_select_column', 1)) :?>
-                <td class="myselect cart" nowrap>
-                  <?php if($track->digital || $track->product_allfiles) :?>
+                ?></div>
+    <?php endif;?>
+      
+      <?php  if($this->params->get('product_show_select_column', 1)) :?>
+    <div class="myselect myrow"><?php if($track->digital || $track->product_allfiles) :?>
 
                     <a href="javascript:void(0)" class="trackpicker" data-id="<?php echo $track->id; ?>"
                       data-variation="<?php echo $track->digital[0]->file_id; ?>"
@@ -343,31 +334,19 @@ endforeach;
               value="<?php echo $track->id; ?>"
               id="box<?php echo $this->check; $this->check++; ?>" /> </span>
 
-                <?php  endif; ?>
-                </td>
-              <?php  endif; ?>  
-              
-              
-              <?php  if($this->params->get('product_show_preview_column', 1)) :?>
-                <!--  PREVIEW COLUMN -->
-          <td class="mypreviews tracks  cart"><span class="jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></span></td>
-              <?php  endif; ?>  
+                <?php  endif; ?></div>
+    <?php endif; ?>
 
-              </tr>
-          <?php  
-          endif; //access
-        endforeach; ?>
-    </table>
+    <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
+      <div class="mypreviews myrow"><span class="jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></span></div>
+    <?php endif; ?>
+
+    <?php endif; ?>
+  <?php endforeach; ?>
+
   </div>
-  <div style="clear: both"></div>
-  <!-- END TRACKS -->
-<?php 
-/*
-echo MymuseHelper::print_pre($this->params->get('my_formats'));
-echo MymuseHelper::print_pre($tracks[0]->digital); 
-echo MymuseHelper::print_pre($tracks[0]->attribs); 
-*/
-?>
+
+
 
 
   <?php // Add pagination links ?>
@@ -387,6 +366,5 @@ echo MymuseHelper::print_pre($tracks[0]->attribs);
 
 <?php  endif; ?>
 </div>
-<?php endif; ?>
 
-<?php endif; ?>
+<?php  endif; ?>

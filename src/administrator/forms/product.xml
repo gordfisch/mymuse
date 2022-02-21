@@ -125,6 +125,19 @@
                     directory=""
             />
 
+            <field 
+                    name="product_images" 
+                    type="folderlist" 
+                    default="" 
+                    label="COM_MYMUSE_PRODUCT_IMAGES" 
+                    description="COM_MYMUSE_PRODUCT_IMAGES_DESC"
+                    directory="images" 
+                    filter="" 
+                    exclude="" 
+                    stripext="" 
+                    recursive="true"
+            />
+
             <field
                     name="created"
                     type="calendar"
@@ -784,18 +797,6 @@
     <fields label="physical" name="physical">
         <fieldset name="physical" label="COM_MYMUSE_PRODUCT_PHYSICAL">
 
-            <field
-                    name="product_images"
-                    type="folderlist"
-                    default=""
-                    label="COM_MYMUSE_PRODUCT_IMAGES"
-                    description="COM_MYMUSE_PRODUCT_IMAGES_DESC"
-                    directory="images"
-                    filter=""
-                    exclude=""
-                    stripext=""
-                    recursive="true"
-            />
             <field
                     name="product_weight"
                     type="text"

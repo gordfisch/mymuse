@@ -18,6 +18,7 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
@@ -62,7 +63,6 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     public $catalogs = array ();
     public $_playlist = null;
     
-
 
     /**
      * getPlaylist
@@ -163,11 +163,17 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     }
 
     /**
-     * HTML5
      * onPrepareMyMuseMp3Player
+     * 
      */
     function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
     {
+
+        $document = Factory::getDocument();
+        $js_path = Uri::Root().'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
+        $document->addScript( $js_path );
+
+
         $arr            = $this->getPlaylist();
         $this->indexes  = $arr[0];
         $this->playlist = $arr[1];
@@ -249,7 +255,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $first->name            = " ";
         $first->artist          = "PLAYER";
         $first->album           = "READY";
-        $first->url             = $path_to_previews."00_-_silence.mp3";
+        $first->url             = Uri::base().$path_to_previews."00_-_silence.mp3";
         $first->cover_art_url   = $first_album_art_path;
 
         $all                    = array();
@@ -372,6 +378,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             WHERE p.parentid > 0 
             AND parent.catid IN (".$catin.") 
             AND p.product_allfiles=0
+            AND p.product_physical=0
             AND p.state > 0 AND parent.state > 0
             AND p.track_parentid = 0
             ORDER BY parent.product_release_date DESC, parent.created DESC, p.product_sku"; 

@@ -13,12 +13,16 @@ namespace Joomla\Component\Mymuse\Administrator\Model;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableModelTrait;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 
 /**
  * Order model.
@@ -132,36 +136,7 @@ class OrderModel extends AdminModel
 		];
 	}
 
-	/**
-	 * Prepare and sanitise the table prior to saving.
-	 *
-	 * @param   Table  $table  A Table object.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.6
-	 */
-	protected function prepareTable($table)
-	{
 
-		if (empty($table->id))
-		{
-			// Set ordering to the last item if not set
-			if (empty($table->ordering))
-			{
-				$db = $this->getDbo();
-				$query = $db->getQuery(true)
-					->select('MAX(' . $db->quoteName('ordering') . ')')
-					->from($db->quoteName('#__mymuse_order'));
-
-				$db->setQuery($query);
-				$max = $db->loadResult();
-
-				$table->ordering = $max + 1;
-			}
-		}
-
-	}
 
 	/**
 	 * Method to get a single order and its items, payments and shipping
@@ -222,19 +197,14 @@ class OrderModel extends AdminModel
 						' AND profile_key LIKE \''.$profile_key.'.%\'' .
 						' ORDER BY ordering';
 				$db->setQuery($query);
-				$results = $db->loadRowList();
-					
-				// Check for a database error.
-				if ($db->getErrorNum()) {
-					$this->setError($db->getErrorMsg());
-					return false;
-				}
-				// Merge the profile data.
 				$item->user->profile = array();
-				foreach ($results as $v) {
-					$k = str_replace("$profile_key.", '', $v[0]);
-					$item->user->profile[$k] = trim(json_decode($v[1], true),'"');
+				if($results = $db->loadRowList()){
+					foreach ($results as $v) {
+						$k = str_replace("$profile_key.", '', $v[0]);
+						$item->user->profile[$k] = trim(json_decode($v[1], true),'"');
+					}
 				}
+					
 			}
 
 			// Lets load the order items
@@ -278,9 +248,9 @@ class OrderModel extends AdminModel
 
   			if($downloadable){
   				if($params->get('my_registration') == "no_reg" || $item->user->username == "buyer"){
-  					$item->downloadlink = JURI::root()."index.php?option=com_mymuse&task=accdownloads&id=".$item->order_number;
+  					$item->downloadlink = URI::root()."index.php?option=com_mymuse&task=accdownloads&id=".$item->order_number;
   				}else{
-  					$item->downloadlink = JURI::root()."index.php?option=com_mymuse&task=downloads&id=".$item->order_number;
+  					$item->downloadlink = URI::root()."index.php?option=com_mymuse&task=downloads&id=".$item->order_number;
   				}
   				if($params->get('top_menu_item','')){
   					$item->downloadlink .= "&Itemid=".$params->get('top_menu_item');
@@ -289,7 +259,7 @@ class OrderModel extends AdminModel
   				$query = "SELECT * FROM #__mymuse_downloads
   				WHERE order_id=".$item->id;
   				
-  				$db = JFActory::getDBO();
+  				$db = FActory::getDBO();
   				$db->setQuery( $query );
   				$item->downloads = $db->loadObjectList();
   			}
@@ -300,7 +270,7 @@ class OrderModel extends AdminModel
 			$item->tax_total = 0;
 			$item->paid_to_date =  0;
 			 
-			$q = "SELECT * FROM #__mymuse_tax_rate WHERE state=1 ORDER BY ordering";
+			$q = "SELECT * FROM #__mymuse_tax_rate WHERE published=1 ORDER BY ordering";
 			$db->setQuery($q);
 			$tax_rates = $db->loadObjectList();
 			foreach($tax_rates as $rate){
@@ -366,9 +336,9 @@ class OrderModel extends AdminModel
         $query = "SELECT currency_code as value, CONCAT(symbol,': ',currency_name) as text from #__mymuse_currency ORDER BY currency_code ASC";
         $this->_db->setQuery($query);
         $options = $this->_db->loadObjectList();
-        array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('MYMUSE_CURRENCY').' -', 'value', 'text'));
+        array_unshift($options, HTMLHelper::_('select.option', '0', '- '.Text::_('MYMUSE_CURRENCY').' -', 'value', 'text'));
 	    $value = $params->get('my_currency');
-        $lists['currencies'] = JHTML::_('select.genericlist',  $options, 'currency', 'class="inputbox"', 'value', 'text', $value, JText::_( 'MYMUSE_CURRENCY' ));   
+        $lists['currencies'] = HTMLHelper::_('select.genericlist',  $options, 'currency', 'class="inputbox"', 'value', 'text', $value, Text::_( 'MYMUSE_CURRENCY' ));   
 
 		//payment plugins
         PluginHelper::importPlugin('mymuse');
@@ -377,11 +347,11 @@ class OrderModel extends AdminModel
 		$this->_db->setQuery($query);
         $options = $this->_db->loadObjectList();
         for($i=0; $i< count($options); $i++){
-        	$options[$i]->text = JText::_($options[$i]->text);
+        	$options[$i]->text = Text::_($options[$i]->text);
         }
-        array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('MYMUSE_PLUGIN').' -', 'value', 'text'));
+        array_unshift($options, HTMLHelper::_('select.option', '0', '- '.Text::_('MYMUSE_PLUGIN').' -', 'value', 'text'));
 	    $value = '';
-        $lists['plugins'] = JHTML::_('select.genericlist',  $options, 'payment_plugin', 'class="inputbox"', 'value', 'text', $value, JText::_( 'MYMUSE_PLUGIN' ));   
+        $lists['plugins'] = HTMLHelper::_('select.genericlist',  $options, 'payment_plugin', 'class="inputbox"', 'value', 'text', $value, Text::_( 'MYMUSE_PLUGIN' ));   
 	    
 		return $lists;
 	}
@@ -395,7 +365,7 @@ class OrderModel extends AdminModel
 	{
 		
 		jimport('joomla.filter.output');
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$input->post->getArray();
 		$params = MyMuseHelper::getParams();
 		$MyMuseHelper = new MyMuseHelper;
@@ -436,6 +406,59 @@ class OrderModel extends AdminModel
         	
         }
 
+    }
+
+
+    /**
+     * reset downloads
+     * @return void
+     */
+    function resetDownloads()
+    {
+    	$params = MyMuseHelper::getParams();
+    	$input = Factory::getApplication()->input;
+    	$id = $input->get( 'id', '' );
+    	if(!$id){
+    		$this->setError(Text::_('MYMUSE_ORDER_ID_NOT_FOUND'));
+    		return false;
+    	}
+    	$db = Factory::getDBO();
+
+    	$query = "SELECT order_status FROM #__mymuse_order WHERE id=$id";
+    	$db->setQuery($query);
+    	$status = $db->loadResult();
+    	if($status != "C"){
+    		$this->setError($id.' '.Text::_('MYMUSE_ORDER_NOT_CONFIRMED'));
+    		return false;
+    	}
+    	/*
+    	$query = "UPDATE #__mymuse_order SET order_status='C' WHERE id=$id";
+    	$db->setQuery($query);
+    	if(!$db->query()){
+    		$this->setError("MYMUSE_COULD_NOT_UPDATE_ORDER");
+    		return false;
+    	}
+    	*/
+
+    	if($params->get('my_download_expire') == "-"){
+    		$enddate = time() + 1000000;
+    	}else{
+    		$enddate = time() + $params->get('my_download_expire');
+    	}
+    	$query = "UPDATE #__mymuse_order_item
+    	SET downloads='0',
+    	end_date='$enddate',
+    	product_in_stock = 0
+    	WHERE order_id=$id
+    	";
+    	$db->setQuery($query);
+    	if(!$db->execute()){
+    		$this->setError(Text::_('MYMUSE_COULD_NOT_UPDATE_ORDER_ITEMS'));
+    		return false;
+    	};
+    
+    	return true;
+    
     }
 
 }

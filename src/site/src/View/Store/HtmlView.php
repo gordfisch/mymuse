@@ -28,8 +28,7 @@ use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 use Joomla\Component\Mymuse\Site\Model\StoreModel;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
-
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 class HtmlView extends BaseHtmlView
 {
@@ -49,7 +48,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @return	mixed	False on error, null otherwise.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		
 		$jinput 	= Factory::getApplication()->input;
@@ -62,6 +61,9 @@ class HtmlView extends BaseHtmlView
 		$Itemid 	= $jinput->get('Itemid');
 		$user 		= Factory::getUser();
         $app        = Factory::getApplication();
+        // make sure it's the same person who ordered!
+        $MyMuseShopper 	=& Mymuse::getObject('shopper','model');
+        $shopper = $MyMuseShopper->getShopper();
    
 		// Present a list of downloadable files
         if($task == "downloads"){
@@ -69,8 +71,8 @@ class HtmlView extends BaseHtmlView
         	// make sure we have an id
         	$id = $jinput->get('id',0);
         	if(!$id){
-        		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');
-        		$this->assignRef( 'message', $message );
+        		$message = Text::_('COM_MYMUSE_NO_DOWNLOAD_KEY');
+        		$this->message = $message;
         		$tpl = "message";
         		parent::display($tpl);
         		return false;
@@ -83,23 +85,21 @@ class HtmlView extends BaseHtmlView
 
         	//Make sure we have an order
         	if(!$row){
-        		$message = JText::_('MYMUSE_NO_MATCHING_ORDER');
-        		$this->assignRef( 'message', $message );
+        		$message = Text::_('COM_MYMUSE_NO_MATCHING_ORDER');
+        		$this->message = $message;
         		$tpl = "message";
         		parent::display($tpl);
         		return false;
         	}
         	
-        	// make sure it's the same person who ordered!
-        	$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-			$shopper = $MyMuseShopper->getShopper();
+        	
 
         	if($row->user_id != $shopper->id){
-        		$message = JText::_('MYMUSE_USER_ORDER_OWNER_MISMATCH');
+        		$message = Text::_('COM_MYMUSE_USER_ORDER_OWNER_MISMATCH');
         		if($params->get('my_debug')){
         				$message .= $row->user_id.' : '.$MyMuseShopper->_shopper->user_id;
         		}
-        		$this->assignRef( 'message', $message );
+        		$this->message = $message;
         		$tpl = "message";
         		parent::display($tpl);
         		return false;
@@ -110,8 +110,8 @@ class HtmlView extends BaseHtmlView
 
         	$jinput->set('layout','store');
         	$jinput->set('view','store');
-			$MyMuseCheckout 		=& MyMuse::getObject('checkout','helpers');
-			$MyMuseCart 			=& MyMuse::getObject('cart','helpers');
+			$MyMuseCheckout 		=& MyMmuse::getObject('checkout','helper');
+			$MyMuseCart 			=& Mymuse::getObject('cart','helper');
         	$MyMuseShopper->order 	= $MyMuseCheckout->getOrder($row->id);
 
         	for($i = 0; $i < count($MyMuseShopper->order->items); $i++){
@@ -128,15 +128,14 @@ class HtmlView extends BaseHtmlView
         	}
         	
         	if($params->get('my_registration') == "no_reg"){
-        		$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=accdownloads&id=".$id."&item_id=");
+        		$current =  Route::_("index.php?option=com_mymuse&view=cart&task=accdownloads&id=".$id."&item_id=");
         	}else{
-				$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=downloads&id=".$id."&item_id=");
+				$current =  Route::_("index.php?option=com_mymuse&view=cart&task=downloads&id=".$id."&item_id=");
         	}
 			
-			$this->assignRef( 'current', $current );
-        	$this->assignRef( 'order', $MyMuseShopper->order );
-        	$this->assignRef( 'params', $params );
-        	$this->assignRef( 'id', $id );
+			$this->current = $current;
+        	$this->order = $MyMuseShopper->order;
+        	$this->id = $id;
         	
         	$tpl = "downloads";
         	parent::display($tpl);
@@ -146,12 +145,13 @@ class HtmlView extends BaseHtmlView
   
         // trying to download a file!!
         if($task == "downloadfile"){
+
         	$jinput 	= Factory::getApplication()->input;
         	$id = $jinput->get('id',0);
 
         	// make sure we have a download key
         	if(!$id){
-        		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');
+        		$message = Text::_('COM_MYMUSE_NO_DOWNLOAD_KEY');
         		$app->enqueueMessage($message, 'error');
         		return false;
         	}
@@ -159,7 +159,7 @@ class HtmlView extends BaseHtmlView
         	// make sure we have an order item id
         	$item_id = $jinput->get('item_id',0);
         	if(!$item_id){
-        		$message = JText::_('MYMUSE_NO_ORDERITEM_ID');
+        		$message = Text::_('COM_MYMUSE_NO_ORDERITEM_ID');
         		$app->enqueueMessage($message, 'error');
         		return false;
         	}
@@ -172,26 +172,24 @@ class HtmlView extends BaseHtmlView
 		
 			//Make sure we have an order
         	if(!$row){
-        		$message = JText::_('MYMUSE_NO_MATCHING_ORDER ');
+        		$message = Text::_('COM_MYMUSE_NO_MATCHING_ORDER ');
         		$app->enqueueMessage($message, 'error');
         		return false;
         	}
-	
+	 
         	// make sure it's the same person who ordered!
-        	$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-        	$user = Factory::getUser($MyMuseShopper->_shopper->user_id);
         	$user_id = $user->get('id');
+
+        	if($row->user_id != $shopper->user_id){
+        		$message = Text::_('COM_MYMUSE_USER_ORDER_OWNER_MISMATCH');
+        		$app->enqueueMessage($message, 'error');
+        		return false;
+        	}
 
         	if(isset($user->first_name) && isset($user->last_name) ){
         		$user->set('name', $user->first_name.' '.$user->last_name);
         	}
-
-        	if($row->user_id != $MyMuseShopper->_shopper->user_id){
-        		$message = JText::_('MYMUSE_USER_ORDER_OWNER_MISMATCH');
-        		$app->enqueueMessage($message, 'error');
-        		return false;
-        	}
-        	
+     	
         	//are we using no-registration?
         	if($params->get('my_registration') == "no_reg"){
 				$fields = MyMuseHelper::getNoRegFields();
@@ -217,13 +215,13 @@ class HtmlView extends BaseHtmlView
         	//make sure the order is confirmed
         	if(! $row->order_status == $this->params->get('my_download_enable_status'))
         	{
-        		$message = JText::_('MYMUSE_USER_ORDER_NOT_CONFIRMED');
+        		$message = Text::_('COM_MYMUSE_USER_ORDER_NOT_CONFIRMED');
         		$app->enqueueMessage($message, 'error');
         		return false;
         	}
-	
-        	$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-			$MyMuseCart 	=& MyMuse::getObject('cart','helper');
+
+        	$MyMuseCheckout =& Mymuse::getObject('checkout','helpers');
+			$MyMuseCart 	=& Mymuse::getObject('cart','helper');
 			
         	$order = $MyMuseCheckout->getOrder($row->id);
      
@@ -235,7 +233,7 @@ class HtmlView extends BaseHtmlView
         	
         	// check number of downloads
         	if($params->get('my_download_max') && intval($order_item->downloads) >= $params->get('my_download_max')){
-        		$message = JText::_('MYMUSE_MAX_NUMBER_OF_DOWNLOADS_REACHED');
+        		$message = Text::_('COM_MYMUSE_MAX_NUMBER_OF_DOWNLOADS_REACHED');
         		$app->enqueueMessage($message, 'error');
         		return false;
         	}
@@ -244,58 +242,40 @@ class HtmlView extends BaseHtmlView
         	if($order_item->end_date 
         			&& $order_item->end_date <= time() 
         			&& $prarams->get('my_download_expire') != "-"){
-        		$message = JText::_('MYMUSE_DOWNLOAD_EXPIRED');
+        		$message = Text::_('COM_MYMUSE_DOWNLOAD_EXPIRED');
         		$app->enqueueMessage($message, 'error');
         		return false;
         	}
 
         	//get product and other vars
-			$query = "SELECT * FROM #__mymuse_product WHERE id = '".$order_item->product_id."'";
+        	$item_id = $order_item->variation_id? $order_item->variation_id : $order_item->product_id;
+			$query = "SELECT * FROM #__mymuse_product WHERE id = '".$item_id."'";
 			$db->setQuery($query);
 			$product = $db->loadObject();
 			
 			$download_path = MyMuseHelper::getDownloadPath($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
-			
-			$jason = json_decode($product->file_name);
-        //print_r($jason); echo $realname; exit;
-			if(is_array($jason)){
-				foreach($jason as $j){
-					if($j->file_name == $realname){
-						if($params->get('my_encode_filenames',0)){
-                            $filename = $j->file_alias;
-                        }else{
-                            $filename = $realname;
-                        }
-                        break 1;
-					}
-				}
-			}else{
-
-				if($params->get('my_encode_filenames',0)){
-                    $filename = $product->title_alias;
-                }else{
-                    $filename = $realname;
-                }
-	
+			if(!$realname){
+				$digital = json_decode($product->digital);
+				$realname = $digital->file_name;
 			}
-			$product->realname = $realname;
+
+			$product->realname = $filename = $realname;
 						
-        	
+        		
         	
             //is it s3 redirect? plugin should return a redirect URL
             if($params->get('storage', 'regular') != 'regular'){
                 $URL = $GLOBALS['mymuseStorage']->getSignedUrl($download_path.$filename);
-                $this->_logDownload($user, $product, $order_item);
+                $this->_logDownload($shopper, $product, $order_item);
                 $app->redirect($URL);
                 exit;
 
             }
 
-
-
-            $object =& MyMuse::getObject('httpdownload','helpers');
+            $object =& Mymuse::getObject('Httpdownload','helper');
         	// is it an allfiles and zip is on?
+
         	if($product->product_allfiles && $params->get('my_use_zip',0)){
                 // Get current directory
 
@@ -337,7 +317,7 @@ class HtmlView extends BaseHtmlView
     				
     			}
                 chdir($path);
-        		$zip  =& MyMuse::getObject('createzip','helpers');
+        		$zip  =& Mymuse::getObject('Createzip','helper');
                 $parent_title = JApplication::stringURLSafe($order_item->product->parent->title);
                 $destination = $path.$parent_title.'-'.$filename.".zip";
                 $overwrite =  true;
@@ -351,7 +331,7 @@ class HtmlView extends BaseHtmlView
        
         		if(!$object->set_byfile($destination,$filename.".zip")){
         			//Download from a file
-        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$destination." ".$filename;
+        			$message = Text::_('COM_MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$destination." ".$filename;
         			if($params->get('my_debug')){
         				$message .= $name;
         			}
@@ -363,7 +343,7 @@ class HtmlView extends BaseHtmlView
         			$object->download(); //Download File
         		}
      		
-        		if(!$this->_logDownload($user, $product, $order_item)){
+        		if(!$this->_logDownload($shopper, $product, $order_item)){
                     $message = "Could not log download";
                     return false;
                 }
@@ -375,7 +355,7 @@ class HtmlView extends BaseHtmlView
 
     		//download a file from the filesystem
     		if(!$filename){
-    			$message = JText::_('MYMUSE_NO_FILENAME_FOUND'). " ".$filename;
+    			$message = Text::_('COM_MYMUSE_NO_FILENAME_FOUND'). " ".$filename;
     			if($params->get('my_debug')){
     				$message .= $filename;
     			}
@@ -388,25 +368,27 @@ class HtmlView extends BaseHtmlView
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
                 $download_path .= $ext.DS;
             }
-    		
+
     		$full_filename = $download_path.$filename;
 
     		if(!file_exists($full_filename)){
     
-    			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
+    			$message = Text::_('COM_MYMUSE_NO_FILE_FOUND')." ";
     			if($params->get('my_debug')){
     				$message .= ": ".$full_filename;
     			}
     			$app->enqueueMessage($message, 'error');
     			return false;
     		}
-            if(!$this->_logDownload($user, $product, $order_item)){
+            if(!$this->_logDownload($shopper, $product, $order_item)){
                     $message = "Could not log download";
+                    $app->enqueueMessage($message, 'error');
                     return false;
             }
+echo $download_path; exit;
     		if(!$object->set_byfile($full_filename,$filename)){ 
     			//Download from a file
-    			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$filename;
+    			$message = Text::_('COM_MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$filename;
     			if($params->get('my_debug')){
     				$message .= $full_filename;
     			}
@@ -416,6 +398,7 @@ class HtmlView extends BaseHtmlView
     			$object->use_resume = true; //Enable Resume Mode
     			$object->download(); //Download File
     		}
+
       
         	
         	// All is good
@@ -433,6 +416,7 @@ class HtmlView extends BaseHtmlView
          */
         if($task == "downloadit")
         {
+        	echo "hi"; exit;
         	// make sure we have an id
         	$id = $jinput->get('id',0);
         	$mymuse = $jinput->get('mymuse',0);
@@ -445,7 +429,7 @@ class HtmlView extends BaseHtmlView
 
         	
         	if(!$id){
-        		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');
+        		$message = Text::_('COM_MYMUSE_NO_DOWNLOAD_KEY');
         		$this->assignRef( 'message', $message );
         		$tpl = "message";
         		parent::display($tpl);
@@ -516,7 +500,7 @@ class HtmlView extends BaseHtmlView
         	}
 
         	if(!$free && !$owned){
-        		$message = JText::_('MYMUSE_NOT_AVAILABLE');
+        		$message = Text::_('COM_MYMUSE_NOT_AVAILABLE');
         		$this->assignRef( 'message', $message );
         		$tpl = "message";
         		parent::display($tpl);
@@ -525,13 +509,13 @@ class HtmlView extends BaseHtmlView
         	
         
         	$product->realname = $realname;
-        	$object	=& MyMuse::getObject('httpdownload','helpers');
+        	$object	=& Mymuse::getObject('httpdownload','helper');
         	 
         	
 
     		//download a  file
     		if(!$filename){
-    			$message = JText::_('MYMUSE_NO_FILENAME_FOUND');
+    			$message = Text::_('COM_MYMUSE_NO_FILENAME_FOUND');
     			if($params->get('my_debug')){
     				$message .= $filename;
     			}
@@ -555,7 +539,7 @@ class HtmlView extends BaseHtmlView
     			$full_filename = JPATH_ROOT.DS.$download_dir.$filename;
     		}
     		if(!file_exists($full_filename)){
-    			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
+    			$message = Text::_('COM_MYMUSE_NO_FILE_FOUND')." ";
     			if($params->get('my_debug')){
     				$message .= ": ".$full_filename1;
     			}
@@ -566,7 +550,7 @@ class HtmlView extends BaseHtmlView
     		}
     	
     		if(!$object->set_byfile($full_filename,$realname)){ //Download from a file
-    			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$full_filename;
+    			$message = Text::_('COM_MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$full_filename;
     			if($params->get('my_debug')){
     				$message .= $name;
     			}
@@ -581,7 +565,7 @@ class HtmlView extends BaseHtmlView
     		}
       
         	// All is good
-        	if(!$this->_logDownload($user, $product, $order_item)){
+        	if(!$this->_logDownload($shopper, $product, $order_item)){
                     $message = "Could not log download";
                     return false;
                 }
@@ -716,12 +700,16 @@ class HtmlView extends BaseHtmlView
 	 * log download to database
 	 */
 
-	protected  function _logDownload($user, $product, $order_item = '')
+	protected  function _logDownload($shopper, $product, $order_item = '')
 	{
 		$db = Factory::getDBO();
-		$user_id = $user->get('id');
-		$user_name = $user->get('name');
-		$user_email = $user->get('email');
+		//MymuseHelper::print_pre($product); exit;
+		$user_id = $shopper->get('id');
+		$user_name = $shopper->get('name');
+		$user_email = $shopper->get('email');
+		$params 	= MyMuseHelper::getParams();
+
+
 		$product_id = $product->id;
 		$filename = $product->realname;
 		$date = Factory::getDate()->format('Y-m-d H:i:s');
@@ -732,30 +720,17 @@ class HtmlView extends BaseHtmlView
 		if($order_item){
 			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=".$order_item->id;
 			$db->setQuery($query);
-			if(!$db->execute()){
-                $msg = $db->getErrorMessage();
-                Factory::getApplication()->enqueueMessage($msg, 'warning');
-                return false;
-            }
-		}
-		
-		$jason = json_decode($product->file_name);
-		if(is_array($jason)){
-			for($i = 0; $i < count($jason); $i++){
-				if($jason[$i]->file_name == $filename){
-					$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
-				}
-			}
-			$files = json_encode($jason);
-			$query = "UPDATE #__mymuse_product SET file_name='$files' WHERE id=".$product->id;
-			$db->setQuery($query);
-			if(!$db->execute()){
-                $msg = $db->getErrorMessage();
-                Factory::getApplication()->enqueueMessage($msg, 'warning');
-                return false;
-            }
-		}
 
+			try {
+				$db->execute();
+			}
+			catch (exception $e) {
+    			$msg = $e->getMessage();
+                Factory::getApplication()->enqueueMessage($msg, 'warning');
+                return false;
+			}
+
+		}
 		
 		//add to downloads table
         $user_email = $db->quote($user_email);
@@ -763,16 +738,19 @@ class HtmlView extends BaseHtmlView
         $filename = $db->quote($filename);
         $query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,`order_id`,`date`,`product_id`,`product_filename`)
                 VALUES ('$user_id',$user_name,$user_email,'$order_id', '$date','$product_id',$filename)";
-
-		MyMuseHelper::logMessage( $query  );
-		$db->setQuery($query);
-		if($db->execute()){
-			return true;
-		}else{
-			$msg = $db->getErrorMessage();
-			Factory::getApplication()->enqueueMessage($msg, 'warning');
-			return false;
+        if($params->get('my_debug')){
+			MyMuseHelper::logMessage( "Download: $user_name : $filename" );
 		}
+		$db->setQuery($query);
+		try {
+			$db->execute();
+		}
+		catch (exception $e) {
+			$msg = $e->getMessage();
+            Factory::getApplication()->enqueueMessage($msg, 'warning');
+            return false;
+		}
+		return true;
 	}
 	/**
 	 * Prepares the document
@@ -790,7 +768,7 @@ class HtmlView extends BaseHtmlView
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -798,10 +776,10 @@ class HtmlView extends BaseHtmlView
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 
@@ -827,9 +805,9 @@ class HtmlView extends BaseHtmlView
 			/**
 			$link = '&format=feed&limitstart=';
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
 			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 			*/
 		}
 	}

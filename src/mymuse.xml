@@ -2,8 +2,8 @@
 <extension type="component" method="upgrade">
 
 	<name>COM_MYMUSE</name>
-	<creationDate>DEC 2021</creationDate>
-	<copyright>Copyright (C) 2021. All rights reserved.</copyright>
+	<creationDate>FEB 2022</creationDate>
+	<copyright>Copyright (C) 2022. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
@@ -47,6 +47,10 @@
 				img="class:themes" alt="Mymuse/Plugins">COM_MYMUSE_PLUGINS</menu>	
 			<menu link="option=com_plugins&amp;view=plugins&amp;filter[folder]=user" view="plugins" 
 				img="class:themes" alt="Mymuse/PluginsUser">COM_MYMUSE_USER_PLUGINS</menu>
+			<menu link="option=com_fields&amp;view=fields&amp;context=com_mymuse.product" 
+				img="class:themes" alt="Mymuse/PluginsUser">JGLOBAL_FIELDS</menu>
+			<menu link="option=com_fields&amp;view=groups&amp;context=com_mymuse.product" 
+				img="class:themes" alt="Mymuse/PluginsUser">JGLOBAL_FIELD_GROUPS</menu>
 		</submenu>
 		<files folder="administrator">
 			<filename>mymuse.xml</filename>

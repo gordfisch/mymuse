@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 	$lists 				=& $this->lists;
 	$order 				=& $this->item;
 	$order->colspan 	= 3;

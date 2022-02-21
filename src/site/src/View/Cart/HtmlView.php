@@ -28,7 +28,7 @@ use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 class HtmlView extends BaseHtmlView
 {
@@ -121,16 +121,16 @@ class HtmlView extends BaseHtmlView
         parent::__construct(); 
         parent::setLayout('cart');    
 
-        $this->MyMuseCheckout 	=& MyMuse::getObject('Checkout','helper');
+        $this->MyMuseCheckout 	=& Mymuse::getObject('Checkout','helper');
 
-        $this->MyMuseCart 		=& MyMuse::getObject('Cart','helper');
+        $this->MyMuseCart 		=& Mymuse::getObject('Cart','helper');
         $this->cart 			=& $this->MyMuseCart ->cart;
 
-        $this->MyMuseStore		=& MyMuse::getObject('Store','model');
+        $this->MyMuseStore		=& Mymuse::getObject('Store','model');
         $this->store 			= $this->MyMuseStore->getStore();
         $this->currency 		= $currency		= $this->store->currency;
 
-        $this->MyMuseShopper  	=& MyMuse::getObject('Shopper','model');
+        $this->MyMuseShopper  	=& Mymuse::getObject('Shopper','model');
         $this->shopper			= $this->MyMuseShopper->getShopper();
         $this->user				= Factory::getUser();
 
@@ -739,18 +739,17 @@ echo "task = $task";
 
 		$date = date('Y-m-d h:i:s');
         if($params->get('my_debug')){
-            $debug = $date."\n#####################\nCART VIEW NOTIFY FUNCTION\n";
+            $debug = "CART VIEW NOTIFY FUNCTION\n";
             MyMuseHelper::logMessage( $debug  );
         }
 		$result = array();
 	
 		// see if any plugins wants to deal with notification
 		// plugin should run MyMuseHelper::orderStatusUpdate
-		$dispatcher		= JDispatcher::getInstance();
      	$results 		= $app->triggerEvent('onMyMuseNotify', array($params, $this->Itemid) );
      	foreach($results as $r){
             if($params->get('my_debug')){
-     			$debug = "Result from Plugin\n" . print_r( $r, true ). "\n\n";
+     			$debug = " Notify: Result from Plugin\n" . print_r( $r, true ). "\n\n";
         		MyMuseHelper::logMessage( $debug  );
   			}
      		if($r['myorder']){
@@ -761,14 +760,13 @@ echo "task = $task";
      	if(!count($result)){
      		
      		if($params->get('my_debug')){
-     			$debug = "$date Did not get a result!\n";
+     			$debug = "Notify: Did not get a result!\n";
      			$debug .= "-------END-------\n";
         		MyMuseHelper::logMessage( $debug  );
   			}
   			exit;
      	}
 
-		$this->MyMuseStore	=& MyMuse::getObject('Store','model');
         $this->store = $this->MyMuseStore->_store;
         $this->store_params = new JRegistry;
         $this->store_params->loadString($this->store->params);
@@ -792,7 +790,7 @@ echo "task = $task";
      	$mailer->addRecipient($recipient);
 
         if($params->get('my_debug')){
-        	$debug = "$date Making response emails \n";
+        	$debug = "Notify: Making response emails \n";
         	MyMuseHelper::logMessage( $debug  );
         }
         
@@ -805,18 +803,18 @@ echo "task = $task";
         	ob_start();
         	echo $resp;
         	ob_flush();
-        	$debug .= "Sent to Pesapal: $resp \n";
+        	$debug .= "Notify: Sent to Pesapal: $resp \n";
         }
         	
         //Make message
         if($result['order_completed'] == "ALREADY_COMPLETED"){
   			if($params->get('my_debug')){
-  				$debug = "$date ".$result['plugin'].": Order was already completed: ".$result['payment_status']." \n\n";
+  				$debug = "Notify: ".$result['plugin'].": Order was already completed: ".$result['payment_status']." \n\n";
   				MyMuseHelper::logMessage( $debug  );
   			}
         }elseif(!$result['message_sent'] || !$result['message_received']){
         	if($params->get('my_debug')){
-        		$debug = $result['plugin'].": Notify Fatal Error\n\n";
+        		$debug = "Notify: ".$result['plugin'].": Fatal Error\n\n";
         		MyMuseHelper::logMessage( $debug  );
         	}
         	
@@ -837,7 +835,7 @@ echo "task = $task";
             
         }elseif(!$result['order_verified']){
         	if($params->get('my_debug')){
-        		$debug = "$date ".$result['plugin'].": Order was not VERIFIED \n\n";
+        		$debug = "Notify: ".$result['plugin'].": Order was not VERIFIED \n\n";
         		MyMuseHelper::logMessage( $debug  );
         	}
         	$subject = $result['plugin'].": Order was not VERIFIED";
@@ -856,7 +854,7 @@ echo "task = $task";
             
         }elseif(!$result['order_found']){
         	if($params->get('my_debug')){
-        		$debug = "$date ".$result['plugin'].": Order was not found \n\n";
+        		$debug = "Notify: ".$result['plugin'].": Order was not found \n\n";
         		MyMuseHelper::logMessage( $debug  );
         	}
         	$subject = $result['plugin'].": Order was not found";
@@ -876,7 +874,7 @@ echo "task = $task";
 
         	
         	if($params->get('my_debug')){
-        		$debug = "$date ".$result['plugin'].": Order was not completed: ".$result['payment_status']." \n\n";
+        		$debug = "Notify: ".$result['plugin'].": Order was not completed: ".$result['payment_status']." \n\n";
         		MyMuseHelper::logMessage( $debug  );
         	}
         	$subject = $result['plugin'].": Order was not completed: ".$result['payment_status'];
@@ -896,12 +894,12 @@ echo "task = $task";
         	//all is good! all is well!
 
         	if($params->get('my_debug')){
-        		$debug = "$date All is good \n";
+        		$debug = "Notify: All is good \n";
         		MyMuseHelper::logMessage( $debug  );
         	}
  
         	if(!$this->makeMail($result)){
-        		$debug = "$date makeMail failed \n";
+        		$debug = "Notify: makeMail failed \n";
         		MyMuseHelper::logMessage( $debug  );
         		
         	}
@@ -921,11 +919,11 @@ echo "task = $task";
         	 
         	$MyMuseHelper = new MyMuseHelper;
         	if(!$MyMuseHelper->logPayment($payment)){
-        		$debug = "$date !!Log Payment Error: ".$MyMuseHelper->getError()."\n\n";
+        		$debug = "Notify: !!Log Payment Error: ".$MyMuseHelper->getError()."\n\n";
         		MyMuseHelper::logMessage( $debug  );
         	}
         	if($params->get('my_debug')){
-        		$debug = "$date Payment logged\n";
+        		$debug = "Notify: Payment logged\n";
         		MyMuseHelper::logMessage( $debug  );
         	}
         	
@@ -1108,7 +1106,7 @@ echo "task = $task";
 		
 
 		if(is_object($order) && $params->get('my_debug')){
-			$debug = "$date makeMail Order = ".$order->id."\n";
+			$debug = "makeMail: Order = ".$order->id."\n";
 			//$debug .= "makeMail user = ".print_r($this->user,true)."\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
@@ -1119,7 +1117,7 @@ echo "task = $task";
 		
 		if($order->notes && ($params->get('my_registration') == "no_reg" || $this->user->username == "buyer") ){
 
-			$debug = "makeMail Order Notes = ".print_r($order->notes,true)."\n";
+			$debug = "makeMail: Order Notes = ".print_r($order->notes,true)."\n";
 			MyMuseHelper::logMessage( $debug  );
 			//$accparams = new JRegistry( $order->notes);
 			$registry = new JRegistry;
@@ -1159,7 +1157,7 @@ echo "task = $task";
 		$download_header = '';
 		 
 		if($params->get('my_debug')){
-			$debug = "$date makeMail Downloadable = ".$order->downloadable."\n";
+			$debug = "makeMail: Downloadable = ".$order->downloadable."\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		 
@@ -1182,7 +1180,7 @@ echo "task = $task";
 		$this->my_email_msg = $my_email_msg;
 		
 		if($params->get('my_debug')){
-			$debug = "$date makeMail Extra Email message: $my_email_msg \n\n";
+			$debug = "makeMail: Extra Email message: $my_email_msg \n\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
@@ -1217,8 +1215,8 @@ echo "task = $task";
 		}
 		 
 		if($params->get('my_debug')){
-			//$debug = "$date makeMail Email message: $message \n\n";
-			MyMuseHelper::logMessage( $debug  );
+			//$debug = "makeMail: Email message: $message \n\n";
+			//MyMuseHelper::logMessage( $debug  );
 		}
 		
 		
@@ -1261,12 +1259,12 @@ echo "task = $task";
 		$rs = $mailer->Send();
 		 
 		if ($rs instanceof Exception){
-			$debug = "Error sending email to $user_email: " . $rs->__toString();
+			$debug = "makeMail: Error sending email to $user_email: " . $rs->__toString();
 		
 		}elseif (empty($rs)){
-			$debug = "Error sending email to $user_email: return from mailer was empty";
+			$debug = "makeMail: Error sending email to $user_email: return from mailer was empty";
 		} else {
-			$debug = "Mail sent to $user_email";
+			$debug = "makeMail: Mail sent to $user_email";
 		}
 		if($params->get('my_debug')){
 			MyMuseHelper::logMessage( $debug  );

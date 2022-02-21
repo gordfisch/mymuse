@@ -21,8 +21,7 @@ use Joomla\Component\Mymuse\Administrator\Table\OrderpaymentTable;
 use Joomla\Component\Mymuse\Administrator\Table\OrdershippingTable;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
-use Joomla\Component\Mymuse\Site\Controller\DisplayController as MyMuse;
-
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 
 
@@ -100,9 +99,9 @@ class CheckoutHelper
 	function __construct()
 	{
 		$this->_db 	= Factory::getDBO();
-		$this->MyMuseShopper	=& MyMuse::getObject('Shopper','model');
-		$this->MyMuseStore  	=& MyMuse::getObject('Store','model');
-		$this->MyMuseCart  		=& MyMuse::getObject('Cart','helper');
+		$this->MyMuseShopper	=& Mymuse::getObject('Shopper','model');
+		$this->MyMuseStore  	=& Mymuse::getObject('Store','model');
+		$this->MyMuseCart  		=& Mymuse::getObject('Cart','helper');
 
 		$this->shopper 			= $this->MyMuseShopper->getShopper();
 		$this->store 			= $this->MyMuseStore->getStore();
@@ -129,9 +128,9 @@ class CheckoutHelper
 
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
-			$date = date('Y-m-d h:i:s');
-			$debug = "################### \nCHECKOUT SAVE FUNCTION\n";
-			$debug .= "$date  Have a cart ". print_r($this->cart,true) ;
+
+			$debug = "CHECKOUT SAVE FUNCTION\n";
+			$debug .= "Have a cart ". print_r($this->cart,true) ;
 			MyMuseHelper::logMessage( $debug );
 		}
 		$coupon_id 			= 0;
@@ -164,7 +163,7 @@ class CheckoutHelper
 			}else{
 				$this->cart[$i]['product'] = $this->MyMuseCart->getProduct($this->cart[$i]["product_id"]);
 			}
-		
+	
 			
 			$ext = '';
 
@@ -189,31 +188,42 @@ class CheckoutHelper
 
 			// SEE IF IT IS AN ALL_FILES and NOT ZIP, ADD ALL FILES TO CART
 			if($this->cart[$i]['product']->product_allfiles && !$params->get('my_use_zip')){
-				$query = "SELECT id from #__mymuse_product WHERE parentid='".$this->cart[$i]['product']->parentid."'
-				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
+
+				$format = $this->cart[$i]['product']->digital->file_format;
+				$query = "SELECT id,track_parentid from `#__mymuse_product` WHERE parentid='".$this->cart[$i]['product']->parentid."'
+				AND product_downloadable='1' AND product_allfiles !='1' 
+				AND track_parentid > 0
+				AND digital LIKE '%file_format\":\"".$format  ."%'
+				ORDER BY ordering ";
+
 				$this->_db->setQuery($query);
 				$rows = $this->_db->loadObjectList();
+
 				foreach($rows as $row){
 					if($this->cart[$i]["product_id"] == $row->id){
 						continue;
 					}
-					$this->cart[$this->cart["idx"]]['product_id'] = $row->id;
+					$this->cart[$this->cart["idx"]]['product_id'] = $row->track_parentid;
+					$this->cart[$this->cart["idx"]]['variation'] = $row->id;
 					$this->cart[$this->cart["idx"]]['quantity'] = 1;
-					$this->cart[$this->cart["idx"]]['catid'] = '';
-					$this->cart[$this->cart["idx"]]['product']= $this->MyMuseCart->getProduct($row->id);
-					$jason = json_decode($this->cart[$this->cart["idx"]]['product']->file_name);
-					if(is_array($jason)){
-						$this->cart[$this->cart["idx"]]['product']->file_name = $jason[$this->cart[$i]["variation"]]->file_name;
-						$this->cart[$this->cart["idx"]]['product']->ext = $jason[$this->cart[$i]["variation"]]->file_ext;
+					$this->cart[$this->cart["idx"]]['product']= $this->MyMuseCart->getProduct($row->track_parentid, $row->id);
+
+					$digital = $this->cart[$this->cart["idx"]]['product']->digital;
+		
+
+					$this->cart[$this->cart["idx"]]['product']->file_name = $digital->file_name;
+					$this->cart[$this->cart["idx"]]['product']->ext = $digital->file_ext;
+					$this->cart[$this->cart["idx"]]['product']->file_length = $digital->file_length;
 	
-					}else{
-						$this->cart[$this->cart["idx"]]['product']->ext = pathinfo($this->cart[$this->cart["idx"]]['product']->file_name, PATHINFO_EXTENSION);
-					}
+					
 					$this->cart[$this->cart["idx"]]['product']->price = array();
 					$this->cart[$this->cart["idx"]]['product']->price['product_price'] = 0;
+					$this->cart[$this->cart["idx"]]['product']->format = $format;
 					$this->cart["idx"]++;
 						
 				}
+				$this->cart[$i]['product']->file_name = '';
+
 			}elseif($this->cart[$i]['product']->product_allfiles && $params->get('my_use_zip')){
 				
 			
@@ -271,7 +281,7 @@ class CheckoutHelper
 			$this->_db->setQuery($query);
 			$this->_db->execute();
 			if($params->get('my_debug')){
-				MyMuseHelper::logMessage( "$date Update coupon" . $query);
+				MyMuseHelper::logMessage( "Update coupon: " . $query);
 			}
 		}
 		
@@ -481,7 +491,7 @@ class CheckoutHelper
 		$this->MyMuseShopper->order = $order;
 		
 		if($params->get('my_debug')){
-			$debug = "$date Order saved:  ".$order->order_number."\n\n";
+			$debug = "Order saved:  ".$order->order_number."\n\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
@@ -808,10 +818,12 @@ class CheckoutHelper
 					$order->items [$i]->ext = pathinfo ( $order->items [$i]->file_name, PATHINFO_EXTENSION );
 				}
 				$order->items [$i]->attribs = $order->items [$i]->product->attribs;
-		
+		//MyMuseHelper::print_pre($order->items [$i]->product->digital);
 				if(isset($order->items[$i]->product->digital)){
 
-					$order->items [$i]->file_length = $order->items [$i]->product->digital->file_length;
+					if(isset($order->items [$i]->product->digital->file_length)){
+						$order->items [$i]->file_length = $order->items [$i]->product->digital->file_length;
+					}
 					if(isset($order->items [$i]->product->digital->file_time)){
 						$order->items [$i]->file_time = $order->items [$i]->product->digital->file_time;
 					}

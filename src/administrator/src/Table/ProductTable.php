@@ -170,6 +170,9 @@ class ProductTable extends Table implements VersionableTableInterface
         if(!isset($array['metadesc'])){
             $array['metadesc'] = '';
         }
+        if(!isset($array['featured'])){
+            $array['featured'] = 0;
+        }
 
 		if (isset($array['metadata']) && is_array($array['metadata'])) {
 			$registry = new Registry;
@@ -581,8 +584,9 @@ class ProductTable extends Table implements VersionableTableInterface
 			return true;
 		} //if subtype = file
 
+
 		/* ALL FILES ==========================================================*/
-		if(isset($form['product_allfiles']) && $form['product_allfiles']){
+		if($subtype == "allfiles" || (isset($form['product_allfiles']) && $form['product_allfiles']) ){
 
 			$this->product_allfiles = 1;
 			$this->featured = 0;
@@ -595,6 +599,7 @@ class ProductTable extends Table implements VersionableTableInterface
 				$form['product_sku'] = ($parent_product_sku).':'.($this->alias);
 				$this->product_sku = $form['product_sku'];
 			}
+
 			if(!$this->id){
 				/* create a parent allfiles */
 				$this->track_parentid = 0;
@@ -608,18 +613,20 @@ class ProductTable extends Table implements VersionableTableInterface
 
 				$this->file_type = "audio";
 				$this->track_parentid = $this->id;
-				
+				$time = isset($this->file_time)? $this->file_time : '';
+	
 				/* make child formats allfiles */
 				for($p = 0; $p < count($params->get('my_formats')); $p++){
 					$this->id = '';
-					$file_name = ApplicationHelper::stringURLSafe($this->alias."-full-release-". $params->get('my_formats')[$p]->format_value);
+					$tag = Text::_('COM_MYMUSE_ALL_FILES_TAG');
+					$file_name = ApplicationHelper::stringURLSafe($this->alias.$tag).'.'.strtolower($params->get('my_formats')[$p]->format_value);
 					$current_files = array(
 						'file_name' => $file_name,
 						'file_length' => '',
-						'file_ext' => $params->get('my_formats')[$p]->format_value,
+						'file_ext' => strtolower($params->get('my_formats')[$p]->format_value),
 						'file_downloads'=> '0',
-						'file_time' => '',
-						'file_format' => $params->get('my_formats')[$p]->format_key
+						'file_time' => $time,
+						'file_format' => strtolower($params->get('my_formats')[$p]->format_key)
 					);
 					$this->digital= json_encode($current_files);
 					$this->product_sku = $form['product_sku'].':'.$params->get('my_formats')[$p]->format_key;
@@ -631,11 +638,13 @@ class ProductTable extends Table implements VersionableTableInterface
 					}
 
 				}
+				$this->id = $this->track_parentid;
 				return true;
 
 			}else{
 				/* update current track */
 				$this->check();
+				$this->track_parentid = 0;
 				$result = parent::store($updateNulls);
 				if(!$result){
 	                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_UPDATE_PARENT_TRACK').' '.$this->getError(), 'error');
@@ -645,18 +654,33 @@ class ProductTable extends Table implements VersionableTableInterface
 				$query = "SELECT * FROM #__mymuse_product WHERE track_parentid='".$this->id."'";
 				$db->setQuery($query);
 				$child_tracks = $db->loadObjectList();
+				$time = isset($this->file_time)? $this->file_time : '';
+				$this->track_parentid = $this->id;
+				$tag = Text::_('COM_MYMUSE_ALL_FILES_TAG');
+				
 				foreach($child_tracks as $child){
+					
 					$this->id = $child->id;
 					$current_digital = json_decode($child->digital);
-					$this->digital = $child->digital;
+
+					$format = $current_digital->file_format;
+					$file_name = ApplicationHelper::stringURLSafe($this->alias.$tag).'.'. $format;
+					$current_digital->file_time = $time;
+					$current_digital->file_name = $file_name;
+					//echo MyMuseHelper::print_pre($current_digital); exit;
+
+					$this->digital = json_encode($current_digital) ;
 					$this->product_sku = $form['product_sku'].':'.$current_digital->file_format;
 					$this->check();
+					//echo MyMuseHelper::print_pre($this->digital);exit;
 					if(!$result = parent::store(false)){
 						$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->getError(), 'error');
 						return false;
 					}
 
 				}
+				$this->id = $this->track_parentid;
+				return true;
 			}
 			
 			

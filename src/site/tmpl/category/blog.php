@@ -101,7 +101,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 					itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
 						<?php
 						$this->item = & $item;
-						echo $this->loadTemplate('item');
+						echo $this->loadTemplate('leading');
 						?>
 				</div>
 				<?php $leadingcount++; ?>

@@ -10,11 +10,16 @@ namespace Joomla\Component\Mymuse\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Versioning\VersionableControllerTrait;
+use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Factory;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * Ordercontroller class.
@@ -36,13 +41,16 @@ class OrderController extends FormController
 
 		function save($key = NULL, $urlVar = NULL)
 		{
-	    	$input 		= JFactory::getApplication()->input;
+	    	$input 		= Factory::getApplication()->input;
+	    	$input->set('jform[checked_out]','0');
+	    	//MymuseHelper::print_pre($input); exit;
 	    	$post 		= $input->post->getArray();
 			$form 		= $post['jform'];
 			$old_status = $input->get('old_status','');
 			$id 		= $input->get('id','');
 			$task	 	= $input->get('task','save');
 			$params     = MyMuseHelper::getParams();
+			
 
 		    $model = $this->getModel();
 		    $this->msg = '';
@@ -54,7 +62,7 @@ class OrderController extends FormController
 					if ($form['order_status'] == "C" && $params->get('my_use_stock') && 
 						(isset($form['update_on_confirm']) && $form['update_on_confirm'] == "on") ){
 
-						$db = JFactory::getDBO();
+						$db = Factory::getDBO();
 						$MyMuseHelper = new MyMuseHelper;
 
 						$query = "SELECT oi.*, p.product_physical, p.title, p.product_in_stock as product_product_in_stock FROM #__mymuse_order_item as oi 
@@ -68,8 +76,8 @@ class OrderController extends FormController
 							//see if we can update stock
 							if (!$MyMuseHelper->updateStock($item->product_id, $item->product_quantity)) {
 
-								$msg = $item->title.' '.JText::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-								$msg .= JText::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$item->product_product_in_stock;
+								$msg = $item->title.' '.Text::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+								$msg .= Text::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$item->product_product_in_stock;
 								$this->setRedirect( 'index.php?option=com_mymuse&view=order&task=order.edit&id='.$id, $msg, 'error' );
 								return false;
 							}
@@ -77,19 +85,20 @@ class OrderController extends FormController
 
 					}
 					$this->mail_client();
-					$this->msg .= JText::_( 'COM_MYMUSE_EMAILED_CUSTOMER' )." ";
+					$this->msg .= Text::_( 'COM_MYMUSE_EMAILED_CUSTOMER' )." ";
 
 				}
 				if($task == 'apply'){
-					$this->msg .= JText::_( 'COM_MYMUSE_ORDER_SAVED' ).$model->getError();
+	
+					$this->msg .= Text::_( 'COM_MYMUSE_ORDER_SAVED' ).$model->getError();
 	        		$this->setRedirect( 'index.php?option=com_mymuse&view=order&task=order.edit&id='.$id, $this->msg );
 				}else{
-					$this->msg .= JText::_( 'COM_MYMUSE_ORDER_SAVED' ).$model->getError();
+					$this->msg .= Text::_( 'COM_MYMUSE_ORDER_SAVED' ).$model->getError();
 					$this->setRedirect( 'index.php?option=com_mymuse&view=orders', $this->msg );
 				}
 				
 			}else{
-				$this->msg = JText::_( 'COM_MYMUSE_ERROR_SAVING_ORDER' ).$model->getError();
+				$this->msg = Text::_( 'COM_MYMUSE_ERROR_SAVING_ORDER' ).$model->getError();
 	        	$this->setRedirect( 'index.php?option=com_mymuse&view=order&task=order.edit&id='.$id, $this->msg );
 			}
 		}
@@ -104,16 +113,16 @@ class OrderController extends FormController
 		function mail_client()
 		{        	
 			// let's send mail about the change
-			$input 		= JFactory::getApplication()->input;
+			$input 		= Factory::getApplication()->input;
 	    	$post 		= $input->post->getArray();
 			$form 		= $post['jform'];
 			$id 		= $input->get('id','');
 
 			$params 	= MyMuseHelper::getParams();
-			$date 		= date('Y-m-d h:i:s');
+
 
 			if($params->get('my_debug')){
-				$debug = $date."\n#####################\nORDER SAVE\n";
+				$debug = "OrderController: mail_client: \n";
 				$debug .= "ORDER: $id \nSTATUS: ".$form['order_status']."\n" ;
 				MyMuseHelper::logMessage( $debug  );
 			}
@@ -123,18 +132,15 @@ class OrderController extends FormController
 
 
 			
-			include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'COM_MYMUSE.class.php' );
-			$MyMuseStore  	=& MyMuse::getObject('store','models');
+
+			$MyMuseStore  	=& Mymuse::getObject('store','model');
 			$store 			= $MyMuseStore->getStore();
 			$model 			= $this->getModel();
 			$order			= $model->getItem();
 
-			$language = JFactory::getLanguage();
-			$uparams = $order->user->getParameters();
-			$language_tag = $uparams->get('language');
-			if(!$language_tag){
-				$language_tag = $language->get('lang');
-			}
+			$language = Factory::getLanguage();
+			$language_tag = $language->get('lang');
+
 			$extension = 'com_mymuse';
 			$base_dir = JPATH_SITE;
 			
@@ -157,7 +163,7 @@ class OrderController extends FormController
 			}
 
 			// SEND MAIL TO BUYER
-	     	$mailer = JFactory::getMailer();
+	     	$mailer = Factory::getMailer();
 	     	$mailer->isHTML(true);
 	     	$mailer->Encoding = 'base64';
 	     	// from
@@ -174,14 +180,14 @@ class OrderController extends FormController
 	     	}
 	     	$mailer->addRecipient($recipient);
 	     	//subject, body
-	     	$subject = Jtext::_('COM_MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
+	     	$subject = Text::_('COM_MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
 			$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
 	     	$mailer->setSubject($subject);
 	     	$mailer->setBody($message);
 
 	     	$send = $mailer->Send();
 	     	if ( $send !== true ) {
-	     		JFactory::getApplication()->enqueueMessage( 'Error sending email: ' . $send->getError() );
+	     		Factory::getApplication()->enqueueMessage( 'Error sending email: ' . $send->getError() );
 	     	}
 			$input->set( 'layout', 'edit');
 			$input->set( 'task', 'save'  );
@@ -198,22 +204,22 @@ class OrderController extends FormController
 		 */
 		function shipitem()
 		{
-			$input 			= JFactory::getApplication()->input;
+			$input 			= Factory::getApplication()->input;
 			$id 			= $input->get('id',0);
 			$order_item_id 	= $input->get('item_id',0);
 			$MyMuseHelper 	= new MyMuseHelper;
 
 			if(!$id){
-				JFactory::getApplication()->enqueueMessage(JText::_("COM_MYMUSE_CANNOT_SHIP_NO_ORDER_ID"), 'error');
+				Factory::getApplication()->enqueueMessage(Text::_("COM_MYMUSE_CANNOT_SHIP_NO_ORDER_ID"), 'error');
 				$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='. $id );
 				return false;
 			}
 			if(!$order_item_id){
-				JFactory::getApplication()->enqueueMessage(JText::_("COM_MYMUSE_CANNOT_SHIP_NO_ORDER_ITEM_ID"), 'error');
+				Factory::getApplication()->enqueueMessage(Text::_("COM_MYMUSE_CANNOT_SHIP_NO_ORDER_ITEM_ID"), 'error');
 				$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='. $id );
 				return false;
 			}
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = "SELECT * FROM #__mymuse_order_item WHERE id=$order_item_id";
 			$db->setQuery($query);
 			$order_item = $db->loadObject();
@@ -223,8 +229,8 @@ class OrderController extends FormController
 				$query = "SELECT product_in_stock, title FROM #__mymuse_product WHERE id=".$order_item->product_id;
 				$db->setQuery($query);
 				$res = $db->loadObject();
-				$msg = $res->title.' '.JText::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-				$msg .= JText::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
+				$msg = $res->title.' '.Text::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+				$msg .= Text::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
 				$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='. $id, $msg, 'error' );
 				return false;
 			}
@@ -235,14 +241,14 @@ class OrderController extends FormController
 			$db->setQuery($query);
 			if(!$db->execute()){
 				$error = $db->getErrorMsg();
-				JFactory::getApplication()->enqueueMessage(JText::_("COM_MYMUSE_CANNOT_SHIP_DB_ERROR") .$error, 'error');
+				Factory::getApplication()->enqueueMessage(Text::_("COM_MYMUSE_CANNOT_SHIP_DB_ERROR") .$error, 'error');
 				$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='. $id );
 				return false;
 			}
 
 			$this->mail_client();
 			
-			JFactory::getApplication()->enqueueMessage(JText::_("COM_MYMUSE_BACKORDER_REMOVED"), 'message');
+			Factory::getApplication()->enqueueMessage(Text::_("COM_MYMUSE_BACKORDER_REMOVED"), 'message');
 			$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='. $id );
 
 		}
@@ -267,5 +273,97 @@ class OrderController extends FormController
 		$this->setRedirect(Route::_('index.php?option=com_mymuse&view=taxrate' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
+	}
+
+
+	/**
+	 * reset_downloads
+	 * method to rest the downloads for a customer, then mail them the download link display
+	 * 
+	 * @return void
+	 */
+	function resetDownloads()
+	{
+		$params = MyMuseHelper::getParams();
+		$app 	= Factory::getApplication();
+		//reset
+		$model 	= $this->getModel('order');
+		$input 	= Factory::getApplication()->input;
+		$id 	= $input->get( 'id','' );
+
+		if(!isset($id)){
+			$this->msg = JTex::_('MYMUSE_ORDER_ID_NOT_FOUND');
+			$app->enqueueMessage($this->msg, 'error');
+			$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id=' );
+			return false;
+		}
+	
+		if(!$model->resetDownloads()){
+			$this->msg = $model->getError();
+			$app->enqueueMessage($this->msg, 'error');
+			$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='.$id);
+			return false;
+		}
+
+		//email customer
+		$date = date('Y-m-d h:i:s');
+		if($params->get('my_debug')){
+			$debug = "OrdeController:resetDownloads: \n";
+			$debug .= "ORDER: ".$id. "\nSTATUS: C\n" ;
+			MyMuseHelper::logMessage( $debug  );
+		}
+	
+		$input->set( 'view', 'order' );
+		$input->set( 'layout', 'order');
+		$input->set( 'task', 'mailcustomer'  );
+		
+		include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'mymuse.class.php' );
+		$MyMuseStore	=& Mymuse::getObject('store','model');
+		$store			= $MyMuseStore->getStore();
+		$params 		= new Registry( $store->params );
+	
+		$language 		= Factory::getLanguage();
+		$extension 		= 'com_mymuse';
+		$base_dir 		= JPATH_SITE;
+
+		$language->load($extension, $base_dir, 'en-GB', true);
+		$language->load($extension, $base_dir, null, true);
+	
+		//include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
+	
+		$this->order = $order = $model->getItem($id);
+
+		ob_start();
+		parent::display();
+		$message .= ob_get_contents();
+		ob_end_clean();
+		//$message  = $header.$message.$footer;
+	
+		$order = $model->getItem($id);
+	
+		$user_email 	= $order->user->email;
+	
+		// SEND MAIL TO BUYER
+		$subject = text::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
+		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+	
+		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+		$mailfrom = $params->get('contact_email');
+		
+		$mailer = Factory::getMailer();
+		$mailer->isHTML(true);
+		$mailer->setSender(array($mailfrom,$fromname));
+		$mailer->addRecipient($user_email);
+		$mailer->setSubject($subject);
+		$mailer->setBody($message);
+		$send = $mailer->Send();
+		if ( $send !== true ) {
+			echo 'Error sending email: ' . $send->getError();
+		}
+		
+		//redirect to edit page
+		$this->msg = "Downloads Reset";
+		$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='.$id, $this->msg);
+		return true;
 	}
 }

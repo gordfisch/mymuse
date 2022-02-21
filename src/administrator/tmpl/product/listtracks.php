@@ -251,7 +251,7 @@ $this->vote 		= false;
 										</div>
 									<?php  if($track->product_allfiles == "1") :  ?>
 										<div class="small break-word">
-										<?php echo Text::_("MYMUSE_ALL_TRACKS"); ?>
+										<?php echo Text::_("COM_MYMUSE_ALL_TRACKS"); ?>
 										</div>
 									 <?php endif; ?>
 								<?php endif ?>
@@ -274,7 +274,7 @@ $this->vote 		= false;
 							<td class="track-format text-center">
 								<?php
 								foreach($track->formats as $f){
-									echo $f->id." ".stripslashes($f->file_data->file_format)."<br />";
+									echo stripslashes($f->file_data->file_format)."<br />";
 								}
 								?>
 

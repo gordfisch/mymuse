@@ -52,7 +52,7 @@ if( $this->params->get('info_block_show')) {
 
 ?>
 
-<div class="mygrid mygrid-<?php echo $cols; ?>">
+<div class="product columns-<?php echo $cols; ?>">
 
 	<?php echo $this->loadTemplate('image'); ?>
 
