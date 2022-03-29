@@ -187,8 +187,21 @@ $assoc = Associations::isEnabled();
 					<?php endif; ?>
 				</td>
 
-				<td class="text-center">
+				<!-- td class="text-center">
 					<?php echo HTMLHelper::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>
+				</td -->
+				<td class="text-center d-none d-md-table-cell">
+				<?php
+					$options = [
+						'task_prefix' => 'products.',
+						'disabled' => $workflow_featured || !$canChange,
+						'id' => $item->id,
+						'cid' => $item->id,
+					];
+
+					echo (new FeaturedButton)
+						->render((int) $item->featured, $i, $options, null, null);
+				?>
 				</td>
 				<td class="article-status text-center">
 								<?php

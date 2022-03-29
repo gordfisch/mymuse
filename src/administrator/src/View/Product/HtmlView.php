@@ -240,8 +240,8 @@ class HtmlView extends BaseHtmlView
 		{
 			throw new GenericDataException(implode("\n", $errors), 500);
 		}
-MymuseHelper::print_pre($this->item);
-		//MymuseHelper::print_pre($this->item);
+//MymuseHelper::print_pre($this->item);
+	
 
 		$this->addToolbar($type,$this->item->parentid);
 		parent::display($tpl);

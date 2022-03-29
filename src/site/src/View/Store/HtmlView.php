@@ -580,7 +580,7 @@ echo $download_path; exit;
 
 		$items 		= $this->get('Items');
 		$pagination	= $this->get('Pagination');
-//MymuseHelper::print_pre($pagination ); exit;
+//MymuseHelper::print_pre($items); exit;
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseWarning(500, implode("\n", $errors));

@@ -931,27 +931,6 @@ class ProductModel extends AdminModel
 
 		
 
-		// Alter the title for save as copy
-		if ($input->get('task') == 'save2copy')
-		{
-			$origTable = clone $this->getTable();
-			$origTable->load($input->getInt('id'));
-
-			if ($data['title'] == $origTable->title)
-			{
-				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
-				$data['title'] = $title;
-				$data['alias'] = $alias;
-			}
-			else
-			{
-				if ($data['alias'] == $origTable->alias)
-				{
-					$data['alias'] = '';
-				}
-			}
-		}
-
 		// Automatic handling of alias for empty fields
 		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
 		{
@@ -1166,7 +1145,10 @@ class ProductModel extends AdminModel
 				// Unpublish because we are making a copy
 				$this->table->state = 0;
 			}
-
+			//make new sku
+			list($newSku, $alias) = $this->generateNewTitle($data['catid'], $data['product_sku'], $data['product_sku']);
+			$this->table->product_sku = $newSku;
+	
 			// Reset hits because we are making a copy
 			$this->table->hits = 0;
 
@@ -1230,6 +1212,9 @@ class ProductModel extends AdminModel
         return true;
 
     }
+
+
+    
 
 
 }

@@ -203,7 +203,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                      }
 	                      
 	                    }
-
+MymuseHelper::print_pre($this->all_tracks->price);
 	                    foreach($this->formats as $format) :
 	                      if(in_array(strtolower($format), $types)):
 	                        $product_price = $this->all_tracks->price[$format];

@@ -166,4 +166,11 @@ class ProductsController extends AdminController
     	$this->setRedirect(Route::_($redirectUrl, false), $message);
     }
 
+
+
+    public function unfeatured()
+    {
+
+    	$this->featured();
+    }
 }

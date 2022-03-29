@@ -14,6 +14,7 @@ $cols = 0;
 if( $this->params->get('product_show_product_image') && $this->item->detail_image) {
 	$cols++;
 }
+
 if( $this->params->get('info_block_show')) {
 	$cols++;
 }

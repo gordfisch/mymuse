@@ -26,7 +26,6 @@
                 name="title"
                 type="text"
                 label="COM_MYMUSE_TITLE_LABEL"
-                description="COM_MYMUSE_TITLE_DESC"
                 class="inputbox"
                 size="60"
                 required="true"
@@ -36,7 +35,6 @@
                 name="alias" 
                 type="text" 
                 label="COM_MYMUSE_ALIAS_LABEL"
-                description="COM_MYMUSE_ALIAS_DESC" 
                 class="inputbox" size="45" />
                 
 
@@ -57,7 +55,6 @@
                 name="language" 
                 type="contentlanguage" 
                 label="JFIELD_LANGUAGE_LABEL"
-                description="COM_CONTENT_FIELD_LANGUAGE_DESC" 
                 class="inputbox">
                 <option value="*">JALL</option>
           </field>
@@ -92,7 +89,6 @@
                 name="contact_first_name"
                 type="text"
                 label="COM_MYMUSE_CONTACT_FIRST_NAME_LABEL"
-                description="COM_MYMUSE_CONTACT_FIRST_NAME_DESC"
                 class="inputbox"
                 size="40"
                 required="true"
@@ -101,7 +97,6 @@
                 name="contact_last_name"
                 type="text"
                 label="COM_MYMUSE_CONTACT_LAST_NAME_LABEL"
-                description="COM_MYMUSE_CONTACT_LAST_NAME_DESC"
                 class="inputbox"
                 size="40"
                 required="true"
@@ -110,7 +105,6 @@
                 name="contact_title"
                 type="text"
                 label="COM_MYMUSE_CONTACT_TITLE_LABEL"
-                description="COM_MYMUSE_CONTACT_TITLE_DESC"
                 class="inputbox"
                 size="40"
               />
@@ -118,7 +112,6 @@
                 name="contact_email"
                 type="text"
                 label="COM_MYMUSE_CONTACT_EMAIL_LABEL"
-                description="COM_MYMUSE_CONTACT_EMAIL_DESC"
                 class="inputbox"
                 size="40"
                 required="true"
@@ -128,7 +121,6 @@
                 name="phone"
                 type="text"
                 label="COM_MYMUSE_CONTACT_PHONE_LABEL"
-                description="COM_MYMUSE_CONTACT_PHONE_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -136,7 +128,6 @@
                 name="fax"
                 type="text"
                 label="COM_MYMUSE_CONTACT_FAX_LABEL"
-                description="COM_MYMUSE_CONTACT_FAX_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -144,7 +135,6 @@
                 name="twitter_handle"
                 type="text"
                 label="COM_MYMUSE_TWITTER_HANDLE_LABEL"
-                description="COM_MYMUSE_TWITTER_HANDLE_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -175,7 +165,6 @@
                 name="address_1"
                 type="text"
                 label="COM_MYMUSE_CONTACT_ADDRESS_1_LABEL"
-                description="COM_MYMUSE_CONTACT_ADDRESS_1_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -183,7 +172,6 @@
                 name="address_2"
                 type="text"
                 label="COM_MYMUSE_CONTACT_ADDRESS_2_LABEL"
-                description="COM_MYMUSE_CONTACT_ADDRESS_2_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -191,7 +179,6 @@
                 name="city"
                 type="text"
                 label="COM_MYMUSE_CONTACT_CITY_LABEL"
-                description="COM_MYMUSE_CONTACT_CITY_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -199,7 +186,6 @@
                 name="province"
                 type="text"
                 label="COM_MYMUSE_CONTACT_STATE_LABEL"
-                description="COM_MYMUSE_CONTACT_STATE_DESC"
                 class="inputbox"
                 size="40"
                />
@@ -207,7 +193,6 @@
                 name="country"
                 type="sql"
                 label="COM_MYMUSE_CONTACT_COUNTRY_LABEL"
-                description="COM_MYMUSE_CONTACT_COUNTRY_DESC"
                 class="inputbox"
                 query="SELECT country_2_code,  country_name AS country FROM #__mymuse_country"
                 key_field="country_2_code"
@@ -218,7 +203,6 @@
                 name="zip"
                 type="text"
                 label="COM_MYMUSE_ZIP_LABEL"
-                description="COM_MYMUSE_ZIP_DESC"
                 class="inputbox"
                 size="40"
                />

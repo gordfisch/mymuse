@@ -386,6 +386,47 @@ class ProductsModel extends ListModel
 		$db->execute();
 	}
 
+	/**
+	 * Method to toggle the featured setting of products.
+	 *
+	 * @param	array	The ids of the items to toggle.
+	 * @param	int		The value to toggle to.
+	 *
+	 * @return	boolean	True on success.
+	 */
+	public function featured($pks, $value = 0)
+	{
+		// Sanitize the ids.
+		$pks = (array) $pks;
+		ArrayHelper::toInteger($pks);
+
+		if (empty($pks)) {
+			$this->setError(JText::_('COM_MYMUSE_NO_ITEM_SELECTED'));
+			return false;
+		}
+
+		try {
+			$db = $this->getDbo();
+
+			$db->setQuery(
+				'UPDATE #__mymuse_product AS a' .
+				' SET featured = '.(int) $value.
+				' WHERE id IN ('.implode(',', $pks).')'
+			);
+			if (!$db->execute()) {
+				throw new Exception($db->getErrorMsg());
+			} 
+
+		} catch (Exception $e) {
+			$this->setError($e->getMessage());
+			return false;
+		}
+
+		$this->cleanCache();
+
+		return true;
+	}
+
 
 	/**
 	 * Method to delete of one or more records.

@@ -314,7 +314,7 @@
 	<input type="hidden" name="mask" value="0" /> 
 	<input type="hidden" name="option" value="<?php echo $option;?>" /> 
 	<input type="hidden" name="task" value="" /> 
-	<input type="hidden" name="type" value="item" /> 
+	<input type="hidden" name="subtype" value="item" /> 
 	<input type="hidden" name="use_parentid" value="" /> 
 	<input type="hidden" name="filter_order" value="<?php echo $lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $lists['order_Dir']; ?>" />

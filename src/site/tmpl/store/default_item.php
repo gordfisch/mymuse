@@ -17,7 +17,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 // Create a shortcut for params.
 $params 	= &$this->item->params;

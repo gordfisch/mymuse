@@ -364,42 +364,37 @@ class CategoryModel extends ListModel
 	/**
 	 * Method to get category data for the current category
 	 *
-	 * @return  object
+	 * @return  object  The category object
 	 *
 	 * @since   1.5
 	 */
 	public function getCategory()
 	{
+
 		if (!is_object($this->_item))
 		{
-			if (isset($this->state->params))
+			$app = Factory::getApplication();
+			$menu = $app->getMenu();
+			$active = $menu->getActive();
+
+
+
+			if ($active)
 			{
-				$params = $this->state->params;
-				$options = array();
-				$options['countItems'] = $params->get('show_cat_num_products', 1) || !$params->get('show_empty_categories_cat', 0);
-				$options['access']     = $params->get('check_access_rights', 1);
+				$params = $active->getParams();
 			}
 			else
 			{
-				$options['countItems'] = 0;
+				$params = new Registry;
 			}
 
+			$options = array();
+			$options['countItems'] = $params->get('show_cat_items', 1) || $params->get('show_empty_categories', 0);
 			$categories = Categories::getInstance('Mymuse', $options);
 			$this->_item = $categories->get($this->getState('category.id', 'root'));
 
-			// Compute selected asset permissions.
 			if (is_object($this->_item))
 			{
-				$user  = Factory::getUser();
-				$asset = 'com_mymuse.category.' . $this->_item->id;
-
-				// Check general create permission.
-				if ($user->authorise('core.create', $asset))
-				{
-					$this->_item->getParams()->set('access-create', true);
-				}
-
-				// TODO: Why aren't we lazy loading the children and siblings?
 				$this->_children = $this->_item->getChildren();
 				$this->_parent = false;
 

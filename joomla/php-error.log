@@ -5396,3 +5396,104 @@
 [12-Feb-2022 11:45:45 America/New_York] PHP  17. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:429
 [12-Feb-2022 11:45:45 America/New_York] PHP  18. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_layout.php:73
 [12-Feb-2022 11:45:45 America/New_York] PHP  19. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:429
+[19-Mar-2022 21:10:43 America/New_York] PHP Warning:  get_class() expects parameter 1 to be object, string given in /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php on line 142
+[19-Mar-2022 21:10:43 America/New_York] PHP Stack trace:
+[19-Mar-2022 21:10:43 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[19-Mar-2022 21:10:43 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[19-Mar-2022 21:10:43 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
+[19-Mar-2022 21:10:43 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[19-Mar-2022 21:10:43 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
+[19-Mar-2022 21:10:43 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
+[19-Mar-2022 21:10:43 America/New_York] PHP   7. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[19-Mar-2022 21:10:43 America/New_York] PHP   8. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Dispatcher/Dispatcher.php:56
+[19-Mar-2022 21:10:43 America/New_York] PHP   9. Joomla\Component\Mymuse\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[19-Mar-2022 21:10:43 America/New_York] PHP  10. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[19-Mar-2022 21:10:43 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Controller/DisplayController.php:297
+[19-Mar-2022 21:10:43 America/New_York] PHP  12. Joomla\Component\Mymuse\Site\View\Category\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:697
+[19-Mar-2022 21:10:43 America/New_York] PHP  13. Joomla\Component\Mymuse\Site\View\Category\HtmlView->commonCategoryDisplay() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/View/Category/HtmlView.php:79
+[19-Mar-2022 21:10:43 America/New_York] PHP  14. Joomla\Component\Mymuse\Site\View\Category\HtmlView->get() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/CategoryView.php:137
+[19-Mar-2022 21:10:43 America/New_York] PHP  15. get_class() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:142
+[22-Mar-2022 21:57:46 America/New_York] PHP Notice:  Undefined index: mp3 in /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_details.php on line 209
+[22-Mar-2022 21:57:46 America/New_York] PHP Stack trace:
+[22-Mar-2022 21:57:46 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[22-Mar-2022 21:57:46 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[22-Mar-2022 21:57:46 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
+[22-Mar-2022 21:57:46 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[22-Mar-2022 21:57:46 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
+[22-Mar-2022 21:57:46 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
+[22-Mar-2022 21:57:46 America/New_York] PHP   7. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[22-Mar-2022 21:57:46 America/New_York] PHP   8. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Dispatcher/Dispatcher.php:56
+[22-Mar-2022 21:57:46 America/New_York] PHP   9. Joomla\Component\Mymuse\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[22-Mar-2022 21:57:46 America/New_York] PHP  10. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[22-Mar-2022 21:57:46 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Controller/DisplayController.php:297
+[22-Mar-2022 21:57:46 America/New_York] PHP  12. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:697
+[22-Mar-2022 21:57:46 America/New_York] PHP  13. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/View/Product/HtmlView.php:317
+[22-Mar-2022 21:57:46 America/New_York] PHP  14. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:220
+[22-Mar-2022 21:57:46 America/New_York] PHP  15. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:57:46 America/New_York] PHP  16. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product.php:521
+[22-Mar-2022 21:57:46 America/New_York] PHP  17. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:57:46 America/New_York] PHP  18. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_layout.php:63
+[22-Mar-2022 21:57:46 America/New_York] PHP  19. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:58:22 America/New_York] PHP Notice:  Undefined index: mp3 in /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_details.php on line 209
+[22-Mar-2022 21:58:22 America/New_York] PHP Stack trace:
+[22-Mar-2022 21:58:22 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[22-Mar-2022 21:58:22 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[22-Mar-2022 21:58:22 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
+[22-Mar-2022 21:58:22 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[22-Mar-2022 21:58:22 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
+[22-Mar-2022 21:58:22 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
+[22-Mar-2022 21:58:22 America/New_York] PHP   7. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[22-Mar-2022 21:58:22 America/New_York] PHP   8. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Dispatcher/Dispatcher.php:56
+[22-Mar-2022 21:58:22 America/New_York] PHP   9. Joomla\Component\Mymuse\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[22-Mar-2022 21:58:22 America/New_York] PHP  10. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[22-Mar-2022 21:58:22 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Controller/DisplayController.php:297
+[22-Mar-2022 21:58:22 America/New_York] PHP  12. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:697
+[22-Mar-2022 21:58:22 America/New_York] PHP  13. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/View/Product/HtmlView.php:317
+[22-Mar-2022 21:58:22 America/New_York] PHP  14. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:220
+[22-Mar-2022 21:58:22 America/New_York] PHP  15. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:58:22 America/New_York] PHP  16. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product.php:521
+[22-Mar-2022 21:58:22 America/New_York] PHP  17. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:58:22 America/New_York] PHP  18. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_layout.php:63
+[22-Mar-2022 21:58:22 America/New_York] PHP  19. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:59:06 America/New_York] PHP Notice:  Undefined index: mp3 in /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_details.php on line 209
+[22-Mar-2022 21:59:06 America/New_York] PHP Stack trace:
+[22-Mar-2022 21:59:06 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[22-Mar-2022 21:59:06 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[22-Mar-2022 21:59:06 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
+[22-Mar-2022 21:59:06 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[22-Mar-2022 21:59:06 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
+[22-Mar-2022 21:59:06 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
+[22-Mar-2022 21:59:06 America/New_York] PHP   7. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[22-Mar-2022 21:59:06 America/New_York] PHP   8. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Dispatcher/Dispatcher.php:56
+[22-Mar-2022 21:59:06 America/New_York] PHP   9. Joomla\Component\Mymuse\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[22-Mar-2022 21:59:06 America/New_York] PHP  10. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[22-Mar-2022 21:59:06 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Controller/DisplayController.php:297
+[22-Mar-2022 21:59:06 America/New_York] PHP  12. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:697
+[22-Mar-2022 21:59:06 America/New_York] PHP  13. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/View/Product/HtmlView.php:317
+[22-Mar-2022 21:59:06 America/New_York] PHP  14. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:220
+[22-Mar-2022 21:59:06 America/New_York] PHP  15. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:59:06 America/New_York] PHP  16. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product.php:521
+[22-Mar-2022 21:59:06 America/New_York] PHP  17. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 21:59:06 America/New_York] PHP  18. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_layout.php:61
+[22-Mar-2022 21:59:06 America/New_York] PHP  19. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 22:00:57 America/New_York] PHP Notice:  Undefined index: mp3 in /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_details.php on line 209
+[22-Mar-2022 22:00:57 America/New_York] PHP Stack trace:
+[22-Mar-2022 22:00:57 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[22-Mar-2022 22:00:57 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[22-Mar-2022 22:00:57 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
+[22-Mar-2022 22:00:57 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[22-Mar-2022 22:00:57 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
+[22-Mar-2022 22:00:57 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
+[22-Mar-2022 22:00:57 America/New_York] PHP   7. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[22-Mar-2022 22:00:57 America/New_York] PHP   8. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Dispatcher/Dispatcher.php:56
+[22-Mar-2022 22:00:57 America/New_York] PHP   9. Joomla\Component\Mymuse\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[22-Mar-2022 22:00:57 America/New_York] PHP  10. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[22-Mar-2022 22:00:57 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Controller/DisplayController.php:297
+[22-Mar-2022 22:00:57 America/New_York] PHP  12. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:697
+[22-Mar-2022 22:00:57 America/New_York] PHP  13. Joomla\Component\Mymuse\Site\View\Product\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/View/Product/HtmlView.php:317
+[22-Mar-2022 22:00:57 America/New_York] PHP  14. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:220
+[22-Mar-2022 22:00:57 America/New_York] PHP  15. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 22:00:57 America/New_York] PHP  16. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product.php:521
+[22-Mar-2022 22:00:57 America/New_York] PHP  17. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431
+[22-Mar-2022 22:00:57 America/New_York] PHP  18. Joomla\Component\Mymuse\Site\View\Product\HtmlView->loadTemplate() /var/www/html/mymuseJ4/joomla/components/com_mymuse/tmpl/product/product_layout.php:61
+[22-Mar-2022 22:00:57 America/New_York] PHP  19. include() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/HtmlView.php:431

@@ -149,7 +149,9 @@ abstract class AbstractView extends CMSObject implements ViewInterface, Dispatch
 			// Does the method exist?
 			if (method_exists($this->_models[$model], $method))
 			{
+
 				// The method exists, let's call it and return what we get
+
 				return $this->_models[$model]->$method();
 			}
 		}

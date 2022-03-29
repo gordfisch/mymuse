@@ -117,6 +117,7 @@ class ProductController extends FormController
         }
 
         $this->input->set('view','product');
+        //MyMuseHelper::print_pre($this->input); exit;
 	}
 
 
@@ -137,7 +138,7 @@ class ProductController extends FormController
         $form 				= $post['jform'];
 		$this->product_sku 	= isset($form['product_sku'])? $form['product_sku'] : '';
 		$db 				= Factory::getDBO();
-
+        $task               = $this->input->get('task');
 
 		$subtype 			= $post['subtype'];
 		$layout 			= isset($post['layout'])? $post['layout'] : '';
@@ -152,24 +153,62 @@ class ProductController extends FormController
 			$subtype = 'file';
 		}
 
-		$task = $this->input->get('task');
+		
 
         $oldtask = $task;
         if($task == "save2copy"){
-            $this->input->set('task', "apply");
+           $this->input->set('task', "apply");
         }
-echo $subtype; exit;
-        
-		if($subtype == "file" || $subtype == "allfiles"){
+
+        if($subtype == "product") {
+
+            if(!$model->save($form)){
+                $this->app->enqueueMessage($model->getError(), 'error');
+                return false;
+            }
+            $this->postSaveHook();
+
+            switch ( $oldtask )
+            {
+                //apply, save, save2new save2copy, cancel
+                case 'save2copy':
+                    
+                    $this->msg = Text::_( 'COM_MYMUSE_ITEM_SAVED' );
+                    $newid = $model->save2copy($form['id']);
+                    $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='. $newid."&subtype=product" );
+
+                    break;
+
+                case 'save':
+                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_ITEM_SAVED' ), 'notice');
+                    $this->setRedirect( 'index.php?option=com_mymuse&view=products' );
+                    break;
+
+                case 'save2new':
+                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_ITEM_SAVED' ), 'notice');
+                    $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&subtype=product' );
+                    break;
+
+                case 'apply':
+                default:
+                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_ITEM_SAVED' ), 'notice');
+                    $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='. $this->id.'&subtype=product' );
+
+
+
+            }
+
+        }
+		elseif($subtype == "file" || $subtype == "allfiles"){
 	        /* SAVING A FILE */
-			if ($model->save($form)) {
-                if(!$this->id){
-                    $item = $model->getItem();
-                    $this->id = $item->id;
-                }
+			if(!$model->save($form)){
+                $this->app->enqueueMessage($model->getError(), 'error');
+                return false;
+            }
+            $this->postSaveHook();
                 
-				switch ($task )
-				{
+			switch ($task )
+			{
 				case 'apply_allfiles':
                     $this->app->enqueueMessage(Text::_('COM_MYMUSE_CHANGES_TO_ALL_FILE_SAVED'), 'notice');
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit_allfiles&id='. $this->id.'&subtype='.$post['subtype'] );
@@ -225,46 +264,24 @@ echo $subtype; exit;
         	}
  
 
-		}elseif ($model->save($form)) {
+		}elseif($subtype == "item"{
             /* SAVING ITEM */
-
-            $this->id = $form['id'];
-            $this->id = $model->getState('product.id');
-
-            if(!$this->id && $this->product_sku){
-    			$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
-    			$db->setQuery($query);
-
-    			if(!$this->id = $db->loadResult()){
-                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_FIND_ID' ), 'notice');
-    				$this->setRedirect( 'index.php?option=com_mymuse&iew=product&task=product.edit&id='. $this->parentid );
-    				return false;
-    			}
+            if(!$model->save($form)){
+                $this->app->enqueueMessage($model->getError(), 'error');
+                return false;
             }
-			//now we have an id, update the attributes
+            $this->postSaveHook();
+
 			$this->input->set('itemid',$this->id);
-			
-            if($subtype == "details") {
-                $this->app->enqueueMessage(Text::_('COM_MYMUSE_ITEM_SAVED' ), 'notice');
-                $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='. $this->id.'&subtype='.$post['subtype'] );
+			$model->updateAttributes();
 
-
-            } else{
-            $model->updateAttributes();
+                
         	switch ( $oldtask )
 			{
                 case 'save2copy':
                     $this->msg = Text::_( 'COM_MYMUSE_ITEM_SAVED' );
-                    $this->input->set('task', "save2copy");
-                    $form['id'] = '';
-                    if(!$model->save($form)){
-                        $this->app->enqueueMessage($model->getError(), 'error');
-                        return false;
-                    }
-                    $newid = $model->getState('product.id');
-
+                    $newid = $model->save2copy($form['id'], 1);
                     $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edititem&id='. $newid."&subtype=item" );
-
                     break;
 
 				case 'save2newitem':
@@ -273,14 +290,10 @@ echo $subtype; exit;
 					break;
 					
 				case 'applyitem':
-                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_CHANGES_TO_ITEM_SAVED'),'notice');
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edititem&id='. $this->id."&subtype=item" );
-					break;
-
                 case 'apply':
-                    $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_CHANGES_TO_ITEM_SAVED' ),'notice');
-                    $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edititem&id='. $this->id."&subtype=item" );
-                    break;
+                    $this->app->enqueueMessage(Text::_('COM_MYMUSE_CHANGES_TO_ITEM_SAVED'),'notice');
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edititem&id='. $this->id."&subtype=item&parentid='.$this->parentid" );
+					break;
 
 				case 'saveitem':
 				default:
@@ -288,12 +301,18 @@ echo $subtype; exit;
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='. $this->parentid."&subtype=item" );
 					break;
 				}
-            }
+       
 
         } else {
             $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ERROR_SAVING_ITEM' ).' : '.$model->getError(), 'error');
-            //exit;
-        	$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->parentid."&subtype=item" );
+    
+            if($this->parentid){
+                $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->parentid );
+            }elseif($this->id){{
+                $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->id );
+            }else{
+                $this->setRedirect( 'index.php?option=com_mymuse&view=products' );
+            }
         }
 
     }
@@ -313,7 +332,7 @@ echo $subtype; exit;
         $id     = $this->input->get('id');
         $app    = Factory::getApplication();
         $model  = $this->getModel();
-echo "id = $id<br />";
+
         if($task == "additem") {
             $this->attribute_skus = $model->getAttributeskus();
 
