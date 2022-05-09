@@ -160,6 +160,9 @@ class ProductsModel extends ListModel
 		$downloadable = $this->getUserStateFromRequest($this->context . '.filter.downloadable', 'filter_downloadable');
 		$this->setState('filter.downloadable', $downloadable);
 
+		$physical = $this->getUserStateFromRequest($this->context . '.filter.physical', 'filter_physical');
+		$this->setState('filter.physical', $physical);
+
         $parentid = $this->getUserStateFromRequest($this->context . '.filter.parentid', 'filter_parentid');
         $this->setState('filter.parentid', $parentid);
 
@@ -304,6 +307,11 @@ class ProductsModel extends ListModel
 		if ($downloadable = $this->getState('filter.downloadable')) {
 			$query->where('a.product_downloadable = 1');
 		}
+
+		//physical?
+		if ($physical = $this->getState('filter.physical')) {
+			$query->where('a.product_physical = 1');
+		}
             
 
 		// Filter by search in title
@@ -360,7 +368,7 @@ class ProductsModel extends ListModel
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
 
-        //echo($query->__toString()); //exit;
+        //echo($query->__toString()); exit;
 		return $query;
 	}
 

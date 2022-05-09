@@ -141,7 +141,7 @@ class RecommendtreeField extends ListField {
 		$name = (string) $this->element['name'];
 
 		// Let's get the id for the current item, either category or content item.
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		// Load the category options for a given extension.
 
 		// For categories the old category is the category id or 0 for new category.
@@ -159,7 +159,7 @@ class RecommendtreeField extends ListField {
 			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('a.id AS value, a.title AS text, a.level, a.published')
 			->from('#__categories AS a')
@@ -205,7 +205,7 @@ class RecommendtreeField extends ListField {
 		}
 		elseif (is_array($published))
 		{
-			JArrayHelper::toInteger($published);
+			ArrayHelper::toInteger($published);
 			$query->where('a.published IN (' . implode(',', $published) . ')');
 		}
 
@@ -221,7 +221,7 @@ class RecommendtreeField extends ListField {
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(500, $e->getMessage);
+			Factory::getApplication()->enqueueMessage(500, $e->getMessage);
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
@@ -246,7 +246,7 @@ class RecommendtreeField extends ListField {
 		}
 
 		// Get the current user object.
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		// For new items we want a list of categories you are allowed to create in.
 		if ($oldCat == 0)
@@ -329,7 +329,7 @@ class RecommendtreeField extends ListField {
 	function getCategoriesTree()
 	{
 		global $mymusecats;
-		$db		= JFactory::getDBO();
+		$db		= Factory::getDBO();
 		$query 	= "SELECT lft,rgt FROM #__categories WHERE id=1 ";
 		$db->setQuery($query);
 		$obj 	= $db->loadObject();
@@ -361,7 +361,7 @@ class RecommendtreeField extends ListField {
 		$parents = array_unique($parents);
 
 		//get list of the items
-		$mymusecats = JFormFieldRecommendTree::_getCatAncestors($ROOT_CATEGORY_ID=1, '', array(), $children, true, max(0, $levellimit-1));
+		$mymusecats = FormFieldRecommendTree::_getCatAncestors($ROOT_CATEGORY_ID=1, '', array(), $children, true, max(0, $levellimit-1));
 
 		foreach ($mymusecats as $cat) {
 			$cat->ancestorsonlyarray	= $cat->ancestors;
@@ -369,7 +369,7 @@ class RecommendtreeField extends ListField {
 			$cat->ancestors[] 			= $cat->id;
 			$cat->ancestorsarray		= $cat->ancestors;
 			$cat->ancestors				= implode(',', $cat->ancestors);
-			$cat->descendantsarray		= JFormFieldRecommendTree::_getDescendants(array($cat));
+			$cat->descendantsarray		= FormFieldRecommendTree::_getDescendants(array($cat));
 			$cat->descendants			= implode(',', $cat->descendantsarray);
 		}
 		

@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 $app = Factory::getApplication();
 
@@ -110,6 +111,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 	<?php endif; ?>
 
 	<?php
+	echo count($this->intro_items);
 	$introcount = count($this->intro_items);
 	$counter = 0;
 	?>

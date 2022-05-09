@@ -15,50 +15,51 @@ $shopper 	= $this->shopper;
 $order 		= $this->order;
 $params 	= $this->params;
 ?>
-     <table class="mymuse_cart">
+     <ul class="mymuse-container">
  
         <!-- Begin Order Summary -->
-        <tr>
-            <td class="mymuse_cart_top" COLSPAN="2"><b><?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY') ?></b></td>
-        </tr>
-        <tr>
-            <td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_NUMBER') ?>:</td>
-            <td class="myordernumber"><?php echo sprintf("%08d", $order->id) ?></td>
-        </tr>
-        <tr>
-            <td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_DATE') ?>:</td>
-            <td class="myorderdate"><?php echo $order->created ?></td>
-        </tr>
-        <tr>
-            <td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_STATUS') ?>:</td>
-            <td class="myorderstatus"><?php echo JText::_('COM_MYMUSE_'.strtoupper($order->status_name)) ?></td>
-        </tr>
-        <tr>
-            <td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_TOTAL') ?>:</td>
-            <td class="mysummarytotal"><?php echo MyMuseHelper::printMoney($order->order_total)." ".$order->order_currency['currency_code'] ?></td>
-        </tr>
+        <li class="mymuse-grid-1-2">
+            <div class="mymuse-cart-top"><b><?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY') ?></b></div>
+            <div></div>
+        </li>
+        <li class="mymuse-grid-1-2">
+            <div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_NUMBER') ?>:</div>
+            <div class="myordernumber"><?php echo sprintf("%08d", $order->id) ?></div>
+        </li>
+        <li class="mymuse-grid-1-2">
+            <div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_DATE') ?>:</div>
+            <div class="myorderdate"><?php echo $order->created ?></div>
+        </li>
+        <li class="mymuse-grid-1-2">
+            <div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_STATUS') ?>:</div>
+            <div class="myorderstatus"><?php echo JText::_('COM_MYMUSE_'.strtoupper($order->status_name)) ?></div>
+        </li>
+        <li class="mymuse-grid-1-2">
+            <div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_ORDER_TOTAL') ?>:</div>
+            <div class="mysummarytotal"><?php echo MyMuseHelper::printMoney($order->order_total)." ".$order->order_currency['currency_code'] ?></div>
+        </li>
     <?php if($order->reservation_fee > 0){ ?>
-        <tr>
-            <td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_RESERVATION_FEE') ?>:</td>
-            <td class="myreservationfee"><?php echo MyMuseHelper::printMoney($order->reservation_fee)." ".$order->order_currency['currency_code'] ?></td>
-        </tr>
-        	<?php if($order->non_res_total > 0){ ?>
-        	<tr>
-            	<td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_OTHER_CHARGES') ?>:</td>
-            	<td class="myothercharges"><?php echo MyMuseHelper::printMoney($order->non_res_total)." ".$order->order_currency['currency_code'] ?></td>
-        	</tr>
-        	<tr>
-            <td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_PAID') ?>:</td>
-            <td class="mypaid"><?php echo MyMuseHelper::printMoney($order->pay_now)." ".$order->order_currency['currency_code'] ?></td>
-        </tr>
+        <li class="mymuse-grid-1-2">
+            <div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_RESERVATION_FEE') ?>:</div>
+            <div class="myreservationfee"><?php echo MyMuseHelper::printMoney($order->reservation_fee)." ".$order->order_currency['currency_code'] ?></div>
+        </li>
+    <?php if($order->non_res_total > 0){ ?>
+    	<li class="mymuse-grid-1-2">
+        	<div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_OTHER_CHARGES') ?>:</div>
+        	<div class="myothercharges"><?php echo MyMuseHelper::printMoney($order->non_res_total)." ".$order->order_currency['currency_code'] ?></div>
+    	</li>
+    	<li class="mymuse-grid-1-2">
+            <div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_PAID') ?>:</div>
+            <div class="mypaid"><?php echo MyMuseHelper::printMoney($order->pay_now)." ".$order->order_currency['currency_code'] ?></div>
+        </li>
     	<?php } ?>
     <?php } ?>
     <?php if(isset($this->plugin) && $this->plugin != ''){ ?>
-        <tr>
-            <td class="mobile-hide"><?php echo JText::_('COM_MYMUSE_PAID') ?>:</td>
-            <td class="mypaid"><?php echo $this->plugin?></td>
-        </tr>
+        <li class="mymuse-grid-1-2">
+            <div class="mobile-hide"><?php echo JText::_('COM_MYMUSE_PAID') ?>:</div>
+            <div class="mypaid"><?php echo $this->plugin?></div>
+        </li>
     <?php } ?>
-	</table>
-	<br />
+	</ul>
+
         

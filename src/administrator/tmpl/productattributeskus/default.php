@@ -53,24 +53,24 @@ $saveOrder = $listOrder == 'a.ordering';
 		</caption>
 		<thead>
 			<tr>
-				<th width="1%">
+				<th class="w-1">
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
 
-				<th scope="col" class="w-1 text-center">
+				<th scope="col" class="w-1">
 					<?php echo JHtml::_('grid.sort',  'COM_MYMUSE_NAME', 'a.name', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="w-5">
 					<?php echo JHtml::_('grid.sort',  'COM_MYMUSE_PRODUCT', 'p.title', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
+				<th scope="col" class="w-5 text-center d-none d-md-table-cell">
 					<?php echo JHtml::_('grid.sort',  'Base Values', 'p.extra_base', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
+				<th scope="col" class="w-5 text-center d-none d-md-table-cell">
 					<?php echo JHtml::_('grid.sort',  'CSS', 'p.extra_css', $listDirn, $listOrder); ?>
 				</th>
 
-				<th scope="col" class="w-5 d-none d-md-table-cell">
+				<th scope="col" class="w-1 d-none d-md-table-cell">
 					<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>

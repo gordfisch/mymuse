@@ -1,4 +1,4 @@
-h<?php 
+<?php 
 /**
  * @version		$Id$
  * @package		mymuse
@@ -15,8 +15,6 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 defined('_JEXEC') or die('Restricted access');
 $params 	= $this->params;
 ?>
-<h2 class="my-title"><?php echo Jtext::_('COM_MYMUSE_SHIPPING'); ?></h2>
-
 
 <?php if($this->order->need_shipping && count($this->shipMethods) == 0){ ?>
 	<div class="message alert"><?php echo JText::_('COM_MYMUSE_NO_SHIPPING_AVAILABLE'); ?></div>
@@ -29,32 +27,32 @@ method="post" name="adminForm">
 
 <?php if($this->order->need_shipping){ ?>
 
-<table class="mymuse_cart">
-	<thead>
-	<tr>
-		<th class="myselect" width="50"><b><?php echo JText::_('COM_MYMUSE_SELECT'); ?></b></th>
-		<th class="myshipmethod"><b><?php echo JText::_('COM_MYMUSE_SHIP_METHOD'); ?></b></th>
-		<th class="myprice"><b><?php echo JText::_('COM_MYMUSE_COST'); ?></b></th>
-	</tr>
-	</thead>
+<ul class="mymuse-container mymuse-cart">
+
+	<li class="mymuse-shipping item-container my-grid columns-3">
+		<div class="myselect mymuse_cart_top"><b><?php echo JText::_('COM_MYMUSE_SELECT'); ?></b></div>
+		<div class="myshipmethod mymuse_cart_top "><b><?php echo JText::_('COM_MYMUSE_SHIP_METHOD'); ?></b></div>
+		<div class="myprice mymuse_cart_top "><b><?php echo JText::_('COM_MYMUSE_COST'); ?></b></div>
+	</li>
+
 <?php foreach($this->shipMethods as $sm){ ?>
-	<tr>
-		<td class="myselect"><input type="radio" name="shipmethodid" value="<?php echo $sm->id; ?>" 
-			id="shipmethodid<?php echo $sm->id; ?>" /></td>
-		<td class="myshipmethod"><?php echo $sm->ship_carrier_name." ".$sm->ship_method_name; ?></td>
-		<td class="myprice"><?php echo MyMuseHelper::printMoney($sm->cost); ?></td>
-	</tr>
+	<li class="mymuse-shipping item-container my-grid columns-3">
+		<div class="myselect mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>"><input type="radio" name="shipmethodid" value="<?php echo $sm->id; ?>" 
+			id="shipmethodid<?php echo $sm->id; ?>" /></div>
+		<div class="myshipmethod mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_SHIP_METHOD'); ?>"><?php echo $sm->ship_carrier_name." ".$sm->ship_method_name; ?></div>
+		<div class="myprice mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_COST'); ?>"><?php echo MyMuseHelper::printMoney($sm->cost); ?></div>
+	</li>
 <?php } ?>
 
-	<tr>
-		<td colspan="3">
+	<li class="mymuse-shipping item-container my-grid columns-3">
 		<div class="pull-left mymuse_button_left">
 		<button class="btn uk-button btn-primary" type="submit" id="shipping">
 		<?php echo $this->button; ?>
 		</button></div>
-		</td>
-	</tr>
-</table>
+		<div></div>
+		<div></div>
+	</li>
+</ul>
 
 <?php  }else{ ?>
 	<input type="hidden" name="shipmethodid" value="60">

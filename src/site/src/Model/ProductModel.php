@@ -423,26 +423,17 @@ class ProductModel extends ItemModel
 					)
 				)->from($db->quoteName('#__mymuse_product', 'a'));
 
-				if($this->_item[$pk]->parentid > 0 && $this->_item[$pk]->track_parentid == 0){
-					$track_query->where(
-						[
-							$db->quoteName('a.track_parentid') . ' = ' . $pk,
-							$db->quoteName('a.product_downloadable') . ' = 1',
-							$db->quoteName('a.state') . ' = 1',
-						]
-					);
-					$this->_item[$pk]->digital = array();
-				}else{
-					//$db->quoteName('a.track_parentid') . ' = 0',
+
 					$track_query->where(
 						[
 
 							$db->quoteName('a.parentid') . ' = ' . $pk,
 							$db->quoteName('a.product_downloadable') . ' = 1',
 							$db->quoteName('a.state') . ' = 1',
+							$db->quoteName('a.track_parentid') . ' = 0',
 						]
 					);
-				}
+
 				
 				//echo $track_query->__toString(); exit;
 
@@ -494,6 +485,56 @@ echo $track_query;
 				$db->setQuery($track_query);
 				$tracks = $db->loadObjectList();
 
+				// Child tracks formats
+				foreach($tracks as $i => $track){
+					$format_query = $db->getQuery(true);
+
+					$format_query->select(
+						$this->getState(
+							'item.select',
+							[
+								$db->quoteName('a.id'),
+								$db->quoteName('a.asset_id'),
+								$db->quoteName('a.parentid'),
+								$db->quoteName('a.track_parentid'),
+								$db->quoteName('a.title'),
+								$db->quoteName('a.product_sku'),
+								$db->quoteName('a.alias'),
+								$db->quoteName('a.title_alias'),
+								$db->quoteName('a.price'),
+								$db->quoteName('a.product_discount'),
+								$db->quoteName('a.digital'),
+								$db->quoteName('a.access'),
+								$db->quoteName('a.hits'),
+								$db->quoteName('a.product_allfiles'),
+							]
+						)
+					)->from($db->quoteName('#__mymuse_product', 'a'));
+
+
+						$format_query->where(
+							[
+
+								$db->quoteName('a.parentid') . ' = ' . $pk,
+								$db->quoteName('a.product_downloadable') . ' = 1',
+								$db->quoteName('a.state') . ' = 1',
+								$db->quoteName('a.track_parentid') . ' = '.$track->id,
+							]
+						);
+					$db->setQuery($format_query);
+					$format_tracks = $db->loadObjectList();
+					$track->formats = array();
+					$track->digital= array();
+					foreach($format_tracks as $ft){
+						$ft->digital = json_decode($ft->digital);
+						$ft->digital->file_id = $ft->id;
+						$track->formats[] = $ft;
+						$track->digital[] = $ft->digital;
+					}
+
+				}
+
+
 		
 				$site_url = MyMuseHelper::getSiteUrl($pk,'1');
 				$site_path = MyMuseHelper::getSitePath($pk,'1');
@@ -504,29 +545,13 @@ echo $track_query;
 				$preview_tracks = array();
 				$parent_tracks = array();
 				$t = 0;
+	
 				if(count($tracks)){
 
 					$root = JPATH_ROOT.DIRECTORY_SEPARATOR;
 					foreach ($tracks as $i => $track) {
 
-						if($this->_item[$pk]->parentid > 0 && $this->_item[$pk]->track_parentid == 0){
-							$this->_item[$pk]->digital[$t] = json_decode($track->digital);
-							$this->_item[$pk]->digital[$t]->file_id = $track->id;
-							$t++;
-							continue;
-						}
-						if($track->track_parentid > 0){
-							continue;
-						}
-						$track->digital = array();
-						$k = 0;
-						foreach ($tracks as $j => $jtrack) {
-							if($jtrack->track_parentid == $track->id){
-								$track->digital[$k] = json_decode($jtrack->digital);
-								$track->digital[$k]->file_id = $jtrack->id;
-								$k++;
-							}
-						}
+
 						//set some defaults
 						$this->_item[$pk]->flash_type = 'audio';
 						if(isset($track->digital[0]->file_type)){
@@ -590,12 +615,12 @@ echo $track_query;
 						}else{
 							$track->flash= '';
 						}
-						$parent_tracks[] = $track;
+						//$parent_tracks[] = $track;
 						
 					} // each track
-					$tracks = $parent_tracks;
-				
-					$params->set('product_player_type', "single");
+					//$tracks = $parent_tracks;
+$params->set('product_player_type', "single");
+					//$params->set('product_player_type', "single");
 
 					if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
 						$params->get('product_player_type') == "single")){
@@ -651,6 +676,7 @@ echo $track_query;
 									if(is_array($results) && isset($results[0]) && $results[0] != ''){
 										$flash .= $results[0];
 									}
+
 									
 								}
 								$flash .= '<!-- End Play -->';
@@ -676,8 +702,6 @@ echo $track_query;
 						
 					}
 					
-
-
 
 					//get player buttons to play previews
 					if(count($preview_tracks) && $params->get('product_player_type') == "single"){
@@ -705,6 +729,7 @@ echo $track_query;
 										
 								}elseif(substr_count($track->file_type,"audio") && !$audio){
 									//audio
+							
 									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
 
 									if(is_array($results) && isset($results[0]) && $results[0] != ''){
@@ -840,7 +865,8 @@ echo $track_query;
 				$this->_item[$pk]->tracks = $tracks;
 				//end of tracks
 			
-				
+				//MymuseHelper::print_pre($this->_item[$pk]); exit;
+	
 				/* PHYSICAL CHILD ITEMS  PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS  */
 				$query = "SELECT * FROM #__mymuse_product as p
 				WHERE p.parentid='".$pk."'
@@ -936,7 +962,9 @@ echo $track_query;
 
 		$params 		= MyMuseHelper::getParams();
 		$shopper 		= Mymuse::getObject('Shopper','model')->getShopper();
-
+		if(is_array($product->price)){
+			return ($product->price); 
+		}
 		$db	= Factory::getDBO();
 		$shoppergroup_discount = 0;
 		$discount = 0;
@@ -970,7 +998,10 @@ echo $track_query;
 		
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
+
 		$price_info ["product_price"] = $product->price;
+
+		
 		if (0 == $params->get ( 'my_price_by_product' )) {
 			// price by track
 			$price_info ["product_price"] = $product->price;
@@ -1143,7 +1174,7 @@ echo $track_query;
 			$product->price = $price_info ["product_price"];
 			$product_price = $product->price;
 			$price_info ["product_shoppergroup_discount"] = $shoppergroup_discount;
-			$price_info ["product_shoppergroup_discount_amount"] = $product_price * $shoppergroup_discount / 100;
+			$price_info ["product_shoppergroup_discount_amount"] = (float) $product_price * $shoppergroup_discount / 100;
 			
 			$price_info ["product_price"] = round ( $price_info ["product_price"], 2 );
 			$price_info ["product_shoppergroup_discount_amount"] = round ( $price_info ["product_shoppergroup_discount_amount"], 2 );
@@ -1163,8 +1194,9 @@ echo $track_query;
 		}
 			
 		//}
-		$product_price = $product->price;
-			
+
+		$product_price = (float) $product->price;
+		
 		// see if this product has a discount
 		$discount = $product->product_discount;
 		
@@ -1212,6 +1244,7 @@ echo $track_query;
 
 		// Get default price
 		if ($product_price && $product_price > 0) {
+
 			$price_info["default"] = True;
 			$price_info["product_original_price"] = $product_price;
 			$price_info["product_price"]= $product_price - ($product_price * $shoppergroup_discount/100) - $discount;
@@ -1221,6 +1254,7 @@ echo $track_query;
 			
 			$price_info["product_price"] = round($price_info["product_price"],2);
 			$price_info["product_shoppergroup_discount_amount"] = round($price_info["product_shoppergroup_discount_amount"],2);
+
 			//MymuseHelper::print_pre($price_info); 
 			return $price_info;
 		}

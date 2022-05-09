@@ -20,6 +20,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableModelTrait;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
@@ -157,12 +158,12 @@ class OrderModel extends AdminModel
 			
 			// get user details
 			$item->user = Factory::getUser($item->user_id);
-			$profile_key = $params->get('my_profile_key', 'mymuse');
+			$profile_key = $params->get('my_profile_key', 'COM_MYMUSE');
 
 			//if we are using no_reg
 			if($params->get('my_registration') == "no_reg" || $item->user->username == "buyer"){
 				$fields = MyMuseHelper::getNoRegFields();
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->notes);
 				$item->notes = $registry->toArray();
 			
@@ -336,22 +337,22 @@ class OrderModel extends AdminModel
         $query = "SELECT currency_code as value, CONCAT(symbol,': ',currency_name) as text from #__mymuse_currency ORDER BY currency_code ASC";
         $this->_db->setQuery($query);
         $options = $this->_db->loadObjectList();
-        array_unshift($options, HTMLHelper::_('select.option', '0', '- '.Text::_('MYMUSE_CURRENCY').' -', 'value', 'text'));
+        array_unshift($options, HTMLHelper::_('select.option', '0', '- '.Text::_('COM_MYMUSE_CURRENCY').' -', 'value', 'text'));
 	    $value = $params->get('my_currency');
-        $lists['currencies'] = HTMLHelper::_('select.genericlist',  $options, 'currency', 'class="inputbox"', 'value', 'text', $value, Text::_( 'MYMUSE_CURRENCY' ));   
+        $lists['currencies'] = HTMLHelper::_('select.genericlist',  $options, 'currency', 'class="inputbox"', 'value', 'text', $value, Text::_( 'COM_MYMUSE_CURRENCY' ));   
 
 		//payment plugins
-        PluginHelper::importPlugin('mymuse');
+        PluginHelper::importPlugin('COM_MYMUSE');
 		$query = "SELECT element as value, name as text
-		FROM #__extensions where folder='mymuse' and enabled='1' and element LIKE '%payment%'";
+		FROM #__extensions where folder='COM_MYMUSE' and enabled='1' and element LIKE '%payment%'";
 		$this->_db->setQuery($query);
         $options = $this->_db->loadObjectList();
         for($i=0; $i< count($options); $i++){
         	$options[$i]->text = Text::_($options[$i]->text);
         }
-        array_unshift($options, HTMLHelper::_('select.option', '0', '- '.Text::_('MYMUSE_PLUGIN').' -', 'value', 'text'));
+        array_unshift($options, HTMLHelper::_('select.option', '0', '- '.Text::_('COM_MYMUSE_PLUGIN').' -', 'value', 'text'));
 	    $value = '';
-        $lists['plugins'] = HTMLHelper::_('select.genericlist',  $options, 'payment_plugin', 'class="inputbox"', 'value', 'text', $value, Text::_( 'MYMUSE_PLUGIN' ));   
+        $lists['plugins'] = HTMLHelper::_('select.genericlist',  $options, 'payment_plugin', 'class="inputbox"', 'value', 'text', $value, Text::_( 'COM_MYMUSE_PLUGIN' ));   
 	    
 		return $lists;
 	}
@@ -419,7 +420,7 @@ class OrderModel extends AdminModel
     	$input = Factory::getApplication()->input;
     	$id = $input->get( 'id', '' );
     	if(!$id){
-    		$this->setError(Text::_('MYMUSE_ORDER_ID_NOT_FOUND'));
+    		$this->setError(Text::_('COM_MYMUSE_ORDER_ID_NOT_FOUND'));
     		return false;
     	}
     	$db = Factory::getDBO();
@@ -428,7 +429,7 @@ class OrderModel extends AdminModel
     	$db->setQuery($query);
     	$status = $db->loadResult();
     	if($status != "C"){
-    		$this->setError($id.' '.Text::_('MYMUSE_ORDER_NOT_CONFIRMED'));
+    		$this->setError($id.' '.Text::_('COM_MYMUSE_ORDER_NOT_CONFIRMED'));
     		return false;
     	}
     	/*
@@ -453,7 +454,7 @@ class OrderModel extends AdminModel
     	";
     	$db->setQuery($query);
     	if(!$db->execute()){
-    		$this->setError(Text::_('MYMUSE_COULD_NOT_UPDATE_ORDER_ITEMS'));
+    		$this->setError(Text::_('COM_MYMUSE_COULD_NOT_UPDATE_ORDER_ITEMS'));
     		return false;
     	};
     

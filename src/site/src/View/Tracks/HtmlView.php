@@ -7,10 +7,30 @@
  * @author      Gord Fisch info@joomlamymuse.com
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
+namespace Joomla\Component\Mymuse\Site\View\Tracks;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Helper\TagsHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Helper\CartHelper;
+use Joomla\Component\Mymuse\Site\Model\StoreModel;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 /**
  * HTML View class for the MyMuse component
@@ -157,12 +177,12 @@ class mymuseViewtracks extends JViewLegacy
         
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			Factory::getApplication()->enqueueMessage(500, implode("\n", $errors));
 			return false;
 		}
 
 		if ($category == false) {
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			Factory::getApplication()->enqueueMessage(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 
@@ -175,7 +195,7 @@ class mymuseViewtracks extends JViewLegacy
 		$user	= JFactory::getUser();
 		$groups	= $user->getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups)) {
-			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			Factory::getApplication()->enqueueMessage(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
 		//if multiple variations, create select box

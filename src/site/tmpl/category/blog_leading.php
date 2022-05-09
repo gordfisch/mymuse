@@ -12,11 +12,13 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
 // Create a shortcut for params.
@@ -34,7 +36,7 @@ $link 		= RouteHelper::getProductRoute($this->item->id, 0, $this->item->language
 <div class="leading blog-items columns-2">
 	<div class="left">
 	<?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
-		<div class="list_image">
+		<div class="list-image">
 			<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, 'product')); ?>"
 			><img src="<?php echo $this->item->list_image; ?>" 
 			alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
@@ -46,18 +48,7 @@ $link 		= RouteHelper::getProductRoute($this->item->id, 0, $this->item->language
 	<?php endif; ?>
 	</div>
 	<div class="right">
-		<?php if ($params->get('category_show_title')) : ?>
-			<div class="feature-title">
-			<h3>
-				<?php if ($params->get('category_link_titles') && $params->get('access-view')) : ?>
-					<a href="<?php echo Route::_($link); ?>">
-					<?php echo $this->escape($this->item->title); ?></a>
-				<?php else : ?>
-					<?php echo $this->escape($this->item->title); ?>
-				<?php endif; ?>
-			</h3>
-			</div>
-		<?php endif; ?>
+		<?php echo LayoutHelper::render('joomla.content.blog_style_default_item_title', $this->item); ?>
 
 		<?php if (!$params->get('category_show_intro_text')) : ?>
 			<?php echo $this->item->event->afterDisplayTitle; ?>

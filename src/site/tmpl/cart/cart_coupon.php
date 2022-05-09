@@ -17,16 +17,20 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="task" value="couponadd">
 <input type="hidden" name="Itemid" value="<?php echo @$this->Itemid; ?>">
 <h2 class="my-title"><?php echo Jtext::_('COM_MYMUSE_ENTER_A_COUPON'); ?></h2>
-<table class="mymuse_cart" >
-	<tr class="mymuse_cart_top">
-		<td colspan="2" class="mymuse_cart_top"><b><?php echo JText::_('COM_MYMUSE_ENTER_COUPON_CODE'); ?></b></td>
-	</tr>
-	<tr>
-		<td>
+
+
+<ul class="mymuse-container" >
+
+	<li>
+		<div>
 			<input type="text" class="input" id="coupon" name="coupon" value="" size="50">
-			<div class="coupon-submit"><button class="btn uk-button btn-primary" 
-			type="submit" ><?php echo JText::_('COM_MYMUSE_SUBMIT'); ?></button></div></td>
-	</tr>
-</table>
+		</div>
+	</li>
+	<li>
+		<div class="coupon-submit"><button class="btn uk-button btn-primary" 
+			type="submit" ><?php echo JText::_('COM_MYMUSE_SUBMIT'); ?></button>
+		</div>
+	</li>
+</ul>
 </form>
 </div>

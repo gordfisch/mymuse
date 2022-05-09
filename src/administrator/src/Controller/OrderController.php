@@ -158,7 +158,7 @@ class OrderController extends FormController
 
 			//if using no_reg
 			if($params->get('my_registration') == "no_reg"){
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($order->notes);
 			}
 

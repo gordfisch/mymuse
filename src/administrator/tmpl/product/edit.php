@@ -29,10 +29,10 @@ $wa->useScript('keepalive')
 $lists = $this->lists;
 
 $startOffset = 'details';
-if($lists['subtype'] == "file"){
+if($lists['type'] == "file"){
 	$startOffset = 'tracks';
 }
-if($lists['subtype'] == "item"){
+if($lists['type'] == "item"){
 	$startOffset = 'items';
 }
 
@@ -135,7 +135,7 @@ if($lists['subtype'] == "item"){
 			value="<?php echo $this->item->artistid;?>" />
 		<?php } ?>
 		<input type="hidden" name="task" value="" /> 
-		<input type="hidden" name="subtype" value="product" /> 
+		<input type="hidden" name="type" value="product" /> 
 		<input type="hidden" name="return" value="<?php echo $this->input->get('return');?>" />
 		<?php echo HTMLHelper::_('form.token'); ?>
 		</form>

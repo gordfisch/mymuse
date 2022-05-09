@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		mymuse
- * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
+ * @copyright	Copyright © 2022 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
  * @author mail	info@joomlamymuse.com
@@ -10,19 +10,17 @@
  */
 defined('JPATH_BASE') or die;
 
-jimport('joomla.utilities.date');
-if(!defined('DIRECTORY_SEPARATOR')){
-	define('DIRECTORY_SEPARATOR',DIRECTORY_SEPARATOR);
-}
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
-if(!defined('MYMUSE_ADMIN_PATH')){
-	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR);
-}
-
-require_once( MYMUSE_ADMIN_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'mymuse.php' );
-
-class plgUserMyMuse extends JPlugin
+class plgUserMymuse extends CMSPlugin 
 {
 	/**
 	 * Load the language file on instantiation.
@@ -41,8 +39,8 @@ class plgUserMyMuse extends JPlugin
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
-		JFormHelper::addFieldPath(__DIR__ . '/fields');
-		$lang = JFactory::getLanguage();
+		FormHelper::addFieldPath(__DIR__ . '/fields');
+		$lang = Factory::getLanguage();
 		$lang->load('plg_user_mymuse', JPATH_ADMINISTRATOR);
 	}
 	
@@ -64,23 +62,30 @@ class plgUserMyMuse extends JPlugin
 		}
 
 		// Load the profile data from the database.
-		$app = JFactory::getApplication();
-		$myparams = MyMuseHelper::getParams();
+		$app = Factory::getApplication();
+		$myparams = MymuseHelper::getParams();
 		$profile_key = $myparams->get('my_profile_key', 'mymuse');
 		$userId = $instance->id;
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
-		$db->setQuery( $query);
-		$results = $db->loadRowList();
+
 
 		// Check for a database error.
-		if ($db->getErrorNum())
+		try
 		{
-			$this->_subject->setError($db->getErrorMsg());
-			return false;
+			$db->setQuery( $query);
+			$results = $db->loadRowList();
 		}
+		catch (RuntimeException $e)
+		{
+		    $this->_subject->setError($e->getMessage());
+		    return false;
+		}
+				
+
+		
 		
 		// Merge the profile data.
 		$instance->profile = array();
@@ -99,7 +104,7 @@ class plgUserMyMuse extends JPlugin
 				
 			}
 		}
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('user', $instance);
 	}
 
@@ -118,7 +123,7 @@ class plgUserMyMuse extends JPlugin
 			return true;
 		}
 
-		$myparams = MyMuseHelper::getParams();
+		$myparams = MymuseHelper::getParams();
 		$profile_key = $myparams->get('my_profile_key', 'mymuse');
 		
 		if (is_object($data))
@@ -128,19 +133,22 @@ class plgUserMyMuse extends JPlugin
 			if (!isset($data->profile) and $userId > 0) {
 
 				// Load the profile data from the database.
-				$db = JFactory::getDbo();
-				$db->setQuery(
+				$db = Factory::getDbo();
+				$query = 
 					'SELECT profile_key, profile_value FROM #__user_profiles' .
 					' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
-					' ORDER BY ordering'
-				);
-				$results = $db->loadRowList();
+					' ORDER BY ordering';
 
 				// Check for a database error.
-				if ($db->getErrorNum())
+				try
 				{
-					$this->_subject->setError($db->getErrorMsg());
-					return false;
+					$db->setQuery( $query);
+					$results = $db->loadRowList();
+				}
+				catch (RuntimeException $e)
+				{
+				    $this->_subject->setError($e->getMessage());
+				    return false;
 				}
 
 				// Merge the profile data.
@@ -223,15 +231,15 @@ class plgUserMyMuse extends JPlugin
 	public static function tos($value)
 	{
 		if ($value) {
-			return JText::_('JYES');
+			return Text::_('JYES');
 		}
 		else {
-			return JText::_('JNO');
+			return Text::_('JNO');
 		}
 	}
 
 	/**
-	 * @param	JForm	$form	The form to be altered.
+	 * @param	Form	$form	The form to be altered.
 	 * @param	array	$data	The associated data for the form.
 	 *
 	 * @return	boolean
@@ -240,7 +248,7 @@ class plgUserMyMuse extends JPlugin
 	function onContentPrepareForm($form, $data)
 	{
 		global $doneUserForm;
-		if (!($form instanceof JForm))
+		if (!($form instanceof Form))
 		{
 			$this->_subject->setError('JERROR_NOT_A_FORM');
 			return false;
@@ -257,10 +265,10 @@ class plgUserMyMuse extends JPlugin
 		
 
 		// Add the registration fields to the form.
-		JForm::addFormPath(dirname(__FILE__).'/profiles');
+		Form::addFormPath(dirname(__FILE__).'/profiles');
 		$form->loadFile('profile', false);
 
-		$fields = MyMuseHelper::getRegFields();
+		$fields = MymuseHelper::getRegFields();
 
 		
 		$tosarticle = $this->params->get('register_tos_article');
@@ -304,11 +312,11 @@ class plgUserMyMuse extends JPlugin
 					}
 					
 					if($field == 'region'){
-						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_REGION')."' as region, 0 as country_id  UNION 
+						$q = "SELECT '' as value, '".Text::_('COM_MYMUSE_SELECT_REGION')."' as region, 0 as country_id  UNION 
 								SELECT id as value, state_name as region, country_id FROM #__mymuse_state 
 						ORDER by country_id, region";
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
-						//$form->setFieldAttribute($field, 'data-placeholder', JText::_('MYMUSE_SELECT_REGION'), 'profile');
+						//$form->setFieldAttribute($field, 'data-placeholder', Text::_('COM_MYMUSE_SELECT_REGION'), 'profile');
 						//if(isset($ata->profile['region'])){
 						//	$form->setFieldAttribute($field, 'default', $ata->profile['region'], 'profile');
 						//}
@@ -316,7 +324,7 @@ class plgUserMyMuse extends JPlugin
 					}
 					if($field == 'country'){
 						//set default same as store
-						$db = JFactory::getDBO();
+						$db = Factory::getDBO();
 						$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 						$db->setQuery($query);
 						$store = $db->loadObject();
@@ -328,7 +336,7 @@ class plgUserMyMuse extends JPlugin
 						$form->setFieldAttribute($field, 'default', $country, 'profile');
 						
 						
-						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country, 0 as ordering 
+						$q = "SELECT '' as value, '".Text::_('COM_MYMUSE_SELECT_COUNTRY')."' as country, 0 as ordering 
 								UNION SELECT country_3_code as value, country_name as country, ordering 
 								FROM #__mymuse_country ORDER by country";
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
@@ -344,7 +352,7 @@ class plgUserMyMuse extends JPlugin
 			}
 		}
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration($javascript);
 		$country_id = isset($data->profile['country'])? $data->profile['country'] : 0;
 		$region_id = isset($data->profile['region'])? $data->profile['region'] : 0;
@@ -426,15 +434,15 @@ class plgUserMyMuse extends JPlugin
 
 	function onUserAfterSave($data, $isNew, $result, $error)
 	{
-		$userId	= JArrayHelper::getValue($data, 'id', 0, 'int');
-		$user = JFactory::getUser();
-		$session = JFactory::getSession();
+		$userId	= ArrayHelper::getValue($data, 'id', 0, 'int');
+		$user = Factory::getUser();
+		$session = Factory::getSession();
 
 		if ($userId && $result && isset($data['profile']) && (count($data['profile'])))
 		{
 			try
 			{
-				$myparams = MyMuseHelper::getParams();
+				$myparams = MymuseHelper::getParams();
 				$profile_key = $myparams->get('my_profile_key', 'mymuse');
 				//Sanitize the date
 				if (!empty($data['profile']['dob'])) {
@@ -442,7 +450,7 @@ class plgUserMyMuse extends JPlugin
 					$data['profile']['dob'] = $date->format('Y-m-d');
 				}
 
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery(
 					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
 					" AND profile_key LIKE '$profile_key.%'"
@@ -529,16 +537,16 @@ class plgUserMyMuse extends JPlugin
 			return false;
 		}
 
-		$userId	= JArrayHelper::getValue($user, 'id', 0, 'int');
+		$userId	= ArrayHelper::getValue($user, 'id', 0, 'int');
 
 		if ($userId)
 		{
 			try
 			{
-				$myparams = MyMuseHelper::getParams();
+				$myparams = MymuseHelper::getParams();
 				$profile_key = $myparams->get('my_profile_key', 'mymuse');
 				
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery(
 					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
 					" AND profile_key LIKE '$profile_key.%'"
@@ -569,11 +577,11 @@ class plgUserMyMuse extends JPlugin
      */
    function listCountryState($country_select='', $state_select='', $store_country='') {
 
-		$db	= JFactory::getDBO();
+		$db	= Factory::getDBO();
 		//echo "country = $country_select state = $state_select"; exit;
 		$javascript = "onchange=\"changeDynaList( 'state', countrystates, document.adminForm.country.options[document.adminForm.country.selectedIndex].value, 0, 0);\"";
 		
-		$countries[] = JHTML::_('select.option', '0', '- '.JText::_('MYMUSE_SELECT_COUNTRY').' -');
+		$countries[] = HtmlHelper::_('select.option', '0', '- '.Text::_('COM_MYMUSE_SELECT_COUNTRY').' -');
 		$query = "SELECT id, country_3_code as value, country_name as text from #__mymuse_country ORDER BY country_name ASC";
 		$db->setQuery($query);
 		$dbcountries = $db->loadObjectList();
@@ -593,7 +601,7 @@ class plgUserMyMuse extends JPlugin
 
 		$countrystates = array ();
 		$countrystates[-1] = array ();
-		$countrystates[-1][] = JHTML::_('select.option', '-1', JText::_( 'MYMUSE_SELECT_COUNTRY' ), 'id', 'title');
+		$countrystates[-1][] = HtmlHelper::_('select.option', '-1', Text::_( 'COM_MYMUSE_SELECT_COUNTRY' ), 'id', 'title');
 		$country_list = implode('\', \'', $country_list);
 
 		$query = 'SELECT #__mymuse_state.id as code, state_name as title, #__mymuse_state.id as id, country_3_code, country_id' .
@@ -617,11 +625,11 @@ class plgUserMyMuse extends JPlugin
 				}
 			}
 			foreach ($rows2 as $row2) {
-				$countrystates[$country->value][] = JHTML::_('select.option', $row2->id, $row2->title, 'id', 'title');
+				$countrystates[$country->value][] = HtmlHelper::_('select.option', $row2->id, $row2->title, 'id', 'title');
 			}
 		}
 
-		$countrystates['-1'][] = JHTML::_('select.option', '-1', JText::_( 'MYMUSE_SELECT_STATE' ), 'id', 'title');
+		$countrystates['-1'][] = HtmlHelper::_('select.option', '-1', Text::_( 'COM_MYMUSE_SELECT_STATE' ), 'id', 'title');
 
 		return $countrystates;
 		
@@ -652,7 +660,7 @@ class plgUserMyMuse extends JPlugin
    	// Default to Registered.
    	$defaultUserGroup = $config->get('new_usertype', 2);
    
-   	$acl = JFactory::getACL();
+   	$acl = Factory::getACL();
    
    	$instance->set('id'			, 0);
    	$instance->set('name'			, $user['fullname']);
@@ -691,7 +699,7 @@ class plgUserMyMuse extends JPlugin
    		if(!$id){
    			return '';
    		}
-   		$db = JFactory::getDBO();
+   		$db = Factory::getDBO();
    		$query = "SELECT state_name FROM #__mymuse_state WHERE id=$id";
    		$db->setQuery($query);
    		$name = $db->loadResult();

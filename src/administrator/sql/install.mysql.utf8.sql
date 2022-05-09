@@ -577,15 +577,15 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_release_date` date DEFAULT NULL,
   `special_status` varchar(32) NULL,
   `product_in_stock` int(11) NOT NULL DEFAULT '1',
-  `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `recording` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `physical` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `digital` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Registry.',
-  `file_preview` varchar(255) NOT NULL DEFAULT '',
+  `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL '' COMMENT 'Registry.',
+  `recording` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL '' COMMENT 'Registry.',
+  `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL '' COMMENT 'Registry.',
+  `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL '' COMMENT 'Registry.',
+  `file_preview` varchar(255) default NULL '',
   `file_time` varchar(32) NULL,
-  `isrc_code` varchar(255) NOT NULL DEFAULT '',
-  `list_image` varchar(255) NOT NULL DEFAULT '',
-  `detail_image` varchar(255) NOT NULL DEFAULT '',
+  `isrc_code` varchar(255) default NULL '',
+  `list_image` varchar(255) default NULL '',
+  `detail_image` varchar(255) default NULL '',
   `product_images` varchar(1024) DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int UNSIGNED NOT NULL DEFAULT '0',
@@ -1287,6 +1287,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_tax_rate` (
 -- Dumping data for table `#__mymuse_tax_rate`
 -- 
 
+--- To enable tags on MyMuse Categories
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
 
 ('MyMuse Category', 'com_mymuse.category', 

@@ -373,7 +373,7 @@ $lists = $this->lists;
 		<input type="hidden" name="id" value="<?php echo $item->id; ?>" />
 		<input type="hidden" name="jform[version]" value="<?php echo $item->version; ?>" />
 		<input type="hidden" name="jform[product_downloadable]" value="1" />
-		<input type="hidden" name="subtype" value="file" />
+		<input type="hidden" name="type" value="file" />
 		<input type="hidden" name="layout" value="editfile" />
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="task" value="" />

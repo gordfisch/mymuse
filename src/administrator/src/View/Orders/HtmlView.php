@@ -18,6 +18,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Registry\Registry;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
@@ -109,7 +110,7 @@ class HtmlView extends BaseHtmlView
 
 		foreach($this->items as $item){
 			if(isset($item->notes) and $item->notes){
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->notes);
 				if($registry->get('first_name')){
 					$item->shopper = $registry->get('first_name')." ".$registry->get('last_name');

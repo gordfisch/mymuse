@@ -20,25 +20,27 @@ $params 	= $this->params;
 ?>
 <h2 class="my-title"><?php echo JText::_('COM_MYMUSE_YOUR_ORDER_HISTORY'); ?></h2>
 
-<table class="mymuse_cart">
-	<thead>
-	<tr>
-		<th class="myorderid" width="10%"><?php echo Text::_('COM_MYMUSE_ORDER_ID'); ?></th>
-		<th class="mydate" width="50%"><?php echo Text::_('COM_MYMUSE_DATE'); ?></th>
-		<th class="myorderstatus" width="40%"><?php echo Text::_('COM_MYMUSE_ORDER_STATUS'); ?></th>
-		<th class="mytotal" width="40%" align="right"><?php echo Text::_('COM_MYMUSE_ORDER_TOTAL'); ?></th>
 		
-	</tr>
-	</thead>
+<section>
+    <ul class="mymuse-container mymuse-cart">
+    <li class="list-orders item-container">
+	
+		<div class="myorderid mymuse_cart_top "><?php echo JText::_('COM_MYMUSE_ORDER_ID'); ?></div>
+		<div class="mydate mymuse_cart_top "><?php echo JText::_('COM_MYMUSE_DATE'); ?></div>
+		<div class="myorderstatus mymuse_cart_top "><?php echo JText::_('COM_MYMUSE_ORDER_STATUS'); ?></div>
+		<div class="mytotal mymuse_cart_top "><?php echo JText::_('COM_MYMUSE_ORDER_TOTAL'); ?></div>
+
+	</li>
+
 	<?php  
 	$i = 0;
 	foreach($this->orders as $order){ ?>
-	<tr>
-		<td class="myorderid"><a id="row<?php echo $i; $i++; ?>" href="<?php echo $order->url; ?>"><?php echo $order->id; ?></a></td>
-		<td class="mydate" ><?php echo $order->created; ?></td>
-		<td class="myorderstatus"><?php echo Text::_('COM_MYMUSE_'.strtoupper(MyMuseHelper::getStatusName($order->order_status))) ?></td>
-		<td class="mytotal"><?php echo MyMuseHelper::printMoney($order->order_total); ?></td>
+	<li class="list-orders item-container">
+		<div class="mycart-inner myorderid" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_ID'); ?>"><a id="row<?php echo $i; $i++; ?>" href="<?php echo $order->url; ?>"><?php echo $order->id; ?></a></div>
+		<div class="mycart-inner mydate" data-name="<?php echo JText::_('COM_MYMUSE_DATE'); ?>" ><?php echo $order->created; ?></div>
+		<div class="mycart-inner myorderstatus" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_STATUS'); ?>"><?php echo Text::_('COM_MYMUSE_'.strtoupper(MyMuseHelper::getStatusName($order->order_status))) ?></div>
+		<div class="mycart-inner mytotal" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_TOTAL'); ?>"><?php echo MyMuseHelper::printMoney($order->order_total); ?></div>
 		
-	</tr>
+	</li>
 	<?php } ?>
-</table>
+</ul>

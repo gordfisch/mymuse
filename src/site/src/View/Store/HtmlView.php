@@ -23,6 +23,7 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
@@ -110,7 +111,8 @@ class HtmlView extends BaseHtmlView
 
         	$jinput->set('layout','store');
         	$jinput->set('view','store');
-			$MyMuseCheckout 		=& MyMmuse::getObject('checkout','helper');
+
+			$MyMuseCheckout 		=& Mymuse::getObject('checkout','helper');
 			$MyMuseCart 			=& Mymuse::getObject('cart','helper');
         	$MyMuseShopper->order 	= $MyMuseCheckout->getOrder($row->id);
 
@@ -194,7 +196,7 @@ class HtmlView extends BaseHtmlView
         	if($params->get('my_registration') == "no_reg"){
 				$fields = MyMuseHelper::getNoRegFields();
 				
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($row->notes);
 				foreach($fields as $field){
 					if($registry->get($field)){
@@ -385,7 +387,7 @@ class HtmlView extends BaseHtmlView
                     $app->enqueueMessage($message, 'error');
                     return false;
             }
-echo $download_path; exit;
+
     		if(!$object->set_byfile($full_filename,$filename)){ 
     			//Download from a file
     			$message = Text::_('COM_MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$filename;
@@ -580,10 +582,10 @@ echo $download_path; exit;
 
 		$items 		= $this->get('Items');
 		$pagination	= $this->get('Pagination');
-//MymuseHelper::print_pre($items); exit;
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseWarning(500, implode("\n", $errors));
+			Factory::getApplication()->enqueueMessage(500, implode("\n", $errors));
 			return false;
 		}
 

@@ -56,6 +56,13 @@ class DisplayController extends BaseController
 	var $input = null;
 
 	/**
+	 * original_task
+	 *
+	 * @var string
+	 */
+	var $original_task = '';
+
+	/**
 	 * params
 	 *
 	 * @var object
@@ -163,6 +170,8 @@ class DisplayController extends BaseController
 		$this->MyMuseStore		= Mymuse::getObject('Store', 'model');
 		$this->MyMuseProduct	= Mymuse::getObject('Product', 'model');
 		$this->MyMuseCheckout	= Mymuse::getObject('Checkout');
+		$this->original_task    = $this->input->get('task');
+		$this->input->set('original_task', $this->original_task);
 
 		ini_set('memory_limit',"512M");
 		ini_set('max_execution_time',"120");
@@ -500,11 +509,32 @@ class DisplayController extends BaseController
 		return;
 	}
 
+	
+	/**
+	 * savenoreg
+	 * save no registration, try to log in as guest buyer
+	 *
+	 */
+	public function savenoreg()
+	{	
+		
+		if($this->MyMuseShopper->savenoreg()){
+			$this->setRedirect( Route::_("index.php?option=com_mymuse&task=checkout&Itemid=".$this->Itemid));
+			return true;
+		}else{
+			// Redirect back to the registration screen.
+			// enqueued messages will display
+			echo "got here"; exit;
+			$this->setRedirect( Route::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid));
+			return false;
+		}
+	}
+
+
 	/**
 	 * checkout
 	 * take me to the checkout page
 	 *
-
 	 */
 	public function checkout()
 	{
@@ -851,6 +881,7 @@ class DisplayController extends BaseController
 		$orderid 		= $this->input->get('orderid', 0);
 		$session 		= Factory::getSession();
 		$order_number 	= $session->get("order_number",0);
+		$app 			= Factory::getApplication();
 
 		$st 			= $this->input->get('st', 0);
 		$after			= $this->input->get('after', 0);
@@ -978,8 +1009,8 @@ class DisplayController extends BaseController
 
 		if($this->MyMuseShopper->order->order_status == "C"){
 			//already confirmed 
-			$dispatcher		= JDispatcher::getInstance();
-			$results = $dispatcher->trigger('onAfterMyMuseConfirm', 
+			
+			$results = $app->triggerEvent('onAfterMyMuseConfirm', 
 				array(&$this->shopper, &$this->store, &$this->params, &$this->Itemid) );
 
 			if(is_array($results)){

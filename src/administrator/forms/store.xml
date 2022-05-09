@@ -483,7 +483,6 @@
                 default="joomla">
                 <option value="joomla">COM_MYMUSE_JOOMLA</option>
                 <option value="full">COM_MYMUSE_FULL</option>
-                <option value="jomsocial">COM_MYMUSE_JOMSOCIAL</option>
                 <option value="no_reg">COM_MYMUSE_NO_REGISTRATION</option>
 
         </field>

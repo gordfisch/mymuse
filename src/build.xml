@@ -104,6 +104,8 @@
                             todir="${test}/plugins/mymuse/audio_amplitude" /> 
                 <copy file="${src}/plugins/audio_amplitude/js/amplitude.js"
                             todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
+                <copy file="${src}/plugins/audio_amplitude/assets/amplitude.css"
+                            todir="${test}/plugins/mymuse/audio_amplitude/assets" /> 
                 <copy file="${src}/plugins/audio_amplitude/js/amplitude.js.map"
                             todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
                 <copy file="${src}/plugins/audio_amplitude/js/amplitude.min.js"
@@ -119,5 +121,31 @@
                 <copy file="${src}/plugins/audio_amplitude/js/visualizations/template.js"
                             todir="${test}/plugins/mymuse/audio_amplitude/js/visualizations" /> 
 
+                <copy file="${src}/plugins/user_mymuse/language/en-GB/plg_user_mymuse.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/user_mymuse/language/en-GB/plg_user_mymuse.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/plg_user_mymusenoreg.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/plg_user_mymusenoreg.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+
+                <copy file="${src}/plugins/user_mymuse/mymuse.xml"
+                        todir="${test}/plugins/user/mymuse" /> 
+                <copy file="${src}/plugins/user_mymuse/mymuse.php"
+                        todir="${test}/plugins/user/mymuse" />
+                <copy file="${src}/plugins/user_mymuse/profiles/profile.xml"
+                        todir="${test}/plugins/user/mymuse/profiles" />
+                <copy file="${src}/plugins/user_mymuse/fields/tos.php"
+                            todir="${test}/plugins/user/mymuse/fields" /> 
+                
+                <copy file="${src}/plugins/user_mymusenoreg/mymusenoreg.xml"
+                            todir="${test}/plugins/user/mymusenoreg" /> 
+                <copy file="${src}/plugins/user_mymusenoreg/mymusenoreg.php"
+                            todir="${test}/plugins/user/mymusenoreg" />
+                 <copy file="${src}/plugins/user_mymusenoreg/profiles/profile.xml"
+                            todir="${test}/plugins/user/mymusenoreg/profiles" />
+                <copy file="${src}/plugins/user_mymusenoreg/fields/tos.php"
+                        todir="${test}/plugins/user/mymusenoreg/fields" /> 
         </target>
 </project>

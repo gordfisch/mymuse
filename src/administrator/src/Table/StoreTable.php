@@ -123,7 +123,7 @@ class StoreTable extends Table implements VersionableTableInterface
 		// Check for valid name
 		if (trim($this->title) == '')
 		{
-			$this->setError(Text::_('MYMUSE_STORE_MUST_HAVE_A_TITLE'));
+			$this->setError(Text::_('COM_MYMUSE_STORE_MUST_HAVE_A_TITLE'));
 
 			return false;
 		}
@@ -163,34 +163,34 @@ class StoreTable extends Table implements VersionableTableInterface
     	if($form['params']['my_registration'] !== $myparams->get('my_registration')){
     		if ($form ['params'] ['my_registration'] == 'joomla') {
     			if (! $this->enablePlugin ( 'mymuse', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
-    				$app->enqueueMessage ( Text::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+    				$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
     				return false;
     			} else {
-    				$app->enqueueMessage ( Text::_ ( 'MYMUSE_DISABLE_PLUGIN' ) . ' user_mymuse and user_mymusenoreg', 'notice' );
+    				$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "user_mymuse" and "user_mymusenoreg"', 'notice' );
     			}
     		}
 			if ($form ['params'] ['my_registration'] == 'full_guest') {
 				if (! $this->enablePlugin ( 'mymuse', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
-					$app->enqueueMessage ( Text::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
 					return false;
 				} else {
-					$app->enqueueMessage ( Text::_ ( 'MYMUSE_ENABLE_PLUGIN' ) . ' user_mymuse and user_mymusenoreg', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "user_mymuse" and "user_mymusenoreg"', 'notice' );
 				}
 			}
 			if ($form ['params'] ['my_registration'] == 'full') {
 				if (! $this->enablePlugin ( 'mymuse', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
-					$app->enqueueMessage ( Text::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
 					return false;
 				} else {
-					$app->enqueueMessage ( Text::_ ( 'MYMUSE_ENABLE_PLUGIN' ) . ' user_mymuse,' . Text::_ ( 'MYMUSE_DISABLE_PLUGIN' ) . ' user_mymusenoreg', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "user_mymuse", ' . Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "user_mymusenoreg"', 'notice' );
 				}
 			}
 			if ($form ['params'] ['my_registration'] == 'no_reg') {
 				if (! $this->enablePlugin ( 'mymuse', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
-					$app->enqueueMessage ( Text::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
 					return false;
 				} else {
-					$app->enqueueMessage ( Text::_ ( 'MYMUSE_ENABLE_PLUGIN' ) . ' user_mymusenoreg,' . Text::_ ( 'MYMUSE_DISABLE_PLUGIN' ) . ' user_mymuse', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "user_mymusenoreg", ' . Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "user_mymuse"', 'notice' );
 				}
 			}
     	}
@@ -201,7 +201,7 @@ class StoreTable extends Table implements VersionableTableInterface
     	if($mymuse_css){
     		$myFile = JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse.css';
     		if(!FILE::write($myFile, $mymuse_css)){
-    			$app->enqueueMessage(Text::_('MYMUSE_COULD_NOT_OPEN_CSS_FILE').' '.$myFile, 'notice');
+    			$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_OPEN_CSS_FILE').' '.$myFile, 'notice');
     		}
     	}
 
@@ -236,7 +236,7 @@ class StoreTable extends Table implements VersionableTableInterface
                 
                 // Store the data.
                 if (!$user->save()) {
-                    $this->setError(Text::sprintf('MYMUSE_REGISTRATION_SAVE_FAILED', $user->getError()));
+                    $this->setError(Text::sprintf('COM_MYMUSE_REGISTRATION_SAVE_FAILED', $user->getError()));
                     return false;
                 }
             }
@@ -291,11 +291,12 @@ class StoreTable extends Table implements VersionableTableInterface
 		$query->where($db->quoteName('element') . ' = ' . $db->quote($name));
 		$query->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
 		$db->setQuery($query);
+
 		try {
 			$db->execute();
 		}
 		catch (Exception $e){
-			$this->setError(Text::_('MYMUSE_ENABLE_PLUGIN_FAILED', $e->getMessage()));
+			$this->setError(Text::_('COM_MYMUSE_ENABLE_PLUGIN_FAILED', $e->getMessage()));
 			return false;
 		}
 		return true;

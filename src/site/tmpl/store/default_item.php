@@ -23,17 +23,26 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 $params 	= &$this->item->params;
 $canEdit	= $this->item->params->get('access-edit');
 $lang 		= Factory::getLanguage();
-
+$link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, '');
 ?>
 
 <?php if ($this->item->state == 0) : ?>
 <div class="system-unpublished">
 <?php endif; ?>
 
-<?php 
+<?php if ($params->get('store_show_product_image') && $this->item->list_image): ?>
+	<div class="list-image">
+		<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, 'product')); ?>"
+		><img src="<?php echo $this->item->list_image; ?>" 
+		alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
+		<?php if ($params->get('store_product_image_height', 0)) : ?>
+		style="height: <?php echo $params->get('store_product_image_height'); ?>px"
+		<?php endif; ?>
+		/></a>
+	</div>
+<?php endif; ?>
 
-$link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, '');
-if ($params->get('store_show_title')) : ?>
+<?php if ($params->get('store_show_title')) : ?>
 	<div class="feature-title">
 	<h3>
 		<?php if ($params->get('store_link_titles') && $params->get('access-view')) : ?>
@@ -46,21 +55,7 @@ if ($params->get('store_show_title')) : ?>
 	</div>
 <?php endif; ?>
 
-<?php if ($params->get('store_show_product_image') && $this->item->list_image): 
 
-
-
-	?>
-	<div class="list_image">
-		<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, 'product')); ?>"
-		><img src="<?php echo $this->item->list_image; ?>" 
-		alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
-		<?php if ($params->get('store_product_image_height', 0)) : ?>
-		style="height: <?php echo $params->get('store_product_image_height'); ?>px"
-		<?php endif; ?>
-		/></a>
-	</div>
-<?php endif; ?>
 
 
 

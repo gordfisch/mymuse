@@ -8,6 +8,9 @@
 
 // no direct access
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Router\Route;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 ?>
 
 
@@ -19,7 +22,7 @@ defined('_JEXEC') or die;
 	foreach ($this->link_items as &$item) :
 ?>
 	<li>
-		<a href="<?php echo JRoute::_(myMuseHelperRoute::getProductRoute($item->id, $item->catid)); ?>">
+		<a href="<?php echo Route::_(RouteHelper::getProductRoute($item->id, $item->catid)); ?>">
 			<?php echo $item->title; ?></a>
 	</li>
 <?php endforeach; ?>

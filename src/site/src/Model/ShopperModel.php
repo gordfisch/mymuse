@@ -14,9 +14,12 @@ namespace Joomla\Component\Mymuse\Site\Model;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\User\User;
+use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
@@ -110,14 +113,14 @@ class ShopperModel extends FormModel
         			&& ($task == 'accdownloads' || $task == 'downloads') ){
         		$id = $jinput->get('id','');
         		if(!$id){
-        			$this->setError(JText::_('COM_MYMUSE_NO_DOWNLOAD_KEY'));
+        			$this->setError(Text::_('COM_MYMUSE_NO_DOWNLOAD_KEY'));
         			return false;
         		}
         		$query = "SELECT notes from #__mymuse_order where order_number='$id'";
         		$db->setQuery($query);
         		$notes = $db->loadResult();
         		if(!$notes){
-        			$this->setError(JText::_('COM_MYMUSE_NO_MATCHING_ORDER'));
+        			$this->setError(Text::_('COM_MYMUSE_NO_MATCHING_ORDER'));
         			return false;
         		}
       			
@@ -150,7 +153,7 @@ class ShopperModel extends FormModel
         	}else{
         		$my_profile_key = $params->get('my_profile_key','mymuse');
         	}
-        	
+  	
 			if($user->get('id') > 0)
 			{
 				
@@ -196,7 +199,7 @@ class ShopperModel extends FormModel
     								(!isset($profile[$field]) || $profile[$field] == "")
     						) {
     							//this guy needs to update profile
-								$this->setError(JText::_('COM_MYMUSE_MISSING').$field);
+								$this->setError(Text::_('COM_MYMUSE_MISSING').$field);
     							$this->_shopper->perms = 0;
     							return $this->_shopper;
     						}
@@ -496,7 +499,7 @@ class ShopperModel extends FormModel
 
 		//I want to see if any fields that are required have not been filled in
 		$plugin = PluginHelper::getPlugin('user', 'mymusenoreg');
-		$profile_params = new JRegistry();
+		$profile_params = new Registry();
 		$needed = 0;
 
 
@@ -543,7 +546,7 @@ class ShopperModel extends FormModel
 			$guest = $db->loadObject();
 		}
 		if(!$guest){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_FIND_GUEST"));
+			$this->setError(Text::_("MYMUSE_COULD_NOT_FIND_GUEST"));
 			return false;
 		}
 
@@ -677,11 +680,11 @@ class ShopperModel extends FormModel
 		'email2' => 'guest@joomlamymuse.com' 
  		);
  		$config = Factory::getConfig();
- 		$db		= $this->getDbo();
- 		$params = JComponentHelper::getParams('com_users');
+ 		$db		= Factory::getDbo();
+ 		$params = ComponentHelper::getParams('com_users');
  		
- 		// Initialise the table with JUser.
- 		$user = new JUser;
+ 		// Initialise the table with User.
+ 		$user = new User;
  		
  		// Prepare the data for the user object.
  		$data['email']		= $data['email1'];
@@ -695,7 +698,7 @@ class ShopperModel extends FormModel
  		//print_pre($data); exit;
  		// Bind the data.
  		if (!$user->bind($data)) {
- 			$this->setError(JText::sprintf('MYMUSE_REGISTRATION_BIND_FAILED', $user->getError()));
+ 			$this->setError(Text::sprintf('MYMUSE_REGISTRATION_BIND_FAILED', $user->getError()));
  			return false;
  		}
  		
@@ -704,7 +707,7 @@ class ShopperModel extends FormModel
  		
  		// Store the data.
  		if (!$user->save()) {
- 			$this->setError(JText::sprintf('MYMUSE_REGISTRATION_SAVE_FAILED', $user->getError()));
+ 			$this->setError(Text::sprintf('MYMUSE_REGISTRATION_SAVE_FAILED', $user->getError()));
  			return false;
  		}
 
@@ -743,7 +746,7 @@ class ShopperModel extends FormModel
 			$guest = $db->loadObject();
 		}
 		if(!$guest){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_FIND_GUEST"));
+			$this->setError(Text::_("MYMUSE_COULD_NOT_FIND_GUEST"));
 			return false;
 		}
 
@@ -759,7 +762,7 @@ class ShopperModel extends FormModel
 		if(!JError::isError($error)){
 			return true;
 		}else{
-			$this->setError(JText::_($error->code));
+			$this->setError(Text::_($error->code));
 			return false;
 		}
 		

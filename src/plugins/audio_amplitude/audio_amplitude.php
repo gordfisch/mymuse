@@ -64,6 +64,18 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     public $_playlist = null;
     
 
+    function __construct(&$subject, $config)  {
+
+        parent::__construct($subject, $config);
+
+        $document = Factory::getDocument();
+        $js_path = Uri::Root().'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
+        $css_path = Uri::Root().'plugins/mymuse/audio_amplitude/assets/amplitude.css';
+        $document->addScript( $js_path );
+        $document->addStyleSheet($css_path );
+
+
+    }
     /**
      * getPlaylist
      * Gets playlist for amplitute player and creates two arrays to do indexing and printing
@@ -103,8 +115,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             if ($menu->getActive() == $menu->getDefault()) {
                 $front = 1;
             }
-        //MymuseHelper::print_pre($this->catalogs);
-        //MymuseHelper::print_pre($jinput->get('catid')); exit;
+
+
         /*
             [language] => en-GB
             [option] => com_mymuse
@@ -169,9 +181,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
     {
 
-        $document = Factory::getDocument();
-        $js_path = Uri::Root().'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
-        $document->addScript( $js_path );
+        
 
 
         $arr            = $this->getPlaylist();
@@ -221,6 +231,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             
             
         }
+        $document->addScript( $js_path );
         
         if($type == 'playlist'){
             return '';
@@ -255,7 +266,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $first->name            = " ";
         $first->artist          = "PLAYER";
         $first->album           = "READY";
-        $first->url             = Uri::base().$path_to_previews."00_-_silence.mp3";
+        $first->url             = $path_to_previews."00_-_silence.mp3";
         $first->cover_art_url   = $first_album_art_path;
 
         $all                    = array();
@@ -376,7 +387,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             LEFT JOIN #__mymuse_product as parent on p.parentid=parent.id
             LEFT JOIN #__categories as a on parent.artistid=a.id
             WHERE p.parentid > 0 
-            AND parent.catid IN (".$catin.") 
+            AND ( parent.catid IN (".$catin.") OR parent.artistid IN (".$catin.") )
             AND p.product_allfiles=0
             AND p.product_physical=0
             AND p.state > 0 AND parent.state > 0

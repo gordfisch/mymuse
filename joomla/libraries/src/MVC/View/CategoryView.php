@@ -128,7 +128,6 @@ class CategoryView extends HtmlView
 
 		// Get some data from the models
 		$model       = $this->getModel();
-
 		$paramsModel = $model->getState('params');
 
 		$paramsModel->set('check_access_rights', 0);
@@ -186,7 +185,7 @@ class CategoryView extends HtmlView
 				$itemElement->event = new \stdClass;
 
 				// For some plugins.
-				!empty($itemElement->description) ? $itemElement->text = $itemElement->description : $itemElement->text = null;
+				!empty($itemElement->description) ? $itemElement->text = $itemElement->description : $itemElement->text = '';
 
 				Factory::getApplication()->triggerEvent('onContentPrepare', [$this->extension . '.category', &$itemElement, &$itemElement->params, 0]);
 

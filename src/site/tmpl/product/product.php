@@ -1,8 +1,8 @@
 <?php 
 /**
- * @version		44.01
+ * @version		$Id$
  * @package		mymuse
- * @copyright	Copyright © 2018 - Arboreta Internet Services - All rights reserved.
+ * @copyright	Copyright © 2022 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
  * @author 		info@joomlamymuse.com
@@ -31,6 +31,10 @@ $this->assocParam   = (Associations::isEnabled() && $this->params->get('show_ass
 $store 				= $this->store;
 $cart 				= $this->cart;
 $product 			=& $this->item;
+
+//MymuseHelper::print_pre($product);
+
+
 $items				=& $this->item->items;
 if(!is_countable($items)){ 
 	$items = array();
@@ -53,7 +57,6 @@ $lang 				= Factory::getLanguage();
 $langtag 			= $lang->getTag();
 $listOrder			= $this->sortColumn;
 $listDirn			= $this->sortDirection;
-
 
 //get artist URL if exists
 $this->item->artist_link = '';
@@ -288,6 +291,7 @@ jQuery(document).ready(function($){
 if(count(is_countable($items)?$items:[]) && $items_select){
 
 	$js .= '
+	//with items select
 	jQuery(document).ready(function($){
 		$("#box_'.$product->id.'").click(function(e){
 
@@ -338,7 +342,9 @@ if(count(is_countable($items)?$items:[]) && $items_select){
 if(count(is_countable($items)?$items:[]) && !$items_select){
 	foreach($items as $item){
 			$js .= '
+			//without items select box
 			jQuery(document).ready(function($){
+				
 				$("#box_'.$item->id.'").click(function(e){
 
 		            $.post("'.$url.'",
@@ -442,62 +448,7 @@ if(is_countable($tracks)){
 		});
 
 		';
-	/*
-	foreach($tracks as $track){
-
-	$js .= '
-	jQuery(document).ready(function($){
-		$("#box_'.$track->id.'").click(function(e){
-			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
-				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
-				//alert("variation = "+myvariation);
-			}else{
-				myvariation = 0;
-			}
-			//alert("'.$track->id.'");
-            $.post("'.$url.'",
-            {
-                "productid":"'.$track->id.'",
-                "variation['.$track->id.']":myvariation
-                		
-            },
-            function(data,status)
-            {
-        
-                var res = jQuery.parseJSON(data);
-                idx = res.idx;
-                msg = res.msg;
-                action = res.action;
-                //alert(res.msg);
-                if(action == "deleted" || action == "failed"){
-                    $("#img_'.$track->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
-                }else{
-                    $("#img_'.$track->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
-                }
-                if(idx){
-                    if(idx == 1){
-                        txt = idx+" "+"item";
-                    }else{
-                        txt = idx+" "+"items";
-                    }
-                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
-                    $("#mini-cart-text").html(txt);
-                    $("#mini-cart-link").html(link);
-                }else{
-
-                    $("#mini-cart-text").html(" ");
-                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
-                    link = "";
-                }
-                my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$track->id.', delay:'. $params->get('my_delay_fadeout', 3000)  .'});
-            });
-
-		});
-	});
-
-	';
-	}
-	*/
+	
 }
 $document->addScriptDeclaration($js);
 ?>

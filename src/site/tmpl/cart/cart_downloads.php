@@ -24,78 +24,87 @@ function mydownload(url,item_id){
 }
 </script>
 <h1 class="cart-header"><?php echo JText::_('COM_MYMUSE_DOWNLOAD_PAGE') ?></h1>
-		<table  class="mymuse_cart cart">
- 
-        <!-- Begin Order Summary -->
-        <tr class="mymuse_cart cart cart" >
-            <td colspan="2"  class="mymuse_cart_top"><b><?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY') ?></b></td>
-        </tr>
-        <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_NUMBER') ?>:</td>
-            <td class="myordernumber cart"><?php echo sprintf("%08d", $order->id) ?></td>
-        </tr>
-        <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_DATE') ?>:</td>
-            <td class="myorderdate cart"><?php echo $order->created ?></td>
-        </tr>
-        <tr>
-            <td class="mobile-hide cart"><?php echo JText::_('COM_MYMUSE_ORDER_STATUS') ?>:</td>
-            <td class="myorderstatus cart"><?php echo JText::_('COM_MYMUSE_'.strtoupper($order->status_name)) ?></td>
-        </tr>
-        </table>
-        <br />
-        <br />
+		   <ul class="mymuse-container" >
+        <li class="mymuse-cart-top mymuse-grid-1-2">
+        	<div class="mymuse-cart-top"><?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY') ?></div>
+            <div></div>
+        </li>
+        <li class="mymuse-grid-1-2">
+        	<div class=" mymuse-label"><?php echo JText::_('COM_MYMUSE_ORDER_NUMBER') ?>:</div>
+        	<div class="myfullname mymuse-value"><?php echo sprintf("%08d", $order->id) ?></div>
+        </li>
+        <li class="mymuse-grid-1-2">
+        	<div class=" mymuse-label"><?php echo JText::_('COM_MYMUSE_ORDER_DATE') ?>:</div>
+        	<div class="myfullname mymuse-value"><?php echo $order->created ?></div>
+        </li>
+        <li class="mymuse-grid-1-2">
+        	<div class=" mymuse-label"><?php echo JText::_('COM_MYMUSE_ORDER_STATUS') ?>:</div>
+        	<div class="myfullname mymuse-value"><?php echo JText::_('COM_MYMUSE_'.strtoupper($order->status_name)) ?></div>
+        </li>
+	</ul>
+	<ul class="mymuse-container" >
+        <li class="mymuse-cart-top item-container cols-4">
+        	<div class="mymuse-cart-top"><?php echo JText::_('COM_MYMUSE_FILENAME'); ?></div>
+            <div class="mymuse-cart-top"><?php echo JText::_('COM_MYMUSE_NUMBER_DOWNLOADS'); ?></div>
+            <div class="mymuse-cart-top"><?php echo JText::_('COM_MYMUSE_FILE_SIZE'); ?></div>
+            <div class="mymuse-cart-top"><?php echo JText::_('COM_MYMUSE_EXPIRES'); ?></div>
+        </li>
 
-		<table class="mymuse_cart cart">
-            <thead>
-			<tr>
-				<th class="mytitle cart"><?php echo JText::_('COM_MYMUSE_FILENAME'); ?></th>
-				<th class="mydownloads cart"><?php echo JText::_('COM_MYMUSE_NUMBER_DOWNLOADS'); ?></th>
-				<th class="myfilesize cart"><?php echo JText::_('COM_MYMUSE_FILE_SIZE'); ?></th>
-				<th class="myexpiry cart"><?php echo JText::_('COM_MYMUSE_EXPIRES'); ?></th>
-			</tr>
-            </thead>
-            <tbody>
-			<?php 
-			foreach($order->items as $item){ 
-				//print_pre($item);
-				if($item->product->product_downloadable){
+	<?php 
+		foreach($order->items as $item){ 
+				if($item->product->product_physical){
+					continue;
+				}
+				if($params->get('my_use_zip')){
+					$test = 1;
+				}else{
+					$test = $item->product->product_downloadable;
+				}
+				if($test){
 				?>
-			<tr>
-				<td class="mytitle cart"><?php 
+		<li class=" item-container cols-4">
+			<div class="mytitle cart" data-name="<?php echo JText::_('COM_MYMUSE_FILENAME'); ?>"><?php 
 
 				$end_date = $item->end_date? $item->end_date : time()*2;
 				$my_download_max = $params->get('my_download_max')? $params->get('my_download_max') : ($item->downloads+1)*2;
 
-				if($item->downloads < $my_download_max && $end_date > time()){
-					//if($params->get('my_use_s3')){
-					//	$url = $item->s3URL;
-					//}else{
-						$url = 'index.php?option=com_mymuse&task=downloadfile&id='.$id.'&item_id='.$item->id;
-					//}
-				?><a href="javascript:void(0);" onclick="mydownload('<?php echo $url; ?>','<?php echo $item->id; ?>');">
+				if($item->product_in_stock == "-1"){
+						?><span class="mymuse_msg"><?php echo JText::_('COM_MYMUSE_PREORDERED'); ?></span><?php
+
+				}elseif($item->downloads < $my_download_max && $end_date > time()){
+						$url = JRoute::_('index.php?option=com_mymuse&view=store&task=downloadfile&id='.$id.'&item_id='.$item->id);
+					
+						?><a href="javascript:void(0);" onclick="mydownload('<?php echo $url; ?>','<?php echo $item->id; ?>');">
 				<?php } ?>
 				
 				<?php echo $item->product_name; ?>
-				<?php if($item->file_name){
-					echo ": <br />".$item->file_name;
-				}
-					?>
+
 				<?php 
-				if($item->downloads < $my_download_max && $end_date > time()){ ?></a><?php } ?></td>
+				if($item->format){
+					echo ": ".$item->format;
+				}
+				if($item->file_name){
+					echo "<br />".$item->file_name;
+				}
+				 
+				if($item->product_in_stock != "-1" && $item->downloads < $my_download_max && $end_date > time()){ 
+					?></a><?php 
+				} ?>
+
+
+				</div>
 				
-				<td class="mydownload carts"><?php echo $item->downloads; ?></td>
-				<td class="myfilesize cart"><?php echo MyMuseHelper::ByteSize($item->file_size); ?></td>
-				<td class="myexpiry cart"><?php if($item->end_date < time()){ ?><span style="color : #c30;">*</span> <?php } ?>
+				<div class="mydownload cart" data-name="<?php echo JText::_('COM_MYMUSE_NUMBER_DOWNLOADS'); ?>"><?php echo $item->downloads; ?></div>
+				<div class="myfilesize cart" data-name="<?php echo JText::_('COM_MYMUSE_FILE_SIZE'); ?>"><?php echo MyMuseHelper::ByteSize($item->file_length); ?></div>
+				<div class="myexpiry cart" data-name="<?php echo JText::_('COM_MYMUSE_EXPIRES'); ?>"><?php if($item->end_date < time()){ ?><span style="color : #c30;">*</span> <?php } ?>
 				<?php 
 				if($item->end_date){
 					$date = JFactory::getDate($item->end_date);
 					$mydate = $date->format($params->get('my_date_format'));
 					echo $mydate;
 				}
-					?></td>
-			</tr>
-			<?php } 
-				} ?>
-            </tbody>
-		</table>
+					?></div>
+		</li>
+	<?php } 
+	} ?>
+    </ul>

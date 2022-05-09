@@ -14,10 +14,10 @@ namespace Joomla\Component\Mymuse\Site\View\Category;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\CategoryView;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Site\Model\StoreModel;
-
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * HTML View class for the Mymuse component
@@ -81,6 +81,7 @@ class HtmlView extends CategoryView
 		// Prepare the data
 		// Get the metrics for the structural page layout.
 		$params     = $this->params;
+
 		$numLeading = $params->def('num_leading_products', 1);
 		$numIntro   = $params->def('num_intro_products', 4);
 		$numLinks   = $params->def('num_links', 4);

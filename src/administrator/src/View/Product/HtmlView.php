@@ -103,14 +103,14 @@ class HtmlView extends BaseHtmlView
 
 
 		$this->task 	= $task 	= $this->input->get('task', 'edit');
-		$this->type 	= $type 	= $this->input->get('subtype', 'product');
+		$this->type 	= $type 	= $this->input->get('type', 'product');
 
 		if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 			$this->input->set('id',0);
 		}
 
 		$app 			= Factory::getApplication();
-		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
+		$type 		= $app->getUserStateFromRequest("com_mymuse.type", 'type', 'product');
 
 		$view 			= $this->input->get('view');
 		
@@ -123,7 +123,7 @@ class HtmlView extends BaseHtmlView
 		//new file || edit file
 		if($task == "addfile" || $task == "editfile" || 
 				(isset($this->item->parentid) && $this->item->parentid > 0 
-						&& !$this->item->product_allfiles && $subtype == "file")){
+						&& !$this->item->product_allfiles && $type == "file")){
 			if($task == "addfile"){
 				$this->input->set('id','0');
 			}
@@ -142,8 +142,8 @@ class HtmlView extends BaseHtmlView
         	}
         	
         	
-        	$this->input->set('subtype','file');
-        	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'file');
+        	$this->input->set('type','file');
+        	$type = $app->getUserStateFromRequest("com_mymuse.type", 'type', 'file');
             if(!isset($this->item->parent)){
                 $this->item->parent = $model->getItem($this->item->parentid);
             }
@@ -159,7 +159,7 @@ class HtmlView extends BaseHtmlView
         		$this->item->parentid = $this->input->get('parentid', 0);
         	}
 
-        	$subtype = 'allfiles';
+        	$type = 'allfiles';
   
         }
      
@@ -191,8 +191,8 @@ class HtmlView extends BaseHtmlView
         	$isNew  = (@$items->id < 1);
         	$this->lists['isNew'] 	= $isNew;
         	$this->setLayout('edititems');
-        	$this->input->set('subtype','item');
-        	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
+        	$this->input->set('type','item');
+        	$type = $app->getUserStateFromRequest("com_mymuse.type", 'type', 'item');
 
         }
 
@@ -216,6 +216,7 @@ class HtmlView extends BaseHtmlView
         if($this->layout == "listitems"){
         	
         	$this->items 			= $model->getItems();
+
         	$this->itemPagination 	= $model->getItemPagination();
         	$this->id 				= $this->input->get('id');
         	$this->input->set('parentid',$this->id);
@@ -231,10 +232,10 @@ class HtmlView extends BaseHtmlView
         	$app->setUserState("com_mymuse.parentid", $this->item->id);
         }
         if(!$this->item->id  && $this->item->parentid == 0){
-        	$subtype = "details";
+        	$type = "details";
         }
         
-		$this->lists['subtype'] 	= $subtype;
+		$this->lists['type'] 	= $type;
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -258,7 +259,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar($type='', $parentid=0): void
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
-
+echo "type  $type"; 
 		$user       = Factory::getUser();
 		$userId     = $user->id;
 		$isNew      = ($this->item->id == 0);

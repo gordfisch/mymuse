@@ -10,21 +10,16 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$cols = 0;
-if( $this->params->get('product_show_product_image') && $this->item->detail_image) {
-	$cols++;
-}
-
-if( $this->params->get('info_block_show')) {
-	$cols++;
-}
-
+$product = $this->item;
 /*
 	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	+                          PRODUCT TITLE							   +
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	+                                 +                                    +
+	+       IMAGE                     +        DETAILS                     +
+	+     product_show_product_image  +       info_block_show              +
 	+                                 +                                    +
 	+                                 +                                    +
-	+                                 +                                    +
-	+       IMAGE                     +          DETAILS                   +
 	+                                 +                                    +
 	+                                 +                                    +
 	+                                 +                                    +
@@ -51,9 +46,17 @@ if( $this->params->get('info_block_show')) {
 	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 */
 
+$cols = 0;
+if( $this->params->get('product_show_product_image') && $this->item->detail_image) {
+	$cols++;
+}
+if( $this->params->get('info_block_show')) {
+	$cols++;
+}
 ?>
 
-<div class="product columns-<?php echo $cols; ?>">
+
+<div class="product-top blog-items columns-<?php echo $cols; ?>">
 
 	<?php echo $this->loadTemplate('image'); ?>
 
@@ -62,11 +65,20 @@ if( $this->params->get('info_block_show')) {
 		
 </div>
 
+<?php  if ($product->introtext) : ?>
+<div class="product-description">            
+    <?php echo $product->introtext ?>
 
-<div class="product-description">
-	<?php echo $this->item->introtext ?>
+	<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore')) : ?>
+		<div><a href="#readmore" class="readon"><?php echo JText::_("COM_MYMUSE_READ_MORE"); ?>
+        <?php 
+        if ($this->params->get('show_readmore_title', 0) != 0) :
+            echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
+        endif;
+        ?></a></div>
+	 <?php endif; ?>
 </div>
-
+<?php endif; ?>
 
 <?php echo $this->loadTemplate('physical'); ?>
 
@@ -78,7 +90,7 @@ if( $this->params->get('info_block_show')) {
 
 
 <?php if( $this->params->get('split_text') ): ?>
-	<div class="product-fulltext">
+	<div id="readmore" class="product-fulltext">
 		<?php echo $this->item->fulltext ?>
 	</div>
 <?php endif; ?>

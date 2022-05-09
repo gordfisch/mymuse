@@ -22,7 +22,7 @@ use Joomla\Component\Mymuse\Administrator\Table\OrdershippingTable;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
-
+use Joomla\Registry\Registry;
 
 
 defined('_JEXEC') or die('Restricted access');
@@ -304,7 +304,7 @@ class CheckoutHelper
 					}
 				}
 			}
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($notes);
 			$order->notes = (string) $registry;
 	
@@ -394,12 +394,7 @@ class CheckoutHelper
 				Factory::getApplication()->enqueueMessage($msg, 'error');
 
 			}
-			/*
-			if (!$order->items[$i]->store()) {
-				JError::raiseError( 500, $this->_db->stderr() );
-				return false;
-			}
-			*/
+
 
 
 
@@ -439,7 +434,8 @@ class CheckoutHelper
 			$query = "UPDATE #__mymuse_order set order_status='C' WHERE id='".$order->id."'";
 			$this->_db->setQuery($query);
 			if (!$this->_db->execute()) {
-				JError::raiseError( 500, $this->_db->stderr() );
+
+				Factory::getApplication()->enqueueMessage(500, $this->_db->stderr() );
 				return false;
 			}
 		}
@@ -468,7 +464,8 @@ class CheckoutHelper
 
 
 			if (!$order_shipping->store()) {
-				JError::raiseError( 500, $this->_db->stderr() );
+				Factory::getApplication()->enqueueMessage(500, $this->_db->stderr() );
+
 				return false;
 			}
 			$order->order_total = $order->order_total + $order_shipping->cost;

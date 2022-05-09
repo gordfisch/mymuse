@@ -237,7 +237,7 @@ JFilterOutput::objectHTMLSafe( $row );
 		<input type="hidden" name="jform[version]" value="<?php echo $row->version; ?>" />
 		<input type="hidden" name="jform[catid]" value="<?php echo $row->catid; ?>" />
 		<input type="hidden" name="jform[artistid]" value="<?php echo $this->item->parent->artistid; ?>" />
-		<input type="hidden" name="subtype" value="item" />
+		<input type="hidden" name="type" value="item" />
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="task" value="" />
 		<?php echo HTMLHelper::_( 'form.token' ); ?>

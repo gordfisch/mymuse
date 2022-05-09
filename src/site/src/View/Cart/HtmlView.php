@@ -103,6 +103,13 @@ class HtmlView extends BaseHtmlView
 	var $task = '';
 
 	/**
+	 * original_task
+	 *
+	 * @var string
+	 */
+	var $original_task = '';
+
+	/**
 	 * user
 	 *
 	 * @var object
@@ -141,12 +148,13 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 
-		$this->_db 			= Factory::getDBO();
+		$this->_db 		= Factory::getDBO();
 		$params 		= MyMuseHelper::getParams();
 		$app 			= Factory::getApplication();
 		$jinput 		= $app->input;
 		$this->Itemid 	= $jinput->get("Itemid",'');
 		$this->task 	= $task	= $jinput->get('task', '', 'CMD');
+		$this->originaltask 	= $jinput->get('original_task', '', 'CMD');
 		
 
 		if($task == "notify"){
@@ -170,7 +178,7 @@ class HtmlView extends BaseHtmlView
 			//if we are using no_reg
 			if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
 				$fields = MyMuseHelper::getNoRegFields();
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($order->notes);
 				foreach($fields as $field){
 					if($registry->get($field)){
@@ -274,7 +282,7 @@ class HtmlView extends BaseHtmlView
 		$message 			= '';
 		$footer 			= '';
 		$edit 				= true;
-echo "task = $task";
+
 		// set the heading for the top of page
 		// find the order attached to the shopper object, or build it from session cart
 		switch ($task)
@@ -345,7 +353,7 @@ echo "task = $task";
 				
 				if(isset($order->notes) && $this->user->username == "buyer"){
 
-					$registry = new JRegistry;
+					$registry = new Registry;
 					$registry->loadString($order->notes);
 					$order->notes = $registry->toArray();
 				}
@@ -396,7 +404,7 @@ echo "task = $task";
 			default:
 				if($this->cart['idx'] > 0){
 					$this->order = $order 		= $this->MyMuseCart ->buildOrder( $edit );
-					//MymuseHelper::print_pre($order->items[0]); exit;	
+					//MymuseHelper::print_pre($order->items[0]->price); exit;	
 					$order->show_checkout = 1;
 					//$footer = $this->MyMuseCart ->getRecommended();
 				}
@@ -768,7 +776,7 @@ echo "task = $task";
      	}
 
         $this->store = $this->MyMuseStore->_store;
-        $this->store_params = new JRegistry;
+        $this->store_params = new Registry;
         $this->store_params->loadString($this->store->params);
   		
      	// get mailer object
@@ -1033,7 +1041,7 @@ echo "task = $task";
 		//if we are using no_reg
 		if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
 			$fields = MyMuseHelper::getNoRegFields();
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($order->notes);
 			foreach($fields as $field){
 				if($registry->get($field)){
@@ -1119,8 +1127,8 @@ echo "task = $task";
 
 			$debug = "makeMail: Order Notes = ".print_r($order->notes,true)."\n";
 			MyMuseHelper::logMessage( $debug  );
-			//$accparams = new JRegistry( $order->notes);
-			$registry = new JRegistry;
+			//$accparams = new Registry( $order->notes);
+			$registry = new Registry;
 			$notes_params = $registry->loadString($order->notes);
 			$order->notes = $registry->toArray();
 

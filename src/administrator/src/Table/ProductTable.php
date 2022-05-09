@@ -253,6 +253,9 @@ class ProductTable extends Table implements VersionableTableInterface
 		if (trim(str_replace('&nbsp;', '', $this->fulltext)) == '') {
 			$this->fulltext = '';
 		}
+		if(!isset($this->publish_down) || $this->publish_down == ''){
+			$this->publish_down = NULL;
+		}
 
 		// Check the publish down date is not earlier than publish up.
 		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up) {
@@ -267,7 +270,7 @@ class ProductTable extends Table implements VersionableTableInterface
 		}
 		
 		if($this->publish_down == "1970-01-01 00:00:01" || $this->publish_down == $this->publish_up){
-			$this->publish_down = '';
+			$this->publish_down = NULL;
 		}
 		
 		// Clean up keywords -- eliminate extra spaces between phrases
@@ -400,7 +403,7 @@ class ProductTable extends Table implements VersionableTableInterface
         
  		$done = 0;
 
-		
+
  		/* TRACKS ======================================================*/
 		if($subtype == 'file'){
 

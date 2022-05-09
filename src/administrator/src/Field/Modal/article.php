@@ -9,12 +9,16 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 /**
  * Supports a modal article picker.
  *
  * @since  1.6
  */
-class JFormFieldModal_Article extends JFormField
+class JFormFieldModal_Article extends FormField
 {
 	/**
 	 * The form field type.
@@ -37,10 +41,10 @@ class JFormFieldModal_Article extends JFormField
 		$allowClear		= ((string) $this->element['clear'] != 'false') ? true : false;
 
 		// Load language
-		JFactory::getLanguage()->load('com_content', JPATH_ADMINISTRATOR);
+		Factory::getLanguage()->load('com_content', JPATH_ADMINISTRATOR);
 
 		// Load the modal behavior script.
-		JHtml::_('behavior.modal', 'a.modal');
+		HTMLHelper::_('behavior.modal', 'a.modal');
 
 		// Build the script.
 		$script = array();
@@ -73,7 +77,7 @@ class JFormFieldModal_Article extends JFormField
 			$script[] = '	function jClearArticle(id) {';
 			$script[] = '		document.getElementById(id + "_id").value = "";';
 			$script[] = '		document.getElementById(id + "_name").value = "' .
-				htmlspecialchars(JText::_('COM_CONTENT_SELECT_AN_ARTICLE', true), ENT_COMPAT, 'UTF-8') . '";';
+				htmlspecialchars(Text::_('COM_CONTENT_SELECT_AN_ARTICLE', true), ENT_COMPAT, 'UTF-8') . '";';
 			$script[] = '		jQuery("#"+id + "_clear").addClass("hidden");';
 			$script[] = '		if (document.getElementById(id + "_edit")) {';
 			$script[] = '			jQuery("#"+id + "_edit").addClass("hidden");';
@@ -83,7 +87,7 @@ class JFormFieldModal_Article extends JFormField
 		}
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 		// Setup variables for display.
 		$html	= array();
@@ -96,7 +100,7 @@ class JFormFieldModal_Article extends JFormField
 
 		if ((int) $this->value > 0)
 		{
-			$db	= JFactory::getDbo();
+			$db	= Factory::getDbo();
 			$query = $db->getQuery(true)
 				->select($db->quoteName('title'))
 				->from($db->quoteName('#__content'))
@@ -115,7 +119,7 @@ class JFormFieldModal_Article extends JFormField
 
 		if (empty($title))
 		{
-			$title = JText::_('COM_CONTENT_SELECT_AN_ARTICLE');
+			$title = Text::_('COM_CONTENT_SELECT_AN_ARTICLE');
 		}
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
@@ -133,19 +137,19 @@ class JFormFieldModal_Article extends JFormField
 		$html[] = '<span class="input-append">';
 		$html[] = '<input type="text" class="input-medium" id="' . $this->id . '_name" value="' . $title . '" disabled="disabled" size="35" />';
 		$html[] = '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_CONTENT_CHANGE_ARTICLE') . '"  href="' . $link . '&amp;' . JSession::getFormToken() .
-			'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+			'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . Text::_('JSELECT') . '</a>';
 
 		// Edit article button
 		if ($allowEdit)
 		{
-			$html[] = '<a class="btn hasTooltip' . ($value ? '' : ' hidden') . '" href="index.php?option=com_content&layout=modal&tmpl=component&task=article.edit&id=' . $value . '" target="_blank" title="' . JHtml::tooltipText('COM_CONTENT_EDIT_ARTICLE') . '" ><span class="icon-edit"></span>' . JText::_('JACTION_EDIT') . '</a>';
+			$html[] = '<a class="btn hasTooltip' . ($value ? '' : ' hidden') . '" href="index.php?option=com_content&layout=modal&tmpl=component&task=article.edit&id=' . $value . '" target="_blank" title="' . JHtml::tooltipText('COM_CONTENT_EDIT_ARTICLE') . '" ><span class="icon-edit"></span>' . Text::_('JACTION_EDIT') . '</a>';
 		}
 
 		// Clear article button
 		if ($allowClear)
 		{
 			$html[] = '<button id="' . $this->id . '_clear" class="btn' . ($value ? '' : ' hidden') . '" onclick="return jClearArticle(\'' .
-				$this->id . '\')"><span class="icon-remove"></span>' . JText::_('JCLEAR') . '</button>';
+				$this->id . '\')"><span class="icon-remove"></span>' . Text::_('JCLEAR') . '</button>';
 		}
 
 		$html[] = '</span>';

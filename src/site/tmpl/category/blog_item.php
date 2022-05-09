@@ -17,6 +17,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
 // Create a shortcut for params.
@@ -31,12 +32,11 @@ $lang 		= Factory::getLanguage();
 <?php endif; ?>
 
 <?php 
-
 $link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, '');
-if ($params->get('store_show_title')) : ?>
+?>
 	<div class="feature-title">
 	<h3>
-		<?php if ($params->get('store_link_titles') && $params->get('access-view')) : ?>
+		<?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
 			<a href="<?php echo Route::_($link); ?>">
 			<?php echo $this->escape($this->item->title); ?></a>
 		<?php else : ?>
@@ -44,13 +44,13 @@ if ($params->get('store_show_title')) : ?>
 		<?php endif; ?>
 	</h3>
 	</div>
-<?php endif; ?>
+
 
 <?php if ($params->get('store_show_product_image') && $this->item->list_image): 
 
 	?>
-	<div class="list_image">
-		<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, 'product')); ?>"
+	<div class="list-image">
+		<a href="<?php echo Route::_($link); ?>"
 		><img src="<?php echo $this->item->list_image; ?>" 
 		alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 		<?php if ($params->get('store_product_image_height', 0)) : ?>

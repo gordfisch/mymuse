@@ -16,11 +16,10 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
-
 ?>
 <?php echo $this->store->event->beforeDisplayHeader; ?>
-<div class="clear"></div>
-<div class="blog<?php echo $this->pageclass_sfx;?>">
+
+<div class="mymuse blog<?php echo $this->pageclass_sfx;?> " >
 <?php if ( $this->params->get('show_page_heading',0)!=0) : ?>
 	<h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -33,15 +32,15 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 <?php echo $this->store->event->beforeDisplayProduct; ?>
 
-<div class="text-area mm_text"><?php echo $this->store->description; ?></div>
+<div class="store-description"><?php echo $this->store->description; ?></div>
 	
 <?php 
 if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->link_items) ) : ?>
 	<h2><?php echo JText::_("COM_MYMUSE_FEATURED") ?></h2>
 <?php endif; ?>
 
-	<?php $leadingcount = 0; ?>
-	<?php if (!empty($this->lead_items)) : ?>
+<?php $leadingcount = 0; ?>
+<?php if (!empty($this->lead_items)) : ?>
 		<div class="com-content-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">
 			<?php foreach ($this->lead_items as &$item) : ?>
 				<div class="com-content-category-blog__item blog-item"
@@ -54,13 +53,7 @@ if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->lin
 				<?php $leadingcount++; ?>
 			<?php endforeach; ?>
 		</div>
-	<?php endif; ?>
-
-	<?php
-	$introcount = count($this->intro_items);
-	$counter = 0;
-	?>
-
+<?php endif; ?>
 
 <?php
 	$introcount=(count($this->intro_items));

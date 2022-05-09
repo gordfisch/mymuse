@@ -12,11 +12,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 global $store, $shopper, $cart;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+HtmlHelper::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $product    =& $this->item;
 $tracks     =& $this->item->tracks;
@@ -100,54 +100,66 @@ if($this->params->get('product_show_preview_column', 1) && $this->params->get('p
 endif;
 
 ?>
+<style>
+@media (min-width: 768px) {
+  .tracks .my-grid{
+      grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+  }
+}
+.jp-gui {
+  width: inherit;
+}
+</style>
 
 <!-- TRACKS -->
-  <div class="cart-container columns-<?php echo $cols; ?>">
+<div class="cart-container columns-<?php echo $cols; ?>">
+<section class="tracks">
+    <ul class="mymuse-container">
+      <li class="my-grid">
+        <div class="mymuse-header name"><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></div>
 
-    <div class="header"><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></div>
+        <?php  if($this->params->get('product_show_artist', 0)) :?>
+          <div class="mymuse-header artist">
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></div>
+        <?php endif; ?>
+        
+        <?php  if($this->params->get('product_show_filetime', 0)) :?>
+          <div class="mymuse-header time">
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></div>
+        <?php endif; ?>
+        
+        <?php  if($this->params->get('product_show_filesize', 0)) :?>
+          <div class="mymuse-header filesize">
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_lengdiv', $listDirn, $listOrder); ?></div>
+        <?php endif; ?>
+        
+        <?php if($this->params->get('product_show_sales', 0)) : ?>
+          <div class="mymuse-header sales">
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></div>
+        <?php endif; ?>
+        
+        <?php if($this->params->get('product_show_downloads', 0)) : ?>
+          <div class="mymuse-header downloads">
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></div>
+        <?php endif; ?>
+        
+        <?php  if($this->params->get('product_show_cost_column', 1)) :?>
+          <div class="mymuse-header price">
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></div>
+        <?php endif; ?>
+          
+          <?php if(count($this->formats) > 1) :?>
+        <div class="mymuse-header format"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></div>
+        <?php endif;?>
+          
+          <?php  if($this->params->get('product_show_select_column', 1)) :?>
+        <div class="mymuse-header select"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
+        <?php endif; ?>
 
-    <?php  if($this->params->get('product_show_artist', 0)) :?>
-      <div class="myartist header">
-      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></div>
-    <?php endif; ?>
-    
-    <?php  if($this->params->get('product_show_filetime', 0)) :?>
-      <div class="mytime header">
-      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></div>
-    <?php endif; ?>
-    
-    <?php  if($this->params->get('product_show_filesize', 0)) :?>
-      <div class="myfilesize header">
-      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_lengdiv', $listDirn, $listOrder); ?></div>
-    <?php endif; ?>
-    
-    <?php if($this->params->get('product_show_sales', 0)) : ?>
-      <div class="mysales header">
-      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></div>
-    <?php endif; ?>
-    
-    <?php if($this->params->get('product_show_downloads', 0)) : ?>
-      <div class="mydownloads header">
-      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></div>
-    <?php endif; ?>
-    
-    <?php  if($this->params->get('product_show_cost_column', 1)) :?>
-      <div class="myprice header">
-      <?php echo JHtml::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></div>
-    <?php endif; ?>
-      
-      <?php if(count($this->formats) > 1) :?>
-    <div class="myselect header"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></div>
-    <?php endif;?>
-      
-      <?php  if($this->params->get('product_show_select_column', 1)) :?>
-    <div class="myselect header"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
-    <?php endif; ?>
-
-    <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
-      <div class="mypreviews header"><?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?></div>
-    <?php endif; ?>
-
+        <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
+          <div class="mymuse-header previews"><?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?></div>
+        <?php endif; ?>
+    </li>
 
 <?php
   $groups = $user->getAuthorisedViewLevels();
@@ -159,7 +171,9 @@ endif;
 
     if(in_array($track->access, $groups)) :
 ?>
-    <div class="mytitle myrow"><?php if($track->detail_image && $track->detail_image != '') :
+
+      <li class="my-grid">
+      <div class="mycart-inner title" data-name="<?php echo JText::_('COM_MYMUSE_TITLE'); ?>"><?php if($track->detail_image && $track->detail_image != '') :
                 echo '<span class="track-img"><img src="'.$track->detail_image.'"></span>';
               endif; 
               ?>
@@ -174,7 +188,7 @@ endif;
               ?></div>
 
     <?php  if($this->params->get('product_show_artist', 0)) :?>
-      <div class="myartist myrow"><a
+      <div class="mycart-inner artist" data-name="<?php echo JText::_('COM_MYMUSE_GENRE'); ?>"><a
             href="<?php 
             echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->catid, true));?>">
             <?php if(!empty($track->category_name )) { echo $track->category_name; } ?></a>
@@ -187,12 +201,12 @@ endif;
     <?php endif; ?>
     
     <?php  if($this->params->get('product_show_filetime', 0)) :?>
-      <div class="mytime myrow">
+      <div class="mycart-inner time" data-name="<?php echo JText::_('COM_MYMUSE_TIME'); ?>">
       <?php echo $track->file_time ?></div>
     <?php endif; ?>
     
     <?php  if($this->params->get('product_show_filesize', 0)) :?>
-      <div class="myfilesize myrow">
+      <div class="mycart-inner filesize" data-name="<?php echo JText::_('COM_MYMUSE_FILE_SIZE'); ?>">
       <?php 
                 if(!$track->product_allfiles && $track->file_length > 0) :
                   $first = 1;
@@ -213,12 +227,12 @@ endif;
     <?php endif; ?>
     
     <?php if($this->params->get('product_show_sales', 0)) : ?>
-      <div class="mysales myrow">
+      <div class="mycart-inner sales" data-name="<?php echo JText::_('COM_MYMUSE_SALES'); ?>">
       <?php echo $track->sales; ?></div>
     <?php endif; ?>
     
     <?php if($this->params->get('product_show_downloads', 0)) : ?>
-      <div class="mydownloads myrow">
+      <div class="mycart-inner downloads" data-name="<?php echo JText::_('COM_MYMUSE_DOWNLOADS'); ?>">
       <?php if(!$track->product_allfiles && $track->file_length > 0) :
                   $first = 1;
                   foreach($track->digital as $file){
@@ -238,19 +252,19 @@ endif;
     <?php endif; ?>
     
     <?php  if($this->params->get('product_show_cost_column', 1)) :?>
-      <div class="myprice myrow">
+      <div class="mycart-inner price" data-name="<?php echo JText::_('COM_MYMUSE_CART_PRICE'); ?>">
       <?php 
 
                 if("1" == $this->params->get('my_price_by_product')) :
                   $first = 1;
                   $types = array();
-                  foreach($track->digital as $file){
+                  foreach($track->digital as $file) :
 
-                    if(isset($file->file_format)){
+                    if(isset($file->file_format)) :
                       $types[] = strtolower($file->file_format);
-                    }
+                    endif;
                     
-                  }
+                  endforeach;
                   foreach($this->formats as $format) :
                     if(in_array(strtolower($format), $types)):
                       $product_price = $track->price[$format];
@@ -307,14 +321,14 @@ endif;
     <?php endif; ?>
       
       <?php if(count($this->formats) > 1) :?>
-    <div class="myselect myrow"><?php if(isset($track->variation_select)) :
+    <div class="mycart-inner format"><?php if(isset($track->variation_select)) :
                     echo $track->variation_select;
                    endif;
                 ?></div>
     <?php endif;?>
       
       <?php  if($this->params->get('product_show_select_column', 1)) :?>
-    <div class="myselect myrow"><?php if($track->digital || $track->product_allfiles) :?>
+    <div class="mycart-inner select" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>"><?php if($track->digital || $track->product_allfiles) :?>
 
                     <a href="javascript:void(0)" class="trackpicker" data-id="<?php echo $track->id; ?>"
                       data-variation="<?php echo $track->digital[0]->file_id; ?>"
@@ -338,9 +352,9 @@ endif;
     <?php endif; ?>
 
     <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
-      <div class="mypreviews myrow"><span class="jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></span></div>
+      <div class="mycart-inner previews" data-name="<?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?>"><span class="jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></span></div>
     <?php endif; ?>
-
+    </li>
     <?php endif; ?>
   <?php endforeach; ?>
 

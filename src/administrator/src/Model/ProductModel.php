@@ -984,10 +984,10 @@ class ProductModel extends AdminModel
 	function getAttributes(){
 
 		$db = Factory::getDBO();
-		//if(!$this->_attribute_skus){
-			$this->getAttributeskus();
-		//}
 
+		$this->_attribute_skus = $this->getAttributeskus();
+
+		$this->_item->attributes = array();
 		$app 		= Factory::getApplication();
 		$input 	= $app->input;
 		$id 		= $input->get('id',0);
@@ -1105,14 +1105,16 @@ class ProductModel extends AdminModel
 			}
 			
 			$categoryId = $this->table->catid;
+			$this->table->id 										= 0;
+			$input      												= Factory::getApplication()->input;
+			$this->table->parentid 							= $oldid;
+			$data = $this->generateNewTitle($categoryId, $this->table->alias, $this->table->title);
 
 			//is it an item?
 			if($item){
 
 				// Reset the ID because we are making a copy
-				$this->table->id 										= 0;
-				$input      												= Factory::getApplication()->input;
-				$this->table->parentid 							= $oldid;
+				
 				$this->table->product_physical 			= 1;
 				$this->table->product_downloadable 	= 0;
 				$this->table->product_sku 					= $this->table->product_sku . $input->get('item_title');
@@ -1135,24 +1137,24 @@ class ProductModel extends AdminModel
 					if(file_exists(JPATH_ROOT.'/'.$list_image)){
 						$this->table->list_image = $list_image;
 					}
-					echo $detail_image."<br />";
+					//echo $detail_image."<br />";
 				}
 			}else{
 				// Alter the title & alias
-				$data = $this->generateNewTitle($categoryId, $this->table->alias, $this->table->title);
+				
 				$this->table->title = $data['0'];
 				$this->table->alias = $data['1'];
 				// Unpublish because we are making a copy
 				$this->table->state = 0;
 			}
 			//make new sku
-			list($newSku, $alias) = $this->generateNewTitle($data['catid'], $data['product_sku'], $data['product_sku']);
+			list($newSku, $alias) = $this->generateNewTitle($categoryId, $this->table->product_sku, $this->table->product_sku);
 			$this->table->product_sku = $newSku;
 	
 			// Reset hits because we are making a copy
 			$this->table->hits = 0;
 
-			
+
 
 			// New category ID
 			$this->table->catid = $categoryId;
