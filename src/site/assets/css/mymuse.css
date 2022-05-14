@@ -210,26 +210,7 @@ span.discount {
 .desktop-hide {
     display: none;
 }
-/* Only Phones */  
-@media (max-width: 767px) { 
-    
-    .mymuse_cart 
-    .mymuse-mobile-hide {
-        display: none;
-    }
-    .mymuse-desktop-hide {
-        display: inherit;
-    }
-    .product-image, .product-info {
-        width: 100%;
-        float: left;
-        padding: 0.4em;
-        text-align: center;
-    }
-    .mypreviews .jp-gui {
-        padding: 0;
-    }
-}
+
 
 
 /* new grid */
@@ -364,5 +345,23 @@ ul.mymuse-container {
   .item-container.summary.totals {
     border-color: #da4f49;
   }
+
+      
+  .mymuse-cart .mymuse-mobile-hide {
+      display: none;
+  }
+  .mymuse-desktop-hide {
+      display: inherit;
+  }
+  .product-image, .product-info {
+      width: 100%;
+      float: left;
+      padding: 0.4em;
+      text-align: center;
+  }
+  .mypreviews .jp-gui {
+      padding: 0;
+  }
+
 }
 

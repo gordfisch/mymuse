@@ -8295,3 +8295,51 @@
 [06-May-2022 18:14:31 America/New_York] PHP  24. Joomla\CMS\Application\AdministratorApplication->loadExtension() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:94
 [06-May-2022 18:14:31 America/New_York] PHP  25. Joomla\CMS\Application\AdministratorApplication->loadPluginFromFilesystem() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:160
 [06-May-2022 18:14:31 America/New_York] PHP  26. require_once() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:219
+[10-May-2022 10:44:25 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1211
+[10-May-2022 10:44:25 America/New_York] PHP Stack trace:
+[10-May-2022 10:44:25 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[10-May-2022 10:44:25 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[10-May-2022 10:44:25 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[10-May-2022 10:44:25 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[10-May-2022 10:44:25 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[10-May-2022 10:44:25 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[10-May-2022 10:44:25 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[10-May-2022 10:44:25 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[10-May-2022 10:44:25 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[10-May-2022 10:44:25 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:321
+[11-May-2022 09:33:33 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1211
+[11-May-2022 09:33:33 America/New_York] PHP Stack trace:
+[11-May-2022 09:33:33 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[11-May-2022 09:33:33 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[11-May-2022 09:33:33 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[11-May-2022 09:33:33 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[11-May-2022 09:33:33 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[11-May-2022 09:33:33 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[11-May-2022 09:33:33 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[11-May-2022 09:33:33 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[11-May-2022 09:33:33 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[11-May-2022 09:33:33 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:321
+[13-May-2022 16:11:59 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1211
+[13-May-2022 16:11:59 America/New_York] PHP Stack trace:
+[13-May-2022 16:11:59 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[13-May-2022 16:11:59 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[13-May-2022 16:11:59 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[13-May-2022 16:11:59 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[13-May-2022 16:11:59 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[13-May-2022 16:11:59 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[13-May-2022 16:11:59 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[13-May-2022 16:11:59 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[13-May-2022 16:11:59 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[13-May-2022 16:11:59 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:321
+[13-May-2022 22:00:03 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse/src/Model/ProductModel.php on line 1205
+[13-May-2022 22:00:03 America/New_York] PHP Stack trace:
+[13-May-2022 22:00:03 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/administrator/index.php:0
+[13-May-2022 22:00:03 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/administrator/index.php:32
+[13-May-2022 22:00:03 America/New_York] PHP   3. Joomla\CMS\Application\AdministratorApplication->execute() /var/www/html/mymuseJ4/joomla/administrator/includes/app.php:63
+[13-May-2022 22:00:03 America/New_York] PHP   4. Joomla\CMS\Application\AdministratorApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[13-May-2022 22:00:03 America/New_York] PHP   5. Joomla\CMS\Application\AdministratorApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:186
+[13-May-2022 22:00:03 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/AdministratorApplication.php:143
+[13-May-2022 22:00:03 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
+[13-May-2022 22:00:03 America/New_York] PHP   8. Joomla\Component\Mymuse\Administrator\Controller\ProductController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
+[13-May-2022 22:00:03 America/New_York] PHP   9. Joomla\Component\Mymuse\Administrator\Controller\ProductController->cancel() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
+[13-May-2022 22:00:03 America/New_York] PHP  10. Joomla\Component\Mymuse\Administrator\Model\ProductModel->checkin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/FormController.php:321

@@ -101,7 +101,8 @@ class ProductsController extends AdminController
 
         $pks = $this->app->input->get('cid');
         $model = $this->getModel('product');
-        return $model->checkin($pks);
+        $model->checkin($pks);
+        $this->setRedirect( 'index.php?option=com_mymuse&view=products' );
 
     }
 

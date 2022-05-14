@@ -353,7 +353,7 @@ class ProductTable extends Table implements VersionableTableInterface
 		$app 			= Factory::getApplication();
 		$input 			= $app->input;
 
-		$subtype		= $input->get('subtype');
+		$subtype		= $input->get('type');
 		$task 			= $input->get('task');
 		$form 			= $input->get('jform', array(), 'array'); 
 		$select_files 	= $input->get('select_file', '' ,'array');
@@ -365,6 +365,7 @@ class ProductTable extends Table implements VersionableTableInterface
 		$date			= Factory::getDate();
 		$user			= Factory::getUser();
 		$db 			= Factory::getDBO();
+		PluginHelper::importPlugin('mymuse');
 
 		//removing one of the track formats
 		if($task == 'deletevariation'){
@@ -402,7 +403,6 @@ class ProductTable extends Table implements VersionableTableInterface
 		}
         
  		$done = 0;
-
 
  		/* TRACKS ======================================================*/
 		if($subtype == 'file'){
@@ -583,7 +583,10 @@ class ProductTable extends Table implements VersionableTableInterface
 				}//for each select_files
 				$this->id = $track_parentid;
 			}//if is array select files
-		
+			$res = $app->triggerEvent('onMyMuseAfterSave', array('com_mymuse.product', &$this, false, $isNew));
+			if(isset($res[0])){
+				$app->enqueueMessage($res[0], 'Notice');
+			}
 			return true;
 		} //if subtype = file
 
@@ -642,6 +645,10 @@ class ProductTable extends Table implements VersionableTableInterface
 
 				}
 				$this->id = $this->track_parentid;
+				$res = $app->triggerEvent('onMyMuseAfterSave', array('com_mymuse.product', &$this, false, $isNew));
+				if(isset($res[0])){
+					$app->enqueueMessage($res[0], 'Notice');
+				}
 				return true;
 
 			}else{
@@ -683,6 +690,10 @@ class ProductTable extends Table implements VersionableTableInterface
 
 				}
 				$this->id = $this->track_parentid;
+				$res = $app->triggerEvent('onMyMuseAfterSave', array('com_mymuse.product', &$this, false, $isNew));
+				if(isset($res[0])){
+					$app->enqueueMessage($res[0], 'Notice');
+				}
 				return true;
 			}
 			
@@ -866,7 +877,6 @@ class ProductTable extends Table implements VersionableTableInterface
 
 
 			// onMymuseAfterSave  onFinderAfterSave
-	        PluginHelper::importPlugin('mymuse');
 			$app->triggerEvent('onFinderAfterSave', array('com_mymuse.product', &$this, false, $isNew));
 			$res = $app->triggerEvent('onMyMuseAfterSave', array('com_mymuse.product', &$this, false, $isNew));
 

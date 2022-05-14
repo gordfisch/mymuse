@@ -19,6 +19,7 @@ use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
@@ -68,13 +69,11 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
         parent::__construct($subject, $config);
 
-        $document = Factory::getDocument();
-        $js_path = Uri::Root().'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
-        $css_path = Uri::Root().'plugins/mymuse/audio_amplitude/assets/amplitude.css';
-        $document->addScript( $js_path );
-        $document->addStyleSheet($css_path );
+    }
 
-
+    public function onGetPlaylist($load_js = true){
+        $arr = $this->getPlaylist();
+        return $arr[2];
     }
     /**
      * getPlaylist
@@ -86,9 +85,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     public function getPlaylist($load_js = true){
         if(!$this->_playlist){
 
+            
+
             $db = Factory::getDBO();
-
-
             $mycategories           = $this->params->get('mycategories', array());
 
             foreach($mycategories as $key => $val){
@@ -99,24 +98,19 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                     $this->catalogs[$val] = $alias.'.js';
                 }
             }
-            $preview_path           = $this->params->get('preview_path', '/media/com_mymuse/previews/');
-            $playlist_path          = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
-            
-
-
-            $site_url   = preg_replace("#administrator/#","",JURI::base());
-            $document   = Factory::getDocument();
-            $app        = Factory::getApplication();
-            $menu       = $app->getMenu();
-            $front      = 0;
-            $jinput     = $app->input;
-            $option = $jinput->get('option');
+            $preview_path   = $this->params->get('preview_path', '/media/com_mymuse/previews/');
+            $playlist_path  = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
+            $site_url       = URI::root();
+            $document       = Factory::getDocument();
+            $app            = Factory::getApplication();
+            $menu           = $app->getMenu();
+            $front          = 0;
+            $jinput         = $app->input;
+            $option         = $jinput->get('option');
 
             if ($menu->getActive() == $menu->getDefault()) {
                 $front = 1;
             }
-
-
         /*
             [language] => en-GB
             [option] => com_mymuse
@@ -148,7 +142,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             }
          
             if($jinput->get('tmpl','') != "component" && $load_js){
-                $document->addScript( $js_path);
+               // HTMLHelper::_('script', $js_path, ['version' => 'auto', 'relative' => true], ['type' => 'module']);
             }
         //echo $path; exit;
             $playlist = file_get_contents ( $path );
@@ -169,6 +163,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             }
             $arr[0] = $new_arr;
             $arr[1] = $playarray ['songs'];
+            $arr[2] = $js_path;
             $this->_playlist = $arr;
         }
         return $this->_playlist;
@@ -181,16 +176,13 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
     {
 
-        
-
-
         $arr            = $this->getPlaylist();
         $this->indexes  = $arr[0];
         $this->playlist = $arr[1];
 
         $document       = Factory::getDocument();
         $match          = 0;
-        $site_url       = preg_replace("#administrator/#","",JURI::base());
+        $site_url       = URI::root();
         $params         = MyMuseHelper::getParams();
         $preview_path   = $this->params->get('preview_path', '/media/com_mymuse/previews/');
 
@@ -255,19 +247,26 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $playlist_path          = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
         $preview_path           = $this->params->get('preview_path', '/media/com_mymuse/previews/');
 
+        $mymuseparams = MymuseHelper::getParams();
+        $onedir = $mymuseparams->get('my_previews_in_one_dir',0);
+
+
+
         $text       = '';
         $db         = Factory::getDBO();
         $top_cat    = $mycategories[0];
         $query      = "SELECT id, alias from #__categories WHERE parent_id=$top_cat";
         $db->setQuery($query);
         $res        = $db->loadObjectList();
+        $root_uri = URI::root();
+        $root_uri = rtrim($root_uri,'/');
         
         $first                  = new \StdClass;
         $first->name            = " ";
         $first->artist          = "PLAYER";
         $first->album           = "READY";
-        $first->url             = $path_to_previews."00_-_silence.mp3";
-        $first->cover_art_url   = $first_album_art_path;
+        $first->url             = $root_uri.$path_to_previews."00_-_silence.mp3";
+        $first->cover_art_url   = $root_uri.$first_album_art_path;
 
         $all                    = array();
         $all['songs'][]         = $first;
@@ -291,13 +290,20 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 }
             }
             $track_query = $this->_getQuery($catin);
+            //echo $track_query; exit;
             $db->setQuery($track_query);
     
             if($tracks = $db->loadObjectList()){
                 $i = 0;
-                //echo '<br />';
                 foreach ($tracks as $track){
-                    $path = "/var/www/html/nexgen".$track->url;
+                    if(!$onedir){
+                        $path = JPATH_ROOT.$preview_path.$track->artist_alias.'/'.$track->album_alias.'/'.$track->url;
+                        $track->url = $root_uri.$preview_path.$track->artist_alias.'/'.$track->album_alias.'/'.$track->url;
+                    }else{
+                        $path = JPATH_ROOT.$preview_path.'/'.$track->url;
+                        $track->url = $root_uri.$preview_path.$track->url;
+                    }
+            
                     if(!file_exists($path)){
                         //echo "$i ".$path."<br />\n";
                         $i++;
@@ -329,7 +335,13 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $db->setQuery($track_query);
         if($tracks = $db->loadObjectList()){
             $i = 0;
+            
             foreach ($tracks as $track){
+                if(!$onedir){
+                    $track->url = $root_uri.$preview_path.$track->artist_alias.'/'.$track->album_alias.'/'.$track->url;
+                }else{
+                    $track->url = $root_uri.$preview_path.$track->url;
+                }
                 $all['songs'][] = $track;
             }
         }
@@ -354,7 +366,13 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $db->setQuery($track_query);
         if($tracks = $db->loadObjectList()){
             $i = 0;
+            
             foreach ($tracks as $track){
+                if(!$onedir){
+                    $track->url = $root_uri.$preview_path.$track->artist_alias.'/'.$track->album_alias.'/'.$track->url;
+                }else{
+                    $track->url = $root_uri.$preview_path.$track->url;
+                }
                 $all['songs'][] = $track;
             }
         }
@@ -376,13 +394,19 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     
     function _getQuery($catin)
     {
-        $preview_path   = $this->params->get('preview_path', '/media/com_mymuse/previews/');
+        $root_uri = Uri::root();
+        $root_uri = rtrim($root_uri,'/');
+
+        $preview_path   = $root_uri.$this->params->get('preview_path', '/media/com_mymuse/previews/');
         $catin          = implode(",",$catin);
 
+
         $track_query = "SELECT p.title as name, parent.title as album,
-            p.product_sku as artist,
-            CONCAT('".$preview_path."',p.file_preview) as url,
-            parent.list_image as cover_art_url
+            a.title as artist,
+            p.file_preview as url,
+            CONCAT('".$root_uri."/"."',parent.list_image) as cover_art_url,
+            parent.alias as album_alias,
+            a.alias as artist_alias
             FROM #__mymuse_product as p
             LEFT JOIN #__mymuse_product as parent on p.parentid=parent.id
             LEFT JOIN #__categories as a on parent.artistid=a.id
@@ -399,7 +423,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
     function _getQueryHome()
     {
-        $preview_path   = $this->params->get('preview_path', '/media/com_mymuse/previews/');
+        $root_uri = Uri::root();
+        $root_uri = rtrim($root_uri,'/');
+        $preview_path   = $root_uri . $this->params->get('preview_path', '/media/com_mymuse/previews/');
 
         $db = Factory::getDBO();
         //$db->setQuery("SELECT params FROM #__modules WHERE title='Latest Releases (MyMuse)' AND module='mod_mymuse_latest_nexgen'");
@@ -465,9 +491,11 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         }
 
         $track_query = "SELECT parent.id, p.title as name, parent.title as album,
-            p.product_sku as artist, p.hits,
-            CONCAT('".$preview_path."',p.file_preview) as url,
-            parent.list_image as cover_art_url
+            a.title as artist, p.hits,
+            p.file_preview as url,
+            CONCAT('".$root_uri."/"."',parent.list_image) as cover_art_url,
+            parent.alias as album_alias,
+            a.alias as artist_alias
             FROM #__mymuse_product as p
             LEFT JOIN #__mymuse_product as parent on p.parentid=parent.id
             LEFT JOIN #__categories as a on parent.artistid=a.id 

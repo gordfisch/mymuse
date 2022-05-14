@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AmplitudeJS Testing</title>
+
+    <!-- Include font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
+<link href="amp-test.css" rel="stylesheet" />
+
+
+
+  </head>
+  <body>
+    <div id="flat-black-player-container">
+
+      <div id="player-screen">
+        <div id="player-top">
+          <img data-amplitude-song-info="cover_art_url"/>
+        </div>
+        <div id="player-progress-bar-container">
+          <progress id="song-played-progress" class="amplitude-song-played-progress"></progress>
+          <progress id="song-buffered-progress" class="amplitude-buffered-progress" value="0"></progress>
+        </div>
+        <div id="player-middle">
+          <div id="time-container">
+            <span class="amplitude-current-time time-container"></span>
+            <span class="amplitude-duration-time time-container"></span>
+          </div>
+          <div id="meta-container">
+            <span data-amplitude-song-info="name" class="song-name"></span>
+
+            <div class="song-artist-album">
+              <span data-amplitude-song-info="artist"></span>
+            </div>
+          </div>
+        </div>
+        <div id="player-bottom">
+
+
+
+
+          <div id="control-container">
+
+            <div id="shuffle-container">
+              <div class="amplitude-shuffle amplitude-shuffle-off" id="shuffle"></div>
+            </div>
+
+            <div id="prev-container">
+              <div class="amplitude-prev" id="previous"></div>
+            </div>
+
+            <div id="play-pause-container">
+              <div class="amplitude-play-pause" id="play-pause"></div>
+            </div>
+
+            <div id="next-container">
+              <div class="amplitude-next" id="next"></div>
+            </div>
+
+            <div id="repeat-container">
+              <div class="amplitude-repeat" id="repeat"></div>
+            </div>
+
+          </div>
+
+  <div id="volume-container">
+            <img src="https://521dimensions.com/img/open-source/amplitudejs/examples/flat-black/volume.svg"/><input type="range" class="amplitude-volume-slider" step=".1"/>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="time-progress">
+              <div id="progress-container">
+                <input type="range" class="amplitude-song-slider"/>
+                <progress id="song-played-progress" class="amplitude-song-played-progress"></progress>
+                <progress id="song-buffered-progress" class="amplitude-buffered-progress" value="0"></progress>
+</div>
+    <script src="amplitude.min.js"></script>
+  <script src="amp-test.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

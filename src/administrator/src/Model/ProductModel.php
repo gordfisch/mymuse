@@ -704,7 +704,7 @@ class ProductModel extends AdminModel
     	$app 				= Factory::getApplication();
     	$input 				= $app->input;
     	$id 				= $input->get('id', 0);
-    	$subtype			= $input->get('subtype', '');
+    	$subtype			= $input->get('type', '');
 
     	$filter_state 		= $app->getUserStateFromRequest( $option.'filter_state', 'filter_state', '', 'word' );
 			$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
@@ -756,13 +756,17 @@ class ProductModel extends AdminModel
 			}else{
 				$pid = $id;
 			}
+			if($pid) {
+				$query = "SELECT * from #__mymuse_product_attribute_sku WHERE
+					product_parent_id=$pid
+					ORDER BY ordering";
 
-			$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
-				product_parent_id='.$pid.'
-				ORDER BY ordering';
 
-			$this->_db->setQuery($query);
-			$lists['attribute_sku'] = $this->_db->loadObjectList();
+				$this->_db->setQuery($query);
+				$lists['attribute_sku'] = $this->_db->loadObjectList();
+
+			}
+			
 
 			// items
 			$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
@@ -800,7 +804,6 @@ class ProductModel extends AdminModel
     /**
     * Method to get the file lists.
     *
-    * @access    public
     * @return    array
     *
     * @since 3.0
@@ -919,13 +922,11 @@ class ProductModel extends AdminModel
 
 
 
-		if (isset($data['metadata']) && isset($data['metadata']['author']))
-		{
+		if (isset($data['metadata']) && isset($data['metadata']['author'])){
 			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
 		}
 
-		if (isset($data['created_by_alias']))
-		{
+		if (isset($data['created_by_alias'])){
 			$data['created_by_alias'] = $filter->clean($data['created_by_alias'], 'TRIM');
 		}
 
@@ -936,27 +937,22 @@ class ProductModel extends AdminModel
 		{
 			if ($data['alias'] == null)
 			{
-				if (Factory::getApplication()->get('unicodeslugs') == 1)
-				{
+				if (Factory::getApplication()->get('unicodeslugs') == 1){
 					$data['alias'] = \JFilterOutput::stringURLUnicodeSlug($data['title']);
-				}
-				else
-				{
+				}else{
 					$data['alias'] = \JFilterOutput::stringURLSafe($data['title']);
 				}
 
 				$table = Table::getInstance('ProductTable', 'Joomla\\Component\\Mymuse\\Administrator\\Table\\');
 
-				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid'])))
-				{
+				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid']))){
 					$msg = Text::_('COM_MYMUSE_SAVE_WARNING');
 				}
 
 				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
 				$data['alias'] = $alias;
 
-				if (isset($msg))
-				{
+				if (isset($msg)){
 					Factory::getApplication()->enqueueMessage($msg, 'warning');
 				}
 			}
@@ -964,9 +960,7 @@ class ProductModel extends AdminModel
 
 
 
-		if (parent::save($data))
-		{
-
+		if (parent::save($data)){
 			return true;
 		}
 
@@ -1208,6 +1202,7 @@ class ProductModel extends AdminModel
         	$arr[] = $pks;
         	$pks = $arr;
         }
+ 
         foreach($pks as $pk){
             $table->checkin($pk);
         }

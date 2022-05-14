@@ -205,11 +205,11 @@ for ($i=0;$i<count($order->items); $i++) {
 			|| count($order->tax_array) > 0){ ?>
 			<!--  original subtotal -->
 				<li class="item-container summary cols-<?php echo $cols + 1; ?>">
-			    	<div class="cart"data-name="<?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?>"><?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?></div>
+			    	<div class="cart mymuse-mobile-hide"><?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?></div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
 			    		?><div></div>
 			    	<?php } ?>
-			        <div class="myoriginalsubtotal cart" colspan="<?php echo $order->colspan2; ?>">
+			        <div class="myoriginalsubtotal cart" data-name="<?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?>">
 			        	<span id="subtotal_before_discount">
 			        	<?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?>
 			        	</span>
@@ -223,12 +223,12 @@ for ($i=0;$i<count($order->items); $i++) {
 			<?php //for shopper group discount 
 			if($order->shopper_group_discount > 0.00){ ?>
 			    <li class="item-container summary cols-<?php echo $cols + 1; ?>">
-			    	<div class="cart" data-name="<?php echo JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>"><?php echo JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
+			    	<div class="cart mymuse-mobile-hide" ><?php echo JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
 			    	<?php echo $order->shopper_group_name; ?> <?php echo $user->shopper_group->discount; ?> %</div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
 			    		?><div></div>
 			    	<?php } ?>
-			        <div class="myshoppergroupdiscount cart">
+			        <div class="myshoppergroupdiscount cart" data-name="<?php echo JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>">
 			        	<span id="shopper_group_discount">(<?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?>)
 			        	</spanv>
 			        </div>
@@ -241,12 +241,12 @@ for ($i=0;$i<count($order->items); $i++) {
 			<?php //for regular discount
 			if($order->discount > 0.00){ ?>
 			    <li class="item-container summary cols-<?php echo $cols + 1; ?>">
-			    	<div class="cart" data-name="<?php echo JText::_('COM_MYMUSE_SHOPPING_DISCOUNT'); ?>"><?php echo JText::_('COM_MYMUSE_DISCOUNT'); ?>
+			    	<div class="cart mymuse-mobile-hide" ><?php echo JText::_('COM_MYMUSE_DISCOUNT'); ?>
 			    	</div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
 			    		?><div></div>
 			    	<?php } ?>
-			        <div class="mydiscount cart">
+			        <div class="mydiscount cart" data-name="<?php echo JText::_('COM_MYMUSE_SHOPPING_DISCOUNT'); ?>">
 			        	<span id="discount">- <?php echo MyMuseHelper::printMoney($order->discount); ?>
 			        	</span>
 			        </div>
@@ -260,12 +260,12 @@ for ($i=0;$i<count($order->items); $i++) {
 			<?php //COUPONS
 			if($params->get("my_use_coupons summary") && @$order->coupon->id){ ?>
 			    <li class="item-container summary cols-<?php echo $cols + 1; ?>">
-			    	<div class="cart" data-name="<?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?>"><?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></div>
+			    	<div class="cart mymuse-mobile-hide" ><?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
 			    		?><div></div>
 			    	<?php } ?>
 			    	<div class="cart" >&nbsp;</div>
-			        <div class="mycoupon cart">
+			        <div class="mycoupon cart" data-name="<?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?>">
 			        	<span id="coupon_discount"> <?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> 
 			        	</span>
 			        </div>
@@ -283,11 +283,11 @@ for ($i=0;$i<count($order->items); $i++) {
 			    	$key = preg_replace("/_/"," ", $key);
 			    	?>
 			        <li class="item-container summary cols-<?php echo $cols + 1; ?>">
-			        	<div class="cart" data-name="<?php echo $key; ?>"><?php echo $key; ?></div>
+			        	<div class="cart mymuse-mobile-hide" ><?php echo $key; ?></div>
 			        	<?php for($i = 3; $i <= $cols; $i++){
 			        		?><div></div>
 			        	<?php } ?>
-			        	<div class="mytax  cart">
+			        	<div class="mytax cart" data-name="<?php echo $key; ?>">
 			        		<span id="tax<?php echo strtolower($pre_key); ?>"><?php echo MyMuseHelper::printMoney($val); ?>
 			        		</span>
 			        	</div>

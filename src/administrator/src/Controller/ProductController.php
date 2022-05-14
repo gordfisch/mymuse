@@ -194,11 +194,7 @@ class ProductController extends FormController
                 default:
                     $this->app->enqueueMessage(Text::_('COM_MYMUSE_ITEM_SAVED' ), 'notice');
                     $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='. $this->id.'&type=product' );
-
-
-
             }
-
         }
 		elseif($type == "file" || $type == "allfiles"){
 	        /* SAVING A FILE */
@@ -281,7 +277,6 @@ class ProductController extends FormController
 
         } else {
             $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ERROR_SAVING_ITEM' ).' : '.$model->getError(), 'error');
-    
             if($this->parentid){
                 $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->parentid );
             }elseif($this->id){
@@ -303,7 +298,6 @@ class ProductController extends FormController
     */    
     function edititem() 
     {
-        //MymuseHelper::print_pre($this->input); exit;
         $task   = $this->input->get('task');
         $id     = $this->input->get('id');
         $app    = Factory::getApplication();
@@ -511,9 +505,9 @@ class ProductController extends FormController
         $model      = $this->getModel('product');
         $model->checkin();
 
-        $this->input      = Factory::getApplication()->input;
-        $parentid   = $this->input->get( 'parentid', '' );
-        $type    = $this->input->getr( 'type', '' );
+        $this->input    = Factory::getApplication()->input;
+        $parentid       = $this->input->get( 'parentid', '' );
+        $type           = $this->input->getr( 'type', '' );
         $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_CANCELLED' ), 'notice');
 
         if($type == 'file'){
@@ -540,7 +534,7 @@ class ProductController extends FormController
             Error::raiseError(500, Text::_( 'COM_MYMUSE_SELECT_AN_ITEM_TO_DELETE' ) );
         }
 		$parentid = $this->input->get( 'parentid', '' );
-		$type  = $this->input->get( 'type', '' );
+		$type     = $this->input->get( 'type', '' );
 		$layout   = $this->input->get( 'layout', '' );
         $model    = $this->getModel('product');
 
