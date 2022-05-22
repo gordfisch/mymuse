@@ -1,284 +1,75 @@
-[14-Jan-2022 15:27:22 America/New_York] PHP Notice:  Undefined property: Joomla\Component\Mymuse\Site\Service\MymuseNomenuRules::$params in /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Service/MymuseNomenuRules.php on line 233
-[14-Jan-2022 15:27:22 America/New_York] PHP Stack trace:
-[14-Jan-2022 15:27:22 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[14-Jan-2022 15:27:22 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[14-Jan-2022 15:27:22 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[14-Jan-2022 15:27:22 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[14-Jan-2022 15:27:22 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->route() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:230
-[14-Jan-2022 15:27:22 America/New_York] PHP   6. Joomla\CMS\Application\SiteApplication->route() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:822
-[14-Jan-2022 15:27:22 America/New_York] PHP   7. Joomla\CMS\Router\SiteRouter->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1066
-[14-Jan-2022 15:27:22 America/New_York] PHP   8. Joomla\CMS\Router\SiteRouter->processParseRules() /var/www/html/mymuseJ4/joomla/libraries/src/Router/Router.php:144
-[14-Jan-2022 15:27:22 America/New_York] PHP   9. Joomla\CMS\Router\SiteRouter->parseSefRoute() /var/www/html/mymuseJ4/joomla/libraries/src/Router/Router.php:400
-[14-Jan-2022 15:27:22 America/New_York] PHP  10. Joomla\Component\Mymuse\Site\Service\Router->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Router/SiteRouter.php:312
-[14-Jan-2022 15:27:22 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Service\MymuseNomenuRules->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Component/Router/RouterView.php:267
-[14-Jan-2022 15:28:43 America/New_York] PHP Notice:  Undefined variable: dbo in /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Service/MymuseNomenuRules.php on line 251
-[14-Jan-2022 15:28:43 America/New_York] PHP Stack trace:
-[14-Jan-2022 15:28:43 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[14-Jan-2022 15:28:43 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[14-Jan-2022 15:28:43 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[14-Jan-2022 15:28:43 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[14-Jan-2022 15:28:43 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->route() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:230
-[14-Jan-2022 15:28:43 America/New_York] PHP   6. Joomla\CMS\Application\SiteApplication->route() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:822
-[14-Jan-2022 15:28:43 America/New_York] PHP   7. Joomla\CMS\Router\SiteRouter->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1066
-[14-Jan-2022 15:28:43 America/New_York] PHP   8. Joomla\CMS\Router\SiteRouter->processParseRules() /var/www/html/mymuseJ4/joomla/libraries/src/Router/Router.php:144
-[14-Jan-2022 15:28:43 America/New_York] PHP   9. Joomla\CMS\Router\SiteRouter->parseSefRoute() /var/www/html/mymuseJ4/joomla/libraries/src/Router/Router.php:400
-[14-Jan-2022 15:28:43 America/New_York] PHP  10. Joomla\Component\Mymuse\Site\Service\Router->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Router/SiteRouter.php:312
-[14-Jan-2022 15:28:43 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Service\MymuseNomenuRules->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Component/Router/RouterView.php:267
-[05-May-2022 10:31:49 America/New_York] PHP Warning:  require_once(/var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse//helpers/mymuse.php): failed to open stream: No such file or directory in /var/www/html/mymuseJ4/joomla/plugins/user/mymuse/mymuse.php on line 23
-[05-May-2022 10:31:49 America/New_York] PHP Stack trace:
-[05-May-2022 10:31:49 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[05-May-2022 10:31:49 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[05-May-2022 10:31:49 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[05-May-2022 10:31:49 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[05-May-2022 10:31:49 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
-[05-May-2022 10:31:49 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
-[05-May-2022 10:31:49 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
-[05-May-2022 10:31:49 America/New_York] PHP   8. Joomla\Component\Users\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
-[05-May-2022 10:31:49 America/New_York] PHP   9. Joomla\Component\Users\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
-[05-May-2022 10:31:49 America/New_York] PHP  10. Joomla\Component\Users\Site\View\Profile\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_users/src/Controller/DisplayController.php:133
-[05-May-2022 10:31:49 America/New_York] PHP  11. Joomla\Component\Users\Site\Model\ProfileModel->getForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/View/Profile/HtmlView.php:116
-[05-May-2022 10:31:49 America/New_York] PHP  12. Joomla\Component\Users\Site\Model\ProfileModel->loadForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:119
-[05-May-2022 10:31:49 America/New_York] PHP  13. Joomla\Component\Users\Site\Model\ProfileModel->loadFormData() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:108
-[05-May-2022 10:31:49 America/New_York] PHP  14. Joomla\Component\Users\Site\Model\ProfileModel->preprocessData() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:176
-[05-May-2022 10:31:49 America/New_York] PHP  15. Joomla\CMS\Plugin\PluginHelper::importPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:154
-[05-May-2022 10:31:49 America/New_York] PHP  16. Joomla\CMS\Plugin\PluginHelper::import() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:194
-[05-May-2022 10:31:49 America/New_York] PHP  17. Joomla\CMS\Application\SiteApplication->bootPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:236
-[05-May-2022 10:31:49 America/New_York] PHP  18. Joomla\CMS\Application\SiteApplication->loadExtension() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:94
-[05-May-2022 10:31:49 America/New_York] PHP  19. Joomla\CMS\Application\SiteApplication->loadPluginFromFilesystem() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:160
-[05-May-2022 10:31:49 America/New_York] PHP  20. require_once() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:219
-[05-May-2022 10:31:49 America/New_York] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse//helpers/mymuse.php' (include_path='.:/usr/share/php') in /var/www/html/mymuseJ4/joomla/plugins/user/mymuse/mymuse.php on line 23
-[05-May-2022 10:31:49 America/New_York] PHP Stack trace:
-[05-May-2022 10:31:49 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[05-May-2022 10:31:49 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[05-May-2022 10:31:49 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[05-May-2022 10:31:49 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[05-May-2022 10:31:49 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
-[05-May-2022 10:31:49 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
-[05-May-2022 10:31:49 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
-[05-May-2022 10:31:49 America/New_York] PHP   8. Joomla\Component\Users\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
-[05-May-2022 10:31:49 America/New_York] PHP   9. Joomla\Component\Users\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
-[05-May-2022 10:31:49 America/New_York] PHP  10. Joomla\Component\Users\Site\View\Profile\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_users/src/Controller/DisplayController.php:133
-[05-May-2022 10:31:49 America/New_York] PHP  11. Joomla\Component\Users\Site\Model\ProfileModel->getForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/View/Profile/HtmlView.php:116
-[05-May-2022 10:31:49 America/New_York] PHP  12. Joomla\Component\Users\Site\Model\ProfileModel->loadForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:119
-[05-May-2022 10:31:49 America/New_York] PHP  13. Joomla\Component\Users\Site\Model\ProfileModel->loadFormData() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:108
-[05-May-2022 10:31:49 America/New_York] PHP  14. Joomla\Component\Users\Site\Model\ProfileModel->preprocessData() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:176
-[05-May-2022 10:31:49 America/New_York] PHP  15. Joomla\CMS\Plugin\PluginHelper::importPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:154
-[05-May-2022 10:31:49 America/New_York] PHP  16. Joomla\CMS\Plugin\PluginHelper::import() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:194
-[05-May-2022 10:31:49 America/New_York] PHP  17. Joomla\CMS\Application\SiteApplication->bootPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:236
-[05-May-2022 10:31:49 America/New_York] PHP  18. Joomla\CMS\Application\SiteApplication->loadExtension() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:94
-[05-May-2022 10:31:49 America/New_York] PHP  19. Joomla\CMS\Application\SiteApplication->loadPluginFromFilesystem() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:160
-[05-May-2022 10:31:49 America/New_York] PHP  20. require_once() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:219
-[06-May-2022 18:13:33 America/New_York] PHP Warning:  require_once(/var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse//helpers/mymuse.php): failed to open stream: No such file or directory in /var/www/html/mymuseJ4/joomla/plugins/user/mymuse/mymuse.php on line 23
-[06-May-2022 18:13:33 America/New_York] PHP Stack trace:
-[06-May-2022 18:13:33 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[06-May-2022 18:13:33 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[06-May-2022 18:13:33 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[06-May-2022 18:13:33 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[06-May-2022 18:13:33 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
-[06-May-2022 18:13:33 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
-[06-May-2022 18:13:33 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
-[06-May-2022 18:13:33 America/New_York] PHP   8. Joomla\Component\Users\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
-[06-May-2022 18:13:33 America/New_York] PHP   9. Joomla\Component\Users\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
-[06-May-2022 18:13:33 America/New_York] PHP  10. Joomla\Component\Users\Site\View\Login\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_users/src/Controller/DisplayController.php:133
-[06-May-2022 18:13:33 America/New_York] PHP  11. Joomla\Component\Users\Site\View\Login\HtmlView->get() /var/www/html/mymuseJ4/joomla/components/com_users/src/View/Login/HtmlView.php:95
-[06-May-2022 18:13:33 America/New_York] PHP  12. Joomla\Component\Users\Site\Model\LoginModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:153
-[06-May-2022 18:13:33 America/New_York] PHP  13. Joomla\Component\Users\Site\Model\LoginModel->loadForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/LoginModel.php:42
-[06-May-2022 18:13:33 America/New_York] PHP  14. Joomla\Component\Users\Site\Model\LoginModel->preprocessForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:117
-[06-May-2022 18:13:33 America/New_York] PHP  15. Joomla\Component\Users\Site\Model\LoginModel->preprocessForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/LoginModel.php:119
-[06-May-2022 18:13:33 America/New_York] PHP  16. Joomla\CMS\Plugin\PluginHelper::importPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:176
-[06-May-2022 18:13:33 America/New_York] PHP  17. Joomla\CMS\Plugin\PluginHelper::import() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:194
-[06-May-2022 18:13:33 America/New_York] PHP  18. Joomla\CMS\Application\SiteApplication->bootPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:236
-[06-May-2022 18:13:33 America/New_York] PHP  19. Joomla\CMS\Application\SiteApplication->loadExtension() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:94
-[06-May-2022 18:13:33 America/New_York] PHP  20. Joomla\CMS\Application\SiteApplication->loadPluginFromFilesystem() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:160
-[06-May-2022 18:13:33 America/New_York] PHP  21. require_once() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:219
-[06-May-2022 18:13:33 America/New_York] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse//helpers/mymuse.php' (include_path='.:/usr/share/php') in /var/www/html/mymuseJ4/joomla/plugins/user/mymuse/mymuse.php on line 23
-[06-May-2022 18:13:33 America/New_York] PHP Stack trace:
-[06-May-2022 18:13:33 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[06-May-2022 18:13:33 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[06-May-2022 18:13:33 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[06-May-2022 18:13:33 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[06-May-2022 18:13:33 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
-[06-May-2022 18:13:33 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
-[06-May-2022 18:13:33 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
-[06-May-2022 18:13:33 America/New_York] PHP   8. Joomla\Component\Users\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
-[06-May-2022 18:13:33 America/New_York] PHP   9. Joomla\Component\Users\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
-[06-May-2022 18:13:33 America/New_York] PHP  10. Joomla\Component\Users\Site\View\Login\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_users/src/Controller/DisplayController.php:133
-[06-May-2022 18:13:33 America/New_York] PHP  11. Joomla\Component\Users\Site\View\Login\HtmlView->get() /var/www/html/mymuseJ4/joomla/components/com_users/src/View/Login/HtmlView.php:95
-[06-May-2022 18:13:33 America/New_York] PHP  12. Joomla\Component\Users\Site\Model\LoginModel->getForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/View/AbstractView.php:153
-[06-May-2022 18:13:33 America/New_York] PHP  13. Joomla\Component\Users\Site\Model\LoginModel->loadForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/LoginModel.php:42
-[06-May-2022 18:13:33 America/New_York] PHP  14. Joomla\Component\Users\Site\Model\LoginModel->preprocessForm() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:117
-[06-May-2022 18:13:33 America/New_York] PHP  15. Joomla\Component\Users\Site\Model\LoginModel->preprocessForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/LoginModel.php:119
-[06-May-2022 18:13:33 America/New_York] PHP  16. Joomla\CMS\Plugin\PluginHelper::importPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:176
-[06-May-2022 18:13:33 America/New_York] PHP  17. Joomla\CMS\Plugin\PluginHelper::import() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:194
-[06-May-2022 18:13:33 America/New_York] PHP  18. Joomla\CMS\Application\SiteApplication->bootPlugin() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/PluginHelper.php:236
-[06-May-2022 18:13:33 America/New_York] PHP  19. Joomla\CMS\Application\SiteApplication->loadExtension() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:94
-[06-May-2022 18:13:33 America/New_York] PHP  20. Joomla\CMS\Application\SiteApplication->loadPluginFromFilesystem() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:160
-[06-May-2022 18:13:33 America/New_York] PHP  21. require_once() /var/www/html/mymuseJ4/joomla/libraries/src/Extension/ExtensionManagerTrait.php:219
-[06-May-2022 19:38:13 America/New_York] PHP Notice:  Undefined variable: query in /var/www/html/mymuseJ4/joomla/plugins/user/mymuse/mymuse.php on line 135
-[06-May-2022 19:38:13 America/New_York] PHP Stack trace:
-[06-May-2022 19:38:13 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[06-May-2022 19:38:13 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[06-May-2022 19:38:13 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[06-May-2022 19:38:13 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[06-May-2022 19:38:13 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
-[06-May-2022 19:38:13 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
-[06-May-2022 19:38:13 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
-[06-May-2022 19:38:13 America/New_York] PHP   8. Joomla\Component\Users\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
-[06-May-2022 19:38:13 America/New_York] PHP   9. Joomla\Component\Users\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
-[06-May-2022 19:38:13 America/New_York] PHP  10. Joomla\Component\Users\Site\View\Profile\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_users/src/Controller/DisplayController.php:133
-[06-May-2022 19:38:13 America/New_York] PHP  11. Joomla\Component\Users\Site\Model\ProfileModel->getForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/View/Profile/HtmlView.php:116
-[06-May-2022 19:38:13 America/New_York] PHP  12. Joomla\Component\Users\Site\Model\ProfileModel->loadForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:119
-[06-May-2022 19:38:13 America/New_York] PHP  13. Joomla\Component\Users\Site\Model\ProfileModel->loadFormData() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:108
-[06-May-2022 19:38:13 America/New_York] PHP  14. Joomla\Component\Users\Site\Model\ProfileModel->preprocessData() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:176
-[06-May-2022 19:38:13 America/New_York] PHP  15. Joomla\CMS\Application\SiteApplication->triggerEvent() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:157
-[06-May-2022 19:38:13 America/New_York] PHP  16. Joomla\Event\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/EventAware.php:111
-[06-May-2022 19:38:13 America/New_York] PHP  17. plgUserMymuse->Joomla\CMS\Plugin\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Plugin/CMSPlugin.php:267-296}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/event/src/Dispatcher.php:486
-[06-May-2022 19:38:13 America/New_York] PHP  18. plgUserMymuse->onContentPrepareData() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/CMSPlugin.php:285
-[06-May-2022 19:38:13 America/New_York] PHP Notice:  Undefined variable: query in /var/www/html/mymuseJ4/joomla/plugins/user/mymuse/mymuse.php on line 143
-[06-May-2022 19:38:13 America/New_York] PHP Stack trace:
-[06-May-2022 19:38:13 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[06-May-2022 19:38:13 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[06-May-2022 19:38:13 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[06-May-2022 19:38:13 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[06-May-2022 19:38:13 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
-[06-May-2022 19:38:13 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
-[06-May-2022 19:38:13 America/New_York] PHP   7. Joomla\CMS\Dispatcher\ComponentDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
-[06-May-2022 19:38:13 America/New_York] PHP   8. Joomla\Component\Users\Site\Controller\DisplayController->execute() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:146
-[06-May-2022 19:38:13 America/New_York] PHP   9. Joomla\Component\Users\Site\Controller\DisplayController->display() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Controller/BaseController.php:735
-[06-May-2022 19:38:13 America/New_York] PHP  10. Joomla\Component\Users\Site\View\Profile\HtmlView->display() /var/www/html/mymuseJ4/joomla/components/com_users/src/Controller/DisplayController.php:133
-[06-May-2022 19:38:13 America/New_York] PHP  11. Joomla\Component\Users\Site\Model\ProfileModel->getForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/View/Profile/HtmlView.php:116
-[06-May-2022 19:38:13 America/New_York] PHP  12. Joomla\Component\Users\Site\Model\ProfileModel->loadForm() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:119
-[06-May-2022 19:38:13 America/New_York] PHP  13. Joomla\Component\Users\Site\Model\ProfileModel->loadFormData() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:108
-[06-May-2022 19:38:13 America/New_York] PHP  14. Joomla\Component\Users\Site\Model\ProfileModel->preprocessData() /var/www/html/mymuseJ4/joomla/components/com_users/src/Model/ProfileModel.php:176
-[06-May-2022 19:38:13 America/New_York] PHP  15. Joomla\CMS\Application\SiteApplication->triggerEvent() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Model/FormBehaviorTrait.php:157
-[06-May-2022 19:38:13 America/New_York] PHP  16. Joomla\Event\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/EventAware.php:111
-[06-May-2022 19:38:13 America/New_York] PHP  17. plgUserMymuse->Joomla\CMS\Plugin\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Plugin/CMSPlugin.php:267-296}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/event/src/Dispatcher.php:486
-[06-May-2022 19:38:13 America/New_York] PHP  18. plgUserMymuse->onContentPrepareData() /var/www/html/mymuseJ4/joomla/libraries/src/Plugin/CMSPlugin.php:285
-[08-May-2022 19:32:32 America/New_York] PHP Fatal error:  Can't use method return value in write context in /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Model/ProductModel.php on line 622
-[08-May-2022 19:32:32 America/New_York] PHP Stack trace:
-[08-May-2022 19:32:32 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[08-May-2022 19:32:32 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[08-May-2022 19:32:32 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[08-May-2022 19:32:32 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
-[08-May-2022 19:32:32 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:243
-[08-May-2022 19:32:32 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:204
-[08-May-2022 19:32:32 America/New_York] PHP   7. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Component/ComponentHelper.php:389
-[08-May-2022 19:32:32 America/New_York] PHP   8. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->dispatch() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Dispatcher/Dispatcher.php:56
-[08-May-2022 19:32:32 America/New_York] PHP   9. Joomla\Component\Mymuse\Site\Dispatcher\Dispatcher->getController() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:145
-[08-May-2022 19:32:32 America/New_York] PHP  10. Joomla\CMS\MVC\Factory\MVCFactory->createController() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ComponentDispatcher.php:172
-[08-May-2022 19:32:32 America/New_York] PHP  11. Joomla\Component\Mymuse\Site\Controller\DisplayController->__construct() /var/www/html/mymuseJ4/joomla/libraries/src/MVC/Factory/MVCFactory.php:79
-[08-May-2022 19:32:32 America/New_York] PHP  12. Joomla\Component\Mymuse\Site\Service\Mymuse::getObject() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Controller/DisplayController.php:167
-[08-May-2022 19:32:32 America/New_York] PHP  13. Joomla\Component\Mymuse\Site\Helper\CartHelper->__construct() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Service/Mymuse.php:74
-[08-May-2022 19:32:32 America/New_York] PHP  14. Joomla\Component\Mymuse\Site\Service\Mymuse::getObject() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Helper/CartHelper.php:77
-[08-May-2022 19:32:32 America/New_York] PHP  15. spl_autoload_call() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Service/Mymuse.php:74
-[08-May-2022 19:32:32 America/New_York] PHP  16. Joomla\CMS\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/components/com_mymuse/src/Service/Mymuse.php:74
-[08-May-2022 19:32:32 America/New_York] PHP  17. Composer\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Autoload/ClassLoader.php:56
-[08-May-2022 19:32:32 America/New_York] PHP  18. Composer\Autoload\includeFile() /var/www/html/mymuseJ4/joomla/libraries/vendor/composer/ClassLoader.php:344
-[11-May-2022 09:38:43 America/New_York] PHP Warning:  require_once(/var/www/html/mymuseJ4/joomla/components/com_mymuse/mymuse.class.php): failed to open stream: No such file or directory in /var/www/html/mymuseJ4/joomla/modules/mod_mymuse_minicart/mod_mymuse_minicart.php on line 24
-[11-May-2022 09:38:43 America/New_York] PHP Stack trace:
-[11-May-2022 09:38:43 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[11-May-2022 09:38:43 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[11-May-2022 09:38:43 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[11-May-2022 09:38:43 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:284
-[11-May-2022 09:38:43 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:802
-[11-May-2022 09:38:43 America/New_York] PHP   6. Joomla\CMS\Document\HtmlDocument->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1025
-[11-May-2022 09:38:43 America/New_York] PHP   7. Joomla\CMS\Document\HtmlDocument->_fetchTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:641
-[11-May-2022 09:38:43 America/New_York] PHP   8. Joomla\CMS\Document\HtmlDocument->_loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:838
-[11-May-2022 09:38:43 America/New_York] PHP   9. require() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:779
-[11-May-2022 09:38:43 America/New_York] PHP  10. Joomla\CMS\Document\HtmlDocument->countModules() /var/www/html/mymuseJ4/joomla/templates/cassiopeia/index.php:109
-[11-May-2022 09:38:43 America/New_York] PHP  11. Joomla\CMS\Document\Renderer\Html\ModuleRenderer->render() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:706
-[11-May-2022 09:38:43 America/New_York] PHP  12. Joomla\CMS\Helper\ModuleHelper::renderModule() /var/www/html/mymuseJ4/joomla/libraries/src/Document/Renderer/Html/ModuleRenderer.php:102
-[11-May-2022 09:38:43 America/New_York] PHP  13. Joomla\CMS\Helper\ModuleHelper::renderRawModule() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:167
-[11-May-2022 09:38:43 America/New_York] PHP  14. Joomla\CMS\Dispatcher\ModuleDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:295
-[11-May-2022 09:38:43 America/New_York] PHP  15. Joomla\CMS\Dispatcher\ModuleDispatcher::Joomla\CMS\Dispatcher\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:41-55}() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:57
-[11-May-2022 09:38:43 America/New_York] PHP  16. include() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:54
-[11-May-2022 09:38:43 America/New_York] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/mymuseJ4/joomla/components/com_mymuse/mymuse.class.php' (include_path='.:/usr/share/php') in /var/www/html/mymuseJ4/joomla/modules/mod_mymuse_minicart/mod_mymuse_minicart.php on line 24
-[11-May-2022 09:38:43 America/New_York] PHP Stack trace:
-[11-May-2022 09:38:43 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[11-May-2022 09:38:43 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[11-May-2022 09:38:43 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[11-May-2022 09:38:43 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:284
-[11-May-2022 09:38:43 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:802
-[11-May-2022 09:38:43 America/New_York] PHP   6. Joomla\CMS\Document\HtmlDocument->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1025
-[11-May-2022 09:38:43 America/New_York] PHP   7. Joomla\CMS\Document\HtmlDocument->_fetchTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:641
-[11-May-2022 09:38:43 America/New_York] PHP   8. Joomla\CMS\Document\HtmlDocument->_loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:838
-[11-May-2022 09:38:43 America/New_York] PHP   9. require() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:779
-[11-May-2022 09:38:43 America/New_York] PHP  10. Joomla\CMS\Document\HtmlDocument->countModules() /var/www/html/mymuseJ4/joomla/templates/cassiopeia/index.php:109
-[11-May-2022 09:38:43 America/New_York] PHP  11. Joomla\CMS\Document\Renderer\Html\ModuleRenderer->render() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:706
-[11-May-2022 09:38:43 America/New_York] PHP  12. Joomla\CMS\Helper\ModuleHelper::renderModule() /var/www/html/mymuseJ4/joomla/libraries/src/Document/Renderer/Html/ModuleRenderer.php:102
-[11-May-2022 09:38:43 America/New_York] PHP  13. Joomla\CMS\Helper\ModuleHelper::renderRawModule() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:167
-[11-May-2022 09:38:43 America/New_York] PHP  14. Joomla\CMS\Dispatcher\ModuleDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:295
-[11-May-2022 09:38:43 America/New_York] PHP  15. Joomla\CMS\Dispatcher\ModuleDispatcher::Joomla\CMS\Dispatcher\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:41-55}() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:57
-[11-May-2022 09:38:43 America/New_York] PHP  16. include() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:54
-[11-May-2022 09:39:59 America/New_York] PHP Warning:  require_once(/var/www/html/mymuseJ4/joomla/components/com_mymuse/mymuse.class.php): failed to open stream: No such file or directory in /var/www/html/mymuseJ4/joomla/modules/mod_mymuse_minicart/mod_mymuse_minicart.php on line 24
-[11-May-2022 09:39:59 America/New_York] PHP Stack trace:
-[11-May-2022 09:39:59 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[11-May-2022 09:39:59 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[11-May-2022 09:39:59 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[11-May-2022 09:39:59 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:284
-[11-May-2022 09:39:59 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:802
-[11-May-2022 09:39:59 America/New_York] PHP   6. Joomla\CMS\Document\HtmlDocument->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1025
-[11-May-2022 09:39:59 America/New_York] PHP   7. Joomla\CMS\Document\HtmlDocument->_fetchTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:641
-[11-May-2022 09:39:59 America/New_York] PHP   8. Joomla\CMS\Document\HtmlDocument->_loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:838
-[11-May-2022 09:39:59 America/New_York] PHP   9. require() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:779
-[11-May-2022 09:39:59 America/New_York] PHP  10. Joomla\CMS\Document\HtmlDocument->countModules() /var/www/html/mymuseJ4/joomla/templates/cassiopeia/index.php:109
-[11-May-2022 09:39:59 America/New_York] PHP  11. Joomla\CMS\Document\Renderer\Html\ModuleRenderer->render() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:706
-[11-May-2022 09:39:59 America/New_York] PHP  12. Joomla\CMS\Helper\ModuleHelper::renderModule() /var/www/html/mymuseJ4/joomla/libraries/src/Document/Renderer/Html/ModuleRenderer.php:102
-[11-May-2022 09:39:59 America/New_York] PHP  13. Joomla\CMS\Helper\ModuleHelper::renderRawModule() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:167
-[11-May-2022 09:39:59 America/New_York] PHP  14. Joomla\CMS\Dispatcher\ModuleDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:295
-[11-May-2022 09:39:59 America/New_York] PHP  15. Joomla\CMS\Dispatcher\ModuleDispatcher::Joomla\CMS\Dispatcher\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:41-55}() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:57
-[11-May-2022 09:39:59 America/New_York] PHP  16. include() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:54
-[11-May-2022 09:39:59 America/New_York] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/mymuseJ4/joomla/components/com_mymuse/mymuse.class.php' (include_path='.:/usr/share/php') in /var/www/html/mymuseJ4/joomla/modules/mod_mymuse_minicart/mod_mymuse_minicart.php on line 24
-[11-May-2022 09:39:59 America/New_York] PHP Stack trace:
-[11-May-2022 09:39:59 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[11-May-2022 09:39:59 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[11-May-2022 09:39:59 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[11-May-2022 09:39:59 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:284
-[11-May-2022 09:39:59 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:802
-[11-May-2022 09:39:59 America/New_York] PHP   6. Joomla\CMS\Document\HtmlDocument->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1025
-[11-May-2022 09:39:59 America/New_York] PHP   7. Joomla\CMS\Document\HtmlDocument->_fetchTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:641
-[11-May-2022 09:39:59 America/New_York] PHP   8. Joomla\CMS\Document\HtmlDocument->_loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:838
-[11-May-2022 09:39:59 America/New_York] PHP   9. require() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:779
-[11-May-2022 09:39:59 America/New_York] PHP  10. Joomla\CMS\Document\HtmlDocument->countModules() /var/www/html/mymuseJ4/joomla/templates/cassiopeia/index.php:109
-[11-May-2022 09:39:59 America/New_York] PHP  11. Joomla\CMS\Document\Renderer\Html\ModuleRenderer->render() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:706
-[11-May-2022 09:39:59 America/New_York] PHP  12. Joomla\CMS\Helper\ModuleHelper::renderModule() /var/www/html/mymuseJ4/joomla/libraries/src/Document/Renderer/Html/ModuleRenderer.php:102
-[11-May-2022 09:39:59 America/New_York] PHP  13. Joomla\CMS\Helper\ModuleHelper::renderRawModule() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:167
-[11-May-2022 09:39:59 America/New_York] PHP  14. Joomla\CMS\Dispatcher\ModuleDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:295
-[11-May-2022 09:39:59 America/New_York] PHP  15. Joomla\CMS\Dispatcher\ModuleDispatcher::Joomla\CMS\Dispatcher\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:41-55}() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:57
-[11-May-2022 09:39:59 America/New_York] PHP  16. include() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:54
-[11-May-2022 09:40:01 America/New_York] PHP Warning:  require_once(/var/www/html/mymuseJ4/joomla/components/com_mymuse/mymuse.class.php): failed to open stream: No such file or directory in /var/www/html/mymuseJ4/joomla/modules/mod_mymuse_minicart/mod_mymuse_minicart.php on line 24
-[11-May-2022 09:40:01 America/New_York] PHP Stack trace:
-[11-May-2022 09:40:01 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[11-May-2022 09:40:01 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[11-May-2022 09:40:01 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[11-May-2022 09:40:01 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:284
-[11-May-2022 09:40:01 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:802
-[11-May-2022 09:40:01 America/New_York] PHP   6. Joomla\CMS\Document\HtmlDocument->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1025
-[11-May-2022 09:40:01 America/New_York] PHP   7. Joomla\CMS\Document\HtmlDocument->_fetchTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:641
-[11-May-2022 09:40:01 America/New_York] PHP   8. Joomla\CMS\Document\HtmlDocument->_loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:838
-[11-May-2022 09:40:01 America/New_York] PHP   9. require() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:779
-[11-May-2022 09:40:01 America/New_York] PHP  10. Joomla\CMS\Document\HtmlDocument->countModules() /var/www/html/mymuseJ4/joomla/templates/cassiopeia/index.php:109
-[11-May-2022 09:40:01 America/New_York] PHP  11. Joomla\CMS\Document\Renderer\Html\ModuleRenderer->render() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:706
-[11-May-2022 09:40:01 America/New_York] PHP  12. Joomla\CMS\Helper\ModuleHelper::renderModule() /var/www/html/mymuseJ4/joomla/libraries/src/Document/Renderer/Html/ModuleRenderer.php:102
-[11-May-2022 09:40:01 America/New_York] PHP  13. Joomla\CMS\Helper\ModuleHelper::renderRawModule() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:167
-[11-May-2022 09:40:01 America/New_York] PHP  14. Joomla\CMS\Dispatcher\ModuleDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:295
-[11-May-2022 09:40:01 America/New_York] PHP  15. Joomla\CMS\Dispatcher\ModuleDispatcher::Joomla\CMS\Dispatcher\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:41-55}() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:57
-[11-May-2022 09:40:01 America/New_York] PHP  16. include() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:54
-[11-May-2022 09:40:01 America/New_York] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/mymuseJ4/joomla/components/com_mymuse/mymuse.class.php' (include_path='.:/usr/share/php') in /var/www/html/mymuseJ4/joomla/modules/mod_mymuse_minicart/mod_mymuse_minicart.php on line 24
-[11-May-2022 09:40:01 America/New_York] PHP Stack trace:
-[11-May-2022 09:40:01 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
-[11-May-2022 09:40:01 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
-[11-May-2022 09:40:01 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
-[11-May-2022 09:40:01 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:284
-[11-May-2022 09:40:01 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->render() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:802
-[11-May-2022 09:40:01 America/New_York] PHP   6. Joomla\CMS\Document\HtmlDocument->parse() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:1025
-[11-May-2022 09:40:01 America/New_York] PHP   7. Joomla\CMS\Document\HtmlDocument->_fetchTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:641
-[11-May-2022 09:40:01 America/New_York] PHP   8. Joomla\CMS\Document\HtmlDocument->_loadTemplate() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:838
-[11-May-2022 09:40:01 America/New_York] PHP   9. require() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:779
-[11-May-2022 09:40:01 America/New_York] PHP  10. Joomla\CMS\Document\HtmlDocument->countModules() /var/www/html/mymuseJ4/joomla/templates/cassiopeia/index.php:109
-[11-May-2022 09:40:01 America/New_York] PHP  11. Joomla\CMS\Document\Renderer\Html\ModuleRenderer->render() /var/www/html/mymuseJ4/joomla/libraries/src/Document/HtmlDocument.php:706
-[11-May-2022 09:40:01 America/New_York] PHP  12. Joomla\CMS\Helper\ModuleHelper::renderModule() /var/www/html/mymuseJ4/joomla/libraries/src/Document/Renderer/Html/ModuleRenderer.php:102
-[11-May-2022 09:40:01 America/New_York] PHP  13. Joomla\CMS\Helper\ModuleHelper::renderRawModule() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:167
-[11-May-2022 09:40:01 America/New_York] PHP  14. Joomla\CMS\Dispatcher\ModuleDispatcher->dispatch() /var/www/html/mymuseJ4/joomla/libraries/src/Helper/ModuleHelper.php:295
-[11-May-2022 09:40:01 America/New_York] PHP  15. Joomla\CMS\Dispatcher\ModuleDispatcher::Joomla\CMS\Dispatcher\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:41-55}() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:57
-[11-May-2022 09:40:01 America/New_York] PHP  16. include() /var/www/html/mymuseJ4/joomla/libraries/src/Dispatcher/ModuleDispatcher.php:54
+[16-May-2022 13:40:15 America/New_York] PHP Fatal error:  A void function must not return a value in /var/www/html/mymuseJ4/joomla/libraries/src/Session/Storage/JoomlaStorage.php on line 136
+[16-May-2022 13:40:15 America/New_York] PHP Stack trace:
+[16-May-2022 13:40:15 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[16-May-2022 13:40:15 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[16-May-2022 13:40:15 America/New_York] PHP   3. Joomla\DI\Container->get() /var/www/html/mymuseJ4/joomla/includes/app.php:57
+[16-May-2022 13:40:15 America/New_York] PHP   4. Joomla\DI\ContainerResource->getInstance() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/Container.php:96
+[16-May-2022 13:40:15 America/New_York] PHP   5. Joomla\CMS\Service\Provider\Application->Joomla\CMS\Service\Provider\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Application.php:94-110}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/ContainerResource.php:176
+[16-May-2022 13:40:15 America/New_York] PHP   6. Joomla\DI\Container->get() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Application.php:106
+[16-May-2022 13:40:15 America/New_York] PHP   7. Joomla\DI\ContainerResource->getInstance() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/Container.php:96
+[16-May-2022 13:40:15 America/New_York] PHP   8. Joomla\CMS\Service\Provider\Session->Joomla\CMS\Service\Provider\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:148-184}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/ContainerResource.php:176
+[16-May-2022 13:40:15 America/New_York] PHP   9. spl_autoload_call() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:179
+[16-May-2022 13:40:15 America/New_York] PHP  10. Joomla\CMS\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:179
+[16-May-2022 13:40:15 America/New_York] PHP  11. Composer\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Autoload/ClassLoader.php:56
+[16-May-2022 13:40:15 America/New_York] PHP  12. Composer\Autoload\includeFile() /var/www/html/mymuseJ4/joomla/libraries/vendor/composer/ClassLoader.php:428
+[16-May-2022 13:40:17 America/New_York] PHP Fatal error:  A void function must not return a value in /var/www/html/mymuseJ4/joomla/libraries/src/Session/Storage/JoomlaStorage.php on line 136
+[16-May-2022 13:40:17 America/New_York] PHP Stack trace:
+[16-May-2022 13:40:17 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[16-May-2022 13:40:17 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[16-May-2022 13:40:17 America/New_York] PHP   3. Joomla\DI\Container->get() /var/www/html/mymuseJ4/joomla/includes/app.php:57
+[16-May-2022 13:40:17 America/New_York] PHP   4. Joomla\DI\ContainerResource->getInstance() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/Container.php:96
+[16-May-2022 13:40:17 America/New_York] PHP   5. Joomla\CMS\Service\Provider\Application->Joomla\CMS\Service\Provider\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Application.php:94-110}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/ContainerResource.php:176
+[16-May-2022 13:40:17 America/New_York] PHP   6. Joomla\DI\Container->get() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Application.php:106
+[16-May-2022 13:40:17 America/New_York] PHP   7. Joomla\DI\ContainerResource->getInstance() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/Container.php:96
+[16-May-2022 13:40:17 America/New_York] PHP   8. Joomla\CMS\Service\Provider\Session->Joomla\CMS\Service\Provider\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:148-184}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/ContainerResource.php:176
+[16-May-2022 13:40:17 America/New_York] PHP   9. spl_autoload_call() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:179
+[16-May-2022 13:40:17 America/New_York] PHP  10. Joomla\CMS\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:179
+[16-May-2022 13:40:17 America/New_York] PHP  11. Composer\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Autoload/ClassLoader.php:56
+[16-May-2022 13:40:17 America/New_York] PHP  12. Composer\Autoload\includeFile() /var/www/html/mymuseJ4/joomla/libraries/vendor/composer/ClassLoader.php:428
+[16-May-2022 13:40:40 America/New_York] PHP Fatal error:  A void function must not return a value in /var/www/html/mymuseJ4/joomla/libraries/src/Session/Storage/JoomlaStorage.php on line 136
+[16-May-2022 13:40:40 America/New_York] PHP Stack trace:
+[16-May-2022 13:40:40 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[16-May-2022 13:40:40 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[16-May-2022 13:40:40 America/New_York] PHP   3. Joomla\DI\Container->get() /var/www/html/mymuseJ4/joomla/includes/app.php:57
+[16-May-2022 13:40:40 America/New_York] PHP   4. Joomla\DI\ContainerResource->getInstance() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/Container.php:96
+[16-May-2022 13:40:40 America/New_York] PHP   5. Joomla\CMS\Service\Provider\Application->Joomla\CMS\Service\Provider\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Application.php:94-110}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/ContainerResource.php:176
+[16-May-2022 13:40:40 America/New_York] PHP   6. Joomla\DI\Container->get() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Application.php:106
+[16-May-2022 13:40:40 America/New_York] PHP   7. Joomla\DI\ContainerResource->getInstance() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/Container.php:96
+[16-May-2022 13:40:40 America/New_York] PHP   8. Joomla\CMS\Service\Provider\Session->Joomla\CMS\Service\Provider\{closure:/var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:148-184}() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/di/src/ContainerResource.php:176
+[16-May-2022 13:40:40 America/New_York] PHP   9. spl_autoload_call() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:179
+[16-May-2022 13:40:40 America/New_York] PHP  10. Joomla\CMS\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Service/Provider/Session.php:179
+[16-May-2022 13:40:40 America/New_York] PHP  11. Composer\Autoload\ClassLoader->loadClass() /var/www/html/mymuseJ4/joomla/libraries/src/Autoload/ClassLoader.php:56
+[16-May-2022 13:40:40 America/New_York] PHP  12. Composer\Autoload\includeFile() /var/www/html/mymuseJ4/joomla/libraries/vendor/composer/ClassLoader.php:428
+[20-May-2022 08:16:41 America/New_York] PHP Warning:  session_regenerate_id(): Session object destruction failed.  ID: user (path: /tmp) in /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Storage/NativeStorage.php on line 303
+[20-May-2022 08:16:41 America/New_York] PHP Stack trace:
+[20-May-2022 08:16:41 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[20-May-2022 08:16:41 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[20-May-2022 08:16:41 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
+[20-May-2022 08:16:41 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[20-May-2022 08:16:41 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->initialiseApp() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:222
+[20-May-2022 08:16:41 America/New_York] PHP   6. Joomla\CMS\Factory::getUser() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:619
+[20-May-2022 08:16:41 America/New_York] PHP   7. Joomla\CMS\Session\Session->get() /var/www/html/mymuseJ4/joomla/libraries/src/Factory.php:338
+[20-May-2022 08:16:41 America/New_York] PHP   8. Joomla\CMS\Session\Session->has() /var/www/html/mymuseJ4/joomla/libraries/src/Session/Session.php:198
+[20-May-2022 08:16:41 America/New_York] PHP   9. Joomla\CMS\Session\Session->start() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:333
+[20-May-2022 08:16:41 America/New_York] PHP  10. Joomla\CMS\Session\Session->restart() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:420
+[20-May-2022 08:16:41 America/New_York] PHP  11. Joomla\CMS\Session\Session->destroy() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:490
+[20-May-2022 08:16:41 America/New_York] PHP  12. Joomla\CMS\Session\Session->fork() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:470
+[20-May-2022 08:16:41 America/New_York] PHP  13. Joomla\CMS\Session\Storage\JoomlaStorage->regenerate() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:552
+[20-May-2022 08:16:41 America/New_York] PHP  14. session_regenerate_id() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Storage/NativeStorage.php:303
+[20-May-2022 08:16:41 America/New_York] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Storage/NativeStorage.php:303) in /var/www/html/mymuseJ4/joomla/libraries/src/Session/Storage/JoomlaStorage.php on line 116
+[20-May-2022 08:16:41 America/New_York] PHP Stack trace:
+[20-May-2022 08:16:41 America/New_York] PHP   1. {main}() /var/www/html/mymuseJ4/joomla/index.php:0
+[20-May-2022 08:16:41 America/New_York] PHP   2. require_once() /var/www/html/mymuseJ4/joomla/index.php:32
+[20-May-2022 08:16:41 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuseJ4/joomla/includes/app.php:63
+[20-May-2022 08:16:41 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuseJ4/joomla/libraries/src/Application/CMSApplication.php:278
+[20-May-2022 08:16:41 America/New_York] PHP   5. Joomla\CMS\Application\SiteApplication->initialiseApp() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:222
+[20-May-2022 08:16:41 America/New_York] PHP   6. Joomla\CMS\Factory::getUser() /var/www/html/mymuseJ4/joomla/libraries/src/Application/SiteApplication.php:619
+[20-May-2022 08:16:41 America/New_York] PHP   7. Joomla\CMS\Session\Session->get() /var/www/html/mymuseJ4/joomla/libraries/src/Factory.php:338
+[20-May-2022 08:16:41 America/New_York] PHP   8. Joomla\CMS\Session\Session->has() /var/www/html/mymuseJ4/joomla/libraries/src/Session/Session.php:198
+[20-May-2022 08:16:41 America/New_York] PHP   9. Joomla\CMS\Session\Session->start() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:333
+[20-May-2022 08:16:41 America/New_York] PHP  10. Joomla\CMS\Session\Session->restart() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:420
+[20-May-2022 08:16:41 America/New_York] PHP  11. Joomla\CMS\Session\Session->destroy() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:516
+[20-May-2022 08:16:41 America/New_York] PHP  12. Joomla\CMS\Session\Session->clear() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:469
+[20-May-2022 08:16:41 America/New_York] PHP  13. Joomla\CMS\Session\Session->clear() /var/www/html/mymuseJ4/joomla/libraries/src/Session/Session.php:354
+[20-May-2022 08:16:41 America/New_York] PHP  14. Joomla\CMS\Session\Storage\JoomlaStorage->clear() /var/www/html/mymuseJ4/joomla/libraries/vendor/joomla/session/src/Session.php:372
+[20-May-2022 08:16:41 America/New_York] PHP  15. setcookie() /var/www/html/mymuseJ4/joomla/libraries/src/Session/Storage/JoomlaStorage.php:116

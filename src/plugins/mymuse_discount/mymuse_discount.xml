@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0"  type="plugin" group="mymuse">
-	<name>PLG_MYMUSE_DISCOUNT</name>
+	<name>plg_mymuse_discount</name>
 	<author>Arboreta</author>
 	<creationDate>July 2015</creationDate>
 	<copyright>Copyright (C) 2015 Arboreta Internet Services. All rights reserved.</copyright>

@@ -12617,7 +12617,7 @@ joomla-alert {
   z-index: 1000;
   width: auto;
   min-height: 43px;
-  padding: 10px 0;
+  padding: 0.25rem;
   color: #495057;
   background: white;
   box-shadow: -3px -2px 22px #ddd;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.1"  type="plugin" group="mymuse">
-	<name>PLG_MYMUSE_AUDIO_AMPLITUDE</name>
+	<name>plg_mymuse_audio_amplitude</name>
 	<author>Arboreta</author>
 	<creationDate>Dec 2021</creationDate>
 	<copyright>Copyright (C) 2021 Arboreta Internet Services. All rights reserved.</copyright>

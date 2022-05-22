@@ -343,22 +343,22 @@ class Com_MymuseInstallerScript
             ?>
             <table cellpadding="4" cellspacing="0" border="0" width="800">
                 <tr>
-                    <td valign="top" width="40%"><img
+                    <td valign="top"><img
                             src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
                             height="325" width="190" alt="MyMuse Logo" align="left" /></td>
-                    <td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
+                    <td valign="top"><strong>MyMuse</strong><br /> <span>MyMuse
                                         for Joomla! 3</span><br /> <font class="small">by <a
                                 href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
                         </font><br /> To get started
                         <ol>
-                            <li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
+                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE');?> <a
                                     href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_('STORE'); ?></a></li>
-                            <li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
+                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE');?> <a
                                     href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_('COM_MYMUSE_PLUGINS'); ?></a>
                             </li>
-                            <li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
+                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
                             </li>
-                            <li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
+                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
                             </li>
                         </ol></td>
                 </tr>
@@ -369,7 +369,7 @@ class Com_MymuseInstallerScript
                 <thead>
                 <tr>
                     <th class="title"><?php echo JText::_('Extension'); ?></th>
-                    <th width="60%"><?php echo JText::_('Status'); ?></th>
+                    <th ><?php echo JText::_('Status'); ?></th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -415,53 +415,6 @@ class Com_MymuseInstallerScript
                 'status' => $astatus
             );
 
-            // DEFAULT PREVIEW DIRECTORY
-            $name = JText::_ ( "COM_MYMUSE_MAKE_PREVIEW_DIR" );
-            $preview_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "media" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "previews";
-            if (! file_exists ( $preview_dir )) {
-                if (! JFolder::create ( $preview_dir )) {
-                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
-                    $astatus = 0;
-                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$preview_dir";
-                } else {
-                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
-                    $astatus = 1;
-                    $message = JText::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $preview_dir;
-                }
-            } else {
-                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
-                $astatus = 1;
-                $message = JText::_ ( "COM_MYMUSE_DIR_EXISTS" );
-            }
-            $actions [] = array (
-                'name' => $name,
-                'message' => $message,
-                'status' => $astatus
-            );
-
-            // DIRECTORY FOR GRAPHICS
-            $name = JText::_ ( "COM_MYMUSE_MAKE_ALBUM_DIR" );
-            $album_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseImages";
-            if (! file_exists ( $album_dir )) {
-                if (! JFolder::create ( $album_dir )) {
-                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
-                    $astatus = 0;
-                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$album_dir";
-                } else {
-                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
-                    $astatus = 1;
-                    $message = JText::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $album_dir;
-                }
-            } else {
-                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
-                $astatus = 1;
-                $message = JText::_ ( "COM_MYMUSE_DIR_EXISTS" );
-            }
-            $actions [] = array (
-                'name' => $name,
-                'message' => $message,
-                'status' => $astatus
-            );
 
             // copy index.html to Download Dir
             $name = Jtext::_ ( "index.html to Download Dir" );
@@ -502,39 +455,6 @@ class Com_MymuseInstallerScript
                 'status' => $astatus
             );
 
-            // copy index.html to Preview Dir
-            $name = Jtext::_ ( "index.html to Preview Dir" );
-            if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $preview_dir . DIRECTORY_SEPARATOR . "index.html" )) {
-                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
-                $astatus = 0;
-                $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
-            } else {
-                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
-                $astatus = 1;
-                $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
-            }
-            $actions [] = array (
-                'name' => $name,
-                'message' => $message,
-                'status' => $astatus
-            );
-
-            // copy index.html to Album Dir
-            $name = Jtext::_ ( "COM_MYMUSE_COPY_INDEX_TO_ALBUM_DIR" );
-            if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $album_dir . DIRECTORY_SEPARATOR . "index.html" )) {
-                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
-                $astatus = 0;
-                $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
-            } else {
-                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
-                $astatus = 1;
-                $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
-            }
-            $actions [] = array (
-                'name' => $name,
-                'message' => $message,
-                'status' => $astatus
-            );
 
             // MOVE LOGO
             $name = JText::_ ( "COM_MYMUSE_COPY_LOGO" ) . " /images/logo150sq.jpg";
@@ -630,7 +550,7 @@ class Com_MymuseInstallerScript
             $query = "UPDATE #__extensions SET enabled=1 WHERE
                 element='payment_offline' OR
                 element='shipping_standard' OR
-                element='audio_jplayer' OR
+                element='mod_mymuse_amplitude' OR
                 element='payment_paypal' OR
                 element='search_mymuse' OR
                 element='install_mymuse'
@@ -647,52 +567,6 @@ class Com_MymuseInstallerScript
             }
             $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
-            //UPDATE MEDIA MANAGER TO ALLOW MP3's
-            $name = JText::_("COM_MYMUSE_UPDATING_MEDIA_MANAGER");
-            $query = "SELECT params FROM #__extensions WHERE element='com_media'";
-            $db->setQuery($query);
-            $media_params = json_decode($db->loadResult(), TRUE);
-            if($media_params){
-                if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
-                    $media_params['upload_extensions'] .= ",mp3,MP3";
-                }
-                if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
-                    $media_params['upload_mime'] .= ",audio/mpeg";
-                }
-                if (!stristr ( $media_params['ignore_extensions'], 'mp3' )) {
-                    $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
-                }
-
-                if (!stristr ( $media_params['upload_extensions'], 'wav' )) {
-                    $media_params['upload_extensions'] .= ",wav,WAV";
-                }
-                if (!stristr ( $media_params['upload_mime'], 'audio/wav' )) {
-                    $media_params['upload_mime'] .= ",audio/wav";
-                }
-                if (!stristr ( $media_params['ignore_extensions'], 'wav' )) {
-                    $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",wav" : "wav";
-                }
-
-                $registry = new JRegistry;
-                $registry->loadArray($media_params);
-                $new_params = (string)$registry;
-
-                $query = "UPDATE #__extensions set ";
-                $query .= "params='$new_params' WHERE element='com_media'
-                ";
-
-                $db->setQuery($query);
-                if(!$db->execute()){
-                    $alt = JText::_( "COM_MYMUSE_FAILED" );
-                    $astatus = 0;
-                    $message =  JText::_("COM_MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$db->_errorMsg;
-                }else{
-                    $alt = JText::_( "COM_MYMUSE_INSTALLED" );
-                    $astatus = 1;
-                    $message =  JText::_("COM_MYMUSE_MEDIA_MANAGER_UPDATED");
-                }
-                $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-            }
             // end of install
         }elseif($type == "update"){
             //update
@@ -712,6 +586,8 @@ class Com_MymuseInstallerScript
                 }
                 $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
             }
+
+            
             //UPDATE INSTALL PLUGIN
             $name = JText::_("COM_MYMUSE_ENABLE_PLUGINS");
             $query = "UPDATE #__extensions SET enabled=1 WHERE

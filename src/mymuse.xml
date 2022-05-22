@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <extension type="component" method="upgrade">
 
-	<name>COM_MYMUSE</name>
-	<creationDate>FEB 2022</creationDate>
+	<name>com_mymuse</name>
+	<creationDate>Feb 2022</creationDate>
 	<copyright>Copyright (C) 2022. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
@@ -14,7 +14,6 @@
 	<namespace path="src">Joomla\Component\Mymuse</namespace>
 	<scriptfile>script.php</scriptfile>
 	
-
 
 	<media destination="com_mymuse" folder="media">
 		<filename>index.html</filename>
@@ -88,7 +87,6 @@
 		<folder>assets</folder>
 		<folder>src</folder>
 		<folder>tmpl</folder>
-
 	</files>
 
 	<languages folder="site/language">

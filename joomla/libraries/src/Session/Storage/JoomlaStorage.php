@@ -133,6 +133,7 @@ class JoomlaStorage extends NativeStorage
 		$_SESSION['joomla'] = base64_encode(serialize(clone $this->data));
 
 		parent::close();
+
 	}
 
 	/**
