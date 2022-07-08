@@ -20,6 +20,7 @@
             Joomla.request({
               url: badgeurl,
               method: 'POST',
+              queued: true,
               onSuccess: function onSuccess(resp) {
                 var response;
 

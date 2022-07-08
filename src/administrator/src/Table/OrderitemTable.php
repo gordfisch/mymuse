@@ -53,8 +53,11 @@ class OrderitemTable extends Table implements VersionableTableInterface
 		$this->setColumnAlias('title', 'product_name');
 	}
 
+
+
+
 	/**
-	 * Stores a orderitem.
+	 * Stores an orderitem.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
@@ -64,8 +67,22 @@ class OrderitemTable extends Table implements VersionableTableInterface
 	 */
 	public function store($updateNulls = true)
 	{
+		$this->check();
 
-		return parent::store($updateNulls);
+
+		try
+		{
+			parent::store($updateNulls);
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
+
+		return true;
 	}
 
 	/**
@@ -78,6 +95,7 @@ class OrderitemTable extends Table implements VersionableTableInterface
 	 */
 	public function check()
 	{
+
 		try
 		{
 			parent::check();
@@ -96,6 +114,21 @@ class OrderitemTable extends Table implements VersionableTableInterface
 
 			return false;
 		}
+/*
+		echo 'order_id :'.$this->order_id."<br />";
+		echo 'product_id :'.$this->product_id."<br />";
+		echo 'variation_id :'.$this->variation_id."<br />";
+		echo 'product_quantity :'.$this->product_quantity."<br />";
+		echo 'product_item_price :'.$this->product_item_price."<br />";
+		echo 'product_name :'.$this->product_name."<br />";
+		echo 'file_name :'.$this->file_name."<br />";
+		echo 'end_date :'.$this->end_date."<br />";
+		echo 'downloads :'.$this->downloads."<br />";
+		echo 'created :'.$this->created."<br />";
+		echo 'modified :'.$this->modified."<br />";
+		echo 'product_in_stock :'.$this->product_in_stock."<br />";
+
+*/
 
 
 		return true;

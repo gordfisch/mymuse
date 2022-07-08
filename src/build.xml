@@ -7,7 +7,7 @@
         <!-- property name="testadmincomp"
                 value="/var/www/html/mymuse/joomla/administrator/components/com_mymuse"
                 override="true" / -->
-        <property name="test" value="/var/www/html/mymuseJ4/joomla" override="true" />
+        <property name="joomladir" value="/var/www/html/mymuseJ4/joomla" override="true" />
         <property name="testadmincomp"
                 value="/var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse"
                 override="true" />
@@ -41,6 +41,10 @@
         <fileset dir="./modules/mod_mymuse_amplitude" id="mod_amplitude_files">
                 <include name="**" />
         </fileset>
+
+        <fileset dir="./tests" id="test_files">
+                <include name="**" />
+        </fileset>
         
 
 
@@ -50,105 +54,108 @@
                 <echo>Copying files from working dir to mymuse...
                 </echo>
             
-                <copy todir="${test}/components/com_mymuse">
+                <copy todir="${joomladir}/components/com_mymuse">
                       <fileset refid="site_files" />
                 </copy>
-                <copy todir="${test}/administrator/components/com_mymuse">
+                <copy todir="${joomladir}/administrator/components/com_mymuse">
                        <fileset refid="admin_files" />
                 </copy>
-                <copy todir="${test}/media/com_mymuse">
+                <copy todir="${joomladir}/media/com_mymuse">
                        <fileset refid="media_files" />
+                </copy>
+                <copy todir="${joomladir}/tests">
+                       <fileset refid="test_files" />
                 </copy>
                 
                 <!--  languages -->
 
                 <copy file="${src}/administrator/language/en-GB/com_mymuse.sys.ini"
-                        todir="${test}/administrator/language/en-GB" />
+                        todir="${joomladir}/administrator/language/en-GB" />
                         
                 <copy file="${src}/administrator/language/en-GB/com_mymuse.ini"
-                        todir="${test}/administrator/language/en-GB" />
+                        todir="${joomladir}/administrator/language/en-GB" />
                         
                 <copy file="${src}/site/language/en-GB/com_mymuse.ini"
-                        todir="${test}/language/en-GB" />
+                        todir="${joomladir}/language/en-GB" />
 
                 <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.ini"
-                        todir="${test}/administrator/language/en-GB" /> 
+                        todir="${joomladir}/administrator/language/en-GB" /> 
                 <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.sys.ini"
-                        todir="${test}/administrator/language/en-GB" /> 
+                        todir="${joomladir}/administrator/language/en-GB" /> 
 
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.ini"
-                        todir="${test}/administrator/language/en-GB" /> 
+                        todir="${joomladir}/administrator/language/en-GB" /> 
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.sys.ini"
-                        todir="${test}/administrator/language/en-GB" /> 
+                        todir="${joomladir}/administrator/language/en-GB" /> 
 
                         
                 <!-- plugins -->
                 <copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
-                            todir="${test}/plugins/mymuse/audio_jplayer" /> 
+                            todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
                 <copy file="${src}/plugins/audio_jplayer/audio_jplayer.xml"
-                                todir="${test}/plugins/mymuse/audio_jplayer" /> 
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
                 <copy file="${src}/plugins/audio_jplayer/Jplayer.swf"
-                                todir="${test}/plugins/mymuse/audio_jplayer" /> 
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
                 <copy file="${src}/plugins/audio_jplayer/js/jplayer.playlist.min.js"
-                                todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/js" /> 
                 <copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.inspector.js"
-                                todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/js" /> 
                 <copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.min.js"
-                                todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/js" /> 
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.css"
-                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
                  <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.orig.css"
-                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.rtl.css"
-                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.jpg"
-                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.seeking.gif"
-                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.video.play.png"
-                                todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
 
                 <copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
-                            todir="${test}/plugins/mymuse/audio_amplitude" /> 
+                            todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 
                 <copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
-                            todir="${test}/plugins/mymuse/audio_amplitude" /> 
+                            todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 
                 
 
                 <copy file="${src}/plugins/user_mymuse/language/en-GB/plg_user_mymuse.ini"
-                        todir="${test}/administrator/language/en-GB" />
+                        todir="${joomladir}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/user_mymuse/language/en-GB/plg_user_mymuse.sys.ini"
-                        todir="${test}/administrator/language/en-GB" />
+                        todir="${joomladir}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/plg_user_mymusenoreg.ini"
-                        todir="${test}/administrator/language/en-GB" />
+                        todir="${joomladir}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/plg_user_mymusenoreg.sys.ini"
-                        todir="${test}/administrator/language/en-GB" />
+                        todir="${joomladir}/administrator/language/en-GB" />
 
                 <copy file="${src}/plugins/user_mymuse/mymuse.xml"
-                        todir="${test}/plugins/user/mymuse" /> 
+                        todir="${joomladir}/plugins/user/mymuse" /> 
                 <copy file="${src}/plugins/user_mymuse/mymuse.php"
-                        todir="${test}/plugins/user/mymuse" />
+                        todir="${joomladir}/plugins/user/mymuse" />
                 <copy file="${src}/plugins/user_mymuse/profiles/profile.xml"
-                        todir="${test}/plugins/user/mymuse/profiles" />
+                        todir="${joomladir}/plugins/user/mymuse/profiles" />
                 <copy file="${src}/plugins/user_mymuse/fields/tos.php"
-                            todir="${test}/plugins/user/mymuse/fields" /> 
+                            todir="${joomladir}/plugins/user/mymuse/fields" /> 
                 
                 <copy file="${src}/plugins/user_mymusenoreg/mymusenoreg.xml"
-                            todir="${test}/plugins/user/mymusenoreg" /> 
+                            todir="${joomladir}/plugins/user/mymusenoreg" /> 
                 <copy file="${src}/plugins/user_mymusenoreg/mymusenoreg.php"
-                            todir="${test}/plugins/user/mymusenoreg" />
+                            todir="${joomladir}/plugins/user/mymusenoreg" />
                  <copy file="${src}/plugins/user_mymusenoreg/profiles/profile.xml"
-                            todir="${test}/plugins/user/mymusenoreg/profiles" />
+                            todir="${joomladir}/plugins/user/mymusenoreg/profiles" />
                 <copy file="${src}/plugins/user_mymusenoreg/fields/tos.php"
-                        todir="${test}/plugins/user/mymusenoreg/fields" /> 
+                        todir="${joomladir}/plugins/user/mymusenoreg/fields" /> 
 
                 <!--  modules -->
-                <copy todir="${test}/modules/mod_mymuse_minicart">
+                <copy todir="${joomladir}/modules/mod_mymuse_minicart">
                         <fileset refid="mod_minicart_files" />
                 </copy>
-                <copy todir="${test}/modules/mod_mymuse_latest">
+                <copy todir="${joomladir}/modules/mod_mymuse_latest">
                         <fileset refid="mod_latest_files" />
                 </copy>
-                <copy todir="${test}/modules/mod_mymuse_amplitude">
+                <copy todir="${joomladir}/modules/mod_mymuse_amplitude">
                         <fileset refid="mod_amplitude_files" />
                 </copy>
         </target>

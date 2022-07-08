@@ -505,7 +505,10 @@ class DisplayController extends BaseController
 			return false;
 		}
 		//save the cart in the session
+		$this->MyMuseCart->cart = array();
+      	$this->MyMuseCart->cart["idx"] = 0;
 		$this->MyMuseCart->setCart();
+		$this->setRedirect( Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid));
 		return;
 	}
 
@@ -746,7 +749,7 @@ class DisplayController extends BaseController
 					$this->setRedirect( Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 					return false;
 				}
-				
+			
 				if($this->MyMuseShopper->order->order_status == "C"){
 					$this->input->set('task', 'makemail');
 					$this->display();

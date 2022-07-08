@@ -34,13 +34,15 @@ $params 	= $this->params;
 
 	<?php  
 	$i = 0;
-	foreach($this->orders as $order){ ?>
-	<li class="list-orders item-container">
-		<div class="mycart-inner myorderid" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_ID'); ?>"><a id="row<?php echo $i; $i++; ?>" href="<?php echo $order->url; ?>"><?php echo $order->id; ?></a></div>
-		<div class="mycart-inner mydate" data-name="<?php echo JText::_('COM_MYMUSE_DATE'); ?>" ><?php echo $order->created; ?></div>
-		<div class="mycart-inner myorderstatus" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_STATUS'); ?>"><?php echo Text::_('COM_MYMUSE_'.strtoupper(MyMuseHelper::getStatusName($order->order_status))) ?></div>
-		<div class="mycart-inner mytotal" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_TOTAL'); ?>"><?php echo MyMuseHelper::printMoney($order->order_total); ?></div>
-		
-	</li>
-	<?php } ?>
+	if($this->orders and is_countable($this->orders)) {
+		foreach($this->orders as $order){ ?>
+		<li class="list-orders item-container">
+			<div class="mycart-inner myorderid" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_ID'); ?>"><a id="row<?php echo $i; $i++; ?>" href="<?php echo $order->url; ?>"><?php echo $order->id; ?></a></div>
+			<div class="mycart-inner mydate" data-name="<?php echo JText::_('COM_MYMUSE_DATE'); ?>" ><?php echo $order->created; ?></div>
+			<div class="mycart-inner myorderstatus" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_STATUS'); ?>"><?php echo Text::_('COM_MYMUSE_'.strtoupper(MyMuseHelper::getStatusName($order->order_status))) ?></div>
+			<div class="mycart-inner mytotal" data-name="<?php echo JText::_('COM_MYMUSE_ORDER_TOTAL'); ?>"><?php echo MyMuseHelper::printMoney($order->order_total); ?></div>
+			
+		</li>
+		<?php } 
+	}?>
 </ul>

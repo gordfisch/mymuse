@@ -987,7 +987,7 @@ $params->set('product_player_type', "single");
 		$shoppergroup_id = @$shopper->shoppergroup->id;
 		if($shoppergroup_id == ""){
 			$shoppergroup_id = $default_shoppergroup_id;
-			$q = "SELECT * FROM #__mymuse_shoppergroup WHERE  \n";
+			$q = "SELECT * FROM #__mymuse_shopper_group WHERE  \n";
 			$q .= "id='";
 			$q .= $shoppergroup_id . "'";
 

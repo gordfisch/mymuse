@@ -183,6 +183,7 @@ class CartHelper
       if(isset($variation[$val])){
         $v = $variation[$val];
       }
+
       $res = $this->getProduct($product_id, $v);
       $category_id = $res->catid;
       $product_physical = $res->product_physical;
@@ -1032,7 +1033,7 @@ class CartHelper
       $this->delete($id);
       return false;
     }
-    
+
     if($variation){
       $var = $model->getItem($variation);
       if($var->digital){

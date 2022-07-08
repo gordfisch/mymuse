@@ -317,8 +317,9 @@ class HtmlView extends BaseHtmlView
 				$edit 		= false;
 				
 				if($params->get('my_saveorder') != "after" && isset($this->MyMuseShopper->order->id)){
-		
+	
 					$this->order = $order 		= $this->MyMuseCheckout->getOrder($this->MyMuseShopper->order->id);
+				
 					if($order->order_total == 0.00){
 						$heading 	= Text::_('COM_MYMUSE_CONFIRM');
 						$message 	= Text::_('COM_MYMUSE_ACCEPT_ORDER');

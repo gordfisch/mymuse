@@ -55,7 +55,7 @@ class ShoppergroupTable extends Table implements VersionableTableInterface
 	{
 		$this->typeAlias = 'com_mymuse.shoppergroup';
 
-		parent::__construct('#__mymuse_shoppergroup', 'id', $db);
+		parent::__construct('#__mymuse_shopper_group', 'id', $db);
 
 		$this->setColumnAlias('title', 'ug.title');
 	}

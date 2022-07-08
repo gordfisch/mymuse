@@ -396,6 +396,16 @@
                     required="false"
             />
             <field
+                    name="artistid"
+                    type="category"
+                    extension="com_mymuse"
+                    label="COM_MYMUSE_ARTIST_CATEGORY_LABEL"
+                    description="COM_MYMUSE_ARTIST_CATEGORY_DESC"
+                    class="inputbox"
+                    required="true"
+                    multiple="false"
+            />
+            <field
                     name="catid"
                     type="category"
                     extension="com_mymuse"
@@ -406,16 +416,7 @@
                     multiple="false"
             />
 
-            <field
-                    name="artistid"
-                    type="category"
-                    extension="com_mymuse"
-                    label="COM_MYMUSE_ARTIST_CATEGORY_LABEL"
-                    description="COM_MYMUSE_ARTIST_CATEGORY_DESC"
-                    class="inputbox"
-                    required="true"
-                    multiple="false"
-            />
+            
             <field
                     name="othercats"
                     type="categorytree"

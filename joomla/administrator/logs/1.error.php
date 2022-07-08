@@ -1,14 +1,13 @@
 #
 #<?php die('Forbidden.'); ?>
-#Date: 2022-05-14 16:53:28 UTC
+#Date: 2022-06-01 11:51:47 UTC
 #Software: Joomla! 4.1.4-dev Development [ Kuamini ] 10-May-2022 16:00 GMT
 
 #Fields: datetime	priority clientip	category	message
-2022-05-14T16:53:28+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
-2022-05-14T16:54:13+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
-2022-05-14T16:59:35+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
-2022-05-15T15:21:00+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
-2022-05-16T17:50:24+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
-2022-05-16T17:50:30+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
-2022-05-16T17:51:10+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
-2022-05-16T18:08:53+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
+2022-06-01T11:51:47+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
+2022-06-01T11:51:52+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
+2022-06-01T11:52:08+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
+2022-06-01T13:09:07+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
+2022-06-12T21:13:13+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
+2022-06-13T20:08:36+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.
+2022-06-15T15:11:04+00:00	INFO ::1	joomlafailure	Username and password do not match or you do not have an account yet.

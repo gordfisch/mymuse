@@ -158,7 +158,7 @@ class CheckoutHelper
 			}
 
 
-			if(isset($this->cart[$i]["variation"])){
+			if(isset($this->cart[$i]["variation"]) && $this->cart[$i]["variation"] > 0){
 				$this->cart[$i]['product'] = $this->MyMuseCart->getProduct($this->cart[$i]["product_id"], $this->cart[$i]["variation"]);
 			}else{
 				$this->cart[$i]['product'] = $this->MyMuseCart->getProduct($this->cart[$i]["product_id"]);
@@ -166,6 +166,8 @@ class CheckoutHelper
 	
 			
 			$ext = '';
+
+
 
 			if(is_object($this->cart[$i]['product']->digital)){
 				$this->cart[$i]['product']->file_name = $this->cart[$i]['product']->digital->file_name;
@@ -176,7 +178,8 @@ class CheckoutHelper
 	
 			}else{
 				
-				$this->cart[$i]['product']->ext = pathinfo($this->cart[$i]['product']->file_name, PATHINFO_EXTENSION);
+				
+				//$this->cart[$i]['product']->ext = pathinfo($this->cart[$i]['product']->file_name, PATHINFO_EXTENSION);
 			}
 
 			if("1" == $params->get('my_price_by_product')){
@@ -354,6 +357,7 @@ class CheckoutHelper
 			$order->items[$i]->product_id = $this->cart[$i]["product_id"];
 			$order->items[$i]->variation_id = isset($this->cart[$i]["variation"])? $this->cart[$i]["variation"] : '';
 			$order->items[$i]->product_quantity = $this->cart[$i]["quantity"];
+			$order->items[$i]->file_name = '';
 
 
 			$order->items[$i]->product_sku = $this->cart[$i]['product']->product_sku;
@@ -388,10 +392,13 @@ class CheckoutHelper
 
 			// Store the item to the database
 			try {
-				$order->items[$i]->store();
+				$res = $order->items[$i]->store();
+				//MymuseHelper::print_pre($res);
+				//echo "stored"; exit;
 			} catch (Exception $e) {
 				$msg = $e->getMessage(); // Returns "Normally you would have other code...
 				Factory::getApplication()->enqueueMessage($msg, 'error');
+				return false;
 
 			}
 
@@ -401,7 +408,12 @@ class CheckoutHelper
 			// more fields for printing
 			$order->items[$i]->product_sku = $this->cart[$i]['product']->product_sku;
 			$order->items[$i]->title = $this->cart[$i]['product']->title;
-			$order->items[$i]->file_length = MyMuseHelper::ByteSize($this->cart[$i]['product']->file_length);
+			if(isset($this->cart[$i]['product']->file_length)){
+				$order->items[$i]->file_length = MyMuseHelper::ByteSize($this->cart[$i]['product']->file_length);
+			}else{
+				$this->cart[$i]['product']->file_length = '';
+			}
+			
 			$order->items[$i]->product_item_subtotal = sprintf("%.2f", $order->items[$i]->product_item_price * $order->items[$i]->product_quantity);
 			 
 			// Build URLs

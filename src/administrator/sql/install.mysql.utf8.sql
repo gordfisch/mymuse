@@ -450,10 +450,10 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order_item` (
   `variation_id` int(11) default NULL,
   `product_quantity` int(11) default NULL,
   `product_item_price` decimal(10,2) default NULL,
-  `product_sku` varchar(254) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `file_name` varchar(255) NOT NULL,
-  `end_date` int(20) NOT NULL,
+  `product_sku` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `end_date` int DEFAULT NULL,
   `downloads` tinyint(2) NOT NULL default '0',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
@@ -700,12 +700,13 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_rating` (
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `#__mymuse_shopper_group`
+-- Table structure for table `#__mymuseshopper_group`
 -- 
 
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_shoppergroup` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_shopper_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shopper_group_name` varchar(32) DEFAULT NULL,
   `usergroups_id` int(11) NOT NULL DEFAULT '2',
   `shopper_group_description` text,
   `discount` tinyint(2) DEFAULT NULL,
@@ -716,11 +717,11 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_shoppergroup` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `#__mymuse_shopper_group`
+-- Dumping data for table `#__mymuseshopper_group`
 --
 
-INSERT IGNORE INTO `#__mymuse_shoppergroup` (`id`, `usergroups_id`, `shopper_group_description`, `discount`, `state`, `checked_out`, `checked_out_time`) VALUES
-(1, '2', 'Ordinary Shoppers', 0, 1, 0, '0000-00-00 00:00:00');
+INSERT IGNORE INTO `#__mymuse_shopper_group` (`id`, `shopper_group_name`, `usergroups_id`, `shopper_group_description`, `discount`, `state`, `checked_out`, `checked_out_time`) VALUES
+(1, 'default', 2, 'Ordinary Shoppers', 0, 1, 0, '0000-00-00 00:00:00');
 
 
 -- --------------------------------------------------------

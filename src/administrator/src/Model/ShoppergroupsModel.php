@@ -139,7 +139,7 @@ class ShoppergroupsModel extends ListModel
 				'a.*'
 			)
 		);
-		$query->from('`#__mymuse_shoppergroup` AS a');
+		$query->from('`#__mymuse_shopper_group` AS a');
 
 			
 		// Join over state on id.
@@ -191,7 +191,7 @@ class ShoppergroupsModel extends ListModel
 			$db = $this->getDbo();
 			$query = $db->getQuery(true);
 
-			$query->update('`#__mymuse_shoppergroup`');
+			$query->update('`#__mymuse_shopper_group`');
 			$query->set('state = ' . $value);
 			$query->where('id IN (' . implode(',', $pks). ')');
 			$db->setQuery($query);
@@ -213,7 +213,7 @@ class ShoppergroupsModel extends ListModel
 			$db = $this->getDbo();
 			$query = $db->getQuery(true);
 
-			$query->delete('`#__mymuse_shoppergroup`');
+			$query->delete('`#__mymuse_shopper_group`');
 			$query->where('id IN (' . implode(',', $pks). ')');
 			$db->setQuery($query);
 			$db->execute();

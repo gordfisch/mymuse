@@ -13,6 +13,7 @@ namespace Joomla\Component\Mymuse\Site\Dispatcher;
 
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * ComponentDispatcher class for com_mymuse
@@ -31,6 +32,9 @@ class Dispatcher extends ComponentDispatcher
 	 */
 	public function dispatch()
 	{
+		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+		$wa->useScript('jquery');
+		
 		$checkCreateEdit = ($this->input->get('view') === 'products' && $this->input->get('layout') === 'modal')
 			|| ($this->input->get('view') === 'product' && $this->input->get('layout') === 'pagebreak');
 

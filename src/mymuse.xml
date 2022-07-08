@@ -123,6 +123,6 @@
 	<updateservers>
         <server type="extension" name="My Extension's Updates">http://localhost/mymuseJ4/joomla/mymuse-updates.xml</server>
 	</updateservers>
-	<dlid prefix="dlid=" suffix="" />
+	<dlid prefix="dlid=" suffix="&amp;dummy=my.zip" />
 </extension>
 

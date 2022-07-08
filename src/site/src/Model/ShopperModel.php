@@ -296,25 +296,25 @@ class ShopperModel extends FormModel
 				}
 				
 				//$query = 'SELECT *'
-				//. ' FROM #__mymuse_shoppergroup'
+				//. ' FROM #__mymuse_shopper_group'
 				//. ' WHERE id = '.$profile['shoppergroup']
 				//;
 
 				$query	= $db->getQuery(true);
 				$query->select('a.*');
 
-				$query->from('`#__mymuse_shoppergroup` AS a');
+				$query->from('`#__mymuse_shopper_group` AS a');
 				$query->where('(a.state IN (0, 1))');
 				$query->where('(a.id = '.$profile['shoppergroup'].')');
 					
 				// Join usergroup on a.usergroups_id
-				$query->select('ug.title AS shoppergroup_name');
+				$query->select('ug.title AS shopper_group_name');
 				$query->join('LEFT', '#__usergroups AS ug ON ug.id=a.usergroups_id');
 
 				$db->setQuery( $query );
 				$this->_shopper->shoppergroup = $db->loadObject();
 				$this->_shopper->discount = $this->_shopper->shoppergroup->discount;
-				$this->_shopper->shoppergroup_name = $this->_shopper->shoppergroup->shoppergroup_name;
+				$this->_shopper->shoppergroup_name = $this->_shopper->shoppergroup->shopper_group_name;
 				
 			}else{
 				$this->_shopper = new CMSObject;
@@ -658,12 +658,18 @@ class ShopperModel extends FormModel
 		$db->setQuery($query);
 		$orders = $db->loadObjectList();
 
-		foreach($orders as $key => $order){
-			$orders[$key] = $MyMuseCheckout->getOrder($order->id);
-			$orders[$key]->url = "index.php?option=com_mymuse&task=vieworder&orderid=".$order->id;
+		if($orders){
+			foreach($orders as $key => $order){
+				$orders[$key] = $MyMuseCheckout->getOrder($order->id);
+				$orders[$key]->url = "index.php?option=com_mymuse&task=vieworder&orderid=".$order->id;
+			}
+
+			return $orders;
+		}else{
+			return NULL;
 		}
 
-		return $orders;
+		
 		
 	}
 	
@@ -893,7 +899,7 @@ class ShopperModel extends FormModel
 		}
 		$db = Factory::getDBO();
 		$query = 'SELECT a.*, u.title as shopper_group_name '
-				. ' FROM #__mymuse_shoppergroup as a'
+				. ' FROM #__mymuse_shopper_group as a'
 				. ' LEFT JOIN #__usergroups as u ON u.id = a.usergroups_id '
 				. ' WHERE a.id = '.$id
 				;

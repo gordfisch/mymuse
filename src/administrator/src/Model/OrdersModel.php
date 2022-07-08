@@ -247,7 +247,7 @@ class OrdersModel extends ListModel
 
 		if (count( $cid ))
 		{
-		    JArrayHelper::toInteger($cid);
+		    ArrayHelper::toInteger($cid);
 		    $cids = implode( ',', $cid );
 		 
 		
@@ -255,8 +255,15 @@ class OrdersModel extends ListModel
 		    $query = 'DELETE FROM #__mymuse_order_item'
 		    . ' WHERE order_id IN ( '.$cids.' )';
 		    $this->_db->setQuery( $query );
-		    if(!$this->_db->execute()) {
-		        $this->setError($this->_db->getErrorMsg());
+
+		    try
+		    {
+		    	$this->_db->execute();
+		    }
+		    catch (Exception $e)
+		    {
+		    	$this->setError($e->getMessage());
+
 		    	return false;
 		    }
 
@@ -264,8 +271,16 @@ class OrdersModel extends ListModel
 		    $query = 'DELETE FROM #__mymuse_order'
 		    . ' WHERE id IN ( '.$cids.' )';
 		    $this->_db->setQuery( $query );
-		    if(!$this->_db->execute()) {
-		        $this->setError($this->_db->getErrorMsg());
+
+
+		    try
+		    {
+		    	$this->_db->execute();
+		    }
+		    catch (Exception $e)
+		    {
+		    	$this->setError($e->getMessage());
+
 		    	return false;
 		    }
 		}

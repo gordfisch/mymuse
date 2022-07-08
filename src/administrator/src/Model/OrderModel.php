@@ -310,13 +310,14 @@ class OrderModel extends AdminModel
 			$db->setQuery($q);
 			$item->order_shipments = $db->loadObjectList();
         			
-			
-			
+
+		
 			
 			if(isset($item->user->profile['shopper_group'])){
 				$query = "SELECT * from #__mymuse_shopper_group WHERE id=".(int)$item->user->profile['shopper_group'];
 				$db->setQuery($query);
 				if($shopper_group = $db->loadObject()){
+		
 					$item->user->shopper_group_name = $shopper_group->shopper_group_name;
 					$item->user->shopper_group_discount = $shopper_group->discount;
 				}

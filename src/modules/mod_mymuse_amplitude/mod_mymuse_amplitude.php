@@ -31,5 +31,8 @@ $document->addStyleSheet($css_path );
 PluginHelper::importPlugin('mymuse');
 $app        = Factory::getApplication();
 $results    = $app->triggerEvent('onGetPlaylist',array(true));
+if(!$results){
+    return;
+}
 $playlist   = $results[0];
 require(JModuleHelper::getLayoutPath('mod_mymuse_amplitude'));

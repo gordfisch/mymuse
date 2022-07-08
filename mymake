@@ -39,7 +39,7 @@ elif  [[ $1 = "test" ]]; then
 elif  [[ $1 = "all" ]]; then
 	./make_component.sh
 	cd joomla
-	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/mymuse
+	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse
 	#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/reports
 	#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/storage
 else

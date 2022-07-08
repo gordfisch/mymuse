@@ -13,6 +13,7 @@ namespace Joomla\Component\Mymuse\Site\Service;
 
 use Joomla\CMS\Object\CMSObject;
 
+
 /**
  * Content Component Category Tree
  *
@@ -29,7 +30,6 @@ class Mymuse extends CMSObject
 	var $instances = array();
 
 
-
 	/**
 	 * Class constructor
 	 *
@@ -40,6 +40,7 @@ class Mymuse extends CMSObject
 	public function __construct($options = array())
 	{
 		parent::__construct($options);
+		
 	}
 
 	/**

@@ -247,7 +247,7 @@ jQuery(document).ready(function($){
             $.post("'.$url.'",
             {
                 "productid":"'.$product->id.'",
-                "variation['.$product->id.']":"0"
+                /*"variation['.$product->id.']":"0"*/
 	
             },
             function(data,status)

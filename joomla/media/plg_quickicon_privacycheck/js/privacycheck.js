@@ -11,11 +11,18 @@
     const text = variables.plg_quickicon_privacycheck_text;
     const quickicon = document.getElementById('plg_quickicon_privacycheck');
     const link = quickicon.querySelector('span.j-links-link');
+    /**
+     * DO NOT use fetch() for QuickIcon requests. They must be queued.
+     *
+     * @see https://github.com/joomla/joomla-cms/issues/38001
+     */
+
     Joomla.request({
       url: ajaxUrl,
       method: 'GET',
       data: '',
       perform: true,
+      queued: true,
       onSuccess: response => {
         try {
           const request = JSON.parse(response);
