@@ -3,7 +3,7 @@
 
 if  [[ $1 = "webdriver" ]]; then
     echo "Starting webdriver"
-    cd joomla
+    cd joomla-cms
     ./node_modules/.bin/selenium-standalone start &
 elif  [[ $1 = "phing" ]]; then
 	if  [[ $2 = "watch" ]]; then
@@ -22,7 +22,7 @@ elif  [[ $1 = "test" ]]; then
 	
     ./make_component.sh
     echo "Made the component before testing."
-	cd joomla
+	cd joomla-cms
 	echo " Going testing..."
 	if  [[ $2 = "reports" ]]; then
 		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/reports 
@@ -38,7 +38,7 @@ elif  [[ $1 = "test" ]]; then
 
 elif  [[ $1 = "all" ]]; then
 	./make_component.sh
-	cd joomla
+	cd joomla-cms
 	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse
 	#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/reports
 	#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/storage

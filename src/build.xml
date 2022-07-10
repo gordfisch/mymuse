@@ -3,13 +3,10 @@
 <project name="MyMuseJ4" basedir="." default="copy_to_mymuseJ4_in_joomla">
         <property name="myversion" value="4.2" override="true" />
 
-        <!--property name="test" value="/var/www/html/mymuse/joomla" override="true" / -->
-        <!-- property name="testadmincomp"
-                value="/var/www/html/mymuse/joomla/administrator/components/com_mymuse"
-                override="true" / -->
-        <property name="joomladir" value="/var/www/html/mymuseJ4/joomla" override="true" />
+
+        <property name="joomladir" value="/var/www/html/mymuseJ4/joomla-cms" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymuseJ4/joomla/administrator/components/com_mymuse"
+                value="/var/www/html/mymuseJ4/joomla-cms/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
 

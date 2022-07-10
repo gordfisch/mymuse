@@ -10,6 +10,7 @@ Sell your tunes online. Sell your merchandise. A component for Joomla. This is a
 * modules/
 * plugins/
 * site/
+* tests/
 
 * manifest.xml - included in the component
 * script.php - included in the component
@@ -22,6 +23,29 @@ Sell your tunes online. Sell your merchandise. A component for Joomla. This is a
 * com_mymuse-latest.zip - copy of the latest build
 
 ### Testing with Linux ###
+Install Joomla dev inside MyMuse
+
+    Clone the repository:
+
+git clone https://github.com/joomla/joomla-cms.git joomla
+
+    Go to the joomla folder:
+
+cd joomla
+
+    Go to the 4.2-dev branch:
+
+git checkout 4.2-dev
+
+    Install all the needed composer packages:
+
+composer install
+
+    Install all the needed npm packages:
+
+npm ci
+
+
 If your web root is /var/www/html and you clone the repository there, you can reach the test install at
 http://localhost/mymuse/joomla
 
