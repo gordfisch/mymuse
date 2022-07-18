@@ -2,8 +2,8 @@
 <extension type="component" method="upgrade">
 
 	<name>COM_MYMUSE</name>
-	<creationDate>FEB 2022</creationDate>
-	<copyright>Copyright (C) 2022. All rights reserved.</copyright>
+	<creationDate>July 2020</creationDate>
+	<copyright>Copyright (C) 2020. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
@@ -18,10 +18,7 @@
 
 	<media destination="com_mymuse" folder="media">
 		<filename>index.html</filename>
-		<filename>joomla.asset.json</filename>
 		<folder>images</folder>
-		<folder>js</folder>
-		<folder>previews</folder>
 	</media>
 
 	<!-- Back-end files --> 
@@ -43,14 +40,10 @@
 				img="class:component" alt="Mymuse/Coupons">COM_MYMUSE_COUPONS</menu>
 			<menu link="option=com_mymuse&amp;view=shoppergroups" view="shoppergroups" 
 				alt="Mymuse/Shoppergroups">COM_MYMUSE_SHOPPERGROUPS</menu>
-			<menu link="option=com_plugins&amp;view=plugins&amp;filter[folder]=mymuse" view="plugins" 
+			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=mymuse&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 
 				img="class:themes" alt="Mymuse/Plugins">COM_MYMUSE_PLUGINS</menu>	
-			<menu link="option=com_plugins&amp;view=plugins&amp;filter[folder]=user" view="plugins" 
+			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=user&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 
 				img="class:themes" alt="Mymuse/PluginsUser">COM_MYMUSE_USER_PLUGINS</menu>
-			<menu link="option=com_fields&amp;view=fields&amp;context=com_mymuse.product" 
-				img="class:themes" alt="Mymuse/PluginsUser">JGLOBAL_FIELDS</menu>
-			<menu link="option=com_fields&amp;view=groups&amp;context=com_mymuse.product" 
-				img="class:themes" alt="Mymuse/PluginsUser">JGLOBAL_FIELD_GROUPS</menu>
 		</submenu>
 		<files folder="administrator">
 			<filename>mymuse.xml</filename>
@@ -58,17 +51,17 @@
 			<filename>access.xml</filename>
 			<folder>assets</folder>
 			<folder>forms</folder>
+			<folder>helpers</folder>
 			<folder>install</folder>
 			<folder>services</folder>
 			<folder>sql</folder>
 			<folder>src</folder>
 			<folder>tmpl</folder>
 		</files>
-		<languages folder="administrator/language">
-			<language tag="en-GB">en-GB/com_mymuse.ini</language>
-			<language tag="en-GB">en-GB/com_mymuse.sys.ini</language>
+		<languages folder="administrator">
+			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.sys.ini</language>
 		</languages>
-
 	</administration>
 
 	<install> <!-- Runs on install -->
@@ -90,33 +83,11 @@
 
 	</files>
 
-	<languages folder="site/language">
-		<language tag="en-GB">en-GB/com_mymuse.ini</language>
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.com_mymuse.ini</language>
 	</languages>
 
 
-	<!-- Plugins -->
-	<plugins>
-		<plugin name="audio_amplitude" folder="plugins/audio_amplitude">MyMuse Audio Amplitude</plugin>
-		<!-- plugin name="audio_jplayer" folder="plugins/audio_jplayer">MyMuse Audio HTML5 jPlayer</plugin --> 
-		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
-		<plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
-		<plugin name="payment_paypal" folder="plugins/payment_paypal">Payment Paypal</plugin>
-		<plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
-		<plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
-		<plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
-		<plugin name="shipping_usps" folder="plugins/shipping_usps">Shipping USPS</plugin>
-		<plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
-		<plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
-		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Login Plugin</plugin>
-
-		<!-- plugin name="storage_s3" folder="plugins/storage_s3">Storage S3</plugin -->
-	</plugins>
-	<modules>
-		<module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>
-		<module name="mod_mymuse_minicart" folder="modules/mod_mymuse_minicart" client="site">Mod MyMuse Minicart</module>
-		<module name="mod_mymuse_amplitude" folder="modules/mod_mymuse_amplitude" client="site">Mod MyMuse Amplitude</module>
-	</modules>
 
 
 	<changelogurl>http://localhost/mymuseJ4/joomla/changelog.xml</changelogurl>

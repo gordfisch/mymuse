@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <extension type="component" method="upgrade">
 
-	<name>COM_MYMUSE</name>
-	<creationDate>FEB 2022</creationDate>
+	<name>com_mymuse</name>
+	<creationDate>July 2022</creationDate>
 	<copyright>Copyright (C) 2022. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
@@ -14,7 +14,6 @@
 	<namespace path="src">Joomla\Component\Mymuse</namespace>
 	<scriptfile>script.php</scriptfile>
 	
-
 
 	<media destination="com_mymuse" folder="media">
 		<filename>index.html</filename>
@@ -58,6 +57,7 @@
 			<filename>access.xml</filename>
 			<folder>assets</folder>
 			<folder>forms</folder>
+			<folder>helpers</folder>
 			<folder>install</folder>
 			<folder>services</folder>
 			<folder>sql</folder>
@@ -73,12 +73,12 @@
 
 	<install> <!-- Runs on install -->
 		<sql>
-			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+			<file driver="mysql" charset="utf8">administrator/sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
 	<uninstall> <!-- Runs on uninstall -->
 		<sql>
-			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+			<file driver="mysql" charset="utf8">administrator/sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
 
@@ -87,7 +87,6 @@
 		<folder>assets</folder>
 		<folder>src</folder>
 		<folder>tmpl</folder>
-
 	</files>
 
 	<languages folder="site/language">
@@ -124,6 +123,6 @@
 	<updateservers>
         <server type="extension" name="My Extension's Updates">http://localhost/mymuseJ4/joomla/mymuse-updates.xml</server>
 	</updateservers>
-	<dlid prefix="dlid=" suffix="" />
+	<dlid prefix="dlid=" suffix="&amp;dummy=my.zip" />
 </extension>
 

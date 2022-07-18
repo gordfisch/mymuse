@@ -10,7 +10,6 @@
 use Codeception\Actor;
 use Codeception\Lib\Friend;
 
-
 /**
  * Acceptance Tester global class for entry point.
  *
