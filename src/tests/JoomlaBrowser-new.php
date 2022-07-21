@@ -490,7 +490,7 @@ class JoomlaBrowser extends WebDriver
 	{
 		$this->amOnPage('/administrator/index.php?option=com_installer');
 		$this->waitForText('Extensions: Install', '30', array('css' => 'H1'));
-		$this->click(array('link' => 'Upload Package File'));
+		$this->click('Upload Package File');
 
 		$this->debug('I make sure legacy uploader is visible');
 		$this->executeJS('document.getElementById("legacy-uploader").style.display="block";');

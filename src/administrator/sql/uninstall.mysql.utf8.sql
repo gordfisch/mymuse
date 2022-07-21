@@ -21,6 +21,8 @@ DROP TABLE IF EXISTS `#__mymuse_country`;
 DROP TABLE IF EXISTS `#__mymuse_coupon`;
 DROP TABLE IF EXISTS `#__mymuse_currency`;
 DROP TABLE IF EXISTS `#__mymuse_downloads`;
+DROP TABLE IF EXISTS `#__mymuse_format`;
+
 DROP TABLE IF EXISTS `#__mymuse_order`;
 DROP TABLE IF EXISTS `#__mymuse_order_item`;
 DROP TABLE IF EXISTS `#__mymuse_order_status`;
