@@ -42,8 +42,6 @@
         <fileset dir="./tests" id="test_files">
                 <include name="**" />
         </fileset>
-        
-
 
  
         <!-- Copy Target -->
