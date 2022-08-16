@@ -65,20 +65,8 @@ if( $this->params->get('info_block_show')) {
 		
 </div>
 
-<?php  if ($product->introtext) : ?>
-<div class="product-description">            
-    <?php echo $product->introtext ?>
 
-	<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore')) : ?>
-		<div><a href="#readmore" class="readon"><?php echo JText::_("COM_MYMUSE_READ_MORE"); ?>
-        <?php 
-        if ($this->params->get('show_readmore_title', 0) != 0) :
-            echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
-        endif;
-        ?></a></div>
-	 <?php endif; ?>
-</div>
-<?php endif; ?>
+
 
 <?php echo $this->loadTemplate('physical'); ?>
 

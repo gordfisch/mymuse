@@ -4,6 +4,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
+$product = $this->item;
 
 if( ($this->params->get('info_block_show'))) : ?>
 	<div class="product-details">
@@ -16,7 +17,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 			<h4 class="pre-order-text"><?php echo Text::_($this->item->special_status); ?></h4>
 		<?php endif; ?>
 
-		
+
 
 		<ul class="product-detail-list">
 
@@ -249,17 +250,29 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                    endif;
 	                    ?>
 	                    </span>
-	                </div>
-	                
+	                    
 	                <?php endif; ?>
 	            </div>
 	        </li>
 	        <?php endif; ?>
 	    </ul>
 
-
 <!-- "show_vote"  -->
 
+		<?php  if ($product->introtext) : ?>
+		<div class="product-description">            
+		    <?php echo $product->introtext ?>
+
+			<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore')) : ?>
+				<div><a href="#readmore" class="readon"><?php echo JText::_("COM_MYMUSE_READ_MORE"); ?>
+		        <?php 
+		        if ($this->params->get('show_readmore_title', 0) != 0) :
+		            echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
+		        endif;
+		        ?></a></div>
+			 <?php endif; ?>
+		</div>
+		<?php endif; ?>
 
 
 		</div>

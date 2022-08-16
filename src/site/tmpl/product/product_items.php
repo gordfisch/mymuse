@@ -9,109 +9,88 @@
  * @website		http://www.joomlamymuse.com
  */
 // no direct access
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Layout\FileLayout;
-use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
-use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
-use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-use Joomla\Component\Mymuse\Site\Service\Mymuse;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
+
+defined('_JEXEC') or die('Restricted access');
 
 $product 	=& $this->item;
 $items		=& $this->item->items;
 $items_select 	= $this->params->get('product_item_selectbox',1);
+$cols = 2;
 
-if( is_countable($items) && count($items)) : 
+foreach($product->attribute_sku as $a_sku) :
+	$cols++;
+endforeach;
+if ($this->params->get('product_show_quantity')) :
+	$cols++;
+endif;
+
+
 ?>
 
 <!-- ITEMS   ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
 <?php if(count($items) && !$items_select){  ?>
 	<style type="text/css">
-	@media (max-width: 767px) { 
 
-	<?php foreach($product->attribute_sku as $a_sku){ ?>
-		td.my<?php echo $a_sku->name ?>:before { content: "<?php echo Text::_($a_sku->name); ?>";}
-		td.my<?php echo $a_sku->name ?>{
-			text-align: left;
-		}
-		td.my<?php echo $a_sku->name ?>:before {
-			white-space: nowrap;
-			padding-right: 7%;
-			margin-right: 7%;
-			width: 23%;
-			display: inline-block;
-			border-right: 1px solid #ccc;
-		}
-		td.my<?php echo $a_sku->name ?> {
-			clear: both;
-		}
-	<?php } ?>
-
-		}
+	@media (min-width: 768px) {
+  		.items-container {
+      		grid-template-columns: 5fr<?php echo str_repeat(' 1fr',$cols); ?>;
+      	}
+  	}
 	</style>
-	<div class="product-items">
-		<h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3>
-		<table class="mymuse_cart">
-			<thead>
-		    <tr>
-		    
-        		<th class="mytitle" align="left" width="55%" ><?php echo Text::_('COM_MYMUSE_NAME'); ?>
-				</th>
-       			<?php foreach($product->attribute_sku as $a_sku){ ?>
-						<th class="my<?php echo $a_sku->name ?>" align="left"><?php echo $a_sku->name; ?></th>
-				<?php } ?>
-       			
-				<th class="myprice" align="center" width="20%"><?php echo Text::_('COM_MYMUSE_COST'); ?></th>
-        	<?php if ($this->params->get('product_show_quantity')) :?>
-        		<th class="myquantity" align="left" width="20%"><?php echo Text::_('COM_MYMUSE_QUANTITY'); ?></th>
-        		
-      	    <?php endif; ?>
-      	    	<th class="myselect" align="left" width="5%" ><?php echo Text::_('COM_MYMUSE_SELECT'); ?></th>
-      		</tr>
-      		</thead>
-			<?php 
+		<h3><?php echo JText::_('COM_MYMUSE_ITEMS'); ?></h3>
 
-			foreach($items as $item){  
-				?>
-			  		<tr>
+
+  <section>
+    <ul class="mymuse-container">
+    <li class="items-container">
+        <div class="mymuse_cart_top mytitle"  ><?php echo JText::_('COM_MYMUSE_NAME'); ?></div>
+        <?php foreach($product->attribute_sku as $a_sku){ ?>
+				<div class="my<?php echo $a_sku->name ?>"><?php echo $a_sku->name; ?></div>
+		<?php } ?>
+		<div class="mymuse_cart_top myprice mycenter"  ><?php echo JText::_('COM_MYMUSE_COST'); ?></div>
+		<?php if ($this->params->get('product_show_quantity')) :?>
+			<div class="mymuse_cart_top myprice"  ><?php echo JText::_('COM_MYMUSE_Quantity'); ?></div>
+		<?php endif; ?>
+		<div class="mymuse_cart_top myselect" ><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
+	</li>
+
+
+		<?php foreach($items as $item) :  ?>
+							
+			  		<li class="items-container">
         				
-        				<td class="mytitle"><?php echo $item->title; ?></td>
+        				<div class="mytitle mycart-inner" data-name="<?php echo JText::_('MYMUSE_NAME'); ?>"><?php echo $item->title; ?></div>
         			<?php foreach($product->attribute_sku as $a_sku){ ?>
-						<td class="my<?php echo $a_sku->name ?>"><?php echo $item->attributes[$a_sku->name]; ?></td>
+						<div class="my<?php echo $a_sku->name ?> attribute" data-name="<?php echo $item->attributes[$a_sku->name]; ?>" ><?php echo $item->attributes[$a_sku->name]; ?></div>
 					<?php } ?>
-						<td class="myprice">
+						<div class="myprice mycart-inner" data-name="<?php echo JText::_('MYMUSE_COST'); ?>">
 						<?php echo MyMuseHelper::printMoneyPublic($item->price); 
-				?></td>
+					?></div>
         			<?php if ($this->params->get('product_show_quantity')) :?>
-						<td class="myquantity"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></td>
+						<div class="myquantity mycart-inner" data-name="<?php echo JText::_('MYMUSE_QUANTITY'); ?>"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></div>
 					<?php endif; ?>
-					<td class="mymuse_cart_top myselect" nowrap><a href="javascript:void(0)"
+					<div class="myselect mycart-inner" data-name="<?php echo JText::_('MYMUSE_SELECT'); ?>"><a href="javascript:void(0)"
 					id="box_<?php echo $item->id; ?>"><img
 						id="img_<?php echo $item->id; ?>"
 						src="<?php
-                    if(in_array($item->id, $this->products)) :
-                       echo "components/com_mymuse/assets/images/cart.png";
-                    else :
-                        echo "components/com_mymuse/assets/images/checkbox.png";
-                     endif;
+	                    if(in_array($item->id, $this->products)) :
+	                       echo "components/com_mymuse/assets/images/cart.png";
+	                    else :
+	                        echo "components/com_mymuse/assets/images/checkbox.png";
+	                    endif;
                  ?>"></a> <span class="mycheckbox"><input
 						style="display: none;" type="checkbox" name="productid[]"
 						value="<?php echo $item->id; ?>"
-						id="box<?php echo $this->check; $this->check++; ?>" /> </span></td>
-      				</tr>
-      		<?php  } ?>
-		</table>
-		<br />
-		<br />
+						id="box<?php echo $this->check; $this->check++; ?>" /> </span></div>
+      				</li>
+      		<?php  endforeach; ?>
+	</ul>
+</section>
 <?php } ?>
 
 <?php 
@@ -150,7 +129,9 @@ foreach($product->attribute_sku as $k => $attr){
 	if($k >= $myarrays){ continue; }
 	foreach($items as $key => $item){
 		if(!in_array($item->attributes[$attr->name], $done)){
-			$tmp .= "items['".$item->attributes[$attr->name]."'] = new Array\n";
+			$t = $item->attributes[$attr->name];
+			$tmp .= "items['".$t."'] = new Array\n";
+
 		}
 		$done[] = $item->attributes[$attr->name];
 		if(isset($item->product_default) && $item->product_default){
@@ -170,7 +151,8 @@ $done = array();
 foreach($items as $item){
 	$js .= "items";
 	foreach($product->attribute_sku as $attr){
-		$js .= "['".$item->attributes[$attr->name]."']";
+		$t = $item->attributes[$attr->name];
+		$js .= "['".$t."']";
 		if(!in_array($item->attributes[$attr->name], $done)){
 			$attrs[$attr->name][] = $item->attributes[$attr->name];
 			$done[] = $item->attributes[$attr->name];
@@ -183,7 +165,8 @@ foreach($items as $item){
 foreach($product->attribute_sku as $attr){
 	$name = 'current_'.$attr->name;
 	$$name = $items[$default]->attributes[$attr->name];
-	$defaults .= "$name='".$items[$default]->attributes[$attr->name]."';\n";
+	$t = $items[$default]->attributes[$attr->name];
+	$defaults .= "$name='".$t."';\n";
 }
 $js .= $prices . "\n" . $item_images;
 $js .= "\n\nvar current_product_id=".$current_product_id.";\n";
@@ -237,7 +220,7 @@ $js .= "</script>\n";
 echo $js;
 ?>
 <div class="mymuse">
-<h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3> 
+<h3><?php echo JText::_('COM_MYMUSE_ITEMS'); ?></h3> 
     <div class="product-items">
     <ul class="product-content">
         <li class="product-content-item-actions">
@@ -256,7 +239,7 @@ echo $js;
                 </div>
             </div>
         </li>
-		 
+		
 		<?php foreach($attrs as $key => $at){ 
 				$css_array = array();
 				foreach($product->attribute_sku as $k => $attr){
@@ -268,6 +251,12 @@ echo $js;
 				}
 
 			?>
+			 <style>
+		 	.product-attribute-values-inner.<?php echo $key; ?> {
+		 		grid-template-columns: <?php echo str_repeat(' 1fr',count($at)); ?>;
+		 	}
+
+		 </style>
 		<li class="product-content-item-actions">
 			<div class="product-full">
 				<div class="product-attribute-name">
@@ -276,7 +265,7 @@ echo $js;
 
 				</div>
 				<div class="product-attribute-values">
-					<div class="product-attribute-values-inner">
+					<div class="product-attribute-values-inner <?php echo $key; ?>">
 					<?php 
 
 					$i = 0;
@@ -362,6 +351,6 @@ echo $js;
 	} ?>
     
 <!--  END ITEMS -->
-</div>
-<?php } 
-endif; ?>
+
+<?php } ?>
+<!--  END ITEMS -->

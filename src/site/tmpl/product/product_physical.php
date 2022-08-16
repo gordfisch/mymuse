@@ -15,9 +15,11 @@ use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
-
 $product 	=& $this->item;
 $params 	=& $this->params;
+$items    =& $this->item->items;
+
+if( $product->product_physical && !count($items)) : 
 
 $cols 		= 2;
 if($this->params->get('product_show_filetime', 0)) :
@@ -116,3 +118,5 @@ endif;
 
 
 		<!-- END PRODUCT PHYSICAL -->
+
+<?php endif; ?>

@@ -167,9 +167,7 @@ class CheckoutHelper
 			
 			$ext = '';
 
-
-
-			if(is_object($this->cart[$i]['product']->digital)){
+			if(is_object($this->cart[$i]['product']->digital) && $this->cart[$i]['product']->digital->file_name){
 				$this->cart[$i]['product']->file_name = $this->cart[$i]['product']->digital->file_name;
 				$this->cart[$i]['product']->ext = $this->cart[$i]['product']->digital->file_ext;
 				$this->cart[$i]['product']->file_length = $this->cart[$i]['product']->digital->file_length;
@@ -182,7 +180,8 @@ class CheckoutHelper
 				//$this->cart[$i]['product']->ext = pathinfo($this->cart[$i]['product']->file_name, PATHINFO_EXTENSION);
 			}
 
-			if("1" == $params->get('my_price_by_product')){
+			//format price of a digital download
+			if("1" == $params->get('my_price_by_product') && "0" == $this->cart[$i]['product']->product_physical ){
 	          $ff = isset($this->cart[$i]['product']->format)? $this->cart[$i]['product']->format: $this->cart[$i]['product']->ext;
 	          $this->cart[$i]['product']->price = isset($this->cart[$i]['product']->price[$ff])? $this->cart[$i]['product']->price[$ff] : $this->cart[$i]['product']->price;
 	        }
