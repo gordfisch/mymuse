@@ -9,6 +9,7 @@
 	<authorUrl>www.arboreta.ca</authorUrl>
 	<version>3.3.0</version>
 	<description>MYMUSE_MOD_LATEST_DESC</description>
+	<namespace>Joomla\Module\MymuseLatest</namespace>
 	<files>
 		<filename module="mod_mymuse_latest">mod_mymuse_latest.php</filename>
         <filename module="mod_mymuse_latest">index.html</filename>

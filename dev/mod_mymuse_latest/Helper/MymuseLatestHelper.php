@@ -9,30 +9,37 @@
  * @website		http://www.joomlamymuse.com
  */
 
+namespace Joomla\Module\MymuseLatest\Site\Helper;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class modMyMuseLatestHelper
+use Joomla\CMS\Factory;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
+
+
+class MymuseLatestHelper
 {
 
 	static function getResults($params)
 	{
-		$db 			= JFactory::getDBO();
-		$jnow			= JFactory::getDate();
+		$db 			= Factory::getDBO();
+		$jnow			= Factory::getDate();
 		$now			= $jnow->toSql();
 		$nullDate		= $db->getNullDate();
 		$results 		= array();
-		$MyMuseStore	=& MyMuse::getObject('store','models');
+		$MyMuseStore	=& MyMuse::getObject('store','model');
 		$player 		=  $params->get('track_player');
 		$root 			= JPATH_ROOT;
 		$MyMuseHelper 	= new MyMuseHelper;
-		$document 		= JFactory::getDocument();
+		$document 		= Factory::getDocument();
 
-		$type = $params->get('type_shown','tracks');
-		$product_ids = $params->get('product_ids', 0);
-		$maximum_shown = $params->get('maximum_shown',5);
-		$datenow = JFactory::getDate();
-		$search = $params->get('type_search');
+		$type 			= $params->get('type_shown','tracks');
+		$product_ids 	= $params->get('product_ids', 0);
+		$maximum_shown 	= $params->get('maximum_shown',5);
+		$datenow 		= Factory::getDate();
+		$search 		= $params->get('type_search');
 
 		if($product_ids && $type =="albums"){
 			$query = 'SELECT p.id, p.title as product_name, 

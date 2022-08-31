@@ -90,6 +90,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             $db = Factory::getDBO();
             $mycategories           = $this->params->get('mycategories', array());
 
+
+
             foreach($mycategories as $key => $val){
                 $alias = '';
                 $query = "SELECT alias from #__categories WHERE id=$val";
@@ -166,6 +168,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             $arr[2] = $js_path;
             $this->_playlist = $arr;
         }
+
         return $this->_playlist;
     }
 
@@ -241,7 +244,12 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     {
 
         jimport('joomla.filesystem.file');
-        $mycategories           = $this->params->get('mycategories', array());
+ 
+        if(!$mycategories           = $this->params->get('mycategories', array())){
+            $text  = "Please set your categories in the Plugin Audio Amplitude";
+            return $text;
+        }
+
         $path_to_previews       = $this->params->get('preview_path', false);
         $first_album_art_path   = $this->params->get('first_album_art_path', '/media/com_mymuse/images/mymuse-180x180.png ');
         $playlist_path          = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
@@ -256,6 +264,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $db         = Factory::getDBO();
         $top_cat    = $mycategories[0];
         $query      = "SELECT id, alias from #__categories WHERE parent_id=$top_cat";
+
+
         $db->setQuery($query);
         $res        = $db->loadObjectList();
         $root_uri = URI::root();
@@ -289,6 +299,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                     $allcats[] = $child->id;
                 }
             }
+
             $track_query = $this->_getQuery($catin);
             //echo $track_query; exit;
             $db->setQuery($track_query);
@@ -329,8 +340,14 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             //echo $query;
             }
         }
+        if(count($allcats) == 0){
+            $text  = "Please check your categories in the Plugin Audio Amplitude";
+            return $text;
+        }
+        
         $this->allcats = $allcats;
         //one for all
+
         $track_query = $this->_getQuery($allcats);
         $db->setQuery($track_query);
         if($tracks = $db->loadObjectList()){
@@ -394,6 +411,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     
     function _getQuery($catin)
     {
+
         $root_uri = Uri::root();
         $root_uri = rtrim($root_uri,'/');
 
@@ -417,7 +435,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             AND p.state > 0 AND parent.state > 0
             AND p.track_parentid = 0
             ORDER BY parent.product_release_date DESC, parent.created DESC, p.product_sku"; 
-
+echo $track_query;
         return $track_query;
     }
 

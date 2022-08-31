@@ -97,7 +97,6 @@ h2.product-title {
 .product-attribute-values {
     color: #000;
     display: inline-block;
-    font-size: 125%;
     padding: 0px 0.4em;
 
 }
@@ -111,25 +110,25 @@ h2.product-title {
 }
 .product-attribute-values-inner {
     margin: 0px 0px;
-    font-size: 125%;
     display:  grid;
     align-items:  center;
 
 }
 .product-attribute-values-inner .Color {
-    width: 20px;
-    height: 20px;
-    font-size: 0px;
+
+
+}
+.attribute.active {
+    margin: ;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 80%), 0 6px 20px 0 rgb(0 0 0 / 80%);
 }
 .product-content-item-actions .product-preview-play, .product-content-item-actions .product-full, 
 .product-content-item-actions .product-full-title, .product-content-item-actions .price, .product-content-item-actions .fa-cart-plus {
     text-align: center;
-    padding: 0px 0.4em;
+    padding: 4px 0.4em;
     display: table-cell;
     vertical-align: middle;
 }
-
-
 
 
 

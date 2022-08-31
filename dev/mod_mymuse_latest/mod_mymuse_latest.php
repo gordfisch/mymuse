@@ -10,37 +10,33 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
-if(!defined('DIRECTORY_SEPARATOR')){
-	define('DIRECTORY_SEPARATOR',DIRECTORY_SEPARATOR);
-}
 
-if(!defined('MYMUSE_ADMIN_PATH')){
-	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR);
-}
-if(!defined('MYMUSE_PATH')){
-	define('MYMUSE_PATH',JPATH_SITE.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_mymuse".DIRECTORY_SEPARATOR);
-}
-require_once( MYMUSE_PATH.'mymuse.class.php');
-require_once( MYMUSE_PATH.'helpers'.DIRECTORY_SEPARATOR.'route.php');
-require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php');
-require_once(MYMUSE_ADMIN_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'mymuse.php');
-$MyMuseHelper 	= new MyMuseHelper;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\Module\MymuseLatest\Site\Helper\MymuseLatestHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
-$mparams 	= MyMuseHelper::getParams();
+$mparams 	= MymuseHelper::getParams();
 $params->merge($mparams);
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
 $doc->addStyleSheet( 'modules/mod_mymuse_latest/mod_mymuse_latest_style.css' );
 
 $params->def('maximum_shown', 5);
 $params->def('type_shown', 'tracks');
 $params->def('module_number', 1);
-$list	= modMyMuseLatestHelper::getResults($params);
+
+$list	= MymuseLatestHelper::getResults($params);
 
 // ui js and css
-JHtml::_('jquery.ui');
-$document = JFactory::getDocument();
+
+$document = Factory::getDocument();
 
 $document->addStyleSheet('https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
 
@@ -101,10 +97,11 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 	$media = preg_replace("/,\\n$/","",$media);
 	
 	
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
 	JHtml::_('jquery.framework');
 	
 	$css_path = $site_url.'modules'.DIRECTORY_SEPARATOR.'mod_mymuse_latest'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'circle.player.css';
+
 	$document->addStyleSheet( $css_path );
 	
 	//load jplayer?

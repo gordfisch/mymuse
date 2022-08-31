@@ -715,29 +715,30 @@ $params->set('product_player_type', "single");
 						$video = 0;
 						foreach($preview_tracks as $track){
 							if($track->file_preview){
-								$flash .= '<!-- Begin Player -->';
+								
 								if(substr_count($track->file_type,"video") && !$video){
 									//movie
 
 									$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
-									
-									if(is_array($results) && isset($results[0]) && $results[0] != ''){
-										$flash .= $results[0];
-									}
 								
 									$video = 1;
 										
 								}elseif(substr_count($track->file_type,"audio") && !$audio){
 									//audio
-							
+						
 									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
-
-									if(is_array($results) && isset($results[0]) && $results[0] != ''){
-										$flash .= $results[0];
-									}
 									$audio = 1;
+									//MymuseHelper::print_pre($results[0]);
 								}
-								$flash .= '<!-- End Player -->';
+
+								if(is_array($results) && isset($results[0]) && $results[0] != ''){
+									$flash .= '<!-- Begin Player -->';
+									$flash .= $results[0];
+									
+									$flash .= '<!-- End Player -->';
+
+								}
+								
 								$this->_item[$pk]->flash = $flash;
 								$this->_item[$pk]->flash_id = $track->id;
 								if($this->_item[$pk]->flash_type != "mix"){

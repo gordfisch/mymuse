@@ -44,7 +44,7 @@ if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_t
         >
         <?php echo $product->flash; ?>
       </div>
-      <?php if($product->flash) : ?>
+      <?php if(isset($product->flash) && $product->flash != '') : ?>
       <div><?php echo JText::_('COM_MYMUSE_NOW_PLAYING');?> <span
         id="jp-title-li"></span>
       </div>

@@ -113,7 +113,6 @@
 		<!-- plugin name="storage_s3" folder="plugins/storage_s3">Storage S3</plugin -->
 	</plugins>
 	<modules>
-		<module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>
 		<module name="mod_mymuse_minicart" folder="modules/mod_mymuse_minicart" client="site">Mod MyMuse Minicart</module>
 		<module name="mod_mymuse_amplitude" folder="modules/mod_mymuse_amplitude" client="site">Mod MyMuse Amplitude</module>
 	</modules>

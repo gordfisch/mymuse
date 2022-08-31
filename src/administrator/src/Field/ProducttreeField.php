@@ -41,6 +41,9 @@ class ProducttreeField extends SqlField
 
 		$html[] = '<select id="recommended" name="jform[recommended][]" class="inputbox" size="8" multiple="true">';
 		$id = $jinput->get('id','0');
+		if(!$id){
+			return'';
+		}
 		// do the SQL
 		$db = Factory::getDbo();
 		$query="SELECT 0 AS id, '- None selected' AS name 

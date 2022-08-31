@@ -765,39 +765,41 @@ class ProductModel extends AdminModel
 				$this->_db->setQuery($query);
 				$lists['attribute_sku'] = $this->_db->loadObjectList();
 
-			}
+		
 			
 
-			// items
-			$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-				AND product_downloadable='1'";
-			if($filter_item_order){
-				$query .= "ORDER BY $filter_item_order ";
-			}
-			if($filter_item_order && $filter_item_order_Dir){
-				$query .= "$filter_item_order_Dir";
-			}
-				
-			$this->_db->setQuery($query);
+				// items
+				$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
+					AND product_downloadable='1' ";
 
-			if($lists['items'] = $this->_db->loadObjectList()){
 
-				foreach($lists['items'] as $item){
-					foreach($lists['attribute_sku'] as $a_sku){
-						$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
-							AND product_attribute_sku_id='.$a_sku->id;
+				if($filter_item_order){
+					$query .= " ORDER BY $filter_item_order ";
+				}
+				if($filter_item_order && $filter_item_order_Dir){
+					$query .= " $filter_item_order_Dir ";
+				}
+					
+				$this->_db->setQuery($query);
+
+				if($lists['items'] = $this->_db->loadObjectList()){
+
+					foreach($lists['items'] as $item){
+						foreach($lists['attribute_sku'] as $a_sku){
+							$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
+								AND product_attribute_sku_id='.$a_sku->id;
+						
+							$this->_db->setQuery($query);
+							$item->attributes[$a_sku->name] = $this->_db->loadResult();
+						}
+						$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
 					
 						$this->_db->setQuery($query);
-						$item->attributes[$a_sku->name] = $this->_db->loadResult();
-					}
-					$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
-				
-					$this->_db->setQuery($query);
-					$lists['attributes'][$item->id] = $this->_db->loadObjectList();
+						$lists['attributes'][$item->id] = $this->_db->loadObjectList();
 
+					}
 				}
 			}
-
 			return $lists;
     }
     
