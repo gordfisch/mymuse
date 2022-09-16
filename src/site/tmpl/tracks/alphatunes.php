@@ -46,9 +46,9 @@ jQuery(document).ready(function($){
                 action = res.action;
                 //alert(res.msg + "\nStatus: " + status);
                 if(action == "deleted"){
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/plus-button-30.png");
                 }else{
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/minus-button-30.png");
                 }
                 if(idx){
                     if(idx == 1){
@@ -498,9 +498,9 @@ endif;
         				<?php if($track->file_name || $track->product_allfiles) :?>
                         <a href="javascript:void(0)" id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>" src="<?php
                             if(in_array($track->id, $products)){
-                                echo "components/com_mymuse/assets/images/cart.png";
+                                echo "components/com_mymuse/assets/images/minus-button-30.png";
                             }else{
-                                echo "components/com_mymuse/assets/images/checkbox.png";
+                                echo "components/com_mymuse/assets/images/plus-button-30.png";
                             }
                         ?>"></a>
       					<?php  endif; ?>

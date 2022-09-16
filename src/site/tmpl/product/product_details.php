@@ -206,9 +206,9 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                        	> <img id="img_<?php echo $this->all_tracks->id; ?>"
 		                    	src="<?php
 			                    if(isset($this->products) && in_array($this->all_tracks->id, $this->products)) :
-			                        echo JRoute::_("components/com_mymuse/assets/images/cart.png");
+			                        echo JRoute::_("components/com_mymuse/assets/images/minus-button-30.png");
 			                    else :
-			                        echo JRoute::_("components/com_mymuse/assets/images/checkbox.png");
+			                        echo JRoute::_("components/com_mymuse/assets/images/plus-button-30.png");
 			                    endif;
 			                    ?>"></a>
 	                      

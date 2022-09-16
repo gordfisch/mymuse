@@ -93,15 +93,13 @@ $i = 0;
 	<li class="item-container cols-3">	
 		<div class="mytotal mycart-inner mymuse-mobile-hide "><b><?php echo JText::_('COM_MYMUSE_CART_TOTAL') ?></b></div>
 		<div></div>
-		<div class="mytotal mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_CART_TOTAL'); ?>"><?php echo MymuseHelper::printMoney($order->order_total); ?></div>
-	</li>
-	<li class="item-container cols-3">	
-		<div></div>
-		<div></div>
-		<div><a href="index.php?option=com_mymuse&task=checkout"><?php echo JText::_('COM_MYMUSE_CHECKOUT') ?></a></div>
+		<div class="mytotal mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_CART_TOTAL'); ?>"><b><?php echo MymuseHelper::printMoney($order->order_total); ?></b></div>
 	</li>
 
+
   </ul>
+
+  <a href="index.php?option=com_mymuse&task=checkout"><?php echo JText::_('COM_MYMUSE_CHECKOUT') ?></a>
 <section>
 <?php
 }else{ 

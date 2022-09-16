@@ -100,9 +100,9 @@ endif;
 						id="cart_image_<?php echo $product->id; ?>"
 						src="<?php
                     if(in_array($product->id, $this->products)) :
-                       echo JRoute::_("components/com_mymuse/assets/images/cart.png");
+                       echo JRoute::_("components/com_mymuse/assets/images/minus-button-30.png");
                     else :
-                        echo JRoute::_("components/com_mymuse/assets/images/checkbox.png");
+                        echo JRoute::_("components/com_mymuse/assets/images/plus-button-30.png");
                      endif;
                  ?>"></a> <span class="mycheckbox"><input
 						style="display: none;" type="checkbox" name="productid[]"

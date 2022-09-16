@@ -32,9 +32,7 @@
         <fileset dir="./modules/mod_mymuse_minicart" id="mod_minicart_files">
                 <include name="**" />
         </fileset>
-        <fileset dir="./modules/mod_mymuse_latest" id="mod_latest_files">
-                <include name="**" />
-        </fileset>
+
         <fileset dir="./modules/mod_mymuse_amplitude" id="mod_amplitude_files">
                 <include name="**" />
         </fileset>
@@ -150,9 +148,7 @@
                 <copy todir="${joomladir}/modules/mod_mymuse_minicart">
                         <fileset refid="mod_minicart_files" />
                 </copy>
-                <copy todir="${joomladir}/modules/mod_mymuse_latest">
-                        <fileset refid="mod_latest_files" />
-                </copy>
+
                 <copy todir="${joomladir}/modules/mod_mymuse_amplitude">
                         <fileset refid="mod_amplitude_files" />
                 </copy>

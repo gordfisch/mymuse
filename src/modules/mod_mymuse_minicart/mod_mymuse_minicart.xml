@@ -17,8 +17,8 @@
         <filename module="mod_mymuse_minicart">tmpl/index.html</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_minicart.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_minicart.sys.ini</language>
+		<language tag="en-GB">language/en-GB/mod_mymuse_minicart.ini</language>
+		<language tag="en-GB">language/en-GB/mod_mymuse_minicart.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

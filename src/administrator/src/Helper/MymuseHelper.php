@@ -1003,7 +1003,6 @@ class MymuseHelper extends ContentHelper
 	/**
 	 * Return the countryname or code of a given countryID
 	 *
-	 * @access public
 	 * @param int $id Country ID
 	 * @param char $fld Field to return: country_name (default), country_2_code or country_3_code.
 	 *
@@ -1029,7 +1028,6 @@ class MymuseHelper extends ContentHelper
 	/**
 	 * Return the id of a given country name
 	 *
-	 * @access public
 	 * @param string $name Country name (can be country_name or country_3_code  or country_2_code )
 	 *
 	 * @return int id
@@ -1060,7 +1058,6 @@ class MymuseHelper extends ContentHelper
 	/**
 	 * Return the statename or code of a given id
 	 *
-	 * @access public
 	 * @param int $id State ID
 	 * @param char $fld Field to return: state_name (default), state_2_code or state_3_code.
 	 *
@@ -1083,7 +1080,6 @@ class MymuseHelper extends ContentHelper
 	/**
 	 * Return the stateID of a given state name
 	 *
-	 * @access public
 	 * @param string $name Country name
 	 *
 	 * @return int virtuemart_state_id

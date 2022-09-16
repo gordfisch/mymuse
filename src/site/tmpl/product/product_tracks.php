@@ -95,27 +95,24 @@ endif;
 if($this->params->get('product_show_select_column', 1)) :
   $cols++;
 endif;
-if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : 
+if($this->params->get('product_show_preview_column', 1)) : 
   $cols++;
 endif;
-
+echo "cols = $cols";
 ?>
 <style>
-@media (min-width: 768px) {
-  .tracks .my-grid{
-      grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
-  }
-}
+
 .jp-gui {
   width: inherit;
 }
 </style>
 
 <!-- TRACKS -->
-<div class="cart-container columns-<?php echo $cols; ?>">
+
+<div class=" list-products mymuse-cart ">
 <section class="tracks">
     <ul class="mymuse-container">
-      <li class="my-grid">
+      <li class="my-grid item-container cols-<?php echo $cols; ?>">
         <div class="mymuse-header name"><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></div>
 
         <?php  if($this->params->get('product_show_artist', 0)) :?>
@@ -156,7 +153,7 @@ endif;
         <div class="mymuse-header select"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
         <?php endif; ?>
 
-        <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
+        <?php if($this->params->get('product_show_preview_column', 1) ) : ?>
           <div class="mymuse-header previews"><?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?></div>
         <?php endif; ?>
     </li>
@@ -172,7 +169,7 @@ endif;
     if(in_array($track->access, $groups)) :
 ?>
 
-      <li class="my-grid">
+      <li class="my-grid item-container cols-<?php echo $cols; ?>">
       <div class="mycart-inner title" data-name="<?php echo JText::_('COM_MYMUSE_TITLE'); ?>"><?php if($track->detail_image && $track->detail_image != '') :
                 echo '<span class="track-img"><img src="'.$track->detail_image.'"></span>';
               endif; 
@@ -335,9 +332,9 @@ endif;
                     id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>"
                     src="<?php
                       if(isset($this->products) && in_array($track->id, $this->products)) :
-                          echo JRoute::_("components/com_mymuse/assets/images/cart.png");
+                          echo JRoute::_("components/com_mymuse/assets/images/minus-button-30.png");
                       else :
-                          echo JRoute::_("components/com_mymuse/assets/images/checkbox.png");
+                          echo JRoute::_("components/com_mymuse/assets/images/plus-button-30.png");
                       endif;
                       ?>"></a>
                 <?php  endif; ?>
@@ -351,15 +348,15 @@ endif;
                 <?php  endif; ?></div>
     <?php endif; ?>
 
-    <?php if($this->params->get('product_show_preview_column', 1) && $this->params->get('product_player_type') != "playlist") : ?>
+    <?php if($this->params->get('product_show_preview_column', 1) ) : ?>
       <div class="mycart-inner previews" data-name="<?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?>"><span class="jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></span></div>
     <?php endif; ?>
     </li>
     <?php endif; ?>
   <?php endforeach; ?>
 
-  </div>
 
+</div>
 
 
 
@@ -380,5 +377,4 @@ endif;
 
 <?php  endif; ?>
 </div>
-
 <?php  endif; ?>

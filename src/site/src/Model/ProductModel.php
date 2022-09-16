@@ -672,7 +672,7 @@ $params->set('product_player_type', "single");
 								}else{
 									//audio
 									
-									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'),0,0,$i, $count));
+									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'), 0, 0, $i, $count));
 									if(is_array($results) && isset($results[0]) && $results[0] != ''){
 										$flash .= $results[0];
 									}

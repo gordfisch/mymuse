@@ -530,9 +530,12 @@ class ProductsModel extends ListModel
 			{
 				$item->associations = AssociationHelper::displayAssociations($item->id);
 			}
+
+			//echo "list -image ".$item->list_image."<br />";
 		}
 
 		return $items;
+
 	}
 
 	/**

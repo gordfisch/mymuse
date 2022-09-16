@@ -12,31 +12,34 @@ namespace Joomla\Component\Mymuse\Site\View\Tracks;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\FileLayout;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
+use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
+use Joomla\Database\ParameterType;
+use Joomla\Registry\Registry;
+use Joomla\String\StringHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Table\Table;
+
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
-use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
-use Joomla\Component\Mymuse\Site\Helper\CartHelper;
-use Joomla\Component\Mymuse\Site\Model\StoreModel;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
+
 
 /**
  * HTML View class for the MyMuse component
  *
  */
-class mymuseViewtracks extends JViewLegacy
+class HtmlView extends BaseHtmlView
 {
 	protected $state;
 	protected $items;
@@ -47,11 +50,11 @@ class mymuseViewtracks extends JViewLegacy
     
 	function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
-		$db     = JFactory::getDBO();
+		$app	= Factory::getApplication();
+		$user	= Factory::getUser();
+		$db     = Factory::getDBO();
 		$jinput = $app->input;
-		$app 	= JFactory::getApplication();
+		$app 	= Factory::getApplication();
 		$menu 	= $app->getMenu()->getActive()->id;
 
 		// Get some data from the models
@@ -61,16 +64,21 @@ class mymuseViewtracks extends JViewLegacy
 		$category	= $this->get('Category');
        // $products   = $this->get('Products');// sets list.prods for tracks query
 
-        $MyMuseCart =& MyMuse::getObject('cart','helpers');
-        $this->cart =& $MyMuseCart->cart;
+
+
         
-        $this->sortDirection    = $state->get('list.direction');
-        $this->sortColumn       = $state->get('list.ordering');
+        $this->state 			= $this->get('State');
+        $this->sortDirection    = $this->state->get('list.direction');
+        $this->sortColumn       = $this->state->get('list.ordering');
         $this->Itemid           = $jinput->get('Itemid', $menu);
         $filter_alpha           = $jinput->get('filter_alpha', '', 'STRING');
         $this->task             = $jinput->get('task', 'view', 'STRING');
         $Itemid 				= $jinput->get("Itemid",'');
         $layout   				= $jinput->get("layout",'');
+        $this->store			= Mymuse::getObject('Store','model')->getStore();
+		$this->shopper 			= Mymuse::getObject('Shopper','model')->getShopper();
+		$MyMuseCart				= Mymuse::getObject('Cart','helper');
+		$this->cart 			= $MyMuseCart->cart;
         
         if($layout){
         	$this->setLayout($layout);
@@ -115,6 +123,7 @@ class mymuseViewtracks extends JViewLegacy
 			
 			$category->flash = $result [1]->flash;
 			$pagination = $result [2];
+			//$pagination = $this->getPagination();
 			
 			if ($params->get ( 'show_alphabet' )) {
 				$alpha = array ();
@@ -192,7 +201,7 @@ class mymuseViewtracks extends JViewLegacy
 		$category->params->merge($cparams);
 
 		// Check whether category access level allows access.
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 		$groups	= $user->getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups)) {
 			Factory::getApplication()->enqueueMessage(403, JText::_('JERROR_ALERTNOAUTHOR'));
@@ -256,7 +265,7 @@ class mymuseViewtracks extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway	= $app->getPathway();
 		$title		= null;

@@ -73,9 +73,12 @@ class HtmlView extends CategoryView
 	{
 		parent::commonCategoryDisplay();
 
+		$app     = Factory::getApplication();
+		$jinput = $app->input;
+
+
 		// Flag indicates to not add limitstart=0 to URL
 		$this->pagination->hideEmptyLimitstart = true;
-
 		$this->store	= StoreModel::getStore();
 
 		// Prepare the data
@@ -87,9 +90,24 @@ class HtmlView extends CategoryView
 		$numLinks   = $params->def('num_links', 4);
 		$this->vote = PluginHelper::isEnabled('content', 'vote');
 
-		PluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('mymuse');
+		
+		$this->category->event = new \stdClass();
+		$offset = 0;
 
-		$app     = Factory::getApplication();
+		//category level
+		$results = $app->triggerEvent('onProductBeforeHeader', array ('com_joomlamymuse.category', &$this->category, &$this->params, $offset));
+		$this->category->event->beforeDisplayHeader = trim(implode("\n", $results));
+		
+		$results = $app->triggerEvent('onProductAfterTitle', array('com_joomlamymuse.category', &$this->category, &$this->params, $offset));
+		$this->category->event->afterDisplayTitle = trim(implode("\n", $results));
+		
+		$results = $app->triggerEvent('onProductBeforeDisplay', array('com_joomlamymuse.category', &$this->category, &$this->params, $offset));
+		$this->category->event->beforeDisplayProduct = trim(implode("\n", $results));
+		
+		$results = $app->triggerEvent('onProductAfterDisplay', array('com_joomlamymuse.category', &$this->category, &$this->params, $offset));
+		$this->category->event->afterDisplayProduct = trim(implode("\n", $results));
+
 
 		// Compute the product slugs and prepare introtext (runs content plugins).
 		foreach ($this->items as $item)
@@ -109,7 +127,8 @@ class HtmlView extends CategoryView
 			{
 				$item->text = $item->introtext;
 			}
-
+			
+			//product level
 			$app->triggerEvent('onMymusePrepare', array('com_mymuse.category', &$item, &$item->params, 0));
 
 			// Old plugins: Use processed text as introtext
@@ -257,5 +276,80 @@ class HtmlView extends CategoryView
 		{
 			$this->pathway->addItem($item['title'], $item['link']);
 		}
+	}
+
+
+	function _getProductCount($category)
+	{
+		$total 		= 0;
+		$db 		= Factory::getDBO();
+		$nullDate	= $db->Quote($db->getNullDate());
+		$nowDate	= $db->Quote(Factory::getDate()->toSql());
+		
+		$catid[] 	= $category->id;
+		$children 	= $category->getChildren();
+		foreach($children as $child){
+			$catid[] = $child->id;
+		}
+
+		$catids = implode(",",$catid);
+		$query = "SELECT count(*) as total from #__mymuse_product as p
+				LEFT JOIN #__mymuse_product_category_xref as x
+				ON p.id=x.product_id
+				WHERE
+				(x.catid IN ($catids) OR p.catid IN ($catids) OR p.artistid IN ($catids) )
+		
+				AND
+				(p.publish_up = " . $nullDate . " OR p.publish_up <= " . $nowDate . ")
+				AND (p.publish_down = " . $nullDate . " OR p.publish_down >= " . $nowDate . ")
+				AND p.parentid=0
+		";
+		//echo $query;
+		$db->setQuery($query);
+		$total += $db->loadResult();
+			
+		return $total;
+	}
+	
+	function _getTrackCount(&$category)
+	{
+		$total 		= 0;
+		$db 		= Factory::getDBO();
+		$nullDate	= $db->Quote($db->getNullDate());
+		$nowDate	= $db->Quote(Factory::getDate()->toSql());
+		$catid[] 	= $category->id;
+		$children 	= $category->getChildren();
+		foreach($children as $child){
+			$catid[] = $child->id;
+		}
+
+		$catids = implode(",",$catid);
+		$query = "SELECT count(*) as total FROM #__mymuse_product as track
+	
+            LEFT JOIN #__mymuse_product as parent ON parent.id=track.parentid
+			LEFT JOIN #__mymuse_product_category_xref as x ON parent.id=x.product_id
+            WHERE
+            (x.catid IN ($catids) OR parent.catid IN ($catids) OR parent.artistid IN ($catids) )
+	
+            AND
+            (parent.publish_up = ".$nullDate." OR parent.publish_up <= ".$nowDate.")
+            AND (parent.publish_down = ".$nullDate." OR parent.publish_down >= ".$nowDate.")
+	
+            AND parent.state=1
+	
+            AND
+            (track.publish_up = ".$nullDate." OR track.publish_up <= ".$nowDate.")
+            AND (track.publish_down = ".$nullDate." OR track.publish_down >= ".$nowDate.")
+	
+            AND track.state=1
+	
+            AND parent.parentid=0
+	
+		";
+
+		$db->setQuery($query);
+		$total += $db->loadResult();
+
+		return $total;
 	}
 }

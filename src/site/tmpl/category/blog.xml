@@ -5,13 +5,14 @@
 			key = "JHELP_MENUS_MENU_ITEM_ARTICLE_CATEGORY_BLOG"
 		/>
 		<message>
-			<![CDATA[MYMUSE_CATEGORY_VIEW_BLOG_DESC]]>
+			<![CDATA[COM_MYMUSE_CATEGORY_VIEW_BLOG_DESC]]>
 		</message>
 	</layout>
 
 	<!-- Add fields to the request variables for the layout. -->
 	<fields name="request">
 		<fieldset name="request"
+			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
 		 >
 
 			<field name="id" type="category"
@@ -20,13 +21,27 @@
 				label="JGLOBAL_CHOOSE_CATEGORY_LABEL"
 				required="true"
 			/>
+			
+			<field
+				name="filter_tag"
+				type="tag"
+				label="JTAG"
+				multiple="true"
+				mode="nested"
+				custom="deny"
+			/>
 		</fieldset>
 	</fields>
 
 	<!-- Add fields to the parameters object for the layout. -->
 	<fields name="params">
 		<fieldset name="category" label="JGLOBAL_CATEGORY_OPTIONS">
-			
+			<field
+					name="layout_type"
+					type="hidden"
+					default="blog"
+			/>
+				
 			<field name="show_category_title" 
 				type="list"
 				useglobal="true"
@@ -76,18 +91,6 @@
 				<option value="4">J4</option>
 				<option value="5">J5</option>
 			</field>
-			
-			<field name="subcat_columns" 
-				type="list"
-				description="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
-				label="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
-			>
-				
-				<option value="1">J1</option>
-				<option value="2">J2</option>
-				<option value="3">J3</option>
-				<option value="4">J4</option>
-			</field>
 
 			<field name="show_empty_categories" 
 				type="list"
@@ -100,6 +103,18 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			
+			<field
+					name="show_no_articles"
+					type="list"
+					label="COM_MYMUSE_NO_ARTICLES_LABEL"
+					useglobal="true"
+					class="form-select-color-state"
+					validate="options"
+					>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 
 			<field
 				name="show_category_heading_title_text"
@@ -113,17 +128,6 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_subcat_image" 
-				type="list"
-				useglobal="true"
-			    class="form-select-color-state"
-				label="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_LABEL"
-				description="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_DESC"
-			>	
-				
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
 
 			<field
 				name="show_subcat_desc"
@@ -154,33 +158,17 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-					<field name="page_subheading" type="text"
-						description="JGLOBAL_SUBHEADING_DESC"
-						label="JGLOBAL_SUBHEADING_LABEL"
-						size="20"
-					/>
-
-			 		<field name="category_show_product_image" 
-						type="list"
-						useglobal="true"
-					    class="chzn-color"
-			 			label="MYMUSE_SHOW_PRODUCT_IMAGE" 
-			 			description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC">
-			 			
-			 			<option value="0">MYMUSE_HIDE</option>
-			 			<option value="1">MYMUSE_SHOW</option>
-			 		</field>
-
-			 		<field name="category_show_intro_text" 
-						type="list"
-						useglobal="true"
-					    class="chzn-color"
-			 			label="MYMUSE_SHOW_INTRO_TEXT" 
-			 			description="MYMUSE_SHOW_PRODUCT_INTRO_TEXT">
-			 			
-			 			<option value="0">JHIDE</option>
-						<option value="1">JSHOW</option>
-			 		</field>
+			<field
+					name="show_cat_tags"
+					type="list"
+					label="COM_MYMUSE_FIELD_SHOW_CAT_TAGS_LABEL"
+					useglobal="true"
+					class="form-select-color-state"
+					validate="options"
+					>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+			</field>
 
 
 	</fieldset>
@@ -219,7 +207,7 @@
 				type="text"
 				label="JGLOBAL_BLOG_CLASS"
 				description="JGLOBAL_BLOG_CLASS_NOTE_DESC"
-				parentclass="stack span-2-inline"
+				parentclass="stack span-1-inline"
 				useglobal="true"
 				validate="CssIdentifier"
 			/>
@@ -237,12 +225,24 @@
 				name="multi_column_order"
 				type="list"
 				label="JGLOBAL_MULTI_COLUMN_ORDER_LABEL"
-				parentclass="stack span-2-inline"
+				parentclass="stack span-1-inline"
 				useglobal="true"
 				validate="options"
 				>
 				<option value="0">JGLOBAL_BLOG_DOWN_OPTION</option>
 				<option value="1">JGLOBAL_BLOG_ACROSS_OPTION</option>
+			</field>
+
+			<field
+				name="blog_product_introtext"
+				type="list"
+				label="COM_MYMUSE_BLOG_SHOW_INTRO_TEXT"
+				useglobal="true"
+				validate="options"
+				parentclass="stack span-1-inline"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
 
 			<field
@@ -274,6 +274,19 @@
 				type="list"
 				label="JGLOBAL_LINKED_INTRO_IMAGE_LABEL"
 				useglobal="true"
+				validate="options"
+				parentclass="stack span-1"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field
+				name="link_titles"
+				type="list"
+				label="JGLOBAL_LINKED_TITLES_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
 				validate="options"
 				parentclass="stack span-1-inline"
 				>
@@ -405,17 +418,7 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field
-				name="link_titles"
-				type="list"
-				label="JGLOBAL_LINKED_TITLES_LABEL"
-				useglobal="true"
-				class="form-select-color-state"
-				validate="options"
-				>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+			
 			
 			<field
 				name="show_intro"
@@ -757,7 +760,9 @@
 			<field name="product_show_tracks" 
 				type="list"
 				label="COM_MYMUSE_SHOW_TRACKS_LABEL" 
-				description="COM_MYMUSE_SHOW_TRACKS_DESC">
+				description="COM_MYMUSE_SHOW_TRACKS_DESC"
+				useglobal="true"
+				>
 	 			
 	 			<option value="0">COM_MYMUSE_HIDE</option>
 	 			<option value="1">COM_MYMUSE_SHOW</option>
@@ -766,6 +771,7 @@
 				type="list"
 				label="COM_MYMUSE_TRACK_ORDER_LABEL"
 				description="COM_MYMUSE_TRACK_ORDER_DESC"
+				useglobal="true"
 				>
 				
 				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
@@ -782,6 +788,7 @@
 			name="order_track_date" 
 			type="list"
 			label="JGLOBAL_ORDERING_DATE_LABEL"
+			useglobal="true"
 		>
 			
 			<option value="created">JGLOBAL_CREATED</option>

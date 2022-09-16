@@ -9,6 +9,20 @@
 
 // no direct access
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Content\Administrator\Extension\ContentComponent;
+
+
 $class = ' class="first"';
 
 if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
@@ -33,7 +47,7 @@ if($this->params->get('category_layout') == "_:tracks"){
 	?>
 	<li <?php echo $class; ?>>
 	<?php $class = ''; ?>
-		<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($item->id));?>">
+		<span class="item-title"><a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($item->id));?>">
 			<?php echo $this->escape($item->title); ?></a> 
 			<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :
 					if($this->params->get('category_layout') == "_:tracks"){ ?>

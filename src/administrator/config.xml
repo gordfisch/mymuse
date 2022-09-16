@@ -767,10 +767,11 @@
 
 		<field
 			name="show_description_image"
-			type="list"
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
 			label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
 			class="form-select-color-state"
-			validate="options"
+			default="0"
 			>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
@@ -938,7 +939,7 @@
 			>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
-			</field>
+		</field>
 		<field 
 			name="num_leading_articles"
 			type="text"
@@ -975,12 +976,22 @@
 				name="multi_column_order"
 				type="list"
 				label="JGLOBAL_MULTI_COLUMN_ORDER_LABEL"
-				parentclass="stack span-2-inline"
-				useglobal="true"
 				validate="options"
+				default="1"
 				>
 				<option value="0">JGLOBAL_BLOG_DOWN_OPTION</option>
 				<option value="1">JGLOBAL_BLOG_ACROSS_OPTION</option>
+			</field>
+
+		<field
+				name="blog_product_introtext"
+				type="list"
+				label="COM_MYMUSE_BLOG_SHOW_INTRO_TEXT"
+				validate="options"
+				default="0"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
 
 		<field name="spacer1"
@@ -1021,7 +1032,7 @@
 			name="show_pagination_limit"
 			type="radio" 
 			layout="joomla.form.field.radio.switcher"
-			default="1"
+			default="0"
 			label="JGLOBAL_DISPLAY_SELECT_LABEL"
 			description="JGLOBAL_DISPLAY_SELECT_DESC"
 			>
@@ -1055,7 +1066,25 @@
 			<option value="1">JSHOW</option>
 		</field>
 
-		<field name="list_show_artist" 
+ 		<field name="category_show_product_image" 
+			type="list"
+			useglobal="true"
+		    class="form-select-color-state"
+ 			label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
+ 			description="COM_MYMUSE_SHOW_PRODUCT_IMAGE_DESC">
+ 			
+ 			<option value="0">JHIDE</option>
+ 			<option value="1">JSHOW</option>
+ 		</field>
+
+ 		<field name="category_product_image_height" 
+ 			type="text" 
+ 			default="0" 
+ 			label="COM_MYMUSE_PRODUCT_IMAGE_HEIGHT" 
+ 			description="COM_MYMUSE_PRODUCT_IMAGE_HEIGHT">
+ 		</field>
+
+ 		<field name="list_show_artist" 
 			type="radio"
 			layout="joomla.form.field.radio.switcher"
 			description="COM_MYMUSE_LIST_ARTIST_DESC"
@@ -1076,17 +1105,17 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-			
-		<field name="list_show_file_length" 
+ 		<field name="category_show_intro_text" 
 			type="list"
-			description="COM_MYMUSE_LIST_FILE_LENGTH_DESC"
-			label="COM_MYMUSE_LIST_FILE_LENGTH_LABEL"
-			default="0"
-			>
-			<option value="0">JHIDE</option>
+			useglobal="true"
+		    class="form-select-color-state"
+ 			label="COM_MYMUSE_SHOW_INTRO_TEXT" 
+ 			description="COM_MYMUSE_SHOW_PRODUCT_INTRO_TEXT">
+ 			
+ 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
-		</field>
-
+ 		</field>
+			
 		<field name="list_show_date" 
 			type="radio"
 			layout="joomla.form.field.radio.switcher"

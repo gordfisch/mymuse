@@ -10,7 +10,19 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$uri = JFactory::getURI();
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
+
+$app = Factory::getApplication();
+
+$category = $this->category;
+$uri = JUri::getInstance(); 
 $cat_uri = $uri->toString();
 
 $document 	= JFactory::getDocument();
@@ -30,15 +42,15 @@ $document->setMetaData( 'twitter:url', $cat_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
-$category = $this->category;
+
+ $this->category->text = $this->category->description;
+
+
+$htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
+
 ?>
 
-
-
-
 <?php  echo $category->event->beforeDisplayHeader; ?>
-
 <div class="category-list<?php echo $this->pageclass_sfx;?>">
 
 	<?php if ($this->params->get('show_page_heading')) : ?>
@@ -48,9 +60,9 @@ $category = $this->category;
 	<?php endif; ?>
 
 	<?php if ($this->params->get('show_category_title')) : ?>
-	<h2>
+	<<?php echo $htag; ?>>
 		<span class="category-title"><?php echo $this->category->title;?></span>
-	</h2>
+	</<?php echo $htag; ?>>
 	<?php endif; ?>
 	
 	<?php if ($this->params->get('page_subheading')) : ?>
@@ -58,7 +70,7 @@ $category = $this->category;
 		<span class="category-subheading"><?php echo $this->escape($this->params->get('page_subheading')); ?></span>
 	</h3>
 	<?php endif; ?>
-<?php echo $category->event->afterDisplayTitle; ?>
+<?php echo $this->category->event->afterDisplayTitle; ?>
 
 
 	<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
@@ -79,19 +91,26 @@ $category = $this->category;
 	</div>
 	<?php endif; ?>
 	<div class="clearfix"></div>
-	
-<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
+
+
+<?php 
+/*
+Mymuse is not going to show children
+if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
 		<div class="cat-children cat-items">
 		<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
 			<?php echo $this->loadTemplate('children'); ?>
 		</div>
-<?php endif; ?>
+<?php endif; 
+*/
+?>
+
 	<div class="clearfix"></div>
 	
+
 <?php echo $category->event->beforeDisplayProduct; ?>
 
 <?php echo $this->loadTemplate('products'); ?>
-
 
 <?php echo $category->event->afterDisplayProduct; ?>
 </div>

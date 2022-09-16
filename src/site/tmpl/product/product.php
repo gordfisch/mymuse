@@ -259,9 +259,9 @@ jQuery(document).ready(function($){
                 action = res.action;
                 //alert(res.msg);
                 if(action == "deleted" || action == "failed"){
-                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
+                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
                 }else{
-                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
+                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
                 }
                 if(idx){
                     if(idx == 1){
@@ -310,9 +310,9 @@ if(count(is_countable($items)?$items:[]) && $items_select){
 
                 //alert(res.msg);
                 if(action == "deleted" || action == "failed"){
-                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
+                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
                 }else{
-                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
+                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
                 }
 
                 if(idx){
@@ -362,9 +362,9 @@ if(count(is_countable($items)?$items:[]) && !$items_select){
 
 		                //alert(res.msg);
 		                if(action == "deleted" || action == "failed"){
-		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
+		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
 		                }else{
-		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
+		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
 		                }
 
 		                if(idx){
@@ -420,9 +420,9 @@ if(is_countable($tracks)){
 		                action = res.action;
 		                //alert(res.msg);
 		                if(action == "deleted" || action == "failed"){
-		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/checkbox.png");
+		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
 		                }else{
-		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/cart.png");
+		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
 		                }
 		                if(idx){
 		                    if(idx == 1){

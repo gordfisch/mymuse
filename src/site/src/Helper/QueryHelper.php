@@ -164,6 +164,77 @@ class QueryHelper
 	}
 
 	/**
+	 * Translate an order code to a field for product ordering.
+	 *
+	 * @param	string	$orderby	The ordering code.
+	 * @param	string	$orderDate	The ordering code for the date.
+	 *
+	 * @return	string	The SQL field(s) to order by.
+	 * @since	1.5
+	 */
+	public static function orderbyProduct($orderby, $orderDate = 'created')
+	{
+		$queryDate = self::getQueryDate($orderDate);
+
+		switch ($orderby)
+		{
+			case 'date' :
+				$orderby = $queryDate;
+				break;
+	
+			case 'rdate' :
+				$orderby = $queryDate . ' DESC ';
+				break;
+	
+			case 'alpha' :
+				$orderby = 'p.title';
+				break;
+	
+			case 'ralpha' :
+				$orderby = 'p.title DESC';
+				break;
+	
+			case 'hits' :
+				$orderby = 'p.hits DESC';
+				break;
+	
+			case 'rhits' :
+				$orderby = 'p.hits';
+				break;
+	
+			case 'order' :
+				$orderby = 'p.ordering';
+				break;
+	
+			case 'author' :
+				$orderby = 'p.author';
+				break;
+	
+			case 'rauthor' :
+				$orderby = 'p.author DESC';
+				break;
+	
+			case 'sales' :
+				$orderby = 's.sales DESC';
+				break;
+	
+			case 'discount' :
+				$orderby = 'a.product_discount DESC';
+				break;
+
+			case 'rorder' :
+				$orderby = 'a.ordering DESC';
+				break;
+	
+			default :
+				$orderby = 'a.ordering';
+				break;
+		}
+	
+		return $orderby;
+	}
+
+	/**
 	 * Translate an order code to a field for primary category ordering.
 	 *
 	 * @param   string             $orderDate  The ordering code.

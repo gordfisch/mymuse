@@ -1,136 +1,92 @@
 <?php
+
 /**
- * @package		Joomla.Site
- * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package     Joomla.Site
+ * @subpackage  com_content
+ *
+ * @copyright   (C) 2010 Open Source Matters, Inc. <https://www.joomla.org>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
 defined('_JEXEC') or die;
-$class = ' class="first"';
-$count = count($this->children[$this->category->id]);
-$columns =  $this->params->get('subcat_columns', 1);
-if($count <  $this->params->get('subcat_columns', 1)){
-	$columns = $count;
-}
-$this->cols[$this->maxLevel] = $columns;
-if($this->maxLevel < 1 && isset($this->cols[$this->maxLevel+1])){
-	$columns = $this->cols[$this->maxLevel+1] - 2;
-}
-$columns = $columns? $columns : 1;
 
-$break =  round($count / $columns,0,PHP_ROUND_HALF_DOWN);
-$r = $count  %  $columns;
-if($r){
-	$break++;
-}
-if($columns == 1){
-	$break = 0;
-}
-$total_shown = 0;
-$column = 1;
-$i=0;
-if ($this->params->get('category_image_height')) : ?>
-<style>
-div.cat-children li > span.subcat-image > a > img {
-	height: <?php echo $this->params->get('category_image_height'); ?>px;
-}
-</style>
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
-<?php endif; ?>
-<div style="clear: both"></div>
-<div class="cols-<?php echo $columns; ?>">
+$lang   = Factory::getLanguage();
+$user   = Factory::getUser();
+$groups = $user->getAuthorisedViewLevels();
 
-<?php if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) : 
-if(!$total_shown){
-	//top of column
-	?><div class="column-<?php echo $column; $column++;?>">
-				<?php
-}
-?>
-	<ul>
-	<?php foreach($this->children[$this->category->id] as $id => $child) : 
+if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?>
+    <?php foreach ($this->children[$this->category->id] as $id => $child) : ?>
+        <?php // Check whether category access level allows access to subcategories. ?>
+        <?php if (in_array($child->access, $groups)) : ?>
+            <?php if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) : ?>
+            <div class="com-content-category-blog__child">
+                <?php if ($lang->isRtl()) : ?>
+                <h3 class="page-header item-title">
+                    <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
+                        <span class="badge bg-info tip">
+                            <?php echo $child->getNumItems(true); ?>
+                        </span>
+                    <?php endif; ?>
+                    <a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id, $child->language)); ?>">
+                    <?php echo $this->escape($child->title); ?></a>
 
-		if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) :
-			if (!isset($this->children[$this->category->id][$id + 1])) :
-				$class = ' class="last"';
-			endif;
-		?>
-		<li<?php echo $class; ?>>
-			<?php $class = ''; 
-			$total_shown++;
-			$i++;
-			?>
-			
-			<?php if ($this->params->get('show_subcat_image') == 1 && $child->getParams()->get('image')) :?>
-			<span class="subcat-image"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
-				<img src="<?php echo $child->getParams()->get('image'); ?>"
-				<?php if ($this->params->get('category_image_height')) : ?>
-					height="<?php echo $this->params->get('category_image_height'); ?>"
-				<?php endif; ?> /></a>
-			</span>
-			<br />
-			<?php endif; ?>
-			
-			
-			<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
-				<?php echo $this->escape($child->title); ?></a>
-			</span>
-			<br />
-			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
-			<span class="item_products">
-					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?> <?php echo $child->numitems; ?>
-			</span>
-			<?php endif ; ?>
+                    <?php if ($this->maxLevel > 1 && count($child->getChildren()) > 0) : ?>
+                        <a href="#category-<?php echo $child->id; ?>" data-bs-toggle="collapse" class="btn btn-sm float-end" aria-label="<?php echo Text::_('JGLOBAL_EXPAND_CATEGORIES'); ?>"><span class="icon-plus" aria-hidden="true"></span></a>
+                    <?php endif; ?>
+                </h3>
+                <?php else : ?>
+                <h3 class="page-header item-title"><a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id, $child->language)); ?>">
+                    <?php echo $this->escape($child->title); ?></a>
+                    <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
+                        <span class="badge bg-info">
+                            <?php echo Text::_('COM_CONTENT_NUM_ITEMS'); ?>&nbsp;
+                            <?php echo $child->getNumItems(true); ?>
+                        </span>
+                    <?php endif; ?>
 
-			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
-			<?php if ($child->description) : ?>
-				<?php if ($this->params->get('subcat_desc_truncate')) : 
-					$child->description = JHtmlString::truncate($child->description,$this->params->get('subcat_desc_truncate'));
-		 			$child->description = str_replace("...",'',$child->description);
-		 			$child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
-		
-				endif; ?>
-				<div class="category-desc">
-					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_content.category'); ?>
-				</div>
-			<?php endif; ?>
+                    <?php if ($this->maxLevel > 1 && count($child->getChildren()) > 0) : ?>
+                        <a href="#category-<?php echo $child->id; ?>" data-bs-toggle="collapse" class="btn btn-sm float-end" aria-label="<?php echo Text::_('JGLOBAL_EXPAND_CATEGORIES'); ?>"><span class="icon-plus" aria-hidden="true"></span></a>
+                    <?php endif; ?>
+                </h3>
+                <?php endif; ?>
+
+                <?php if ($this->params->get('show_subcat_desc') == 1) : ?>
+                    <?php if ($child->description) : ?>
+                        <?php if ($this->params->get('subcat_desc_truncate')) : 
+                            $child->description = JHtmlString::truncate($child->description,$this->params->get('subcat_desc_truncate'));
+                            $child->description = str_replace("...",'',$child->description);
+                            $child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
+                        
+                        endif; ?>
+
+
+                    <div class="com-content-category-blog__description category-desc">
+                        <?php echo HTMLHelper::_('content.prepare', $child->description, '', 'com_content.category'); ?>
+                    </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <?php if ($this->maxLevel > 1 && count($child->getChildren()) > 0) : ?>
+                <div class="com-content-category-blog__children collapse fade" id="category-<?php echo $child->id; ?>">
+                    <?php
+                    $this->children[$child->id] = $child->getChildren();
+                    $this->category = $child;
+                    $this->maxLevel--;
+                    echo $this->loadTemplate('children');
+                    $this->category = $child->getParent();
+                    $this->maxLevel++;
+                    ?>
+                </div>
+                <?php endif; ?>
+            </div>
             <?php endif; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
 
-			
-
-			<?php if (count($child->getChildren()) > 0):
-	
-				$this->children[$child->id] = $child->getChildren();
-				$this->category = $child;
-				$this->maxLevel--;
-				if ($this->maxLevel != 0) :
-					echo $this->loadTemplate('children');
-				endif;
-				$this->category = $child->getParent();
-				$this->maxLevel++;
-			endif; ?>
-		</li>
-		<?php endif; ?>
-		<?php 
-			
-			if($i == $break){
-				echo '</ul>
-				</div>
-				<div class="column-'.$column.'">
-				<ul>
-				';
-				$column++;
-				$i=0;
-			}
-		?>		
-		
-		
-		
-		
-	<?php endforeach; ?>
-	</ul>
-	</div>
-<?php endif; ?>
-</div>
+<?php endif;

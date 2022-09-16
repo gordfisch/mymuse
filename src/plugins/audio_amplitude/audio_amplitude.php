@@ -21,7 +21,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
 
 /**
 * MyMuse Audio Amplitude plugin
@@ -85,12 +86,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     public function getPlaylist($load_js = true){
         if(!$this->_playlist){
 
-            
 
             $db = Factory::getDBO();
             $mycategories           = $this->params->get('mycategories', array());
-
-
 
             foreach($mycategories as $key => $val){
                 $alias = '';
@@ -185,9 +183,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
         $document       = Factory::getDocument();
         $match          = 0;
-        $site_url       = URI::root();
+        $site_url       = rtrim( JURI::root(), '/');
         $params         = MyMuseHelper::getParams();
-        $preview_path   = $this->params->get('preview_path', '/media/com_mymuse/previews/');
+        $preview_path   = $this->params->get('preview_path', 'media/com_mymuse/previews/');
 
         if($type == 'singleplayer' || $type == 'single'){
             $id = 1;
@@ -202,18 +200,26 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         //SINGLE PLAYER MAKE PLAY BUTTONS//
         if($type=='single'){
             //get index
-            $preview = $preview_path.$track->file_preview;
+            $one_dir = $params->get('my_previews_in_one_dir',1);
+            if(!$one_dir){
+                $artist_alias = MymuseHelper::getArtistAlias($track->id);
+                $album_alias = MymuseHelper::getAlbumAlias($track->id);
+                $preview = $site_url.$preview_path.$artist_alias.'/'.$album_alias.'/'.$track->file_preview;
+            }else{
+                $preview = $site_url.$preview_path.$track->file_preview;
+            }
 
             if(isset($this->indexes[$preview])){
                 $index = $this->indexes[$preview];
             }else{
                 $index = '0';
             }
+            
 
             $html = '
 <div class="amplitude-song-container">
 
-    <div class="amplitude-song-container amplitude-play-pause" amplitude-song-index="'.$index.'">
+    <div class="amplitude-song-container amplitude-play-pause" data-amplitude-song-index="'.$index.'">
         <div class="play-pause" amplitude-main-play-pause="true"></div>
         <div class="playlist-meta">
             <div class="now-playing-title" style="display:none;">'.$this->playlist[$index]['name'].'</div>
@@ -222,6 +228,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     </div>
 </div>
 ';
+
             return $html;
             
             
@@ -314,6 +321,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                         $path = JPATH_ROOT.$preview_path.'/'.$track->url;
                         $track->url = $root_uri.$preview_path.$track->url;
                     }
+                    unset($track->track_parentid);
+                    unset($track->album_alias);
+                    unset($track->artist_alias);
             
                     if(!file_exists($path)){
                         //echo "$i ".$path."<br />\n";
@@ -379,7 +389,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $all = array();
         $all['songs'][] = $first;
         $track_query = $this->_getQueryHome();
-
+//$text .= $track_query;
         $db->setQuery($track_query);
         if($tracks = $db->loadObjectList()){
             $i = 0;
@@ -419,7 +429,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $catin          = implode(",",$catin);
 
 
-        $track_query = "SELECT p.title as name, parent.title as album,
+        $track_query = "SELECT p.track_parentid, p.title as name, parent.title as album,
             a.title as artist,
             p.file_preview as url,
             CONCAT('".$root_uri."/"."',parent.list_image) as cover_art_url,
@@ -435,7 +445,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             AND p.state > 0 AND parent.state > 0
             AND p.track_parentid = 0
             ORDER BY parent.product_release_date DESC, parent.created DESC, p.product_sku"; 
-echo $track_query;
+
         return $track_query;
     }
 
@@ -508,7 +518,7 @@ echo $track_query;
             $search = "FIELD(parent.id, $product_ids)";
         }
 
-        $track_query = "SELECT parent.id, p.title as name, parent.title as album,
+        $track_query = "SELECT p.track_parentid, p.title as name, parent.title as album,
             a.title as artist, p.hits,
             p.file_preview as url,
             CONCAT('".$root_uri."/"."',parent.list_image) as cover_art_url,
@@ -546,12 +556,13 @@ echo $track_query;
             AND p.product_allfiles=0
             AND p.state > 0 AND parent.state > 0
             AND p.track_parentid = 0
+            AND p.product_physical=0
             ORDER BY ".$search.", p.product_sku"; 
 
 
 
 
-   //echo '<!-- home query '.$db->replacePrefix((string) $track_query)." -->\n\n";
+   //echo 'home query '.$db->replacePrefix((string) $track_query)." \n\n"; exit;
         return $track_query;
     }
 }

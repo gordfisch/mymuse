@@ -79,9 +79,9 @@ endif;
 						id="img_<?php echo $item->id; ?>"
 						src="<?php
 	                    if(in_array($item->id, $this->products)) :
-	                       echo "components/com_mymuse/assets/images/cart.png";
+	                       echo "components/com_mymuse/assets/images/minus-button-30.png";
 	                    else :
-	                        echo "components/com_mymuse/assets/images/checkbox.png";
+	                        echo "components/com_mymuse/assets/images/plus-button-30.png";
 	                    endif;
                  ?>"></a> <span class="mycheckbox"><input
 						style="display: none;" type="checkbox" name="productid[]"
@@ -230,9 +230,9 @@ echo $js;
 							id="cart_image"
 							src="<?php
                             if(in_array($product->id, $this->products)) :
-                                echo "components/com_mymuse/assets/images/cart.png";
+                                echo "components/com_mymuse/assets/images/minus-button-30.png";
                             else :
-                                echo "components/com_mymuse/assets/images/checkbox.png";
+                                echo "components/com_mymuse/assets/images/plus-button-30.png";
                             endif;
                         ?>"></a></div>
                     <div id="product_price_<?php echo $product->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($current_price); ?></div>
