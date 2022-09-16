@@ -17,8 +17,8 @@
 		<language tag="en-GB">language/en-GB/plg_user_redirectonlogin.ini</language>
 		<language tag="en-GB">language/en-GB/plg_user_redirectonlogin.sys.ini</language>
 	</languages>
-<updateservers>
+<!-- updateservers>
     <server type="extension" priority="1"
         name="Plug MyMuse Redirectonlogin">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=51</server>
-</updateservers>
+</updateservers -->
 </extension>

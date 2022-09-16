@@ -99,6 +99,8 @@ class HtmlView extends BaseHtmlView
 		$this->item  	= $model->getItem();
 		$this->state 	= $model->getState();
 		$this->lists 	= $model->getLists();
+		$filelists 		= $model->getFileLists();
+        $this->lists 	= array_merge($this->lists,$filelists);
 		$this->params 	= MyMuseHelper::getParams();
 
 
@@ -134,8 +136,7 @@ class HtmlView extends BaseHtmlView
 
 			$this->layout = 'edittracks';
         	$this->setLayout('edittracks');
-        	$filelists = $model->getFileLists();
-        	$this->lists = array_merge($this->lists,$filelists);
+        	
 
         	if($task == "editfile"){
         		$this->item->formats = $model->getFormats($this->item->id);
@@ -241,8 +242,6 @@ class HtmlView extends BaseHtmlView
 		{
 			throw new GenericDataException(implode("\n", $errors), 500);
 		}
-//MymuseHelper::print_pre($this->item);
-	
 
 		$this->addToolbar($type,$this->item->parentid);
 		parent::display($tpl);
@@ -290,7 +289,11 @@ class HtmlView extends BaseHtmlView
 			// LIST TRACKS
 			if($this->params->get('storage', 'regular') == 'regular' ){
 				ToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'COM_MYMUSE_UPLOAD_TRACKS', false);
-				ToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'COM_MYMUSE_UPLOAD_PREVIEWS', false);
+
+				if(str_contains($this->params->get('my_preview_dir'), "images",)){
+					ToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'COM_MYMUSE_UPLOAD_PREVIEWS', false);
+				}
+				
 			}
 			
 			

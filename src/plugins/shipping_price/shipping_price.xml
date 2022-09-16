@@ -466,8 +466,8 @@
 			</fieldset>
 		</fields>
 	</config>
-<updateservers>
+<!-- updateservers>
     <server type="extension" priority="1"
         name="Plug MyMuse Shipping Price">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=46</server>
-</updateservers>
+</updateservers -->
 </extension>

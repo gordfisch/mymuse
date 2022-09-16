@@ -82,11 +82,6 @@ if ($saveOrder && !empty($this->items))
 					<?php echo HTMLHelper::_('searchtools.sort', 'COM_MYMUSE_TAX_APPLIES_TO_LABEL', 'a.tax_applies_to', $listDirn, $listOrder); ?>
 				</th>
 
-				<?php if (Multilanguage::isEnabled()) : ?>
-					<th scope="col" class="w-10 d-none d-md-table-cell">
-						<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
-					</th>
-				<?php endif; ?>
 				<th scope="col" class="w-5 d-none d-md-table-cell">
 					<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
@@ -162,11 +157,6 @@ if ($saveOrder && !empty($this->items))
 					<?php echo $item->tax_applies_to ?>
 				</td>
 
-                <?php if (Multilanguage::isEnabled()) : ?>
-					<td class="small d-none d-md-table-cell">
-						<?php echo LayoutHelper::render('joomla.content.language', $item); ?>
-					</td>
-				<?php endif; ?>
 				<td class="d-none d-md-table-cell">
 					<?php echo $item->id; ?>
 				</td>

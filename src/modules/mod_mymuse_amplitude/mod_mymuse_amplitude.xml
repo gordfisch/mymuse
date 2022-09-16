@@ -47,9 +47,9 @@
 			</fieldset>
 		</fields>
 	</config>
-<updateservers>
+<!-- updateservers>
     <server type="extension" priority="1"
         name="Mod MyMuse Amplitude"></server>
-</updateservers>
+</updateservers -->
 </extension>
 

@@ -335,6 +335,15 @@
                     description="COM_MYMUSE_PRODUCT_IN_STOCK_DESC"
             />
             <field
+                    name="file_time"
+                    type="text"
+                    label="COM_MYMUSE_FILE_TIME_LABEL"
+                    description="COM_MYMUSE_FILE_TIME_DESC"
+                    class="inputbox"
+                    size="20"
+                    required="false"
+            />
+            <field
                     name="file_type"
                     type="list"
                     label="COM_MYMUSE_PRODUCT_FILE_TYPE_LABEL"
@@ -440,15 +449,7 @@
                 <option value="1">JYES</option>
             </field>
 
-            <field
-                    name="file_time"
-                    type="text"
-                    label="COM_MYMUSE_FILE_TIME_LABEL"
-                    description="COM_MYMUSE_FILE_TIME_DESC"
-                    class="inputbox"
-                    size="20"
-                    required="false"
-            />
+            
         </fieldset>
 
 

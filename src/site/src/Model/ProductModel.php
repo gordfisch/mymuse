@@ -437,51 +437,6 @@ class ProductModel extends ItemModel
 				
 				//echo $track_query->__toString(); exit;
 
-/*
-				$track_query = "SELECT a.*,
-				ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales
-		
-				FROM #__mymuse_product as a
-				LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
-				LEFT JOIN (SELECT sum(quantity) as sales, x.product_id FROM
-	        		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
-	        		 product_id as all_id
-	        		FROM #__mymuse_order_item as i
-	        		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-	        		GROUP BY i.product_id)
-	        		as x GROUP BY x.all_id) as s ON s.product_id = a.id
-				";
-				if($this->_item[$pk]->parentid > 0 && $this->_item[$pk]->track_parentid == 0){
-					$track_query .= "WHERE a.track_parentid='".$pk."' ";
-				}else{
-					$track_query .= "WHERE a.parentid='".$pk."'  ";
-				}
-
-				$track_query .= "
-				AND a.product_downloadable =1
-				AND a.state=1
-				";
-				
-				
-				if($alpha != ''){
-					$track_query .= "AND a.title LIKE '$alpha%' ";
-				}
-				if($searchword != ''){
-					$track_query .= "AND (
-	        		a.title LIKE ".$db->quote('%'.$searchword.'%')."
-	        		)";
-				}
-		
-				$orderby = "ORDER BY $ordering $listDirn
-				";
-
-				if($secondaryOrder){
-					//$orderby .= ", $secondaryOrder ";
-				}
-				$track_query .= $orderby;
-				//echo 'TRACKS QUERY'.$this->_db->replacePrefix((string) $track_query).' '; 
-echo $track_query;	
-*/
 				$db->setQuery($track_query);
 				$tracks = $db->loadObjectList();
 

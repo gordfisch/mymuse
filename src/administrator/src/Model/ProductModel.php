@@ -813,97 +813,108 @@ class ProductModel extends AdminModel
     public function getFileLists()
     {
 
-    	$input = Factory::getApplication()->input;
-    	$task = $input->get('task');
-    	$id = $input->get('id');
+    	$input 	= Factory::getApplication()->input;
+    	$task 	= $input->get('task');
+    	$id 		= $input->get('id');
+    	$layout = $input->get('layout');
 
-        $parentid= $input->get('parentid','');
-        if(!$parentid){
+      $parentid= $input->get('parentid','');
+      if(!$parentid){
+      	if($layout == "listtracks"){
+      		$parentid = $id;
+      	}else{
         	$parentid = $this->_item->parentid;
-        }
+  
+      	}
+      }
 
- 		// file lists for albums
- 		$artist_alias = MyMuseHelper::getArtistAlias($parentid,1);
-		$album_alias = MyMuseHelper::getAlbumAlias($parentid,1);
+	 		// file lists for albums
+	 		$artist_alias = MyMuseHelper::getArtistAlias($parentid,1);
+			$album_alias = MyMuseHelper::getAlbumAlias($parentid,1);
 
-		$site_url = MyMuseHelper::getSiteUrl($parentid,1);
-		$site_path = MyMuseHelper::getSitePath($parentid,1);
-		$download_path = MyMuseHelper::getdownloadPath($parentid,1);
-		$application = Factory::getApplication();
+			$site_url = MyMuseHelper::getSiteUrl($parentid,1);
+			$site_path = MyMuseHelper::getSitePath($parentid,1);
+			$download_path = MyMuseHelper::getdownloadPath($parentid,1);
+			$application = Factory::getApplication();
 
-		//get previews
-		$files = array();
-		$files = MymuseStorage::listFilesPreviews($site_path);
-		$previews 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
-		foreach ( $files as $file ) {
-				$previews[] = HTMLHelper::_('select.option',  $file );
-		}
-        $this->_item->file_preview  = isset($this->_item->file_preview) ? $this->_item->file_preview : '';
-		$lists['previews'] = HTMLHelper::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
+			//get previews
+			$files = array();
+			$files = MymuseStorage::listFilesPreviews($site_path);
+			$previews 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
+			foreach ( $files as $file ) {
+					$previews[] = HTMLHelper::_('select.option',  $file );
+			}
+	        $this->_item->file_preview  = isset($this->_item->file_preview) ? $this->_item->file_preview : '';
+			$lists['previews'] = HTMLHelper::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
 
+			
+			
+			// get the download tracks lists
+			$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
+			$files = MymuseStorage::listFilesDownloads($directory);
+
+			$myfiles = array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
+			foreach($files as $file){
+					$myfiles[] = HTMLHelper::_('select.option',  $file, stripslashes($file) );
+			}
+			$current = array();
+			if($task == "editfile"){
+				
+
+				$formats = $this->getFormats($id);
+				
+				foreach($formats as $key => $f){
+					$current[] = json_decode($f->digital);
+				}
+
+
+			}
 		
-		
-		// get the download tracks lists
-		$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
-		$files = MymuseStorage::listFilesDownloads($directory);
 
-		$myfiles = array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
-		foreach($files as $file){
-				$myfiles[] = HTMLHelper::_('select.option',  $file, stripslashes($file) );
-		}
-		$current = array();
-		if($task == "editfile"){
+			$i = 0;
+			if(count($current) > 0){
+				for($i = 0; $i < count($current); $i++){
+					$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file_name);
+				}
+			}else{
+				$lists['select_file'][0] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[0]", 'class="inputbox" size="1" ', 'value', 'text','');
+			}
+			for($i = $i++; $i < 9; $i++){
+				$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
+			}
+
+			//for formats
+			$all_formats = $this->_params->get('my_formats');
+
+			if(count($all_formats) == 1){
+				$lists['formats'][0] = $all_formats[0]->format_key;
+			}else{
+
+				for($i = 0; $i < count($all_formats); $i++){ 
+
+					$formats 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FORMAT' ) .' -' ) );
+					foreach ( $all_formats as $format ) {
+							$formats[] = HTMLHelper::_('select.option',  $format->format_key, $format->format_value);
+					}
+					$ff = isset($current[$i]->file_format)? $current[$i]->file_format : '';
+					$lists['formats'][$i] = HTMLHelper::_('select.genericlist',  $formats, "formats[$i]", 'class="inputbox" size="1" ', 'value', 'text', $ff);
+				}
+			}
+			
+			// for display purposes
+			$lists['preview_dir'] = $site_path;
+			if($this->_params->get('my_download_dir_format')){
+	            //by format
+	            $lists['download_dir'] = '';
+	            foreach($this->_params->get('my_formats') as $format){
+	            	$lists['download_dir'] .= $download_path.DIRECTORY_SEPARATOR.$format."<br />";
+	            }
+	        }else{
+	        	$lists['download_dir'] = $download_path;
+	        }
 			
 
-			$formats = $this->getFormats($id);
-			
-			foreach($formats as $key => $f){
-				$current[] = json_decode($f->digital);
-			}
-
-
-		}
-	
-
-		$i = 0;
-		if(count($current) > 0){
-			for($i = 0; $i < count($current); $i++){
-				$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file_name);
-			}
-		}else{
-			$lists['select_file'][0] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[0]", 'class="inputbox" size="1" ', 'value', 'text','');
-		}
-		for($i = $i++; $i < 9; $i++){
-			$lists['select_file'][$i] = HTMLHelper::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
-		}
-
-		//for formats
-		$all_formats = $this->_params->get('my_formats');
-
-		for($i = 0; $i < count($all_formats); $i++){ 
-
-			$formats 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FORMAT' ) .' -' ) );
-			foreach ( $all_formats as $format ) {
-					$formats[] = HTMLHelper::_('select.option',  $format->format_key, $format->format_value);
-			}
-			$ff = isset($current[$i]->file_format)? $current[$i]->file_format : '';
-			$lists['formats'][$i] = HTMLHelper::_('select.genericlist',  $formats, "formats[$i]", 'class="inputbox" size="1" ', 'value', 'text', $ff);
-		}
-		
-		// for display purposes
-		$lists['preview_dir'] = $site_path;
-		if($this->_params->get('my_download_dir_format')){
-            //by format
-            $lists['download_dir'] = '';
-            foreach($this->_params->get('my_formats') as $format){
-            	$lists['download_dir'] .= $download_path.DIRECTORY_SEPARATOR.$format."<br />";
-            }
-        }else{
-        	$lists['download_dir'] = $download_path;
-        }
-		
-
-		return $lists;
+			return $lists;
     }
     
 	/**

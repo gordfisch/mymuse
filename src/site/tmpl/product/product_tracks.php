@@ -98,7 +98,6 @@ endif;
 if($this->params->get('product_show_preview_column', 1)) : 
   $cols++;
 endif;
-echo "cols = $cols";
 ?>
 <style>
 

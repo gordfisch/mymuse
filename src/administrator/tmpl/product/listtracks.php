@@ -36,7 +36,7 @@ $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
-
+$lists 	   = $this->lists;
 
 if ($saveOrder && !empty($this->tracks)) :
 
@@ -89,7 +89,18 @@ $this->vote 		= false;
 				</div>
 				<div id="jp-title-li"></div>
 
-<?php //MymuseHelper::print_pre($this->tracks[0]->formats); ?>
+<div class="control-group">
+				<div class="control-label"><?php echo Text::_( 'COM_MYMUSE_DOWNLOAD_PATH' ); ?>
+				</div>
+				<div class="controls"><?php echo $lists['download_dir']; ?>
+				</div>
+			</div>
+<div class="control-group">
+				<div class="control-label"><?php echo Text::_( 'COM_MYMUSE_PREVIEW_PATH' ); ?>
+				</div>
+				<div class="controls"><?php echo $lists['preview_dir']; ?>
+				</div>
+			</div>
 
 				<table class="table itemList" id="trackList">
 					<caption id="captionTable" class="sr-only">

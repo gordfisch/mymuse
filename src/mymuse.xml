@@ -121,7 +121,7 @@
 	<changelogurl>http://localhost/mymuseJ4/joomla/changelog.xml</changelogurl>
 
 	<updateservers>
-        <server type="extension" name="My Extension's Updates">http://localhost/mymuseJ4/joomla/mymuse-updates.xml</server>
+        <server type="extension" name="MyMuse Updates">http://www.joomlamymuse.com/media/com_mymuse/mymuse-updates.xml</server>
 	</updateservers>
 	<dlid prefix="dlid=" suffix="" />
 </extension>
