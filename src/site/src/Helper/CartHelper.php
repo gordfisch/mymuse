@@ -126,7 +126,7 @@ class CartHelper
     $db = Factory::getDBO();   
 
     if(!$productid){
-        $this->error = JText::_("MYMUSE_PLEASE_SELECT_PRODUCT");
+        $this->error = Text::_("COM_MYMUSE_PLEASE_SELECT_PRODUCT");
         return false;
     }
 
@@ -171,12 +171,12 @@ class CartHelper
       
       // Check for negative quantity
       if ($quant < 0) {
-            $this->error = JText::_('MYMUSE_NEGATIVE_QUANTITY');
+            $this->error = Text::_('MYMUSE_NEGATIVE_QUANTITY');
             return False;
       }
 
       if (!is_numeric($quant)) {
-            $this->error = JText::_('MYMUSE_INVALID_QUANTITY');
+            $this->error = Text::_('MYMUSE_INVALID_QUANTITY');
             return False; 
       }
       $v = 0;
@@ -195,12 +195,12 @@ class CartHelper
         if($res->product_physical){
 
           if(isset($res->attribs['special_status'])  && 
-              ( $res->attribs['special_status'] == "MYMUSE_COMING_SOON" || 
-                $res->attribs['special_status'] == "MYMUSE_OUT_OF_STOCK" || 
-                $res->attribs['special_status'] == "MYMUSE_NO_LONGER_AVAILABLE" 
+              ( $res->attribs['special_status'] == "COM_MYMUSE_COMING_SOON" || 
+                $res->attribs['special_status'] == "COM_MYMUSE_OUT_OF_STOCK" || 
+                $res->attribs['special_status'] == "COM_MYMUSE_NO_LONGER_AVAILABLE" 
               )
             ){
-              $this->error = JText::_($res->attribs['special_status']);
+              $this->error = Text::_($res->attribs['special_status']);
               return false;
           }
           
@@ -211,14 +211,14 @@ class CartHelper
             if($params->get('my_add_stock_zero',0)) {
                // $quantity[$val]  = $quant = 0;
                 $backordered = 1;
-                $msg = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-                $msg .= JText::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
-                $msg .= ' '. JText::_('MYMUSE_BACKORDERED');
+                $msg = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+                $msg .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
+                $msg .= ' '. Text::_('MYMUSE_BACKORDERED');
                 Factory::getApplication()->enqueueMessage($msg , 'notice');
 
             }else{
-                $this->error = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK')." ";
-                $this->error .= JText::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
+                $this->error = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK')." ";
+                $this->error .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
                 return false;
             }
           }
@@ -231,12 +231,12 @@ class CartHelper
       if($res->product_downloadable){
 
           if(isset($res->attribs['special_status']) && 
-              ( $res->attribs['special_status'] == "MYMUSE_COMING_SOON" || 
-                $res->attribs['special_status'] == "MYMUSE_OUT_OF_STOCK" || 
-                $res->attribs['special_status'] == "MYMUSE_NO_LONGER_AVAILABLE" 
+              ( $res->attribs['special_status'] == "COM_MYMUSE_COMING_SOON" || 
+                $res->attribs['special_status'] == "COM_MYMUSE_OUT_OF_STOCK" || 
+                $res->attribs['special_status'] == "COM_MYMUSE_NO_LONGER_AVAILABLE" 
               )
             ){
-              $this->error = JText::_($res->attribs['special_status']);
+              $this->error = Text::_($res->attribs['special_status']);
               return false;
             }
             $q = "SELECT 
@@ -252,10 +252,10 @@ class CartHelper
             $db->setQuery($q);
             $product_release_date = $db->loadResult();
     
-            if(isset($res->attribs['special_status']) && $res->attribs['special_status'] == "MYMUSE_PREORDER" && 
+            if(isset($res->attribs['special_status']) && $res->attribs['special_status'] == "COM_MYMUSE_PREORDER" && 
               ($product_release_date == 'future' || $product_release_date == '0') ){
               $backordered = 1;
-              $msg = JText::_('MYMUSE_PREORDERED').' ';
+              $msg = Text::_('MYMUSE_PREORDERED').' ';
               Factory::getApplication()->enqueueMessage($msg);
             }
       }
@@ -347,7 +347,7 @@ class CartHelper
  
       $db  = Factory::getDBO();;
         if(!@$productid){
-            $this->error = JText::_('MYMUSE_CANT_UPDATE_CART');
+            $this->error = Text::_('MYMUSE_CANT_UPDATE_CART');
             return false;
         }
 
@@ -374,12 +374,12 @@ class CartHelper
     
             // Check for negative quantity
             if ($quant < 0) {
-                $this->error = JText::_('MYMUSE_NEGATIVE_QUANTITY');
+                $this->error = Text::_('MYMUSE_NEGATIVE_QUANTITY');
                 return False;
             }
     
             if (!preg_match("/^[0-9]*$/", $quant)) {
-                $this->error = JText::_('MYMUSE_INVALID QUANTITY');
+                $this->error = Text::_('MYMUSE_INVALID QUANTITY');
                 return False;
             }
             $backordered = 0;
@@ -400,13 +400,13 @@ class CartHelper
               if ($quant > $product_in_stock) {
                     if($params->get('my_add_stock_zero',0)) {
                         //$quant = 0;
-                        $msg = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-                        $msg .= JText::_('MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
+                        $msg = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+                        $msg .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
                         Factory::getApplication()->enqueueMessage($msg , 'warning');
                         $backordered = 1;
                     }else{
-                        $this->error = $res->title.' '.JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-                        $this->error .= JText::_('MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
+                        $this->error = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+                        $this->error .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
                         return False;
                     }
               }else{
@@ -546,13 +546,13 @@ class CartHelper
       $db->setQuery($query);
       $coupon = $db->loadObject();
       if(!isset($coupon->id)){
-        $this->error = JText::_("MYMUSE_COUPON_COULD_NOT_FIND");
+        $this->error = Text::_("COM_MYMUSE_COUPON_COULD_NOT_FIND");
         return false;
       }
 
       //see if it has maxed out uses
       if($coupon->coupon_max_uses > 0 && $coupon->coupon_uses >= $coupon->coupon_max_uses){
-        $this->error = JText::_("MYMUSE_COUPON_USE_EXCEEDS_MAX_USE");
+        $this->error = Text::_("COM_MYMUSE_COUPON_USE_EXCEEDS_MAX_USE");
         return false;
       }
       
@@ -563,7 +563,7 @@ class CartHelper
         $db->setQuery($query);
         $num = $db->loadResult();
         if($coupon->coupon_max_uses_per_user > 0 && $num >= $coupon->coupon_max_uses_per_user){
-          $this->error = JText::_("MYMUSE_COUPON_USE_EXCEEDS_MAX_USE_BY_USER");
+          $this->error = Text::_("COM_MYMUSE_COUPON_USE_EXCEEDS_MAX_USE_BY_USER");
           return false;
         }
       }
@@ -577,7 +577,7 @@ class CartHelper
       AND expiration_date >= '$now' OR expiration_date ='0000-00-00 00:00:00'";
       $db->setQuery($query);
       if(!$db->loadResult()){
-        $this->error = JText::_("MYMUSE_COUPON_EXPIRED");
+        $this->error = Text::_("COM_MYMUSE_COUPON_EXPIRED");
         return false;
       }
       
@@ -586,7 +586,7 @@ class CartHelper
       AND start_date <= '$now' OR start_date ='0000-00-00 00:00:00'";
       $db->setQuery($query);
       if(!$db->loadResult()){
-        $this->error = JText::_("MYMUSE_COUPON_NOT_YET_VALID");
+        $this->error = Text::_("COM_MYMUSE_COUPON_NOT_YET_VALID");
         return false;
       }
       
@@ -601,7 +601,7 @@ class CartHelper
                 }
             }
             if(!$good){
-              $this->error = JText::_("MYMUSE_COUPON_NO_MATCHING_PRODUCT");
+              $this->error = Text::_("COM_MYMUSE_COUPON_NO_MATCHING_PRODUCT");
               return false;
             }
       }
@@ -609,6 +609,7 @@ class CartHelper
       // put it in the cart 
       $this->cart[$this->cart["idx"]]["coupon_id"] = $coupon->id;
       $this->cart["idx"]++;
+      $this->setCart();
       $this->buildOrder(1,1);
       return true;
     }
@@ -1021,7 +1022,7 @@ class CartHelper
     
     
     if(!$id){
-      $this->error = JText::_("COM_MYMUSE_NO_PRODUCT_ID");
+      $this->error = Text::_("COM_MYMUSE_NO_PRODUCT_ID");
       return false;
     }
   

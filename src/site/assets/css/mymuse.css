@@ -357,6 +357,7 @@ ul.mymuse-container {
     .mymuse-container .item-container.cols-7 {
       grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr 1fr;
     }
+
     .list-products .item-container, .list-products .item-container.cols-4 {
         grid-template-columns: 2fr 1fr 1fr 1fr;
     }
@@ -375,15 +376,15 @@ ul.mymuse-container {
     .list-products .item-container.cols-9 {
         grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     }
-    .list-products .item-container {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
+
+    .mymuse-container.mymuse-cart .item-container.cols-5 {
+      grid-template-columns: 4fr 1fr 1fr 1fr 2fr;
     }
-    .list-products .item-container {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
+
+    .mymuse-container.mymuse-cart .item-container.cols-6 {
+      grid-template-columns: 4fr 1fr 1fr 1fr 2fr 1fr;
     }
-    .list-products .item-container {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
-    }
+    
 
 
   .mymuse-container.mymuse-inner {

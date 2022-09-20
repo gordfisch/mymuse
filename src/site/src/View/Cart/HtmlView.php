@@ -153,10 +153,11 @@ class HtmlView extends BaseHtmlView
 		$app 			= Factory::getApplication();
 		$jinput 		= $app->input;
 		$this->Itemid 	= $jinput->get("Itemid",'');
-		$this->task 	= $task	= $jinput->get('task', '', 'CMD');
+		$this->task 	= $jinput->get('task', '', 'CMD');
+		$task 			= $this->task;
 		$this->originaltask 	= $jinput->get('original_task', '', 'CMD');
-		
 
+//MymuseHelper::print_pre($jinput);
 		if($task == "notify"){
 			$this->notify();
 			exit;
@@ -582,6 +583,7 @@ class HtmlView extends BaseHtmlView
 
 		//display coupon?
 		if($this->params->get("my_use_coupons") && (preg_match("/shipping|addtocart|updatecart|cartdelete|showcart|checkout/",$this->task) || $this->task == '') && !isset($this->order->coupon->id) && $this->user->get('id') > 0){
+
 			ob_start();
 			parent::display('coupon');
 			$this->cart_coupon = ob_get_contents();
@@ -596,7 +598,7 @@ class HtmlView extends BaseHtmlView
 			parent::display('licence');
 			$this->cart_licence = ob_get_contents();
 			ob_end_clean();
-			$this->cart_licence = cart_licence;
+			$this->cart_licence = $this->cart_licence;
 
 		}
 
@@ -741,8 +743,9 @@ class HtmlView extends BaseHtmlView
 		ini_set('log_errors', 1);
 		ini_set('error_log', JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'php_error' );
 		
-		$jinput = Factory::getApplication()->input;
+		
 		$app = Factory::getApplication();
+		$jinput = $app->input;
 		$params = MyMuseHelper::getParams();
 		
 
@@ -1034,7 +1037,7 @@ class HtmlView extends BaseHtmlView
      	
      	$params 		= MyMuseHelper::getParams();
      	$app 			= Factory::getApplication();
-		$jinput 		= Factory::getApplication()->input;
+		$jinput 		= $app->input;
 
 		$order 			= $this->MyMuseCheckout->getOrder($result['order_id']);
 		$order->user	= Factory::getUser($order->user_id);

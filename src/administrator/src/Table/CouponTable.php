@@ -76,6 +76,12 @@ class CouponTable extends Table implements VersionableTableInterface
 			$this->checked_out = 0;
 		}
 
+		$date				= Factory::getDate();
+		$this->modified		= $date->toSQL();
+		if (!intval($this->created)) {
+			$this->created = $date->toSQL();
+		}
+
 		return parent::store($updateNulls);
 	}
 

@@ -512,6 +512,29 @@ class DisplayController extends BaseController
 		return;
 	}
 
+
+
+	/**
+	 * couponadd
+	 * add a coupon to the cart
+	 *
+	 * @access	public
+	 */
+	function couponadd()
+	{
+		
+		if(!$this->MyMuseCart->couponadd()){
+
+			$msg = $this->MyMuseCart->error;
+			$this->setRedirect( Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
+			return false;
+		}
+		$msg = Text::_("COM_MYMUSE_COUPON_ADDED");
+		
+		$this->setRedirect( Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
+		
+	}
+
 	
 	/**
 	 * savenoreg

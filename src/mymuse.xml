@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <extension type="component" method="upgrade">
 
-	<name>COM_MYMUSE</name>
-	<creationDate>FEB 2022</creationDate>
+	<name>com_mymuse</name>
+	<creationDate>SEP 2022</creationDate>
 	<copyright>Copyright (C) 2022. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.com</authorUrl>
-	<version>5.0.2</version>
+	<version>5.0.4</version>
 
 	<description>COM_MYMUSE_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Mymuse</namespace>
@@ -118,10 +118,8 @@
 	</modules>
 
 
-	<changelogurl>http://localhost/mymuseJ4/joomla/changelog.xml</changelogurl>
-
 	<updateservers>
-        <server type="extension" name="MyMuse Updates">http://www.joomlamymuse.com/media/com_mymuse/mymuse-updates.xml</server>
+        <server type="extension" priority="1" name="MyMuse Updates">https://www.joomlamymuse.com/media/com_mymuse/mymuse-updates.xml</server>
 	</updateservers>
 	<dlid prefix="dlid=" suffix="" />
 </extension>

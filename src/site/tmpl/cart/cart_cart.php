@@ -89,7 +89,7 @@ for ($i=0;$i<count($order->items); $i++) {
 		
 <section>
     <ul class="mymuse-container mymuse-cart">
-    <li class="item-container cols-<?php echo $cols + 1; ?>">
+    <li class="item-container cols-<?php echo $cols; ?>">
 	
 
 		<div class="mytitle mymuse-cart-top "><?php echo JText::_('COM_MYMUSE_TITLE'); ?></div>
@@ -116,7 +116,7 @@ for ($i=0;$i<count($order->items); $i++) {
 		<?php
 		  // LOOP THRU order_items
 		  for ($i=0;$i<count($order_item); $i++) { ?>
-		  	<li class="item-container cols-<?php echo $cols + 1; ?>">
+		  	<li class="item-container cols-<?php echo $cols; ?>">
 			    
 		        <div class="mytitle mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_TITLE'); ?>">
 		        <?php if(isset($order_item[$i]->artist->title) && $params->get('my_show_category_name')){ ?>
@@ -200,11 +200,14 @@ for ($i=0;$i<count($order->items); $i++) {
 
 
 
-			<?php //ORIGINAL SUBTOTAL (show if there are discounts, etc)
+		
+			<?php 
+
+			//ORIGINAL SUBTOTAL (show if there are discounts, etc)
 			if($order->discount > 0.00 || ($params->get("my_use_coupons") && @$order->coupon->id)
 			|| count($order->tax_array) > 0){ ?>
 			<!--  original subtotal -->
-				<li class="item-container summary cols-<?php echo $cols + 1; ?>">
+				<li class="item-container summary cols-<?php echo $cols; ?>">
 			    	<div class="cart mymuse-mobile-hide"><?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?></div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
 			    		?><div></div>
@@ -222,7 +225,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			
 			<?php //for shopper group discount 
 			if($order->shopper_group_discount > 0.00){ ?>
-			    <li class="item-container summary cols-<?php echo $cols + 1; ?>">
+			    <li class="item-container summary cols-<?php echo $cols; ?>">
 			    	<div class="cart mymuse-mobile-hide" ><?php echo JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
 			    	<?php echo $order->shopper_group_name; ?> <?php echo $user->shopper_group->discount; ?> %</div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
@@ -240,7 +243,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			
 			<?php //for regular discount
 			if($order->discount > 0.00){ ?>
-			    <li class="item-container summary cols-<?php echo $cols + 1; ?>">
+			    <li class="item-container summary cols-<?php echo $cols; ?>">
 			    	<div class="cart mymuse-mobile-hide" ><?php echo JText::_('COM_MYMUSE_DISCOUNT'); ?>
 			    	</div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
@@ -258,15 +261,15 @@ for ($i=0;$i<count($order->items); $i++) {
 					
 
 			<?php //COUPONS
-			if($params->get("my_use_coupons summary") && @$order->coupon->id){ ?>
-			    <li class="item-container summary cols-<?php echo $cols + 1; ?>">
+			if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
+			    <li class="item-container summary cols-<?php echo $cols; ?>">
 			    	<div class="cart mymuse-mobile-hide" ><?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></div>
 			    	<?php for($i = 3; $i <= $cols; $i++){
 			    		?><div></div>
 			    	<?php } ?>
-			    	<div class="cart" >&nbsp;</div>
+
 			        <div class="mycoupon cart" data-name="<?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?>">
-			        	<span id="coupon_discount"> <?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> 
+			        	<span id="coupon_discount"> - <?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> 
 			        	</span>
 			        </div>
 			        <?php if(@$order->do_html){ ?>
@@ -282,7 +285,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			    	$pre_key = preg_replace("/_/","", $key);
 			    	$key = preg_replace("/_/"," ", $key);
 			    	?>
-			        <li class="item-container summary cols-<?php echo $cols + 1; ?>">
+			        <li class="item-container summary cols-<?php echo $cols; ?>">
 			        	<div class="cart mymuse-mobile-hide" ><?php echo $key; ?></div>
 			        	<?php for($i = 3; $i <= $cols; $i++){
 			        		?><div></div>
@@ -300,7 +303,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			
 			<?php // SHIPPING
 			if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
-			    <li class="item-container summary cols-<?php echo $cols + 1; ?>">
+			    <li class="item-container summary cols-<?php echo $cols; ?>">
 			    <div class="cart" data-name="<?php echo JText::_('COM_MYMUSE_SHIPPING'); ?>"><?php echo JText::_('COM_MYMUSE_SHIPPING') ?><span id="order_shipping_name">
 			    <?php echo $order->order_shipping->ship_carrier_name ?> <?php echo $order->order_shipping->ship_method_name ?></span></div>
 			    <?php for($i = 3; $i <= $cols; $i++){
@@ -318,7 +321,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			<?php } ?>
 
 			<?php // TOTALS ?>
-			<li class="item-container summary totals cols-<?php echo $cols + 1; ?>">
+			<li class="item-container summary totals cols-<?php echo $cols; ?>">
 			    <div class="cart" data-name="<?php echo JText::_('COM_MYMUSE_CART_TOTAL'); ?>"><?php echo JText::_('COM_MYMUSE_CART_TOTAL') ?>:</div>
 
 			    <?php for($i = 3; $i <= $cols; $i++){
@@ -336,7 +339,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			
 			
 			<?php  if($order->reservation_fee > 0){ ?>
-			<li class="item-container summary cols-<?php echo $cols + 1; ?>" data-name="<?php echo JText::_('COM_MYMUSE_RESERVATION_FEE'); ?>">
+			<li class="item-container summary cols-<?php echo $cols; ?>" data-name="<?php echo JText::_('COM_MYMUSE_RESERVATION_FEE'); ?>">
 			    <div class="cart" align="right"><?php echo JText::_('COM_MYMUSE_RESERVATION_FEE') ?>:</div>
 			    <?php for($i = 3; $i <= $cols; $i++){
 			    	?><div></div>
@@ -350,7 +353,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			    <?php } ?>
 			</li>
 			<?php  if($order->non_res_total > 0){ ?>
-			<li class="item-container summary cols-<?php echo $cols + 1; ?>" data-name="<?php echo JText::_('COM_MYMUSE_OTHER_CHARGES'); ?>">
+			<li class="item-container summary cols-<?php echo $cols; ?>" data-name="<?php echo JText::_('COM_MYMUSE_OTHER_CHARGES'); ?>">
 		    	<div class="cart" align="right"><?php echo JText::_('COM_MYMUSE_OTHER_CHARGES') ?>:</div>
 		    	<?php for($i = 3; $i <= $cols; $i++){
 		    		?><div></div>
@@ -363,7 +366,7 @@ for ($i=0;$i<count($order->items); $i++) {
 		        	<div>&nbsp;</div>
 		        	<?php } ?>
 			</li>
-			<li class="item-container summary cols-<?php echo $cols + 1; ?>">
+			<li class="item-container summary cols-<?php echo $cols; ?>">
 		    	<div class="cart" data-name="<?php echo JText::_('COM_MYMUSE_PAYNOW'); ?>"><?php echo JText::_('COM_MYMUSE_PAYNOW') ?>:</div>
 		    	<?php for($i = 3; $i <= $cols; $i++){
 			    	?><div></div>

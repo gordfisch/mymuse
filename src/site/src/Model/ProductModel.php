@@ -950,6 +950,7 @@ $params->set('product_player_type', "single");
 			$db->setQuery($q);
 			$shopper->shoppergroup = $db->loadObject();
 		}
+		//MymuseHelper::print_pre($shopper->shoppergroup);
 		$shoppergroup_discount = $shopper->shoppergroup->discount;
 		
 		// Get the product_parent_id for this product/item

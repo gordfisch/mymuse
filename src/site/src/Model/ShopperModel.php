@@ -173,9 +173,9 @@ class ShopperModel extends FormModel
 						$profile = $this->_shopper->profile;
 					}
 				}
-				
-				if(!isset($profile['shoppergroup'])){
-					$profile['shoppergroup'] = 1;
+			MymuseHelper::print_pre($profile);	
+				if(!isset($profile['shopper_group'])){
+					$profile['shopper_group'] = 1;
 				}
 				$this->_shopper->perms = 1;
 				
@@ -291,13 +291,13 @@ class ShopperModel extends FormModel
 				
 				}
 				
-				if(!isset($profile['shoppergroup']) || $profile['shoppergroup'] < 1){
-						$profile['shoppergroup'] = 1;
+				if(!isset($profile['shopper_group']) || $profile['shopper_group'] < 1){
+						$profile['shopper_group'] = 1;
 				}
 				
 				//$query = 'SELECT *'
 				//. ' FROM #__mymuse_shopper_group'
-				//. ' WHERE id = '.$profile['shoppergroup']
+				//. ' WHERE id = '.$profile['shopper_group']
 				//;
 
 				$query	= $db->getQuery(true);
@@ -305,24 +305,24 @@ class ShopperModel extends FormModel
 
 				$query->from('`#__mymuse_shopper_group` AS a');
 				$query->where('(a.state IN (0, 1))');
-				$query->where('(a.id = '.$profile['shoppergroup'].')');
+				$query->where('(a.usergroups_id = '.$profile['shopper_group'].')');
 					
 				// Join usergroup on a.usergroups_id
 				$query->select('ug.title AS shopper_group_name');
 				$query->join('LEFT', '#__usergroups AS ug ON ug.id=a.usergroups_id');
 
 				$db->setQuery( $query );
-				$this->_shopper->shoppergroup = $db->loadObject();
-				$this->_shopper->discount = $this->_shopper->shoppergroup->discount;
-				$this->_shopper->shoppergroup_name = $this->_shopper->shoppergroup->shopper_group_name;
-				
+				$this->_shopper->shopper_group = $db->loadObject();
+				$this->_shopper->discount = $this->_shopper->shopper_group->discount;
+				$this->_shopper->shopper_group_name = $this->_shopper->shopper_group->shopper_group_name;
+
 			}else{
 				$this->_shopper = new CMSObject;
 				$this->_shopper->id = 0;
-				$this->_shopper->shoppergroup = new CMSObject;
-				$this->_shopper->shoppergroup->discount = 0;
-				$this->_shopper->shoppergroup->id = $params->get("my_default_shoppergroup_id");
-				$this->_shopper->shoppergroup_name = 'default';
+				$this->_shopper->shopper_group = new CMSObject;
+				$this->_shopper->shopper_group->discount = 0;
+				$this->_shopper->shopper_group->id = $params->get("my_default_shopper_group_id");
+				$this->_shopper->shopper_group_name = 'default';
 				$this->_shopper->state = null;
 				$this->_shopper->country = null;
 				$this->_shopper->perms = null;
@@ -444,6 +444,8 @@ class ShopperModel extends FormModel
 				}
 			}
 		}
+
+
 		if(!isset($shopper->profile['name'])){
 			$shopper->profile['name'] = $shopper->name;
 		}
@@ -453,8 +455,8 @@ class ShopperModel extends FormModel
 		if(isset($shopper->profile['region']) && !isset($shopper->profile['region_name']) && $profile_key != 'mymuse'){
 			$shopper->profile['region_name'] = $shopper->profile['region'];
 		}
-		if(!isset($shopper->profile['shoppergroup'])){
-			$shopper->profile['shoppergroup'] = 1;
+		if(!isset($shopper->profile['shopper_group'])){
+			$shopper->profile['shopper_group'] = 1;
 		}
 
 		$session->set('user', $shopper);
@@ -893,7 +895,7 @@ class ShopperModel extends FormModel
 	}
 
 
-	public function getShopperGroup ($id = 0) {
+	public function getshopper_group ($id = 0) {
 		if(!$id){
 			return;
 		}

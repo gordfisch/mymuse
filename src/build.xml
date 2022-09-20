@@ -74,7 +74,7 @@
                 <copy file="${src}/site/language/en-GB/com_mymuse.ini"
                         todir="${joomladir}/language/en-GB" />
 
-                <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.ini"
+                <!-- copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
                 <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.sys.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
@@ -82,11 +82,11 @@
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.sys.ini"
-                        todir="${joomladir}/administrator/language/en-GB" /> 
+                        todir="${joomladir}/administrator/language/en-GB" / --> 
 
                         
                 <!-- plugins -->
-                <copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
+                <!-- copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
                             todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
                 <copy file="${src}/plugins/audio_jplayer/audio_jplayer.xml"
                                 todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
@@ -109,7 +109,7 @@
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.seeking.gif"
                                 todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.video.play.png"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
+                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" / -->
 
                 <copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
                             todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 
