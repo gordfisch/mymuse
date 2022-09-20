@@ -173,7 +173,7 @@ class ShopperModel extends FormModel
 						$profile = $this->_shopper->profile;
 					}
 				}
-			MymuseHelper::print_pre($profile);	
+		
 				if(!isset($profile['shopper_group'])){
 					$profile['shopper_group'] = 1;
 				}
