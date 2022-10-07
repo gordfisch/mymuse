@@ -278,7 +278,7 @@ class HtmlView extends BaseHtmlView
 		$item->event->afterDisplayProduct = trim(implode("\n", $results));
 
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
+		$this->pageclass_sfx = (null !== $this->item->params->get('pageclass_sfx'))? htmlspecialchars($this->item->params->get('pageclass_sfx')): '';
 
 		//set  up formats
 		$this->formats = array();

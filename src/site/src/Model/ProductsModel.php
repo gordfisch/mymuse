@@ -53,6 +53,7 @@ class ProductsModel extends ListModel
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 'category_title',
 				'state', 'a.state',
+				'price', 'a.price',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',

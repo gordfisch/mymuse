@@ -159,13 +159,7 @@ $js .= '	for(i = 1; i < count+1; i++)
 	return false;
 }
 
-function tableOrdering( order, dir, task )
-{
-	var form = document.adminForm;
-	form.filter_order.value 	= order;
-	form.filter_order_Dir.value	= dir;
-	document.adminForm.submit( task );
-}
+
 
 Number.prototype.formatMoney = function(c, d, t){
     var n = this, 
@@ -468,10 +462,10 @@ $document->addScriptDeclaration($js);
 	<input type="hidden" name="task" value="addtocart" /> 
 	<input type="hidden" name="catid" value="<?php echo $product->catid; ?>" /> 
 	<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
-
+	</form>
 	<?php echo $this->loadTemplate('layout'); ?>
 
-	</form>
+	
 </div>
 <?php echo $this->item->event->afterDisplayProduct; ?>
 

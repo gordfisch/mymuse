@@ -1054,64 +1054,7 @@ class CartHelper
       $shopper_group_id = $params->get("my_default_shopper_group_id");
     }
 
-//DO I NEED THE PARENT????
-    /*
-    // get parent object
-    if($row->parentid){
 
-      $parent = $model->getItem($row->parentid);
-      //$parent->load($row->parentid);
-      // Convert the attribs field to an array.
-
-      $registry = new Registry;
-      $registry->loadString($parent->attribs);
-      $parent->attribs = $registry->toArray();
-      
-      $registry = new Registry;
-      $registry->loadString($row->attribs);
-      $row->attribs = $registry->toArray();
-      
-      $parent->attribs = array_merge($parent->attribs, $row->attribs);
-      $row->attribs = $parent->attribs;
-      
-      // Convert the metadata field to an array.
-      $registry = new Registry;
-      $registry->loadString($parent->metadata);
-      $parent->metadata = $registry->toArray();
-
-      $row->parent = $parent;
-      $artistid = $row->parent->artistid;
-      // Get attributes
-      $attributes = $this->MyMuseProduct->getAttributes( $row->id, $row->parentid);
-      if($attributes){
-        foreach ($attributes as $attribute){
-          $row->title .= " (" . $attribute->attribute_value . ") ";
-        }
-      }
-
-
-    }else{
-      $row->parent = null;
-      $artistid = $row->artistid;
-      // Convert the attribs field to an array.
-      $registry = new Registry;
-      $registry->loadString($row->attribs);
-      $row->attribs = $registry->toArray();
-        
-      // Convert the metadata field to an array.
-      $registry = new Registry;
-      $registry->loadString($row->metadata);
-      $row->metadata = $registry->toArray();
-    }
-    
- */   
-    // get the artist object
-    /*
-    $cat = new CategoryTable($db);
-    $cat->load($artistid);
-    $row->artist = $cat;
-    $row->category_name = $row->artist->title;
-    */
 
     $row->price = ProductModel::getPrice($row);
     //MyMuseHelper::print_pre($row); exit;

@@ -7,7 +7,6 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 if(isset($order->items) && count($order->items)){
 $i = 0;
 ?>
-
 <section>
   <ul class="mymuse-container mymuse-cart mini-cart">
     <li class="item-container cols-3">

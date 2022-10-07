@@ -30,7 +30,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $height 	= $this->params->get('category_product_image_height',0);
 $inner_cols	= 2;
 $uri 		= JUri::getInstance(); 
-
+//echo '$listDirn ='.$listDirn. ' $listOrder = '.$listOrder;
 
 if ($this->params->get('list_show_date') && $this->params->get('order_date')) {
 	$inner_cols++;

@@ -75,8 +75,17 @@ class ProductModel extends ItemModel
 			$this->setState('filter.published', MymuseComponent::CONDITION_PUBLISHED);
 			$this->setState('filter.archived', MymuseComponent::CONDITION_ARCHIVED);
 		}
+		$orderCol  = $app->getUserStateFromRequest('list.filter_order', 'filter_order', 'a.title', 'string');
+		$orderDirn = $app->getUserStateFromRequest('list.filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
+		$this->setState('list.filter_order',$orderCol);
+		$this->setState('list.filter_order_Dir',$orderDirn);
+		$this->setState('list.ordering',$orderCol);
+		$this->setState('list.direction',$orderDirn);
+
 
 		$this->setState('filter.language', Multilanguage::isEnabled());
+
+
 	}
 
 	/**
@@ -248,27 +257,34 @@ class ProductModel extends ItemModel
 				if (empty($data))
 				{
 					throw new \Exception(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
+					return;
 				}
 
 				// Check for published state if filter set.
 				if ((is_numeric($published) || is_numeric($archived)) && ($data->state != $published && $data->state != $archived))
 				{
 					throw new \Exception(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
+					return;
 				}
 
 				// Convert parameter fields to objects.
-				$registry = new Registry;
-				$registry->loadString($data->attribs);
-				$data->attribs = $registry;
+				if(isset($data->attribs)){
+					$registry = new Registry;
+					$registry->loadString($data->attribs);
+					$data->attribs = $registry;
+				}
+				
+				if(isset($data->physical)){
+					$registry = new Registry;
+					$registry->loadString($data->physical);
+					$data->physical = $registry;
+				}
 
-				$registry = new Registry;
-				$registry->loadString($data->physical);
-				$data->physical = $registry;
-
-				$registry = new Registry;
-				$registry->loadString($data->recording);
-				$data->recording = $registry;
-
+				if(isset($data->recording)){
+					$registry = new Registry;
+					$registry->loadString($data->recording);
+					$data->recording = $registry;
+				}
 
 				$data->params = clone $this->getState('params');
 				//$params->merge($registry);
@@ -353,7 +369,7 @@ class ProductModel extends ItemModel
 				$listDirn	= $this->getState('list.direction', 'ASC');
 				$ordering 	= $this->getState('list.ordering', 'a.title');
 				$after_sort = '';
-		
+	
 				if($ordering == 'file_length'){
 					//save it for after
 					$ordering = 'a.title';
@@ -424,17 +440,25 @@ class ProductModel extends ItemModel
 				)->from($db->quoteName('#__mymuse_product', 'a'));
 
 
-					$track_query->where(
-						[
+				$track_query->where(
+					[
 
-							$db->quoteName('a.parentid') . ' = ' . $pk,
-							$db->quoteName('a.product_downloadable') . ' = 1',
-							$db->quoteName('a.state') . ' = 1',
-							$db->quoteName('a.track_parentid') . ' = 0',
-						]
-					);
-
+						$db->quoteName('a.parentid') . ' = ' . $pk,
+						$db->quoteName('a.product_downloadable') . ' = 1',
+						$db->quoteName('a.state') . ' = 1',
+						$db->quoteName('a.track_parentid') . ' = 0',
+					]
+				);
+				//ORDERING
+				$orderCol  = $app->getUserStateFromRequest('list.filter_order', 'filter_order', 'a.title', 'string');
+				$orderDirn = $app->getUserStateFromRequest('list.filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
+				if($orderCol == 'file_length' ){
+					//save if for now
+				}else{
+					$track_query->order($db->escape($orderCol.' '.$orderDirn));
+				}
 				
+
 				//echo $track_query->__toString(); exit;
 
 				$db->setQuery($track_query);
@@ -512,6 +536,7 @@ class ProductModel extends ItemModel
 						if(isset($track->digital[0]->file_type)){
 							$track->file_type = $track->digital[0]->file_type;
 							$this->_item[$pk]->flash_type  = $track->digital[0]->file_type;
+							$this->_item[$pk]->file_length = $track->digital[0]->file_length;
 						}
 						if(isset($track->digital[0]->file_length)){
 							$track->file_length = $track->digital[0]->file_length;
@@ -570,6 +595,7 @@ class ProductModel extends ItemModel
 						}else{
 							$track->flash= '';
 						}
+
 						//$parent_tracks[] = $track;
 						
 					} // each track
@@ -683,7 +709,7 @@ $params->set('product_player_type', "single");
 						
 									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
 									$audio = 1;
-									//MymuseHelper::print_pre($results[0]);
+							
 								}
 
 								if(is_array($results) && isset($results[0]) && $results[0] != ''){
@@ -821,7 +847,6 @@ $params->set('product_player_type', "single");
 				$this->_item[$pk]->tracks = $tracks;
 				//end of tracks
 			
-				//MymuseHelper::print_pre($this->_item[$pk]); exit;
 	
 				/* PHYSICAL CHILD ITEMS  PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS  */
 				$query = "SELECT * FROM #__mymuse_product as p
@@ -1446,5 +1471,22 @@ $params->set('product_player_type', "single");
 		$db->setQuery($q);
 		$res = $db->loadObjectList();
 	    return $res;
+	  }
+
+
+
+	  function cmp_file_length($a, $b)
+	  {
+	      if ($a->file_length == $b->file_length) {
+	          return 0;
+	      }
+	      return ($a < $b) ? -1 : 1;
+	  }
+	  function cmp_desc_file_length($a, $b)
+	  {
+	      if ($a->file_length == $b->file_length) {
+	          return 0;
+	      }
+	      return ($a > $b) ? -1 : 1;
 	  }
 }

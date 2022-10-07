@@ -60,4 +60,9 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 		my_modal.close();
 	});
+
+
+	newForm = document.getElementById('trackForm');
+	console.log('form');
+	console.log(newForm);
 });

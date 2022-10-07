@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 global $store, $shopper, $cart;
 
@@ -20,10 +21,11 @@ HtmlHelper::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $product    =& $this->item;
 $tracks     =& $this->item->tracks;
-$listOrder  = $this->sortColumn;
-$listDirn   = $this->sortDirection;
-$user       = JFactory::getUser();
+$listOrder  = $this->escape($this->state->get('list.ordering'));
+$listDirn   = $this->escape($this->state->get('list.direction'));
 
+$user       = JFactory::getUser();
+//echo '$listDirn ='.$listDirn. ' $listOrder = '.$listOrder;
 
 if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_tracks', 1)) :
 ?>
@@ -107,41 +109,42 @@ endif;
 </style>
 
 <!-- TRACKS -->
+<form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="trackForm" id="trackForm" class="">
 
 <div class=" list-products mymuse-cart ">
 <section class="tracks">
     <ul class="mymuse-container">
       <li class="my-grid item-container cols-<?php echo $cols; ?>">
-        <div class="mymuse-header name"><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></div>
+        <div class="mymuse-header name"><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
 
         <?php  if($this->params->get('product_show_artist', 0)) :?>
           <div class="mymuse-header artist">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></div>
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
         <?php endif; ?>
         
         <?php  if($this->params->get('product_show_filetime', 0)) :?>
           <div class="mymuse-header time">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></div>
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
         <?php endif; ?>
         
         <?php  if($this->params->get('product_show_filesize', 0)) :?>
           <div class="mymuse-header filesize">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_lengdiv', $listDirn, $listOrder); ?></div>
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_length', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
         <?php endif; ?>
         
         <?php if($this->params->get('product_show_sales', 0)) : ?>
           <div class="mymuse-header sales">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></div>
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
         <?php endif; ?>
         
         <?php if($this->params->get('product_show_downloads', 0)) : ?>
           <div class="mymuse-header downloads">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></div>
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
         <?php endif; ?>
         
         <?php  if($this->params->get('product_show_cost_column', 1)) :?>
           <div class="mymuse-header price">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder); ?></div>
+          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
         <?php endif; ?>
           
           <?php if(count($this->formats) > 1) :?>
@@ -377,3 +380,11 @@ endif;
 <?php  endif; ?>
 </div>
 <?php  endif; ?>
+
+    <div>
+        <input type="hidden" name="filter_order" value="">
+        <input type="hidden" name="filter_order_Dir" value="">
+        <input type="hidden" name="limitstart" value="">
+        <input type="hidden" name="task" value="">
+    </div>
+</form>
