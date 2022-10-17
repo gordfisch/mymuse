@@ -427,9 +427,11 @@ class ProductModel extends AdminModel
 
 				}
 
-				$item->articletext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
+				$item->articletext = $item->fulltext != '' ? trim($item->introtext) . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
 
 
+        $item->tags = new TagsHelper();
+        $item->tags->getTagIds($item->id, 'com_content.article');
 				
 
 				
@@ -569,7 +571,7 @@ class ProductModel extends AdminModel
 	   		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
 	   		$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
 	   		$model->setState('list.links', $this->getState('list.links'));
-			$model->setState('filter.parentid', $parentid);
+				$model->setState('filter.parentid', $parentid);
 	   		$model->setState('filter.trackparentid', $id);
     		$model->setState('filter.downloadable', 1);
 
@@ -1223,6 +1225,79 @@ class ProductModel extends AdminModel
 
     }
 
+	/**
+	 * Saves the manually set order of records.
+	 *
+	 * @param   array    $pks    An array of primary key ids.
+	 * @param   integer  $order  +1 or -1
+	 *
+	 * @return  mixed
+	 *
+	 * @since   12.2
+	 */
+	public function saveorder($pks = null, $order = null)
+	{
+	
+		MyMuseHelper::logMessage("here in model product\n");
+		$table = $this->getTable('product','MymuseTable');
+		$conditions = array();
+	
+		if (empty($pks))
+		{
+			return JError::raiseWarning(500, JText::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'));
+		}
+	
+		// Update ordering values
+		foreach ($pks as $i => $pk)
+		{
+			$table->load((int) $pk);
+	
+			// Access checks.
+			if (!$this->canEditState($table))
+			{
+				// Prune items that you can't change.
+				unset($pks[$i]);
+				JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+			}
+			elseif ($table->ordering != $order[$i])
+			{
+				$table->ordering = $order[$i];
+	
+	
+				if (!$table->store())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
+	
+				// Remember to reorder within position and client_id
+				$condition = $this->getReorderConditions($table);
+				$found = false;
+				MyMuseHelper::logMessage("$condition\n");
+	
+				foreach ($conditions as $cond)
+				{
+					if ($cond[1] == $condition)
+					{
+						$found = true;
+						break;
+					}
+				}
+	
+				if (!$found)
+				{
+					$key = $table->getKeyName();
+					$conditions[] = array($table->$key, $condition);
+				}
+			}
+		}
+	
+	
+		// Clear the component's cache
+		$this->cleanCache();
+	
+		return true;
+	}
 
     
 

@@ -44,7 +44,7 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 
 
  $this->category->text = $this->category->description;
-
+$tagsData = $this->category->tags->itemTags;
 
 $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
@@ -70,9 +70,11 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 		<span class="category-subheading"><?php echo $this->escape($this->params->get('page_subheading')); ?></span>
 	</h3>
 	<?php endif; ?>
-<?php echo $this->category->event->afterDisplayTitle; ?>
+	<?php echo $this->category->event->afterDisplayTitle; ?>
 
-
+	<?php if ($this->params->get('show_cat_tags', 1)) : ?>
+        <?php echo LayoutHelper::render('joomla.content.tags', $tagsData); ?>
+    <?php endif; ?>
 	<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
 	<div class="category-desc">
 		<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : 
@@ -94,8 +96,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
 
 <?php 
-/*
-Mymuse is not going to show children
+/* Mymuse is not going to show children
 if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
 		<div class="cat-children cat-items">
 		<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>

@@ -21,6 +21,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\Component\Mymuse\Site\Helper\QueryHelper;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * This models supports retrieving a category, the products associated with the category,
@@ -117,7 +118,8 @@ class CategoryModel extends ListModel
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'author', 'a.author',
-				'filter_tag'
+				'filter_tag',
+				'sales','s.sales' 
 			);
 		}
 
@@ -263,6 +265,7 @@ class CategoryModel extends ListModel
 
 		if ($this->_products === null && $category = $this->getCategory())
 		{
+
 			$model = $this->bootComponent('com_mymuse')->getMVCFactory()
 				->createModel('Products', 'Site', ['ignore_request' => true]);
 			$model->setState('params', Factory::getApplication()->getParams());

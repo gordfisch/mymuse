@@ -83,7 +83,7 @@ class MymuseNomenuRules implements RulesInterface
     public function __construct(RouterView $router)
     {
         $this->router = $router;
-        $this->dbo = $this->dbo = Factory::getDBO();
+        $this->dbo = $dbo = Factory::getDBO();
 
         $this->params = MymuseHelper::getParams('com_mymuse');
         if($this->params->get('my_use_alias')){
@@ -471,12 +471,12 @@ class MymuseNomenuRules implements RulesInterface
                 
                 
                 if($this->params->get('top_menu_item','') && $this->params->get('my_use_alias','')){
-                        $aquery = $dbo->setQuery($dbo->getQuery(true)
+                        $aquery = $this->dbo->setQuery($this->dbo->getQuery(true)
                             ->select('alias')
                             ->from('#__mymuse_product')
                             ->where('id='.(int)$query['id'])
                         );
-                        $alias = $dbo->loadResult();
+                        $alias = $this->dbo->loadResult();
                         $segments[] = $alias;
                         unset($query['id']);
                         unset($query['catid']);
@@ -491,12 +491,12 @@ class MymuseNomenuRules implements RulesInterface
                     // Make sure we have the id and the alias
                     if (strpos($query['id'], ':') === false) {
                         
-                        $aquery = $dbo->setQuery($dbo->getQuery(true)
+                        $aquery = $this->dbo->setQuery($this->dbo->getQuery(true)
                             ->select('alias')
                             ->from('#__mymuse_product')
                             ->where('id='.(int)$query['id'])
                         );
-                        $alias = $dbo->loadResult();
+                        $alias = $this->dbo->loadResult();
                         $query['id'] = $query['id'].':'.$alias;
                         
                     }

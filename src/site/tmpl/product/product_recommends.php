@@ -9,16 +9,23 @@
  * @website		http://www.joomlamymuse.com
  */
 
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-if(isset(($this->recommends)) && is_countable($this->recommends) && count($this->recommends)) : ?>
-	<div class="product-recommends">
-		
-		<h3><?php echo JText::_('COM_MYMUSE_RELATED_ITEMS'); ?></h3>
 
-		<div id="mymuse-container">	
-		<?php foreach($this->recommends as $item) : ?>
+if(isset(($this->item->recommends)) && is_countable($this->item->recommends) && count($this->item->recommends)) : 
+$cols = count($this->item->recommends);
+
+
+?>
+
+	<h3><?php echo JText::_('COM_MYMUSE_RELATED_ITEMS'); ?></h3>
+
+	<div class="product-recommends mymuse-container">
+		<div class="my-grid columns-<?php echo $cols ?>">	
+		<?php foreach($this->item->recommends as $item) : ?>
 			<?php if($item->list_image) :?>
 			<div class="related-item">
 			<a href="<?php echo $item->url; ?>"><img src="<?php echo $item->list_image; ?>"></a>

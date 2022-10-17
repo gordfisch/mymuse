@@ -94,7 +94,7 @@ endif;
 if(count($this->formats) > 1) :
   $cols++;
 endif;
-if($this->params->get('product_show_select_column', 1)) :
+if($this->params->get('product_show_select_column', 1) && $this->available) :
   $cols++;
 endif;
 if($this->params->get('product_show_preview_column', 1)) : 
@@ -151,7 +151,7 @@ endif;
         <div class="mymuse-header format"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></div>
         <?php endif;?>
           
-          <?php  if($this->params->get('product_show_select_column', 1)) :?>
+          <?php  if($this->params->get('product_show_select_column', 1) && $this->available) :?>
         <div class="mymuse-header select"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
         <?php endif; ?>
 
@@ -179,7 +179,7 @@ endif;
                  <span class="track-title"><?php echo $track->title; ?></span>
                   <?php  
                   if($track->product_allfiles == "1") : 
-                echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
+                echo "(".JText::_("COM_MYMUSE_ALL_TRACKS").")";
               endif; ?>
               <?php if($track->introtext && $track->introtext != $track->title) :
                 echo '<br /><span class="track-text">'.$track->introtext.'</span>';
@@ -320,14 +320,14 @@ endif;
     <?php endif; ?>
       
       <?php if(count($this->formats) > 1) :?>
-    <div class="mycart-inner format"><?php if(isset($track->variation_select)) :
+        <div class="mycart-inner format"><?php if(isset($track->variation_select)) :
                     echo $track->variation_select;
                    endif;
                 ?></div>
     <?php endif;?>
       
-      <?php  if($this->params->get('product_show_select_column', 1)) :?>
-    <div class="mycart-inner select" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>"><?php if($track->digital || $track->product_allfiles) :?>
+      <?php  if($this->params->get('product_show_select_column', 1) && $this->available) :?>
+        <div class="mycart-inner select" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>"><?php if($track->digital || $track->product_allfiles) :?>
 
                     <a href="javascript:void(0)" class="trackpicker" data-id="<?php echo $track->id; ?>"
                       data-variation="<?php echo $track->digital[0]->file_id; ?>"

@@ -55,6 +55,7 @@ class HtmlView extends BaseHtmlView
 		$jinput 	= Factory::getApplication()->input;
 		$task 		= $jinput->get('task','');
 		$state 		= $this->get('State');
+
 		$store 		= $this->get('Store');
 		$params 	= MyMuseHelper::getParams();
 		$this->params = $params;
@@ -618,9 +619,9 @@ class HtmlView extends BaseHtmlView
 		// PREPARE THE DATA FOR FEATURED PRODUCTS
 
 		// Get the metrics for the structural page layout.
-		$numLeading = $params->def('num_leading_articles', 1);
-		$numIntro = $params->def('num_intro_articles', 4);
-		$numLinks = $params->def('num_links', 4);
+		$numLeading = $params->def('num_leading_articles', 0);
+		$numIntro = $params->def('num_intro_articles', 100);
+		$numLinks = $params->def('num_links', 0);
 
 		// Compute the article slugs and prepare introtext (runs content plugins).
 		foreach ($items as $i => & $item)
@@ -686,7 +687,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		//Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = ($params->get('pageclass_sfx'))? htmlspecialchars($params->get('pageclass_sfx')) : '';
 
 		$this->items 		= $items;
 		$this->store 		= $store;

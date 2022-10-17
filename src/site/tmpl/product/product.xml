@@ -113,7 +113,11 @@
 				<option value="1">JSHOW</option>
 			</field>
 			
-          	<field
+          	
+
+	<field type="spacer" name="spacerdetails" label="COM_MYMUSE_PRODUCT_PUBLISHING_DETAILS" /> 
+
+			<field
           		name="info_block_show"
           		type="list"
           		label="COM_MYMUSE_FIELD_INFOBLOCK_SHOW"
@@ -143,7 +147,17 @@
           		<option	value="1">JSHOW</option>
           	</field>
 
-	<field type="spacer" name="spacerdetails" label="COM_MYMUSE_PRODUCT_PUBLISHING_DETAILS" /> 
+			<field 
+				name="show_special_status" 
+				type="list"
+				useglobal="true"
+			    class="chzn-color"
+				label="COM_MYMUSE_SHOW_SPECIAL_STATUS_LABEL"
+				parentclass="stack span-1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+          	</field>
 
 			<field name="show_artist" 
 				type="list"
@@ -276,7 +290,7 @@
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
-				parentclass="stack span-1-inline"
+				parentclass="stack span-1"
 				>
 				<option value="1">JSHOW</option>
 				<option value="0">JHIDE</option>
@@ -289,18 +303,6 @@
 			    class="chzn-color"
 				label="COM_MYMUSE_SHOW_SKU_PRODUCT_LABEL"
 				parentclass="stack span-1"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-          	</field>
-
-          	<field 
-				name="show_special_status" 
-				type="list"
-				useglobal="true"
-			    class="chzn-color"
-				label="COM_MYMUSE_SHOW_SPECIAL_STATUS_LABEL"
-				parentclass="stack span-1-inline"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>

@@ -68,6 +68,7 @@ class HtmlView extends BaseHtmlView
 	{
 		/** @var MymuseModel $model */
 		$model       = $this->getModel();
+		echo get_class($model);
 		$this->form  = $model->getForm();
 		$this->item  = $model->getItem();
 		$this->state = $model->getState();

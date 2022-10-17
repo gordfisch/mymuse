@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		Joomla.Site
- * @subpackage	com_content
+ * @subpackage	COM_MYMUSE
  * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -28,16 +28,25 @@ $n			= count($this->items);
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $height 	= $this->params->get('category_product_image_height',0);
-$inner_cols	= 2;
+$inner_cols	= 0;
 $uri 		= JUri::getInstance(); 
-//echo '$listDirn ='.$listDirn. ' $listOrder = '.$listOrder;
 
+//MymuseHelper::print_pre($this->items[0]);
 if ($this->params->get('list_show_date') && $this->params->get('order_date')) {
 	$inner_cols++;
 	$date = $this->params->get('order_date');
 	$date_string = 'COM_MYMUSE_'.$date.'_DATE';
 }
-if($this->params->get('category_show_intro_text')) {
+if($this->params->get('category_show_product_image',1)) {
+	$inner_cols++;
+}
+if($this->params->get('category_product_show_title',1)) {
+	$inner_cols++;
+}
+if($this->params->get('list_show_artist',1)) {
+	$inner_cols++;
+}
+if($this->params->get('category_show_intro_text',0)) {
 	$inner_cols++;
 }
 if ($this->params->get('list_show_author', 0)) {
@@ -55,11 +64,8 @@ if ($this->params->get('list_show_discount', 0))  {
 if ($this->params->get('list_show_sales', 0)) {
 	$inner_cols++;
 }
-
-
-
 ?>
-<?php if (empty($this->items)) : ?>
+<?php if (empty($this->items) || $inner_cols == 0) : ?>
 
 	<?php if ($this->params->get('show_no_products', 1)) : ?>
 	<p><?php echo Text::_('COM_MYMUSE_NO_PRODUCTS'); ?></p>
@@ -73,30 +79,51 @@ if ($this->params->get('list_show_sales', 0)) {
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="limitstart" value="" />
 
-<?php if ($this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
-	<table class="mymuse_cart">
-		<tr>
-		<?php if ($this->params->get('filter_field') && $this->params->get('filter_field') != 'hide')  : ?>
-			<td align="left" width="60%" nowrap="nowrap">
-				<?php echo Text::_('COM_MYMUSE_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?>
-				<input type="text" name="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" 
-				class="inputbox" 
-				onchange="this.start.value=0;this.form.submit();" />
-			</td>
-		<?php endif; ?>
-        
-		<?php if ($this->params->get('show_pagination_limit')) : ?>
-			<td  nowrap="nowrap">
-			<?php
-				echo '&nbsp;&nbsp;&nbsp;'.Text::_('COM_MYMUSE_DISPLAY_NUM').'&nbsp;';
-				echo $this->pagination->getLimitBox();
-			?>
-			</td>
-		<?php endif; ?>
-		</tr>
-	</table>
-	<br />
-<?php endif; ?>
+<form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="com-content-category__articles">
+    <?php if ($this->params->get('filter_field') !== 'hide') : ?>
+        <div class="com-content__filter btn-group">
+            <?php if ($this->params->get('filter_field') === 'tag') : ?>
+                <span class="visually-hidden">
+                    <label class="filter-search-lbl" for="filter-search">
+                        <?php echo Text::_('JOPTION_SELECT_TAG'); ?>
+                    </label>
+                </span>
+                <select name="filter_tag" id="filter-search" class="form-select" onchange="document.adminForm.submit();" >
+                    <option value=""><?php echo Text::_('JOPTION_SELECT_TAG'); ?></option>
+                    <?php echo HTMLHelper::_('select.options', HTMLHelper::_('tag.options', array('filter.published' => array(1), 'filter.language' => $langFilter), true), 'value', 'text', $this->state->get('filter.tag')); ?>
+                </select>
+            <?php elseif ($this->params->get('filter_field') === 'month') : ?>
+                <span class="visually-hidden">
+                    <label class="filter-search-lbl" for="filter-search">
+                        <?php echo Text::_('JOPTION_SELECT_MONTH'); ?>
+                    </label>
+                </span>
+                <select name="filter-search" id="filter-search" class="form-select" onchange="document.adminForm.submit();">
+                    <option value=""><?php echo Text::_('JOPTION_SELECT_MONTH'); ?></option>
+                    <?php echo HTMLHelper::_('select.options', HTMLHelper::_('content.months', $this->state), 'value', 'text', $this->state->get('list.filter')); ?>
+                </select>
+            <?php else : ?>
+                <label class="filter-search-lbl visually-hidden" for="filter-search">
+                    <?php echo Text::_('COM_MYMUSE_' . $this->params->get('filter_field') . '_FILTER_LABEL'); ?>
+                </label>
+                <input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" placeholder="<?php echo Text::_('COM_MYMUSE_' . $this->params->get('filter_field') . '_FILTER_LABEL'); ?>">
+            <?php endif; ?>
+
+            <?php if ($this->params->get('filter_field') !== 'tag' && $this->params->get('filter_field') !== 'month') : ?>
+                <button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button>
+            <?php endif; ?>
+            <button type="reset" name="filter-clear-button" class="btn btn-secondary"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($this->params->get('show_pagination_limit')) : ?>
+        <div class="com-content-category__pagination btn-group float-end">
+            <label for="limit" class="visually-hidden">
+                <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
+            </label>
+            <?php echo $this->pagination->getLimitBox(); ?>
+        </div>
+    <?php endif; ?>
 
 
 <!-- table less -->
@@ -105,9 +132,20 @@ if ($this->params->get('list_show_sales', 0)) {
 <?php if ($this->params->get('show_headings')) :?>
 
 	<li class="item-container cols-<?php echo $inner_cols; ?>">
-		<div class="mymuse_cart_top list-head-image "><?php echo Text::_('COM_MYMUSE_IMAGE'); ?></div>
 
+		
+		<?php if($this->params->get('category_show_product_image')) :?>
+		<div class="mymuse_cart_top list-head-image "><?php echo Text::_('COM_MYMUSE_IMAGE'); ?></div>
+		<?php endif; ?>
+
+		<?php if($this->params->get('category_product_show_title')) :?>
 		<div class="mymuse_cart_top list-head-title "><?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?></div>
+		<?php endif; ?>
+
+		<?php if($this->params->get('list_show_artist')) :?>
+			<div class="mymuse_cart_top list-head-description "><?php echo Text::_('COM_MYMUSE_ARTISTS'); ?></div>
+		<?php endif; ?>
+
 		<?php if($this->params->get('category_show_intro_text')) :?>
 			<div class="mymuse_cart_top list-head-description "><?php echo Text::_('COM_MYMUSE_DESCRIPTION'); ?></div>
 		<?php endif; ?>
@@ -149,38 +187,49 @@ if ($this->params->get('list_show_sales', 0)) {
 
 
 	 <li class=" item-container cols-<?php echo $inner_cols; ?>">
-		<div class="mycart-inner list-image " data-name="<?php echo Text::_('COM_MYMUSE_IMAGE'); ?>"><a href="<?php echo JRoute::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
-			<img <?php if($height) : ?> style="height:<?php echo $height; ?>px"
-				<?php endif; ?> src="<?php echo $product->list_image; ?>"
-				alt="<?php echo htmlspecialchars($product->list_image); ?>" />
-			</a>
-		</div>
 
-		
-		<div class="mycart-inner list-title " data-name="<?php echo Text::_('JGLOBAL_TITLE'); ?>"><a href="<?php 
+	 	<?php if($this->params->get('category_show_product_image')) :?>
+		<div class="mycart-inner list-image " data-name="<?php echo Text::_('COM_MYMUSE_IMAGE'); ?>">
+			<?php if($this->params->get('link_intro_image')) :?>
+				<a href="<?php echo JRoute::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
+				<img src="<?php echo $product->list_image; ?>"
+				alt="<?php echo htmlspecialchars($product->list_image); ?>" />
+				</a>
+			<?php else: ?>
+				<img src="<?php echo $product->list_image; ?>"
+				alt="<?php echo htmlspecialchars($product->list_image); ?>" />
+			<?php endif; ?>
+
+
+		</div>
+		<?php endif; ?>
+
+		<?php if($this->params->get('category_product_show_title')) :?>
+		<div class="mycart-inner list-title " data-name="<?php echo Text::_('JGLOBAL_TITLE'); ?>">
+
+			<?php if($this->params->get('category_link_titles')) :?>
+			<a href="<?php 
 				echo JRoute::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
 				<?php echo $this->escape($product->title); ?>
 				</a>
-				<?php if ($this->params->get('list_show_artist', 0)) : ?>
-
-
-				<?php endif; ?>
-
-
-
-
-
-
-
+			<?php else: ?>
+				<?php echo $this->escape($product->title); ?>
+			<?php endif; ?>
 
 		</div>
+		<?php endif; ?>
+
+		<?php if($this->params->get('list_show_artist')) :?>
+			<div class="mycart-inner list-artist " data-name="<?php echo Text::_('COM_MYMUSE_ARTIST'); ?>">
+				<?php echo $this->escape($product->artist_title); ?>
+			</div>
+		<?php endif; ?>
+
 		<?php if($this->params->get('category_show_intro_text')) :?>
 			<div class="mycart-inner list-desc " data-name="<?php echo Text::_('COM_MYMUSE_DESCRIPTION'); ?>"><?php echo JHtml::_('string.truncate', strip_tags($product->introtext), 200, true); ?>
-		<?php endif;
+		
 
-			?>
-
-			<?php if ($this->params->get('show_readmore') && $product->readmore) :
+			<?php if ($this->params->get('category_show_readmore') && $product->readmore) :
 				if ($product->access) :
 					$link = JRoute::_(RouteHelper::getProductRoute($product->slug, $product->catid));
 				else :
@@ -199,10 +248,10 @@ if ($this->params->get('list_show_sales', 0)) {
 									echo Text::_('COM_MYMUSE_REGISTER_TO_READ_MORE');
 								elseif ($readmore = $product->alternative_readmore) :
 									echo $readmore;
-									if ($thisparams->get('show_readmore_title', 0) != 0) :
+									if ($this->params->get('category_show_readmore_title', 0) != 0) :
 									    echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
 									endif;
-								elseif ($this->params->get('show_readmore_title', 0) == 0) :
+								elseif ($this->params->get('category_show_readmore_title', 0) == 0) :
 									echo Text::sprintf('COM_MYMUSE_READ_MORE_TITLE');
 								else :
 									echo Text::_('COM_MYMUSE_READ_MORE').' ';
@@ -211,7 +260,7 @@ if ($this->params->get('list_show_sales', 0)) {
 					</spans>
 			<?php endif; ?>
 			</div>
-
+		<?php endif; ?>
 			<?php if ($this->params->get('list_show_date')) : ?>
 				<div class="mycart-inner list-date mydate  " data-name="<?php echo Text::_($date_string); ?>"><?php 
 						if($product->displayDate != '0000-00-00'){

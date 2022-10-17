@@ -137,7 +137,8 @@ class StoreModel extends ProductsModel
 	public function getItems()
 	{
 		$params = clone $this->getState('params');
-		$limit = $params->get('num_leading_articles') + $params->get('num_intro_articles') + $params->get('num_links');
+		$limit = $params->get('num_leading_products') + $params->get('num_intro_products') + $params->get('num_links');
+
 		if ($limit > 0)
 		{
 			$this->setState('list.limit', $limit);
@@ -188,7 +189,7 @@ class StoreModel extends ProductsModel
 		$query = parent::getListQuery();
 
 		$query->where('a.featured = 1');
-
+	//echo($query->__toString());
 		return $query;
 	}
 }

@@ -60,11 +60,8 @@ if($this->params->get('category_layout') == "_:tracks"){
 		</span>
 		<?php if ($this->params->get('show_cat_subcat_image') && $item_params->get('image')): ?>
 <div class="list_image">
-<a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($item->id)); ?>"
+<a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($item->id)); ?>"
 ><img src="<?php echo  $item_params->get('image'); ?>" 
-		<?php if ($this->params->get('cat_subcat_image_height')) : ?>
-style="height: <?php echo $this->params->get('cat_subcat_image_height'); ?>px"
-		<?php endif; ?>
 alt="<?php echo htmlspecialchars($item_params->get('image')); ?>" border="0" /></a></div>
 <?php endif; ?>
 		<?php if ($this->params->get('show_subcat_desc_cat') == 1) :?>

@@ -124,7 +124,7 @@ class ShopperModel extends FormModel
         			return false;
         		}
       			
-        		if(!$this->make_no_register()){
+        		if(!$this->makeNoRegister()){
         			return false;
         		}
         		$registry = new JRegistry;
@@ -141,7 +141,7 @@ class ShopperModel extends FormModel
         		}
         		$jinput->post->set("jform", $jform);
 
-        		$this->savenoreg();
+        		$this->saveNoReg();
         		$this->loadProfile($this->_shopper);
         		return $this->_shopper;
         	}
@@ -295,24 +295,11 @@ class ShopperModel extends FormModel
 						$profile['shopper_group'] = 1;
 				}
 				
-				//$query = 'SELECT *'
-				//. ' FROM #__mymuse_shopper_group'
-				//. ' WHERE id = '.$profile['shopper_group']
-				//;
 
-				$query	= $db->getQuery(true);
-				$query->select('a.*');
+				if(!$this->_shopper->shopper_group = $this->getShopperGroup($profile['shopper_group'])){
+					$this->_shopper->shopper_group = $this->getShopperGroup(1);
+				}
 
-				$query->from('`#__mymuse_shopper_group` AS a');
-				$query->where('(a.state IN (0, 1))');
-				$query->where('(a.usergroups_id = '.$profile['shopper_group'].')');
-					
-				// Join usergroup on a.usergroups_id
-				$query->select('ug.title AS shopper_group_name');
-				$query->join('LEFT', '#__usergroups AS ug ON ug.id=a.usergroups_id');
-
-				$db->setQuery( $query );
-				$this->_shopper->shopper_group = $db->loadObject();
 				$this->_shopper->discount = $this->_shopper->shopper_group->discount;
 				$this->_shopper->shopper_group_name = $this->_shopper->shopper_group->shopper_group_name;
 
@@ -471,7 +458,7 @@ class ShopperModel extends FormModel
 	 * Put post variables from form into session
 	 * log them in
 	*/
-	function savenoreg()
+	function saveNoReg()
 	{
 		// Initialise variables.
 		$app	= Factory::getApplication();
@@ -725,13 +712,13 @@ class ShopperModel extends FormModel
 	}
 	
 	/*
-	 * make_no_register
+	 * makeNoRegister
 	*
 	* Get guest user and log them in, creating user if need be
 	*
 	* return boolen
 	*/
-	function make_no_register()
+	function makeNoRegister()
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -895,7 +882,7 @@ class ShopperModel extends FormModel
 	}
 
 
-	public function getshopper_group ($id = 0) {
+	public function getShopperGroup ($id = 0) {
 		if(!$id){
 			return;
 		}
@@ -906,8 +893,13 @@ class ShopperModel extends FormModel
 				. ' WHERE a.id = '.$id
 				;
 		$db->setQuery($query);
-		$result = $db->loadObject();
-		return $result;
+		if($result = $db->loadObject()){
+			return $result;
+		}else{
+			$result = $this->getShopperGroup(1);
+			return $result;
+		}
+		return false;
 	}
 	
 	

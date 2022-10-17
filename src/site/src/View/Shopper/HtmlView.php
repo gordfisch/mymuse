@@ -118,7 +118,7 @@ class HtmlView extends BaseHtmlView
 
 		}
 	
-		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
+		$this->pageclass_sfx = $this->params->get('pageclass_sfx')? htmlspecialchars($this->params->get('pageclass_sfx')) : '';
 		
 		$document		= Factory::getDocument();
 		$pathway		= $app->getPathway();

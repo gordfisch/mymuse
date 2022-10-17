@@ -20,6 +20,8 @@ use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Tag\TaggableTableInterface;
+use Joomla\CMS\Tag\TaggableTableTrait;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
@@ -32,8 +34,11 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
  *
  * @since  1.0
  */
-class ProductTable extends Table implements VersionableTableInterface
+class ProductTable extends Table implements VersionableTableInterface, TaggableTableInterface
 {
+
+	use TaggableTableTrait;
+
 	/**
 	 * Indicates that columns fully support the NULL value in the database
 	 *
@@ -148,10 +153,14 @@ class ProductTable extends Table implements VersionableTableInterface
 				$this->introtext	= $array['articletext'];
 				$this->fulltext         = '';
 			} else {
-				list($this->introtext, $this->fulltext) = preg_split($pattern, $array['articletext'], 2);
+				list($array['introtext'], $array['fulltext']) = preg_split($pattern, $array['articletext'], 2);
+				$this->introtext = $array['introtext'];
+				$this->fulltext = $array['fulltext'];
 			}
 
 		}
+		//MymuseHelper::print_pre($array); exit;
+
 		if(!isset($array['track_parentid'])){
             $array['track_parentid'] = 0;
         }
@@ -403,6 +412,7 @@ class ProductTable extends Table implements VersionableTableInterface
 		}
         
  		$done = 0;
+
 
  		/* TRACKS ======================================================*/
 		if($subtype == 'file'){

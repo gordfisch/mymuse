@@ -141,9 +141,15 @@ class HtmlView extends CategoriesView
 		function _getProductCount($category){
 
 			$catid[] = $category->id;
+		
 			$children = $category->getChildren();
 			foreach($children as $child){
 				$catid[] = $child->id;
+				$children = $category->getChildren();
+				$grandchildren = $child->getChildren();
+				foreach($grandchildren as $gc){
+					$catid[] = $gc->id;
+				}
 			}
 			$catids = implode(",",$catid);
 
@@ -159,13 +165,13 @@ class HtmlView extends CategoriesView
 			
 			AND
 			(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
-			AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
+			AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate."  OR publish_down IS NULL)
 			AND p.state = 1
 
 			AND p.parentid=0 GROUP BY p.id
 			";
 
-		
+		//echo $query;
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
 

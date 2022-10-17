@@ -59,7 +59,7 @@ $afterDisplayContent = trim(implode("\n", $results));
 $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
 ?>
-<div class="com-content-category-blog blog" itemscope itemtype="https://schema.org/Blog">
+<div class="com-mymuse-category-blog blog" itemscope itemtype="https://schema.org/Blog">
     <?php if ($this->params->get('show_page_heading')) : ?>
         <div class="page-header">
             <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
@@ -105,15 +105,15 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         <?php if ($this->params->get('show_no_articles', 1)) : ?>
             <div class="alert alert-info">
                 <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
-                    <?php echo Text::_('COM_CONTENT_NO_ARTICLES'); ?>
+                    <?php echo Text::_('COM_MYMUSE_NO_PRODUCTS'); ?>
             </div>
         <?php endif; ?>
     <?php endif; ?>
 
     <?php if (!empty($this->lead_items)) : ?>
-        <div class="com-content-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">
+        <div class="com-mymuse-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">
             <?php foreach ($this->lead_items as &$item) : ?>
-                <div class="com-content-category-blog__item blog-item" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+                <div class="com-mymuse-category-blog__item blog-item" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
                     <?php
                     $this->item = &$item;
                     echo $this->loadTemplate('item');
@@ -123,15 +123,18 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         </div>
     <?php endif; ?>
 
-    <?php if (!empty($this->intro_items)) : ?>
+    <?php 
+
+    if (!empty($this->intro_items)) : ?>
+
         <?php $blogClass = $this->params->get('blog_class', ''); ?>
         <?php if ((int) $this->params->get('num_columns') > 1) : ?>
             <?php $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-'; ?>
             <?php $blogClass .= (int) $this->params->get('num_columns'); ?>
         <?php endif; ?>
-        <div class="com-content-category-blog__items blog-items <?php echo $blogClass; ?>">
+        <div class="com-mymuse-category-blog__items blog-items <?php echo $blogClass; ?>">
         <?php foreach ($this->intro_items as $key => &$item) : ?>
-            <div class="com-content-category-blog__item blog-item"
+            <div class="com-mymuse-category-blog__item blog-item"
                 itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
                     <?php
                     $this->item = & $item;
@@ -149,20 +152,20 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
     <?php endif; ?>
 
     <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
-        <div class="com-content-category-blog__children cat-children">
+        <div class="com-mymuse-category-blog__children cat-children">
             <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
                 <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
             <?php endif; ?>
             <?php echo $this->loadTemplate('children'); ?> </div>
     <?php endif; ?>
     <?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
-        <div class="com-content-category-blog__navigation w-100">
+        <div class="com-mymuse-category-blog__navigation w-100">
             <?php if ($this->params->def('show_pagination_results', 1)) : ?>
-                <p class="com-content-category-blog__counter counter float-end pt-3 pe-2">
+                <p class="com-mymuse-category-blog__counter counter float-end pt-3 pe-2">
                     <?php echo $this->pagination->getPagesCounter(); ?>
                 </p>
             <?php endif; ?>
-            <div class="com-content-category-blog__pagination">
+            <div class="com-mymuse-category-blog__pagination">
                 <?php echo $this->pagination->getPagesLinks(); ?>
             </div>
         </div>

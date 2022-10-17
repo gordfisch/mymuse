@@ -537,14 +537,14 @@ class DisplayController extends BaseController
 
 	
 	/**
-	 * savenoreg
+	 * saveNoReg
 	 * save no registration, try to log in as guest buyer
 	 *
 	 */
-	public function savenoreg()
+	public function saveNoReg()
 	{	
 		
-		if($this->MyMuseShopper->savenoreg()){
+		if($this->MyMuseShopper->saveNoReg()){
 			$this->setRedirect( Route::_("index.php?option=com_mymuse&task=checkout&Itemid=".$this->Itemid));
 			return true;
 		}else{
@@ -577,7 +577,7 @@ class DisplayController extends BaseController
         	if(!$plugin || !count($plugin)){
        
         		//plugin is not on, try to login as buyer
-        		if(!$this->MyMuseShopper->savenoreg()){
+        		if(!$this->MyMuseShopper->saveNoReg()){
         			echo $this->MyMuseShopper->getError();
         			echo "Could not Log in"; 
         			return false;

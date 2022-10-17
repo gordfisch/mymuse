@@ -77,12 +77,15 @@ if( $this->params->get('info_block_show')) {
 <?php echo $this->loadTemplate('tracks'); ?>
 
 
-<?php if( $this->params->get('split_text') ): ?>
+<?php 
+if( $this->params->get('split_text') ): ?>
 	<div id="readmore" class="product-fulltext">
 		<?php echo $this->item->fulltext ?>
 	</div>
 <?php endif; ?>
 
-<?php if( $this->params->get('show_recommends') ): ?>
-	<?php echo $this->loadTemplate('recommends'); ?>
-<?php endif; ?>
+<?php 
+if( $this->params->get('show_recommends') ): 
+	echo $this->loadTemplate('recommends'); 
+endif; 
+?>

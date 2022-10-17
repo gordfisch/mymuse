@@ -47,7 +47,7 @@
                 <echo>Copying files from working dir to mymuse...
                 </echo>
 
-                <!--copy file="${src}/tests/JoomlaBrowser.php"
+                <!-- copy file="${src}/tests/JoomlaBrowser.php"
                         todir="${joomladir}/libraries/vendor/joomla-projects/joomla-browser/src" / -->
             
                 <copy todir="${joomladir}/components/com_mymuse">

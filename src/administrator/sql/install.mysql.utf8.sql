@@ -1260,7 +1260,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
 
 
 INSERT IGNORE INTO `#__mymuse_store` (`id`, `title`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `params`, `currency`, `metadesc`, `metakey`, `metadata`, `state`) VALUES
-(1, 'MyMuse Store', 'mymuse-store', '<p>MyMuse Store Description</p>', 1, 0, '0000-00-00 00:00:00', 1, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"123 King Gordon","address_2":"","city":"Rockville","province":"Maryland","country":"US","zip":"20850","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_formats":["1"] ,"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymuseJ4\\/joomla\\/images\\/A_MyMuseDownloads","my_preview_dir":"media\\/com_mymuse\\/previews","my_download_dir_format":"0","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_price_by_product":"0","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 1);
+(1, 'MyMuse Store', 'mymuse-store', '<p>MyMuse Store Description</p>', 1, 0, '0000-00-00 00:00:00', 1, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"123 King Gordon","address_2":"","city":"Rockville","province":"Maryland","country":"US","zip":"20850","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images/logo150sq.jpg","my_downloads_enable":"1","my_formats":["1"] ,"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"/var/www/html/mymuseJ4/joomla-cms/images/A_MyMuseDownloads","my_preview_dir":"media/com_mymuse/previews","my_download_dir_format":"0","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_price_by_product":"0","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 1);
 
 -- --------------------------------------------------------
 
@@ -1287,13 +1287,43 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_tax_rate` (
 -- Dumping data for table `#__mymuse_tax_rate`
 -- 
 
---- To enable tags on MyMuse Categories
+-- To enable tags on MyMuse Categories
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
 
 ('MyMuse Category', 'com_mymuse.category', 
-'{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', 
+'{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},
+"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', 
 '', 
 '{"common":{"core_content_item_id":"id","core_title":"title","core_state":"published","core_alias":"alias","core_created_time":"created_time","core_modified_time":"modified_time","core_body":"description", "core_hits":"hits","core_publish_up":"null","core_publish_down":"null","core_access":"access", "core_params":"params", "core_featured":"null", "core_metadata":"metadata", "core_language":"language", "core_images":"null", "core_urls":"null", "core_version":"version", "core_ordering":"null", "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"parent_id", "core_xreference":"null", "asset_id":"asset_id"}, "special":{"parent_id":"parent_id","lft":"lft","rgt":"rgt","level":"level","path":"path","extension":"extension","note":"note"}}', 
 'mymuseHelperRoute::getCategoryRoute', 
-'{"formFile":"administrator\\/components\\/com_categories\\/models\\/forms\\/category.xml", "hideFields":["asset_id","checked_out","checked_out_time","version","lft","rgt","level","path","extension"], "ignoreChanges":["modified_user_id", "modified_time", "checked_out", "checked_out_time", "version", "hits", "path"],"convertToInt":["publish_up", "publish_down"], "displayLookup":[{"sourceColumn":"created_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"modified_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"parent_id","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}]}');
+'{"formFile":"administrator/components/com_categories/models/forms/category.xml", 
+"hideFields":["asset_id","checked_out","checked_out_time","version","lft","rgt","level","path","extension"], 
+"ignoreChanges":["modified_user_id", "modified_time", "checked_out", "checked_out_time", "version", "hits", "path"],
+"convertToInt":["publish_up", "publish_down"], 
+"displayLookup":[{"sourceColumn":"created_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},
+{"sourceColumn":"modified_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},
+{"sourceColumn":"parent_id","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}]}'),
+
+
+-- To enable tags on MyMuse Products
+INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
+('MyMuse Product', 'com_mymuse.product', 
+'{"special":{"dbtable":"#__mymuse_product","key":"id","type":"ProductTable","prefix":"Joomla\Component\Mymuse\Administrator\Table","config":"array()"},
+"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"\Joomla\CMS\Table","config":"array()"}}', '', 
+'{"common":{"core_content_item_id":"id","core_title":"title","core_state":"state","core_alias":"alias","core_created_time":"created","core_modified_time":"modified",
+"core_body":"introtext", "core_hits":"hits","core_publish_up":"publish_up","core_publish_down":"publish_down","core_access":"access", "core_params":"attribs", 
+"core_featured":"featured", "core_metadata":"metadata", "core_language":"language", "core_images":"images", "core_urls":"urls", "core_version":"version", "core_ordering":"ordering", 
+"core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"catid", "asset_id":"asset_id", "note":"note"}, 
+"special":{"fulltext":"fulltext"}}', 
+'mymuseHelperRoute::getProductRoute', 
+'{"formFile":"administrator/components/com_mymuse/forms/product.xml", 
+"hideFields":["asset_id","checked_out","checked_out_time","version"],
+"ignoreChanges":["modified_by", "modified", "checked_out", "checked_out_time", "version", "hits", "ordering"],
+"convertToInt":["publish_up", "publish_down", "featured", "ordering"],"
+displayLookup":[{"sourceColumn":"catid","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"},
+{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},
+{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},
+{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"} ]}');
+
+
 

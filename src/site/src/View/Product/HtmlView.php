@@ -314,6 +314,10 @@ class HtmlView extends BaseHtmlView
 
 		$this->_prepareDocument();
 
+		$this->item->recommends = $this->get('Recommended');
+
+
+
 		parent::display($tpl);
 	}
 

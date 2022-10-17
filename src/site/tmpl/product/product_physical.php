@@ -63,14 +63,16 @@ endif;
         		<?php echo JText::_('COM_MYMUSE_COST'); ?>
         </div>
 
-        <?php if ($this->params->get('product_show_quantity')) :?>
+        <?php if ($this->params->get('product_show_quantity') && $this->available) :?>
         		<div class="mymuse-header quantity" >
           <?php echo JText::_('COM_MYMUSE_QUANTITY'); ?></div>
         <?php endif; ?>
 
+        <?php if($this->available) : ?>
         <div class="mymuse-header select">
         		<?php echo JText::_('COM_MYMUSE_SELECT'); ?>
         </div>
+        <?php endif; ?>
      </li>
 
      <li class="my-grid">
@@ -88,12 +90,13 @@ endif;
 				?>
         </div>
 
-        <?php if ($this->params->get('product_show_quantity')) :?>
+        <?php if ($this->params->get('product_show_quantity') && $this->available) :?>
         		<div class="mycart-inner  quantity" data-name="<?php echo JText::_('COM_MYMUSE_QUANTITY'); ?>">
           <input class="inputbox" type="text"
 					name="quantity[<?php echo $product->id; ?>]" size="2" value="1" /></div>
         <?php endif; ?>
 
+        <?php if($this->available) : ?>
         <div class="mycart-inner  select" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>">
         		<a href="javascript:void(0)"
 					id="box_<?php echo $product->id; ?>"><img
@@ -109,6 +112,7 @@ endif;
 						value="<?php echo $product->id; ?>"
 						id="box<?php echo $this->check; $this->check++; ?>" /> </span>
         </div>
+        <?php endif; ?>
      </li>
   </ul>
 </section>

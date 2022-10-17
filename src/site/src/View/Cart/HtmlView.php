@@ -1100,6 +1100,8 @@ class HtmlView extends BaseHtmlView
 		}
 
 		$order->user->shopper_group = $this->MyMuseShopper->getShopperGroup($order->user->profile['shopper_group']);
+
+
 		$order->user->discount = $order->user->shopper_group->discount;
 		$order->user->shopper_group_name = $order->user->shopper_group->shopper_group_name;
 		

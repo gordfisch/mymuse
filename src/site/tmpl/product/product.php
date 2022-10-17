@@ -57,6 +57,7 @@ $lang 				= Factory::getLanguage();
 $langtag 			= $lang->getTag();
 $listOrder			= $this->sortColumn;
 $listDirn			= $this->sortDirection;
+$this->available  		= ($this->item->special_status == "COM_MYMUSE_NO_LONGER_AVAILABLE")? 0 : 1;
 
 //get artist URL if exists
 $this->item->artist_link = '';

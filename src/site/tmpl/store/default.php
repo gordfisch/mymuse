@@ -58,6 +58,7 @@ if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->lin
 <?php
 	$introcount=(count($this->intro_items));
 	$counter=0;
+
 ?>
 	<?php if (!empty($this->intro_items)) : ?>
 		<?php $blogClass = $this->params->get('blog_class', ''); ?>

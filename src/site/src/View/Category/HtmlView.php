@@ -85,9 +85,9 @@ class HtmlView extends CategoryView
 		// Get the metrics for the structural page layout.
 		$params     = $this->params;
 
-		$numLeading = $params->def('num_leading_products', 1);
-		$numIntro   = $params->def('num_intro_products', 4);
-		$numLinks   = $params->def('num_links', 4);
+		$numLeading = $params->def('num_leading_products', 0);
+		$numIntro   = $params->def('num_intro_products', 100);
+		$numLinks   = $params->def('num_links', 0);
 		$this->vote = PluginHelper::isEnabled('content', 'vote');
 
 		PluginHelper::importPlugin('mymuse');

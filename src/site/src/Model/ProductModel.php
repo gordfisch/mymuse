@@ -1489,4 +1489,112 @@ $params->set('product_player_type', "single");
 	      }
 	      return ($a > $b) ? -1 : 1;
 	  }
+
+	/**
+	    * getRecommended
+	  	*
+	  	* For individual product (not for cart)
+	*/
+	function getRecommended()
+	{
+		$db 		= Factory::getDBO();
+		$params 	= MyMuseHelper::getParams();
+		$prods 		= array();
+		$recommends = array();
+		$productid 	= $this->getState('product.id');
+		$product 	= $this->_item[$productid];
+		$cats[]		= $product->catid;
+		$prods 		= array();
+
+		if(!$params->get('show_recommends', 0)){
+			return $recommends;
+		}
+
+		$query = "SELECT * FROM #__mymuse_product_recommend_xref
+				WHERE product_id = '".$productid."'";
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+		if(count($res)){
+			foreach($res as $r){
+				$prods[] = $r->recommend_id;
+			}
+		}
+	
+		$prods = array_unique($prods);
+		$prodsin = implode(",",$prods);
+
+		if($prodsin){
+	  		//get the products
+	  		$query = "SELECT id, title, catid, list_image, product_release_date FROM #__mymuse_product
+			WHERE id IN ($prodsin) 
+	  		AND id != $productid
+	  		AND parentid = 0
+	  		ORDER BY  product_release_date DESC 
+	  		LIMIT ".$params->get('my_max_recommended', 4);
+
+
+	  		$db->setQuery($query);
+	  		$recommends = $db->loadObjectList();
+
+	  		//$num = min($params->get('my_max_recommended'),count($prods));
+
+	  		for($i = 0; $i<count($recommends); $i++){
+	  			$recommends[$i]->url = RouteHelper::getProductRoute ( $recommends[$i]->id, $recommends[$i]->catid );
+	  			$recommends[$i]->cat_url = RouteHelper::getCategoryRoute ( $recommends[$i]->catid  );
+	  		}
+		}
+
+		if(!count($recommends) && $params->get('show_category_recommends',0)){
+	  		//other cats
+	  		$query = "SELECT * FROM #__mymuse_product_category_xref
+					WHERE product_id = '".$productid."'";
+	  		$db->setQuery($query);
+	  		$res = $db->loadObjectList();
+	  		if(count($res)){
+	  			foreach($res as $r){
+	  				$cats[] = $r->catid;
+	  			}
+	  		}
+	  		$cats = array_unique($cats);
+	  		$catsin = implode(",",$cats);
+
+		  		$query = "SELECT * FROM #__mymuse_product_category_xref
+						WHERE catid IN ($catsin)
+						AND product_id != $productid";
+	
+		  		$db->setQuery($query);
+		  		$res = $db->loadObjectList();
+		  		if(count($res)){
+		  			foreach($res as $r){
+		  				$prods[] = $r->product_id;
+		  			}
+		  			$prods = array_unique($prods);
+					$prodsin = implode(",",$prods);
+		  		}else{
+		  			$prodsin = $productid;
+		  		}
+
+	  		if($catsin){
+	  			//get the products
+		  		$query = "SELECT id, title, catid, list_image, product_made_date FROM #__mymuse_product
+				WHERE ( catid IN ($catsin) OR id IN ($prodsin) )
+				AND product_downloadable != 1
+		  		AND id != $productid
+		  		AND state = 1
+		  		AND parentid = 0
+		  		ORDER BY FIELD(catid, $catsin), product_made_date DESC 
+		  		LIMIT ".$params->get('my_max_recommended', 4);
+	
+		  		$db->setQuery($query);
+		  		$recommends = $db->loadObjectList();
+
+		  		for($i = 0; $i<count($recommends); $i++){
+	  				$recommends[$i]->url = RouteHelper::getProductRoute ( $recommends[$i]->id, $recommends[$i]->catid );
+	  				$recommends[$i]->cat_url = RouteHelper::getCategoryRoute ( $recommends[$i]->catid  );
+	  			}
+	  		}
+		}
+		return $recommends;
+	}
 }

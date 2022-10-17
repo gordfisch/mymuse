@@ -25,6 +25,8 @@ use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 
 /**
  * This models supports retrieving lists of products.
@@ -66,6 +68,7 @@ class ProductsModel extends ListModel
 				'images', 'a.images',
 				'urls', 'a.urls',
 				'filter_tag',
+				'sales','s.sales' 
 			);
 		}
 
@@ -205,6 +208,10 @@ class ProductsModel extends ListModel
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
+		$params      = $this->getState('params');
+
+		$conditionArchived    = MymuseComponent::CONDITION_ARCHIVED;
+        $conditionUnpublished = MymuseComponent::CONDITION_UNPUBLISHED;
 
 		// Select the required fields from the table.
 		$query->select(
@@ -217,21 +224,34 @@ class ProductsModel extends ListModel
 
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$query->join('LEFT', '`#__users` AS uc ON uc.id=a.checked_out');
 
 		
 		// Filter by published state
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published)) {
 			$query->where('a.state = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(a.state IN (0, 1))');
 		}
 
-		// Filter by featured.
-		if ($featured = $this->getState('filter.featured')) {
-			if($featured == "-1"){ $featured = 0;}
-			$query->where("a.featured = '" . $featured."'");
+		// Filter by featured state
+		$featured = $this->getState('filter.featured');
+
+		switch ($featured) {
+		    case 'hide':
+		        $query->where($db->quoteName('a.featured') . ' = 0');
+		        break;
+
+		    case 'only':
+		        $query->where($db->quoteName('a.featured') . ' = 1');
+		        break;
+
+		    case 'show':
+		    default:
+		        // Normally we do not discriminate between featured/unfeatured items.
+		        break;
 		}
 
 		// Filter by parentid. Default is parentid = 0
@@ -255,12 +275,12 @@ class ProductsModel extends ListModel
 		$query->select('c.title AS category_title');
 		$query->select('c.alias AS category_alias');
 		$query->select($db->quoteName('c.language', 'category_language'));
-		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
+		$query->join('LEFT', '`#__categories` AS c ON c.id = a.catid');
 		
 		// Join over the artist categories.
 		$query->select('art.title AS artist_title');
 		$query->select('art.alias AS artist_alias');
-		$query->join('LEFT', '#__categories AS art ON art.id = a.artistid');
+		$query->join('LEFT', '`#__categories` AS art ON art.id = a.artistid');
 
 		$query->select( [
 			$db->quoteName('parent.title', 'parent_title'),
@@ -310,6 +330,55 @@ class ProductsModel extends ListModel
                 $query->where("title LIKE $search");
 			}
 		}
+
+		// Process the filter for list views with user-entered filters
+		if (is_object($params) && ($params->get('filter_field') !== 'hide') && ($filter = $this->getState('list.filter'))) {
+		    // Clean filter variable
+		    $filter      = StringHelper::strtolower($filter);
+		    $monthFilter = $filter;
+		    $hitsFilter  = (int) $filter;
+		    $textFilter  = '%' . $filter . '%';
+
+		    switch ($params->get('filter_field')) {
+		        case 'author':
+		            $query->where(
+		                'LOWER(CASE WHEN ' . $db->quoteName('a.created_by_alias') . ' > ' . $db->quote(' ')
+		                . ' THEN ' . $db->quoteName('a.created_by_alias') . ' ELSE ' . $db->quoteName('ua.name') . ' END) LIKE :search'
+		            )
+		                ->bind(':search', $textFilter);
+		            break;
+
+		        case 'hits':
+		            $query->where($db->quoteName('a.hits') . ' >= :hits')
+		                ->bind(':hits', $hitsFilter, ParameterType::INTEGER);
+		            break;
+
+		        case 'month':
+		            if ($monthFilter != '') {
+		                $monthStart = date("Y-m-d", strtotime($monthFilter)) . ' 00:00:00';
+		                $monthEnd   = date("Y-m-t", strtotime($monthFilter)) . ' 23:59:59';
+
+		                $query->where(
+		                    [
+		                        ':monthStart <= CASE WHEN a.publish_up IS NULL THEN a.created ELSE a.publish_up END',
+		                        ':monthEnd >= CASE WHEN a.publish_up IS NULL THEN a.created ELSE a.publish_up END',
+		                    ]
+		                )
+		                    ->bind(':monthStart', $monthStart)
+		                    ->bind(':monthEnd', $monthEnd);
+		            }
+		            break;
+
+		        case 'title':
+		        default:
+		            // Default to 'title' if parameter is not valid
+		            $query->where('LOWER(' . $db->quoteName('a.title') . ') LIKE :search')
+		                ->bind(':search', $textFilter);
+		            break;
+		    }
+		}
+
+
 
 		// Filter by a single or group of categories.
 		$cat_query = '';
@@ -370,15 +439,39 @@ class ProductsModel extends ListModel
 		}
 */
 
+		// add sales figures
+
+		$query->select('s.sales');
+
+		$query->join('LEFT', "(SELECT sum(quantity) as sales, x.product_id FROM 
+		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
+		FROM #__mymuse_order_item as i
+		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+		GROUP BY i.product_id ) 
+		as x GROUP BY x.all_id, x.product_id) as s ON s.product_id = a.id");
+
+
+		// Join over the users for the author and modified_by names.
+		$query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author");
+		$query->select("ua.email AS author_email");
+
+		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+
+		$query->where('a.state = 1');
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
+
+
         if ($orderCol && $orderDirn) {
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
+		if ($orderCol) {
+		    $query->order($db->escape($orderCol));
+		}
 
-        //echo($query->__toString()); //exit;
+      //echo($query->__toString()); //exit;
 		return $query;
 	}
 

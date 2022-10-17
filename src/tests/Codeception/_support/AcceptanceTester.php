@@ -1315,7 +1315,10 @@ class AcceptanceTester extends Actor
 		$this->click(['css' => 'button[aria-controls="tracks"]']);
 		for($i = 0; $i < count($config['my_formats']); $i++){
 			$this->selectOption(['id' => 'select_file'.$i], $mock->{$config['my_formats'][$i]});
-			$this->selectOption(['id' => 'formats'.$i], $config['my_formats'][$i]);
+			if($this->seePageHasElement(['id' => 'formats'.$i])) {
+				$this->selectOption(['id' => 'formats'.$i], $config['my_formats'][$i]);
+			}
+			
 		}
 
 		$this->comment('Choose Preview');

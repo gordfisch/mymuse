@@ -3,6 +3,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\CMS\Layout\FileLayout;
 
 $product = $this->item;
 
@@ -57,7 +58,7 @@ if( ($this->params->get('info_block_show'))) : ?>
         		</li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_sku",0) && $this->item->catid ) : ?>
+		    <?php if( $this->params->get("show_product_sku",0) ) : ?>
 		    	<li class="product-detail-item mymuse-grid-1-2">
             		<div class="key product-sku"><?php echo JText::_('COM_MYMUSE_CATALOG'); ?></div>
 					<div class="value"><?php echo $this->item->product_sku;?></div>
@@ -188,7 +189,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    <?php endif; ?>
 
 
-		    <?php if(isset($tracks[0]->flash) || $this->all_tracks ) : ?>
+		    <?php if(isset($tracks[0]->flash) || $this->all_tracks && $this->available) : ?>
 		    <li class="product-detail-item product-purchase mymuse-grid-1-2">
 		    
 			    <div class="key full-release">
@@ -260,10 +261,15 @@ if( ($this->params->get('info_block_show'))) : ?>
 <!-- "show_vote"  -->
 
 		<?php  if ($product->introtext) : ?>
-		<div class="product-description">            
+		<div class="product-description">     
+
 		    <?php echo $product->introtext ?>
 
-			<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore')) : ?>
+		    <?php if($product->introtext && $product->fulltext && !$this->params->get('show_readmore') && !$this->params->get('split_text')) :  
+		    	echo $product->fulltext;
+		    endif; ?>
+
+			<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore') && $this->params->get('split_text')) : ?>
 				<div><a href="#readmore" class="readon"><?php echo JText::_("COM_MYMUSE_READ_MORE"); ?>
 		        <?php 
 		        if ($this->params->get('show_readmore_title', 0) != 0) :
