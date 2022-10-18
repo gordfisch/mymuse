@@ -687,6 +687,7 @@
 			type="radio"
 			layout="joomla.form.field.radio.switcher"
 			label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+			
 			class="form-select-color-state"
 			default="0"
 			>
@@ -699,6 +700,7 @@
 			type="list"
 			description="JGLOBAL_MAXLEVEL_DESC"
 			label="JGLOBAL_MAXLEVEL_LABEL"
+			default="-1"
 			>
 			<option value="-1">JALL</option>
 			<option value="0">JNONE</option>

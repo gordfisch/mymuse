@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 $params = $this->form->getFieldsets('params');
-print_pre($params);
+
 ?>
 
 		<fieldset class="adminform">

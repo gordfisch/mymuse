@@ -138,7 +138,7 @@ class HtmlView extends CategoriesView
 			}
 		}
 		
-		function _getProductCount($category){
+		static function _getProductCount($category){
 
 			$catid[] = $category->id;
 		

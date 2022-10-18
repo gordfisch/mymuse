@@ -14,7 +14,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\Component\Content\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\View\Categories\HtmlView as CatsView;
 
 $lang   = Factory::getLanguage();
 $user   = Factory::getUser();
@@ -22,7 +23,10 @@ $groups = $user->getAuthorisedViewLevels();
 
 if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?>
     <?php foreach ($this->children[$this->category->id] as $id => $child) : ?>
-        <?php // Check whether category access level allows access to subcategories. ?>
+        <?php // Check whether category access level allows access to subcategories. 
+        $child->numitems = CatsView::_getProductCount($child);
+
+        ?>
         <?php if (in_array($child->access, $groups)) : ?>
             <?php if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) : ?>
             <div class="com-content-category-blog__child">
@@ -45,7 +49,7 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?
                     <?php echo $this->escape($child->title); ?></a>
                     <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
                         <span class="badge bg-info">
-                            <?php echo Text::_('COM_CONTENT_NUM_ITEMS'); ?>&nbsp;
+                            <?php echo Text::_('COM_MYMUSE_NUM_ITEMS'); ?>&nbsp;
                             <?php echo $child->getNumItems(true); ?>
                         </span>
                     <?php endif; ?>

@@ -57,10 +57,15 @@ class HtmlView extends BaseHtmlView
 		$state 		= $this->get('State');
 
 		$store 		= $this->get('Store');
-		$params 	= MyMuseHelper::getParams();
-		$this->params = $params;
-		$this->params->merge($state->params);
+
+		//$params 	= MyMuseHelper::getParams();
+		//$this->params = $params;
+		//$this->params->merge($state->params);
+
+		$this->params = $state->params;
+
 		$Itemid 	= $jinput->get('Itemid');
+
 		$user 		= Factory::getUser();
         $app        = Factory::getApplication();
         // make sure it's the same person who ordered!
@@ -614,14 +619,15 @@ class HtmlView extends BaseHtmlView
 		
 		$results = $app->triggerEvent('onProductAfterDisplay', array('com_mymuse.product', &$store, &$this->params, $offset));
 		$store->event->afterDisplayProduct = trim(implode("\n", $results));
-						
+		
+			
 
 		// PREPARE THE DATA FOR FEATURED PRODUCTS
 
 		// Get the metrics for the structural page layout.
-		$numLeading = $params->def('num_leading_articles', 0);
-		$numIntro = $params->def('num_intro_articles', 100);
-		$numLinks = $params->def('num_links', 0);
+		$numLeading = $this->params->def('num_leading_articles', 0);
+		$numIntro = $this->params->def('num_intro_articles', 100);
+		$numLinks = $this->params->def('num_links', 0);
 
 		// Compute the article slugs and prepare introtext (runs content plugins).
 		foreach ($items as $i => & $item)
@@ -671,8 +677,8 @@ class HtmlView extends BaseHtmlView
 			$this->intro_items[$i] = &$items[$i];
 		}
 
-		$this->columns = max(1, $params->def('num_columns', 1));
-		$order = $params->def('multi_column_order', 1);
+		$this->columns = max(1, $this->params->def('num_columns', 1));
+		$order = $this->params->def('multi_column_order', 1);
 
 		if ($order == 0 && $this->columns > 1)
 		{
@@ -687,7 +693,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		//Escape strings for HTML output
-		$this->pageclass_sfx = ($params->get('pageclass_sfx'))? htmlspecialchars($params->get('pageclass_sfx')) : '';
+		$this->pageclass_sfx = ($this->params->get('pageclass_sfx'))? htmlspecialchars($this->params->get('pageclass_sfx')) : '';
 
 		$this->items 		= $items;
 		$this->store 		= $store;

@@ -153,6 +153,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
     <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
         <div class="com-mymuse-category-blog__children cat-children">
+  
             <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
                 <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
             <?php endif; ?>

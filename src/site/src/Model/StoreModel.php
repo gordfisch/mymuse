@@ -106,7 +106,7 @@ class StoreModel extends ProductsModel
 		$this->setState('list.start', $limitstart);
 
 		
-		$limit = $mergedParams->get('num_leading_articles') + $mergedParams->get('num_intro_articles') + $mergedParams->get('num_links');
+		$limit = $mergedParams->get('num_leading_products') + $mergedParams->get('num_intro_products') + $mergedParams->get('num_links');
 		$this->setState('list.limit', $limit);
 		$this->setState('list.links', $mergedParams->get('num_links'));
 
@@ -189,7 +189,8 @@ class StoreModel extends ProductsModel
 		$query = parent::getListQuery();
 
 		$query->where('a.featured = 1');
-	//echo($query->__toString());
+		$query->where('a.catid > 1');
+		//echo($query->__toString());
 		return $query;
 	}
 }
