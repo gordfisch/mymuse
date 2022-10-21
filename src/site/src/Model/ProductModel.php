@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\Component\Mymuse\Administrator\Extension\MymuseComponent;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -100,6 +101,7 @@ class ProductModel extends ItemModel
 		$user = Factory::getUser();
 		$params = MymuseHelper::getParams();
 		$app = Factory::getApplication();
+		$db = $this->getDbo();
 
 		$pk = (int) ($pk ?: $this->getState('product.id'));
 
@@ -112,7 +114,7 @@ class ProductModel extends ItemModel
 		{
 			try
 			{
-				$db = $this->getDbo();
+				
 				$query = $db->getQuery(true);
 
 				$query->select(
@@ -362,540 +364,11 @@ class ProductModel extends ItemModel
 				$this->_item[$pk]->othercats = $othercats;
 
 
-				/* TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS */
-				/* get child tracks with prices */
-				$alpha 		= $this->getState('list.alpha','');
-				$searchword = $this->getState('list.searchword','');
-				$listDirn	= $this->getState('list.direction', 'ASC');
-				$ordering 	= $this->getState('list.ordering', 'a.title');
-				$after_sort = '';
-	
-				if($ordering == 'file_length'){
-					//save it for after
-					$ordering = 'a.title';
-					$after_sort = 'file_length';
-				}
-				if(preg_match("/ASC|DESC/", strtoupper($ordering))){
-					$listDirn = '';
-				}
+				/* get tracks for this product */
+				$this->_item[$pk]->tracks = $this->getTracks($pk);
 
-				$secondaryOrder = $this->getState('list.secondaryOrder', '');
-				
-
-				/** TRACK QUERY */
-				$track_query = $db->getQuery(true);
-
-				$track_query->select(
-					$this->getState(
-						'item.select',
-						[
-							$db->quoteName('a.id'),
-							$db->quoteName('a.asset_id'),
-							$db->quoteName('a.parentid'),
-							$db->quoteName('a.track_parentid'),
-							$db->quoteName('a.title'),
-							$db->quoteName('a.product_sku'),
-							$db->quoteName('a.alias'),
-							$db->quoteName('a.title_alias'),
-							$db->quoteName('a.introtext'),
-							$db->quoteName('a.fulltext'),
-							$db->quoteName('a.state'),
-							$db->quoteName('a.price'),
-							$db->quoteName('a.product_discount'),
-							$db->quoteName('a.catid'),
-							$db->quoteName('a.artistid'),
-							$db->quoteName('a.created'),
-							$db->quoteName('a.created_by'),
-							$db->quoteName('a.created_by_alias'),
-							$db->quoteName('a.modified'),
-							$db->quoteName('a.modified_by'),
-							$db->quoteName('a.checked_out'),
-							$db->quoteName('a.checked_out_time'),
-							$db->quoteName('a.publish_up'),
-							$db->quoteName('a.publish_down'),
-							$db->quoteName('a.list_image'),
-							$db->quoteName('a.detail_image'),
-							$db->quoteName('a.attribs'),
-							$db->quoteName('a.physical'),
-							$db->quoteName('a.digital'),
-							$db->quoteName('a.version'),
-							$db->quoteName('a.ordering'),
-							$db->quoteName('a.metakey'),
-							$db->quoteName('a.metadesc'),
-							$db->quoteName('a.metadata'),
-							$db->quoteName('a.access'),
-							$db->quoteName('a.hits'),
-							$db->quoteName('a.product_physical'),
-							$db->quoteName('a.product_downloadable'),
-							$db->quoteName('a.product_allfiles'),
-							$db->quoteName('a.product_release_date'),
-							$db->quoteName('a.file_preview'),
-							$db->quoteName('a.special_status'),
-							$db->quoteName('a.product_in_stock'),
-							$db->quoteName('a.recording'),
-							$db->quoteName('a.featured'),
-							$db->quoteName('a.language'),
-						]
-					)
-				)->from($db->quoteName('#__mymuse_product', 'a'));
-
-
-				$track_query->where(
-					[
-
-						$db->quoteName('a.parentid') . ' = ' . $pk,
-						$db->quoteName('a.product_downloadable') . ' = 1',
-						$db->quoteName('a.state') . ' = 1',
-						$db->quoteName('a.track_parentid') . ' = 0',
-					]
-				);
-				//ORDERING
-				$orderCol  = $app->getUserStateFromRequest('list.filter_order', 'filter_order', 'a.title', 'string');
-				$orderDirn = $app->getUserStateFromRequest('list.filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
-				if($orderCol == 'file_length' ){
-					//save if for now
-				}else{
-					$track_query->order($db->escape($orderCol.' '.$orderDirn));
-				}
-				
-
-				//echo $track_query->__toString(); exit;
-
-				$db->setQuery($track_query);
-				$tracks = $db->loadObjectList();
-
-				// Child tracks formats
-				foreach($tracks as $i => $track){
-					$format_query = $db->getQuery(true);
-
-					$format_query->select(
-						$this->getState(
-							'item.select',
-							[
-								$db->quoteName('a.id'),
-								$db->quoteName('a.asset_id'),
-								$db->quoteName('a.parentid'),
-								$db->quoteName('a.track_parentid'),
-								$db->quoteName('a.title'),
-								$db->quoteName('a.product_sku'),
-								$db->quoteName('a.alias'),
-								$db->quoteName('a.title_alias'),
-								$db->quoteName('a.price'),
-								$db->quoteName('a.product_discount'),
-								$db->quoteName('a.digital'),
-								$db->quoteName('a.access'),
-								$db->quoteName('a.hits'),
-								$db->quoteName('a.product_allfiles'),
-							]
-						)
-					)->from($db->quoteName('#__mymuse_product', 'a'));
-
-
-						$format_query->where(
-							[
-
-								$db->quoteName('a.parentid') . ' = ' . $pk,
-								$db->quoteName('a.product_downloadable') . ' = 1',
-								$db->quoteName('a.state') . ' = 1',
-								$db->quoteName('a.track_parentid') . ' = '.$track->id,
-							]
-						);
-					$db->setQuery($format_query);
-					$format_tracks = $db->loadObjectList();
-					$track->formats = array();
-					$track->digital= array();
-					foreach($format_tracks as $ft){
-						$ft->digital = json_decode($ft->digital);
-						$ft->digital->file_id = $ft->id;
-						$track->formats[] = $ft;
-						$track->digital[] = $ft->digital;
-					}
-
-				}
-
-
-		
-				$site_url = MyMuseHelper::getSiteUrl($pk,'1');
-				$site_path = MyMuseHelper::getSitePath($pk,'1');
-							
-				// set up previews and streams
-				$this->_item[$pk]->flash = '';
-				$this->_item[$pk]->flash_type = '';
-				$preview_tracks = array();
-				$parent_tracks = array();
-				$t = 0;
-	
-				if(count($tracks)){
-
-					$root = JPATH_ROOT.DIRECTORY_SEPARATOR;
-					foreach ($tracks as $i => $track) {
-
-
-						//set some defaults
-						$this->_item[$pk]->flash_type = 'audio';
-						if(isset($track->digital[0]->file_type)){
-							$track->file_type = $track->digital[0]->file_type;
-							$this->_item[$pk]->flash_type  = $track->digital[0]->file_type;
-							$this->_item[$pk]->file_length = $track->digital[0]->file_length;
-						}
-						if(isset($track->digital[0]->file_length)){
-							$track->file_length = $track->digital[0]->file_length;
-						}
-						if(isset($track->digital[0]->file_time)){
-							$track->file_time = $track->digital[0]->file_time;
-						}
-						if(isset($track->digital[0]->file_downloads)){
-							$track->file_downloads = $track->digital[0]->file_downloads;
-						}
-						
-						if(!isset($track->sales) || $track->sales == ''){
-							$track->sales = 0;
-						}
-						//other cats
-						$track->othercats = '';
-						$othercats = array();
-						$query = "SELECT c.id, c.title FROM #__mymuse_product_category_xref as x
-						LEFT JOIN #__categories as c ON c.id=x.catid
-						WHERE product_id = '".$track->id."' 
-						AND catid != ".$track->catid."
-						AND catid != ".$track->artistid;
-						$db->setQuery($query);
-						if($res = $db->loadObjectList()){
-							foreach($res as $r){
-								$othercats[$r->id] = $r->title;
-							}
-						}else{
-							
-						}
-						$track->othercats = implode(", ", array_unique($othercats));
-						$tracks[$i]->price = $this->getPrice($track);
-/*
-						//Audio/Video or some horrid mix of both
-						if($this->_item[$pk]->flash_type != "mix"){
-							if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
-								//oh no it's a mix
-								$this->_item[$pk]->flash_type = "mix";
-								$track->flash_type = "mix";
-							}elseif($this->_item[$pk]->flash_type == "video" && $track->file_type == "audio"){
-								//oh no it's a mix
-								$this->_item[$pk]->flash_type = "mix";
-								$track->flash_type = "mix";
-							}else{
-								$this->_item[$pk]->flash_type = $track->file_type;
-								$track->flash_type = $track->file_type;
-							}
-						}else{
-							$track->flash_type = "mix";
-						}
-*/			
-						$this->_item[$pk]->flash_type = 'audio';
-
-						if($track->file_preview){
-							$preview_tracks[] = $track;
-						}else{
-							$track->flash= '';
-						}
-
-						//$parent_tracks[] = $track;
-						
-					} // each track
-					//$tracks = $parent_tracks;
-$params->set('product_player_type', "single");
-					//$params->set('product_player_type', "single");
-
-					if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
-						$params->get('product_player_type') == "single")){
-						
-						reset($preview_tracks);
-						$count = count($preview_tracks);
-						foreach ($preview_tracks as $i=> $track) {
-						
-							$flash = '';
-							$track->purchased = 0;
-							if($track->file_preview){
-
-								$track->path = $site_url.$track->file_preview;
-								$track->real_path = $site_path.$track->file_preview;
-					
-								//should we use the real download file? Not available in AmazonS3
-								if( $params->get('storage', 'regular') == 'regular' ){
-									$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
-									
-									if(1 == $params->get('my_download_dir_format',0)){ 
-										//downloads by format and we don't know the format
-										//$track->download_real_path .= $format.DS;
-									}
-									if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
-										$track->path = isset($track->download_path)? $track->download_path : '';
-										$track->real_path = isset($track->download_real_path)? $track->download_real_path : '';
-										$track->purchased = 1;
-									}
-									if($params->get('my_play_downloads', 0) &&
-											(!$track->price["product_price"] || $track->price["product_price"] == "FREE")){
-										$track->path = isset($track->download_path)? $track->download_path : '';
-										$track->real_path = isset($track->download_real_path)? $track->download_real_path : '';
-										$track->purchased = 1;
-									}
-								}
-								//audio or video?
-								PluginHelper::importPlugin('mymuse');
-								$ext = MyMuseHelper::getExt($track->file_preview);
-								$flash = '<!-- Begin Play -->';
-								if(isset($track->file_type) && substr_count($track->file_type,"video")){
-									//movie
-									
-									$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,$params->get('product_player_type'),0,0,$i, $count) );
-
-									if(is_array($results) && isset($results[0]) && $results[0] != ''){
-										$flash .= $results[0];
-									}
-									
-								}else{
-									//audio
-									
-									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'), 0, 0, $i, $count));
-									if(is_array($results) && isset($results[0]) && $results[0] != ''){
-										$flash .= $results[0];
-									}
-
-									
-								}
-								$flash .= '<!-- End Play -->';
-
-							}else{
-								$flash = '';
-							}
-			
-							$track->flash = $flash;
-						
-						}//end for each preview track 
-					} // if count previews for 'each'
-
-
-
-					// some other sort
-					if ($after_sort){
-						if($listDirn == "desc"){
-							usort($tracks, array($this,"cmp_desc_".$after_sort));
-						}else{
-							usort($tracks, array($this,"cmp_".$after_sort));
-						}
-						
-					}
-					
-
-					//get player buttons to play previews
-					if(count($preview_tracks) && $params->get('product_player_type') == "single"){
-						// make a controller for the play/pause buttons
-						$results = $app->triggerEvent('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );					
-					
-						//get the player itself
-						reset($preview_tracks);
-						$flash = '';
-						$audio = 0;
-						$video = 0;
-						foreach($preview_tracks as $track){
-							if($track->file_preview){
-								
-								if(substr_count($track->file_type,"video") && !$video){
-									//movie
-
-									$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
-								
-									$video = 1;
-										
-								}elseif(substr_count($track->file_type,"audio") && !$audio){
-									//audio
-						
-									$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
-									$audio = 1;
-							
-								}
-
-								if(is_array($results) && isset($results[0]) && $results[0] != ''){
-									$flash .= '<!-- Begin Player -->';
-									$flash .= $results[0];
-									
-									$flash .= '<!-- End Player -->';
-
-								}
-								
-								$this->_item[$pk]->flash = $flash;
-								$this->_item[$pk]->flash_id = $track->id;
-								if($this->_item[$pk]->flash_type != "mix"){
-									break;
-								}elseif($audio && $video){
-									break;
-								}
-								
-							}
-						}//end for each preview track 
-					}// if count previews for single
-					
-					if(count($preview_tracks) && $params->get('product_player_type') == "playlist"){
-						//get the main flash for the product
-				
-						reset($preview_tracks);
-						$this->_item[$pk]->previews = array();
-						$audio = 0;
-						
-						$i = 0;
-						$type = "";
-						foreach($preview_tracks as $track){
-							if($track->file_preview){
-								$track->path = $site_url.$track->file_preview;
-							}
-
-							$this->_item[$pk]->previews[] = $track;
-							if(preg_match("/video/",$track->type)){
-								$type = "video";
-							}
-							if(preg_match("/audio/",$track->type)){
-								$type = "audio";
-							}
-							
-						}//end for each preview track 
-						
-						if($type == "video"){
-							// movie
-							$flash = '<!-- Begin Player -->';
-							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$this->_item[$pk],'playlist') );
-							if(isset($results[0]) && $results[0] != ''){
-								$flash .= $results[0];
-							}
-							$flash .= '<!-- End Player -->';
-								
-						}elseif($type == "audio"){
-							
-							$flash = '<!-- Begin Player -->';
-							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$this->_item[$pk],'playlist') );
-
-							if(isset($results[0]) && $results[0] != ''){
-								$flash .= $results[0];
-							}
-							$flash .= '<!-- End Player -->';
-						}
-						$this->_item[$pk]->flash = $flash;
-						$this->_item[$pk]->flash_id = $pk;
-
-					}// if count previews for playlist
-					
-				}// if count tracks
-				
-				
-				// free downloads if price = free. NOTE NOT available while using Amazon s3
-				if(isset($tracks) && $params->get('my_free_downloads') && $params->get('storage', 'regular') == 'regular' ){
-					
-					reset($tracks);
-					foreach($tracks as $track){
-						if($track->product_allfiles){
-							continue;
-						}
-						
-						if(count($params->get('my_formats'))) {
-							foreach($params->get('my_formats') as $format){
-								//make a link for download if we need it
-								$track->free_download_link[$format] = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id."&format=".$format->format_value;
-								if(1 == $params->get('my_price_by_product', 0) && isset($track->price[$format->format_value]) ){
-									$price = $track->price[$format->format_value];
-								}else{
-									$price = $track->price;
-								}
-								
-								if(!isset($price['product_price']) ||
-										$price['product_price'] == "FREE" ||
-										!$price['product_price']) {
-											foreach($track->digital as $file){
-						
-												if(isset($file->file_ext) && strtolower($format->format_value) == $file->file_ext){
-													
-													$track->free_download_link[$file->file_ext] = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id."&format=".$format;
-													if($track->access > 1 && !$user->get('id')){
-														$view = $params->get('my_registration_redirect', 'login');
-														$track->free_download_link = "index.php?option=com_users&view=$view";
-														
-													}
-													$track->free_download = 1;
-												}
-											}
-												
-										}
-							}
-						}else{
-							if(!isset($track->price['product_price']) ||
-									$track->price['product_price'] == "FREE" ||
-									!$track->price['product_price']) {
-										$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
-										if($track->access > 1 && !$user->get('id')){
-											$view = $params->get('my_registration_redirect', 'login');
-											$track->free_download_link = "index.php?option=com_users&view=$view";
-										}
-										$track->free_download = 1;
-									}
-										
-						}//end formats
-							
-					}//foreach track
-				}//isset tracks
-					
-				/*
-				 * $track->download_path = MYmUseHelper::getDownloadPath($track->product_id, 1);
-											if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
-												$track->download_path .= $format.DS;
-											}
-				 */
-				$this->_item[$pk]->tracks = $tracks;
-				//end of tracks
-			
-	
-				/* PHYSICAL CHILD ITEMS  PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS  */
-				$query = "SELECT * FROM #__mymuse_product as p
-				WHERE p.parentid='".$pk."'
-				AND product_downloadable = 0
-				and state=1
-				ORDER BY ordering
-				";
-				$db->setQuery($query);
-				$items = $db->loadObjectList();
-
-				
-				//attributes
-				$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE 
-				product_parent_id='.$this->_item[$pk]->id.'
-				ORDER BY ordering';
-				$db->setQuery($query);
-				$this->_item[$pk]->attribute_sku = $db->loadObjectList();
-		
-
-				foreach ($items as $i => $item) {
-					foreach($this->_item[$pk]->attribute_sku as $a_sku){
-						$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
-						AND product_attribute_sku_id='.$a_sku->id;
-						$db->setQuery($query);
-						$items[$i]->attributes[$a_sku->name] = $db->loadResult();
-					}
-		
-						
-					$query = 'SELECT a.*,b.name from #__mymuse_product_attribute as a 
-					LEFT JOIN #__mymuse_product_attribute_sku as b on b.id=a.product_attribute_sku_id
-					WHERE a.product_id='.$item->id;
-					
-					$db->setQuery($query);
-					$tmp[$item->id] = $db->loadObjectList();
-					foreach($tmp[$item->id] as $att){
-						$attributes[$item->id][$att->product_attribute_sku_id] = $att;
-					}
-
-					$items[$i]->price = $this->getPrice($item);
-					if($params->get('my_add_taxes')){
-						$items[$i]->price["product_price"] = MyMuseCheckout::addTax($items[$i]->price["product_price"]);
-					}
-					
-
-				}
-									
-				$this->_item[$pk]->items = $items;
-
+				/* get tracks for this product */
+				$this->_item[$pk]->items = $this->getPhysicalItems($pk);			
 
 				//get maincategory
 				$query = "SELECT * from #__categories WHERE id='".$this->_item[$pk]->catid."'";
@@ -930,6 +403,610 @@ $params->set('product_player_type', "single");
 		}
 
 		return $this->_item[$pk];
+	}
+
+
+
+	/*
+	* Method to get tracks for the product.
+	*
+	* @param   integer  $pk  The id of the product.
+	*
+	* @return  array|boolean  Tracks array on success, boolean false
+	*/
+
+	function getTracks($pk)
+	{
+		//may be coming from tracks model
+
+		if ($this->_item === null)
+		{
+			$this->_item = array();
+			$this->_item[$pk] = new CMSObject;
+
+		}
+
+
+		$params = MymuseHelper::getParams();
+		$app = Factory::getApplication();
+		$db = $this->getDbo();
+		$alpha 		= $this->getState('list.alpha','');
+		$searchword = $this->getState('list.searchword','');
+		$listDirn	= $this->getState('list.direction', 'ASC');
+		$ordering 	= $this->getState('list.ordering', 'a.title');
+		$after_sort = '';
+
+		if($ordering == 'file_length'){
+			//save it for after
+			$ordering = 'a.title';
+			$after_sort = 'file_length';
+		}
+		if(preg_match("/ASC|DESC/", strtoupper($ordering))){
+			$listDirn = '';
+		}
+
+		$secondaryOrder = $this->getState('list.secondaryOrder', '');
+		
+
+		/** TRACK QUERY */
+		$track_query = $db->getQuery(true);
+
+		$track_query->select(
+			$this->getState(
+				'item.select',
+				[
+					$db->quoteName('a.id'),
+					$db->quoteName('a.asset_id'),
+					$db->quoteName('a.parentid'),
+					$db->quoteName('a.track_parentid'),
+					$db->quoteName('a.title'),
+					$db->quoteName('a.product_sku'),
+					$db->quoteName('a.alias'),
+					$db->quoteName('a.title_alias'),
+					$db->quoteName('a.introtext'),
+					$db->quoteName('a.fulltext'),
+					$db->quoteName('a.state'),
+					$db->quoteName('a.price'),
+					$db->quoteName('a.product_discount'),
+					$db->quoteName('a.catid'),
+					$db->quoteName('a.artistid'),
+					$db->quoteName('a.created'),
+					$db->quoteName('a.created_by'),
+					$db->quoteName('a.created_by_alias'),
+					$db->quoteName('a.modified'),
+					$db->quoteName('a.modified_by'),
+					$db->quoteName('a.checked_out'),
+					$db->quoteName('a.checked_out_time'),
+					$db->quoteName('a.publish_up'),
+					$db->quoteName('a.publish_down'),
+					$db->quoteName('a.list_image'),
+					$db->quoteName('a.detail_image'),
+					$db->quoteName('a.attribs'),
+					$db->quoteName('a.physical'),
+					$db->quoteName('a.digital'),
+					$db->quoteName('a.version'),
+					$db->quoteName('a.ordering'),
+					$db->quoteName('a.metakey'),
+					$db->quoteName('a.metadesc'),
+					$db->quoteName('a.metadata'),
+					$db->quoteName('a.access'),
+					$db->quoteName('a.hits'),
+					$db->quoteName('a.product_physical'),
+					$db->quoteName('a.product_downloadable'),
+					$db->quoteName('a.product_allfiles'),
+					$db->quoteName('a.product_release_date'),
+					$db->quoteName('a.file_preview'),
+					$db->quoteName('a.special_status'),
+					$db->quoteName('a.product_in_stock'),
+					$db->quoteName('a.recording'),
+					$db->quoteName('a.featured'),
+					$db->quoteName('a.language'),
+				]
+			)
+		)->from($db->quoteName('#__mymuse_product', 'a'));
+
+
+		$track_query->where(
+			[
+
+				$db->quoteName('a.parentid') . ' = ' . $pk,
+				$db->quoteName('a.product_downloadable') . ' = 1',
+				$db->quoteName('a.state') . ' = 1',
+				$db->quoteName('a.track_parentid') . ' = 0',
+			]
+		);
+		//ORDERING
+		$orderCol  = $app->getUserStateFromRequest('list.filter_order', 'filter_order', 'a.title', 'string');
+		$orderDirn = $app->getUserStateFromRequest('list.filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
+		if($orderCol == 'file_length' ){
+			//save if for now
+		}else{
+			$track_query->order($db->escape($orderCol.' '.$orderDirn));
+		}
+		
+
+		//echo $track_query->__toString(); exit;
+
+		$db->setQuery($track_query);
+		
+		try
+		{
+			$tracks = $db->loadObjectList();
+		}
+		catch (\RuntimeException $e)
+		{
+			throw new \Exception($e->getMessage(), 'error');
+			return;
+		}
+
+		// Child tracks formats
+		foreach($tracks as $i => $track){
+			$format_query = $db->getQuery(true);
+
+			$format_query->select(
+				$this->getState(
+					'item.select',
+					[
+						$db->quoteName('a.id'),
+						$db->quoteName('a.asset_id'),
+						$db->quoteName('a.parentid'),
+						$db->quoteName('a.track_parentid'),
+						$db->quoteName('a.title'),
+						$db->quoteName('a.product_sku'),
+						$db->quoteName('a.alias'),
+						$db->quoteName('a.title_alias'),
+						$db->quoteName('a.price'),
+						$db->quoteName('a.product_discount'),
+						$db->quoteName('a.digital'),
+						$db->quoteName('a.access'),
+						$db->quoteName('a.hits'),
+						$db->quoteName('a.product_allfiles'),
+					]
+				)
+			)->from($db->quoteName('#__mymuse_product', 'a'));
+
+
+				$format_query->where(
+					[
+
+						$db->quoteName('a.parentid') . ' = ' . $pk,
+						$db->quoteName('a.product_downloadable') . ' = 1',
+						$db->quoteName('a.state') . ' = 1',
+						$db->quoteName('a.track_parentid') . ' = '.$track->id,
+					]
+				);
+			$db->setQuery($format_query);
+
+			try
+			{
+				$format_tracks = $db->loadObjectList();
+			}
+			catch (\RuntimeException $e)
+			{
+				throw new \Exception($e->getMessage(), 'error');
+				return;
+
+			}
+
+			
+			$track->formats = array();
+			$track->digital= array();
+			foreach($format_tracks as $ft){
+				$ft->digital = json_decode($ft->digital);
+				$ft->digital->file_id = $ft->id;
+				$track->formats[] = $ft;
+				$track->digital[] = $ft->digital;
+			}
+
+		}
+
+
+
+		$site_url = MyMuseHelper::getSiteUrl($pk,'1');
+		$site_path = MyMuseHelper::getSitePath($pk,'1');
+					
+		// set up previews and streams
+
+		$this->_item[$pk]->flash = '';
+		$this->_item[$pk]->flash_type = '';
+		$preview_tracks = array();
+		$parent_tracks = array();
+		$t = 0;
+
+
+		if(count($tracks)){
+
+			$root = JPATH_ROOT.DIRECTORY_SEPARATOR;
+			foreach ($tracks as $i => $track) {
+
+
+				//set some defaults
+				$this->_item[$pk]->flash_type = 'audio';
+				if(isset($track->digital[0]->file_type)){
+					$track->file_type = $track->digital[0]->file_type;
+					$this->_item[$pk]->flash_type  = $track->digital[0]->file_type;
+					$this->_item[$pk]->file_length = $track->digital[0]->file_length;
+				}
+				if(isset($track->digital[0]->file_length)){
+					$track->file_length = $track->digital[0]->file_length;
+				}
+				if(isset($track->digital[0]->file_time)){
+					$track->file_time = $track->digital[0]->file_time;
+				}
+				if(isset($track->digital[0]->file_downloads)){
+					$track->file_downloads = $track->digital[0]->file_downloads;
+				}
+				
+				if(!isset($track->sales) || $track->sales == ''){
+					$track->sales = 0;
+				}
+				//other cats
+				$track->othercats = '';
+				$othercats = array();
+				$query = "SELECT c.id, c.title FROM #__mymuse_product_category_xref as x
+				LEFT JOIN #__categories as c ON c.id=x.catid
+				WHERE product_id = '".$track->id."' 
+				AND catid != ".$track->catid."
+				AND catid != ".$track->artistid;
+				$db->setQuery($query);
+				if($res = $db->loadObjectList()){
+					foreach($res as $r){
+						$othercats[$r->id] = $r->title;
+					}
+				}else{
+					
+				}
+				$track->othercats = implode(", ", array_unique($othercats));
+				$tracks[$i]->price = $this->getPrice($track);
+/*
+				//Audio/Video or some horrid mix of both
+				if($this->_item[$pk]->flash_type != "mix"){
+					if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
+						//oh no it's a mix
+						$this->_item[$pk]->flash_type = "mix";
+						$track->flash_type = "mix";
+					}elseif($this->_item[$pk]->flash_type == "video" && $track->file_type == "audio"){
+						//oh no it's a mix
+						$this->_item[$pk]->flash_type = "mix";
+						$track->flash_type = "mix";
+					}else{
+						$this->_item[$pk]->flash_type = $track->file_type;
+						$track->flash_type = $track->file_type;
+					}
+				}else{
+					$track->flash_type = "mix";
+				}
+*/			
+				$this->_item[$pk]->flash_type = 'audio';
+
+				if($track->file_preview){
+					$preview_tracks[] = $track;
+				}else{
+					$track->flash= '';
+				}
+
+				//$parent_tracks[] = $track;
+				
+			} // each track
+			//$tracks = $parent_tracks;
+			$params->set('product_player_type', "single");
+			//$params->set('product_player_type', "single");
+
+			if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
+				$params->get('product_player_type') == "single")){
+				
+				reset($preview_tracks);
+				$count = count($preview_tracks);
+				foreach ($preview_tracks as $i=> $track) {
+				
+					$flash = '';
+					$track->purchased = 0;
+					if($track->file_preview){
+
+						$track->path = $site_url.$track->file_preview;
+						$track->real_path = $site_path.$track->file_preview;
+			
+						//should we use the real download file? Not available in AmazonS3
+						if( $params->get('storage', 'regular') == 'regular' ){
+							$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
+							
+							if(1 == $params->get('my_download_dir_format',0)){ 
+								//downloads by format and we don't know the format
+								//$track->download_real_path .= $format.DS;
+							}
+							if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
+								$track->path = isset($track->download_path)? $track->download_path : '';
+								$track->real_path = isset($track->download_real_path)? $track->download_real_path : '';
+								$track->purchased = 1;
+							}
+							if($params->get('my_play_downloads', 0) &&
+									(!$track->price["product_price"] || $track->price["product_price"] == "FREE")){
+								$track->path = isset($track->download_path)? $track->download_path : '';
+								$track->real_path = isset($track->download_real_path)? $track->download_real_path : '';
+								$track->purchased = 1;
+							}
+						}
+						//audio or video?
+						PluginHelper::importPlugin('mymuse');
+						$ext = MyMuseHelper::getExt($track->file_preview);
+						$flash = '<!-- Begin Play -->';
+						if(isset($track->file_type) && substr_count($track->file_type,"video")){
+							//movie
+							
+							$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,$params->get('product_player_type'),0,0,$i, $count) );
+
+							if(is_array($results) && isset($results[0]) && $results[0] != ''){
+								$flash .= $results[0];
+							}
+							
+						}else{
+							//audio
+							
+							$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'), 0, 0, $i, $count));
+							if(is_array($results) && isset($results[0]) && $results[0] != ''){
+								$flash .= $results[0];
+							}
+
+							
+						}
+						$flash .= '<!-- End Play -->';
+
+					}else{
+						$flash = '';
+					}
+	
+					$track->flash = $flash;
+				
+				}//end for each preview track 
+			} // if count previews for 'each'
+
+
+
+			// some other sort
+			if ($after_sort){
+				if($listDirn == "desc"){
+					usort($tracks, array($this,"cmp_desc_".$after_sort));
+				}else{
+					usort($tracks, array($this,"cmp_".$after_sort));
+				}
+				
+			}
+			
+
+			//get player buttons to play previews
+			if(count($preview_tracks) && $params->get('product_player_type') == "single"){
+				// make a controller for the play/pause buttons
+				$results = $app->triggerEvent('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );					
+			
+				//get the player itself
+				reset($preview_tracks);
+				$flash = '';
+				$audio = 0;
+				$video = 0;
+				foreach($preview_tracks as $track){
+					if($track->file_preview){
+						
+						if(substr_count($track->file_type,"video") && !$video){
+							//movie
+
+							$results = $app->triggerEvent('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
+						
+							$video = 1;
+								
+						}elseif(substr_count($track->file_type,"audio") && !$audio){
+							//audio
+				
+							$results = $app->triggerEvent('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
+							$audio = 1;
+					
+						}
+
+						if(is_array($results) && isset($results[0]) && $results[0] != ''){
+							$flash .= '<!-- Begin Player -->';
+							$flash .= $results[0];
+							
+							$flash .= '<!-- End Player -->';
+
+						}
+						
+						$this->_item[$pk]->flash = $flash;
+						$this->_item[$pk]->flash_id = $track->id;
+						if($this->_item[$pk]->flash_type != "mix"){
+							break;
+						}elseif($audio && $video){
+							break;
+						}
+						
+					}
+				}//end for each preview track 
+			}// if count previews for single
+			
+			if(count($preview_tracks) && $params->get('product_player_type') == "playlist"){
+				//get the main flash for the product
+		
+				reset($preview_tracks);
+				$this->_item[$pk]->previews = array();
+				$audio = 0;
+				
+				$i = 0;
+				$type = "";
+				foreach($preview_tracks as $track){
+					if($track->file_preview){
+						$track->path = $site_url.$track->file_preview;
+					}
+
+					$this->_item[$pk]->previews[] = $track;
+					if(preg_match("/video/",$track->type)){
+						$type = "video";
+					}
+					if(preg_match("/audio/",$track->type)){
+						$type = "audio";
+					}
+					
+				}//end for each preview track 
+				
+				if($type == "video"){
+					// movie
+					$flash = '<!-- Begin Player -->';
+					$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$this->_item[$pk],'playlist') );
+					if(isset($results[0]) && $results[0] != ''){
+						$flash .= $results[0];
+					}
+					$flash .= '<!-- End Player -->';
+						
+				}elseif($type == "audio"){
+					
+					$flash = '<!-- Begin Player -->';
+					$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$this->_item[$pk],'playlist') );
+
+					if(isset($results[0]) && $results[0] != ''){
+						$flash .= $results[0];
+					}
+					$flash .= '<!-- End Player -->';
+				}
+				$this->_item[$pk]->flash = $flash;
+				$this->_item[$pk]->flash_id = $pk;
+
+			}// if count previews for playlist
+			
+		}else{
+			return array();
+		}// if count tracks
+		
+		
+		// free downloads if price = free. NOTE NOT available while using Amazon s3
+		if(isset($tracks) && $params->get('my_free_downloads') && $params->get('storage', 'regular') == 'regular' ){
+			
+			reset($tracks);
+			foreach($tracks as $track){
+				if($track->product_allfiles){
+					continue;
+				}
+				
+				if(count($params->get('my_formats'))) {
+					foreach($params->get('my_formats') as $format){
+						//make a link for download if we need it
+						$track->free_download_link[$format] = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id."&format=".$format->format_value;
+						if(1 == $params->get('my_price_by_product', 0) && isset($track->price[$format->format_value]) ){
+							$price = $track->price[$format->format_value];
+						}else{
+							$price = $track->price;
+						}
+						
+						if(!isset($price['product_price']) ||
+								$price['product_price'] == "FREE" ||
+								!$price['product_price']) {
+									foreach($track->digital as $file){
+				
+										if(isset($file->file_ext) && strtolower($format->format_value) == $file->file_ext){
+											
+											$track->free_download_link[$file->file_ext] = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id."&format=".$format;
+											if($track->access > 1 && !$user->get('id')){
+												$view = $params->get('my_registration_redirect', 'login');
+												$track->free_download_link = "index.php?option=com_users&view=$view";
+												
+											}
+											$track->free_download = 1;
+										}
+									}
+										
+								}
+					}
+				}else{
+					if(!isset($track->price['product_price']) ||
+							$track->price['product_price'] == "FREE" ||
+							!$track->price['product_price']) {
+								$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
+								if($track->access > 1 && !$user->get('id')){
+									$view = $params->get('my_registration_redirect', 'login');
+									$track->free_download_link = "index.php?option=com_users&view=$view";
+								}
+								$track->free_download = 1;
+							}
+								
+				}//end formats
+					
+			}//foreach track
+		}//isset tracks
+			
+		/*
+		 * $track->download_path = MYmUseHelper::getDownloadPath($track->product_id, 1);
+									if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
+										$track->download_path .= $format.DS;
+									}
+		 */
+		
+		//end of tracks
+
+		return $tracks;
+
+	}
+
+	/*
+	* Method to get physical items for the product.
+	*
+	* @param   integer  $pk  The id of the product.
+	*
+	* @return  array|boolean  Items array on success, boolean false
+
+	*/
+
+	function getPhysicalItems($pk)
+	{
+
+		$params = MymuseHelper::getParams();
+		$app = Factory::getApplication();
+		$db = $this->getDbo();
+
+		/* PHYSICAL CHILD ITEMS  PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS  */
+		$query = "SELECT * FROM #__mymuse_product as p
+		WHERE p.parentid='".$pk."'
+		AND product_downloadable = 0
+		and state=1
+		ORDER BY ordering
+		";
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
+
+		
+		//attributes
+		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE 
+		product_parent_id='.$this->_item[$pk]->id.'
+		ORDER BY ordering';
+		$db->setQuery($query);
+		$this->_item[$pk]->attribute_sku = $db->loadObjectList();
+		
+
+		foreach ($items as $i => $item) {
+			foreach($this->_item[$pk]->attribute_sku as $a_sku){
+				$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
+				AND product_attribute_sku_id='.$a_sku->id;
+				$db->setQuery($query);
+				$items[$i]->attributes[$a_sku->name] = $db->loadResult();
+			}
+		
+				
+			$query = 'SELECT a.*,b.name from #__mymuse_product_attribute as a 
+			LEFT JOIN #__mymuse_product_attribute_sku as b on b.id=a.product_attribute_sku_id
+			WHERE a.product_id='.$item->id;
+			
+			$db->setQuery($query);
+			$tmp[$item->id] = $db->loadObjectList();
+			foreach($tmp[$item->id] as $att){
+				$attributes[$item->id][$att->product_attribute_sku_id] = $att;
+			}
+
+			$items[$i]->price = $this->getPrice($item);
+			if($params->get('my_add_taxes')){
+				$items[$i]->price["product_price"] = MyMuseCheckout::addTax($items[$i]->price["product_price"]);
+			}
+			
+
+		}
+							
+		
+		return $items;
+
 	}
 
 

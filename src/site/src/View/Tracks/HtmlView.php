@@ -26,14 +26,14 @@ use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Table;
-
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * HTML View class for the MyMuse component
@@ -54,12 +54,14 @@ class HtmlView extends BaseHtmlView
 		$user	= Factory::getUser();
 		$db     = Factory::getDBO();
 		$jinput = $app->input;
+		//MymuseHelper::print_pre($jinput);
 		$app 	= Factory::getApplication();
 		$menu 	= $app->getMenu()->getActive()->id;
 
 		// Get some data from the models
 		$state		= $this->get('State');
 		$params		= $state->params;
+		$this->params 		= $params;
 
 		$category	= $this->get('Category');
        // $products   = $this->get('Products');// sets list.prods for tracks query
@@ -74,7 +76,7 @@ class HtmlView extends BaseHtmlView
         $filter_alpha           = $jinput->get('filter_alpha', '', 'STRING');
         $this->task             = $jinput->get('task', 'view', 'STRING');
         $Itemid 				= $jinput->get("Itemid",'');
-        $layout   				= $jinput->get("layout",'');
+        $layout   				= $jinput->get("layout",'tracks');
         $this->store			= Mymuse::getObject('Store','model')->getStore();
 		$this->shopper 			= Mymuse::getObject('Shopper','model')->getShopper();
 		$MyMuseCart				= Mymuse::getObject('Cart','helper');
@@ -88,7 +90,7 @@ class HtmlView extends BaseHtmlView
 		// If it is the active menu item, then the view and category id will match
 		$active	= $app->getMenu()->getActive();
 
-		if ( $this->getLayout() != "alphatunes" && ( !$active || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $category->id) === false)))) {
+		if ( $this->getLayout() != "tracks" && ( !$active || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $category->id) === false)))) {
 			// Get the layout from the merged category params
 			if ($layout = $category->params->get('category_layout')) {
 				$this->setLayout($layout);
@@ -107,6 +109,7 @@ class HtmlView extends BaseHtmlView
         $query = "SELECT sub.id FROM #__categories as sub 
 			INNER JOIN #__categories as this ON sub.lft > this.lft 
 			AND sub.rgt < this.rgt WHERE this.id = " . $category->id;
+
 		$db->setQuery ( $query );
 		if($cat_ids = $db->loadColumn()){
 			$cat_ids = implode(',',$cat_ids);
@@ -121,13 +124,19 @@ class HtmlView extends BaseHtmlView
         if($result){
 			$items = $result [0];
 			
-			$category->flash = $result [1]->flash;
+			//$category->flash = $result [1]->flash;
 			$pagination = $result [2];
 			//$pagination = $this->getPagination();
 			
-			if ($params->get ( 'show_alphabet' )) {
+			if ($params->get ( 'show_alphabet', 1 )) {
 				$alpha = array ();
-				$alphabet = explode ( ":", JText::_ ( 'MYMUSE_ALPHABET' ) );
+				$class = '';
+				if ($filter_alpha == "ALL") {
+						$class = "selected";
+					}
+				$alpha [] = '<a class="letter ' . $class . '" href="' . Route::_ ( 'index.php?option=com_mymuse&view=tracks&layout=tracks&id=' . $category->id . '&filter_alpha=&Itemid=' . $this->Itemid ) . '">' . Text::_('COM_MYMUSE_ALL') . '</a>';
+
+				$alphabet = explode ( ":", Text::_ ( 'COM_MYMUSE_ALPHABET' ) );
 				$IN = $state->get ( 'list.prods', '' );
 				$featured = $params->get ( 'featured', '0' );
 				
@@ -167,18 +176,18 @@ class HtmlView extends BaseHtmlView
 						$class = "selected";
 					}
 					if ($total) {
-						$alpha [] = '<a class="letter ' . $class . '" href="' . JRoute::_ ( 'index.php?option=com_mymuse&view=tracks&layout=alphatunes&id=' . $category->id . '&filter_alpha=' . $letter . '&Itemid=' . $this->Itemid ) . '">' . $letter . '</a>';
+						$alpha [] = '<a class="letter ' . $class . '" href="' . Route::_ ( 'index.php?option=com_mymuse&view=tracks&layout=tracks&id=' . $category->id . '&filter_alpha=' . $letter . '&Itemid=' . $this->Itemid ) . '">' . $letter . '</a>';
 					} else {
 						$alpha [] = '<span class="letter">' . $letter . '</span>';
 					}
 				}
-				$this->assignRef ( 'alpha', $alpha );
+				$this->alpha = $alpha;
 				$this->filterAlpha = $jinput->get ( 'filter_alpha', '' );
 			}
 			$this->total = $this->get ( 'Total' );
 			$this->limit = $params->get ( 'display_num', 10 );
         }else{
-        	$app->enQueueMessage(JText::_('MYMUSE_NO_PRODUCTS'));
+        	$app->enQueueMessage(Text::_('COM_MYMUSE_NO_PRODUCTS'));
         	return false;
         }
         
@@ -191,7 +200,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		if ($category == false) {
-			Factory::getApplication()->enqueueMessage(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			Factory::getApplication()->enqueueMessage(404, Text::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 
@@ -204,40 +213,52 @@ class HtmlView extends BaseHtmlView
 		$user	= Factory::getUser();
 		$groups	= $user->getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups)) {
-			Factory::getApplication()->enqueueMessage(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			Factory::getApplication()->enqueueMessage(403, Text::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		//if multiple variations, create select box
-		for($i=0; $i < count($items); $i++){
-			//print_pre($items[$i]);
-			if(is_array($items[$i]->file_name) && count($items[$i]->file_name) > 1){
-				$items[$i]->variation_select = '<select name="variation['.$items[$i]->id.']"
-						id = "variation_'.$items[$i]->id.'_id" class="inputbox variation_select" style="width: 5em;"
-						onchange="javascript:flip_price(\''.$items[$i]->id.'\')"
-						>
-								';
-				for($j = 0; $j < count($items[$i]->file_name); $j++){
-					$items[$i]->variation_select .= '<option value="'.$j.'">'
-							.$items[$i]->file_name[$j]->file_ext.'</option>'."\n";
+		//if multiple track variations, create select box
+		if(is_countable($items) && count($items)){
+			for($i=0; $i < count($items); $i++){
+				if(is_array($items[$i]->digital) && count($items[$i]->digital) > 1){
+					$items[$i]->variation_select = '<select name="variation['.$items[$i]->id.']" 
+							id = "variation_'.$items[$i]->id.'_id" class="inputbox variation_select"
+							onchange="javascript:flip_price(\''.$items[$i]->id.'\')"
+							';
+							for($j = 0; $j < count($items[$i]->digital); $j++){
+								$items[$i]->variation_select .= '
+								data-variation_'.$j.'="'.$items[$i]->digital[$j]->file_id.'"';
+							}
+							
+							$items[$i]->variation_select .= '>
+									';
+					for($j = 0; $j < count($items[$i]->digital); $j++){
+						$items[$i]->variation_select .= '<option value="'.$j.'" >'
+						.Text::_(strtoupper($items[$i]->digital[$j]->file_format)).'</option>'."\n";
+					}		
+					$items[$i]->variation_select .= "</select>";
 				}
-				$items[$i]->variation_select .= "</select>";
-			}
 				
+			}
+		}
+
+		//set  up formats
+		$this->formats = array();
+		$pformats = $this->params->get('my_formats', array());
+		foreach($pformats as $i => $f){
+			$this->formats[$f->ordering] = strtolower($f->format_key);
 		}
 
 
 		//Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx', ''));
 
-		$this->assign('maxLevel', $params->get('maxLevel', -1));
-		$this->assignRef('state', $state);
-		$this->assignRef('items', $items);
-		$this->assignRef('category', $category);
-		$this->assignRef('children', $children);
-		$this->assignRef('params', $params);
-		$this->assignRef('parent', $parent);
-		$this->assignRef('pagination', $pagination);
-		$this->assignRef('user', $user);
+		$this->maxLevel 	= $params->get('maxLevel', -1);
+		$this->state 		= $state;
+		$this->items 		= $items;
+		$this->category 	= $category;
+		
+		$this->pagination 	= $pagination;
+		$this->user 		= $user;
 
 		$this->_prepareDocument();
 		$layout = $this->getLayout();
@@ -279,7 +300,7 @@ class HtmlView extends BaseHtmlView
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		}
 		else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		$id = (int) @$menu->query['id'];
@@ -308,10 +329,10 @@ class HtmlView extends BaseHtmlView
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 
 		$this->document->setTitle($title);
@@ -353,9 +374,9 @@ class HtmlView extends BaseHtmlView
 		if ($this->params->get('show_feed_link', 1)) {
 			$link = '&format=feed&limitstart=';
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
 			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		}
 	}
 }

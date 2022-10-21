@@ -241,7 +241,7 @@ div#player-right div#volume-container input[type="range"].amplitude-volume-slide
   width: calc(100% - 30px);
   -webkit-appearance: none;
   display: block;
-  margin-top:  7px;
+  background-color: #232323;
   margin-left: 10px;
   float: left; 
 }

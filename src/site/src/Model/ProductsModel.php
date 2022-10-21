@@ -62,6 +62,10 @@ class ProductsModel extends ListModel
 				'ordering', 'a.ordering',
 				'featured', 'a.featured',
 				'language', 'a.language',
+				'file_length', 'a.file_length',
+				'product_title','p.title',
+				'category_title','c.title',
+				'artist_title', 'art.title',
 				'hits', 'a.hits',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
@@ -111,6 +115,9 @@ class ProductsModel extends ListModel
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
+
+		$alpha= $this->getUserStateFromRequest($this->context . '.filter.alpha', 'filter_alpha');
+		$this->setState('filter.alpha', $alpha);
 
 		$featured = $this->getUserStateFromRequest($this->context . '.filter.featured', 'filter_featured', '');
 		$this->setState('filter.featured', $featured);
@@ -327,8 +334,15 @@ class ProductsModel extends ListModel
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-                $query->where("title LIKE $search");
+                $query->where("art.title LIKE $search");
 			}
+		}
+		// Filter by alpha start title
+		$alpha = $this->getState('filter.alpha');
+
+		if (!empty($alpha)) {
+			$alpha = $db->Quote($db->escape($alpha, true).'%');
+               $query->where("art.title LIKE $alpha");
 		}
 
 		// Process the filter for list views with user-entered filters
@@ -384,6 +398,7 @@ class ProductsModel extends ListModel
 		$cat_query = '';
 		$baselevel = 1;
 		$categoryId = $this->getState('filter.category_id');
+
 		if (is_numeric($categoryId)) {
 			$cat_tbl = Table::getInstance('Category', 'JTable');
 			$cat_tbl->load($categoryId);
@@ -467,11 +482,11 @@ class ProductsModel extends ListModel
         if ($orderCol && $orderDirn) {
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
-		if ($orderCol) {
+		elseif ($orderCol) {
 		    $query->order($db->escape($orderCol));
 		}
 
-      //echo($query->__toString()); //exit;
+      	//echo $db->replacePrefix(($query->__toString())); exit;
 		return $query;
 	}
 
@@ -488,6 +503,9 @@ class ProductsModel extends ListModel
 	public function getItems()
 	{
 		$items  = parent::getItems();
+		if(!is_countable($items)){
+			return array();
+		}
 		$user   = Factory::getUser();
 		$userId = $user->get('id');
 		$guest  = $user->get('guest');
@@ -498,6 +516,7 @@ class ProductsModel extends ListModel
 		$globalParams = ComponentHelper::getParams('com_mymuse', true);
 
 		// Convert the parameter fields into objects.
+
 		foreach ($items as &$item)
 		{
 			$productParams = new Registry($item->attribs);
