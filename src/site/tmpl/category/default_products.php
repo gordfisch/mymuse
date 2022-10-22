@@ -30,7 +30,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $height 	= $this->params->get('category_product_image_height',0);
 $inner_cols	= 0;
 $uri 		= JUri::getInstance(); 
-
+$document 	= JFactory::getDocument();
+$document->addScript(Uri::base() .'media/com_content/js/articles-list.js');
 //MymuseHelper::print_pre($this->items[0]);
 if ($this->params->get('list_show_date') && $this->params->get('order_date')) {
 	$inner_cols++;

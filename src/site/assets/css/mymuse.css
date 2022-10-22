@@ -166,6 +166,10 @@ ul{
 .mypreviews .jp-gui {
     padding: 0;
 }
+/* tracks */
+#alphabet {
+    margin-bottom:  1em;
+}
 /* cart */
 
 .mymuse-cart-top {

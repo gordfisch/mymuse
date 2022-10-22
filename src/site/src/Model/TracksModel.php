@@ -116,7 +116,7 @@ class TracksModel extends ProductsModel
 			$this->context .= '.' . $forcedLanguage;
 		}
 
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter-search');
 		
 
 		$alpha = $this->getUserStateFromRequest($this->context . '.filter.alpha', 'filter_alpha');
