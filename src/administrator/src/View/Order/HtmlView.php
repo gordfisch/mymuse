@@ -177,7 +177,10 @@ class HtmlView extends BaseHtmlView
 
 		$canDo = ContentHelper::getActions('com_mymuse', 'ORDER', $this->item->id);
 
-		ToolbarHelper::title($isNew ? Text::_('COM_MYMUSE_ORDER_NEW') : Text::_('COM_MYMUSE_ORDER_EDIT'), 'bookmark ORDERs');
+
+		$title = $isNew ? Text::_('COM_MYMUSE_ORDER_NEW') : Text::_('COM_MYMUSE_ORDER_EDIT');
+		ToolBarHelper::title(Text::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
+		
 
 		$toolbarButtons = [];
 

@@ -855,10 +855,15 @@ class ProductModel extends AdminModel
 			$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
 			$files = MymuseStorage::listFilesDownloads($directory);
 
-			$myfiles = array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
-			foreach($files as $file){
+			$myfiles = array();
+
+			if($files){
+				$myfiles = array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
+				foreach($files as $file){
 					$myfiles[] = HTMLHelper::_('select.option',  $file, stripslashes($file) );
+				}
 			}
+
 			$current = array();
 			if($task == "editfile"){
 				
@@ -919,68 +924,6 @@ class ProductModel extends AdminModel
 			return $lists;
     }
     
-	/**
-	 * Method to save the form data.
-	 *
-	 * @param   array  $data  The form data.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   1.6
-	 */
-	public function save($data)
-	{
-		$input  		= Factory::getApplication()->input;
-		$filter 		= \JFilterInput::getInstance();
-		$db     		= $this->getDbo();
-		$user				= Factory::getUser();
-
-
-
-		if (isset($data['metadata']) && isset($data['metadata']['author'])){
-			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
-		}
-
-		if (isset($data['created_by_alias'])){
-			$data['created_by_alias'] = $filter->clean($data['created_by_alias'], 'TRIM');
-		}
-
-		
-
-		// Automatic handling of alias for empty fields
-		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
-		{
-			if ($data['alias'] == null)
-			{
-				if (Factory::getApplication()->get('unicodeslugs') == 1){
-					$data['alias'] = \JFilterOutput::stringURLUnicodeSlug($data['title']);
-				}else{
-					$data['alias'] = \JFilterOutput::stringURLSafe($data['title']);
-				}
-
-				$table = Table::getInstance('ProductTable', 'Joomla\\Component\\Mymuse\\Administrator\\Table\\');
-
-				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid']))){
-					$msg = Text::_('COM_MYMUSE_SAVE_WARNING');
-				}
-
-				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
-				$data['alias'] = $alias;
-
-				if (isset($msg)){
-					Factory::getApplication()->enqueueMessage($msg, 'warning');
-				}
-			}
-		}
-
-
-
-		if (parent::save($data)){
-			return true;
-		}
-
-		return false;
-	}
 
 
 
@@ -1299,7 +1242,222 @@ class ProductModel extends AdminModel
 		return true;
 	}
 
-    
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   1.6
+	 */
+	public function save($data)
+	{
+		$input  		= Factory::getApplication()->input;
+		$filter 		= \JFilterInput::getInstance();
+		$db     		= $this->getDbo();
+		$user				= Factory::getUser();
+
+
+		if (isset($data['metadata']) && isset($data['metadata']['author'])){
+			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
+		}
+
+		if (isset($data['created_by_alias'])){
+			$data['created_by_alias'] = $filter->clean($data['created_by_alias'], 'TRIM');
+		}
+
+		
+
+		// Automatic handling of alias for empty fields
+		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
+		{
+			if ($data['alias'] == null)
+			{
+				if (Factory::getApplication()->get('unicodeslugs') == 1){
+					$data['alias'] = \JFilterOutput::stringURLUnicodeSlug($data['title']);
+				}else{
+					$data['alias'] = \JFilterOutput::stringURLSafe($data['title']);
+				}
+
+				$table = Table::getInstance('ProductTable', 'Joomla\\Component\\Mymuse\\Administrator\\Table\\');
+
+				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid']))){
+					$msg = Text::_('COM_MYMUSE_SAVE_WARNING');
+				}
+
+				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
+				$data['alias'] = $alias;
+
+				if (isset($msg)){
+					Factory::getApplication()->enqueueMessage($msg, 'warning');
+				}
+			}
+		}
+
+//MymuseHelper::print_pre($data); exit;
+
+
+		if (parent::save($data)){
+			return true;
+		}
+
+		return false;
+	}
+
+
+
+
+	/**
+	 * Update DB from MyMuse4 to MyMuse5
+	 *
+	 * @param   int limit
+	 * @param   int limitstart
+	 *
+	 * @return  mixed
+	 *
+	 * @since   5.0
+	 */
+
+   function updateDB($limit=50, $limitstart=0, $type='physical')
+   {
+
+   		$process 				= 0;
+   		$input      		= Factory::getApplication()->input;
+	   	$db 						= Factory::getDBO();
+	   	$this->table 		= $this->getTable();
+	   	$formats 				= array();
+	   	$my_return			= array();
+	   	$my_return[0]		= '';
+	   	$my_return[1]		= '';
+
+	   	$query = "SELECT * FROM #__mymuse_format";
+	   	$db->setQuery($query);
+	   	$all_formats = $db->loadObjectList();
+	   	foreach($all_formats as $f){
+	   		$formats[$f->format_value] = $f->id;
+	   	}
+
+	   	if($type == "physical"){
+		   	//physical parents, CD's. Gather physical info and put it in 'physical' field
+		   	$query 					= "SELECT * FROM #__mymuse_product 
+		   	WHERE product_physical=1 AND 
+		   	product_downloadable= 0 AND
+		   	track_parentid = 0
+		   	ORDER BY id ASC
+		   	LIMIT $limitstart, $limit";
+
+		   	echo $query. "<br />";
+
+		   	$db->setQuery($query);
+		   	if($res = $db->loadObjectList())
+		   	{
+		   		if(count($res)){
+		   			$process = 1;
+		   		}
+		   		
+		   	}else{
+		   		$my_return[0] = 'physical-done';
+		   		return $my_return;
+		   	}
+		   	if($process)
+		   	{
+		   		foreach($res as $r){
+
+		   				//{"prducoduct_weight":".2","product_weight_uom":"LBS","product_length":".6","product_width":"6","product_height":".5","product_lwh_uom":"IN"}
+		   				$physical = array();
+
+							$this->table->reset();
+							$this->table->load($r->id);
+
+		   				$physical['product_weight'] =  $r->product_weight;
+		   				$physical['product_weight_uom'] =  $r->product_weight_uom;
+		   				$physical['product_length'] =  $r->product_length;
+		   				$physical['product_width'] =  $r->product_width;
+		   				$physical['product_height'] =  $r->product_height;
+		   				$physical['product_lwh_uom'] =  $r->product_lwh_uom;
+
+		   				$registry = new Registry;
+							$registry->loadArray($physical);
+							$this->table->physical = (string)$registry;
+
+							if(!$result = $this->table->updateDB()){
+								$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PHYSICAL').' '.$this->table->getError(), 'error');
+								return false;
+							}
+							$my_return[1] .= 'created '.$this->table->id.' FROM '.$r->id.' : '.$r->title.'<br />';
+		   		
+		   			
+		   		}
+		   		$my_return[0] = 'physical-continue';
+		   		return $my_return;
+	
+		   	}
+	    }
+	    if($type == "tracks"){
+
+		   	//tracks. Save a child track for each file format
+		   	$process = 0;
+		   	$query 					= "SELECT * FROM #__mymuse_product 
+		   	WHERE parentid > 0 AND 
+		   	product_physical=0 AND 
+		   	product_downloadable= 1 AND
+		   	track_parentid = 0
+		   	ORDER BY id ASC
+		   	LIMIT $limitstart, $limit";
+
+		   	echo $query. "<br />";
+
+		   	$db->setQuery($query);
+		   	if($res = $db->loadObjectList())
+		   	{
+		   		if(count($res)){
+		   			$process = 1;
+		   		}
+
+		   	}else{
+		   		$my_return[0] = "tracks-done";
+		   		return $my_return;
+		   	}
+		   	if($process)
+		   	{
+		   		foreach($res as $r){
+		   			if(isset($r->file_name) && $r->file_name != '')
+		   			{
+		   				$files_array = json_decode($r->file_name);
+
+
+		   				foreach($files_array as $file){
+		   						$file->file_format = isset($formats[$file->file_ext])? $formats[$file->file_ext] : '';
+
+									$this->table->reset();
+									$this->table->load($r->id);
+									$this->table->id 										= 0;
+									$this->table->product_sku 					= $r->product_sku.'-'.$file->file_ext;
+									$this->table->title_alias						= '';
+									$this->table->parentid 							= $r->parentid;
+									$this->table->track_parentid				= $r->id;
+									$this->table->digital								= json_encode($file);
+									$this->table->filter_name						= '';
+
+									if(!$result = $this->table->updateDB()){
+										$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->table->getError(), 'error');
+										return false;
+									}
+									$my_return[1] .= 'created '.$this->table->id.' FROM '.$r->id.' : '.$r->title.'<br />';
+		   				}
+		   			}
+		   		}
+		   		$my_return[0] = 'tracks-continue';
+		   		return $my_return;
+
+		   	}
+		  }
+	   	return true;
+
+
+   }
 
 
 }

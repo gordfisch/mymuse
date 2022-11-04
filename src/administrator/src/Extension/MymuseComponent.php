@@ -19,6 +19,7 @@ use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
 use Joomla\Component\Mymuse\Administrator\Service\HTML\AdministratorService;
 use Joomla\Component\Mymuse\Administrator\Service\HTML\Icon;
 use Psr\Container\ContainerInterface;
@@ -115,6 +116,19 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
         $Doc = Factory::getDocument();
         $Doc->addStyleSheet( Uri::base() . 'components/com_mymuse/assets/css/mymuse.css' );
 
+
+        $session  = Factory::getSession();
+        if($must_updrade =  $session->get('com_mymuse.convertTo4', false)){
+			echo "<h1>SESSION SET MUST UPGRADE</h1>";
+		}
+
+        $v3File = JPATH_ROOT.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'manifest.xml';
+
+        if(file_exists($v3File)){
+
+        	echo '<a href="index.php?option=com_mymuse&task=product.update">MUST UPGRADE DB!!!!!!</a>';
+        
+        }
 
 	}
 

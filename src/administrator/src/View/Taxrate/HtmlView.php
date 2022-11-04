@@ -102,7 +102,9 @@ class HtmlView extends BaseHtmlView
 
 		$canDo = ContentHelper::getActions('com_mymuse', 'taxrate', $this->item->id);
 
-		ToolbarHelper::title($isNew ? Text::_('COM_MYMUSE_TAXRATE_NEW') : Text::_('COM_MYMUSE_TAXRATE_EDIT'), 'bookmark taxrates');
+
+		$title = $isNew ? Text::_('COM_MYMUSE_NEW_TAX_RATE') : Text::_('COM_MYMUSE_EDIT_TAX_RATE');
+		ToolBarHelper::title(Text::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 
 		$toolbarButtons = [];
 

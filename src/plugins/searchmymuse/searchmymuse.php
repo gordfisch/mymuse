@@ -193,7 +193,7 @@ class plgSearchSearchMymuse extends JPlugin
             }
             
             // Filter by language
-            if ($app->isSite() && $app->getLanguageFilter()) {
+            if ($app->isClient('site') && $app->getLanguageFilter()) {
             	$tag = JFactory::getLanguage()->getTag();
             	$query .= ' AND a.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';
             	$query .= ' AND c.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';

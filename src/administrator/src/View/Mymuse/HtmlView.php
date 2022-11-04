@@ -13,6 +13,8 @@ defined('_JEXEC') or die;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * View class for a list of foos.
@@ -42,6 +44,11 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null): void
 	{
 		$this->params = myMuseHelper::getParams();
+
+	
+		ToolBarHelper::title(Text::_('COM_MYMUSE'), 'mymuse.png');
+
+
 		parent::display($tpl);
 	}
 }

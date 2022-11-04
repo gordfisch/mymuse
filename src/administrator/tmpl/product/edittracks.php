@@ -275,6 +275,7 @@ $lists = $this->lists;
                             ?>
                             <tr class="<?php echo $class;?>" id="row_<?php echo $i; ?>">
                                 <td><?php 
+
                                 if(isset($formats[$i]->id)){
                                 	echo $formats[$i]->id;
                                 	?>

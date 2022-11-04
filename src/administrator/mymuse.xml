@@ -51,7 +51,6 @@
 			<filename>access.xml</filename>
 			<folder>assets</folder>
 			<folder>forms</folder>
-			<folder>helpers</folder>
 			<folder>install</folder>
 			<folder>services</folder>
 			<folder>sql</folder>
@@ -78,9 +77,10 @@
 	<files folder="site">
 		<filename>log.txt</filename>
 		<folder>assets</folder>
+		<folder>forms</folder>
 		<folder>src</folder>
 		<folder>tmpl</folder>
-
+		<folder>View</folder>
 	</files>
 
 	<languages folder="site">

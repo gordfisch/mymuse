@@ -163,7 +163,7 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
-		ToolBarHelper::title(Text::_('MYMUSE').' : '.Text::_('COM_MYMUSE_TITLE_ORDERS'), 'mymuse.png');
+		ToolBarHelper::title(Text::_('COM_MYMUSE').' : '.Text::_('COM_MYMUSE_TITLE_ORDERS'), 'mymuse.png');
 
 		/*if ($canDo->get('core.create'))
 		{

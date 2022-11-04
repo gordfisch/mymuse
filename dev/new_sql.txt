@@ -1,0 +1,69 @@
+
+ALTER TABLE #__mymuse_coupon  ADD `params` text NOT NULL.
+ALTER TABLE #__mymuse_coupon ALTER coupon_uses SET DEFAULT '0',
+
+ALTER TABLE #__mymuse_order ALTER extra SET DEFAULT NULL,
+ALTER TABLE #__mymuse_order ALTER `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+ALTER TABLE #__mymuse_order ALTER licence SET DEFAULT NULL,
+ALTER TABLE #__mymuse_order ALTER checked_out SET DEFAULT NULL,
+ALTER TABLE #__mymuse_order ALTER checked_out_time SET DEFAULT NULL,
+
+ALTER TABLE #__mymuse_order_item ALTER file_name SET default NULL,
+ALTER TABLE #__mymuse_order_item ALTER end_date SET default NULL,
+ALTER TABLE #__mymuse_order_item ALTER created SET default NULL,
+ALTER TABLE #__mymuse_order_item ALTER modified SET default NULL,
+ALTER TABLE #__mymuse_order_item ADD `variation_id` int(11) default NULL,
+
+ALTER TABLE #__mymuse_product ADD `track_parentid` int(11) unsigned NOT NULL DEFAULT '0',
+ALTER TABLE #__mymuse_product ALTER introtext SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER fulltext SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER discount SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER list_image SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER detail_image default NULL,
+ALTER TABLE #__mymuse_product ALTER `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
+ALTER TABLE #__mymuse_product ALTER `recording` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
+ALTER TABLE #__mymuse_product ALTER `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
+ALTER TABLE #__mymuse_product ALTER `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
+ALTER TABLE #__mymuse_product ALTER `metakey` text COLLATE utf8mb4_unicode_ci,
+ALTER TABLE #__mymuse_product ALTER `metadesc` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+ALTER TABLE #__mymuse_product ALTER `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.',
+ALTER TABLE #__mymuse_product ALTER `checked_out` SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER `checked_out_time`  SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER `publish_up`  SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER `publish_down`  SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER `created`  SET DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER `checked_out` int UNSIGNED DEFAULT NULL,
+ALTER TABLE #__mymuse_product ALTER `checked_out_time` datetime DEFAULT NULL,
+ALTER TABLE #__mymuse_product ADD `special_status` varchar(32) NULL,
+ALTER TABLE #__mymuse_product ADD `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
+ALTER TABLE #__mymuse_product ADD `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
+
+CREATE INDEX `idx_catid` ON #__mymuse_product (`catid`),
+CREATE INDEX `idx_artistid` ON #__mymuse_product (`artistid`),
+
+ALTER TABLE #__mymuse_shopper_group ALTER checked_out SET DEFAULT NULL,
+ALTER TABLE #__mymuse_shopper_group ALTER checked_out_time SET DEFAULT NULL,
+ALTER TABLE #__mymuse_shopper_group  ADD `usergroups_id` int(11) NOT NULL DEFAULT '2',
+
+
+
+
+
+ALTER TABLE #__mymuse_coupon DROP `currency_id`,
+ALTER TABLE #__mymuse_product DROP `file_preview_2`
+ALTER TABLE #__mymuse_product DROP  `file_preview_3`
+ALTER TABLE #__mymuse_product DROP  `file_preview_4`
+ALTER TABLE #__mymuse_product DROP `xreference`,
+ALTER TABLE #__mymuse_order_payment DROP `checked_out`, `checked_out_time`, `ordering`
+ALTER TABLE #__mymuse_order_shipping DROP `checked_out`, `checked_out_time`, `ordering`
+ALTER TABLE #__mymuse_product DROP urls
+
+
+
+
+
+
+
+
+
+

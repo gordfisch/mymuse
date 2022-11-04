@@ -7,6 +7,8 @@ namespace Joomla\Component\Mymuse\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Factory;
+
 
 /**
  * MyMuse master display controller.
@@ -37,6 +39,17 @@ class DisplayController extends BaseController
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
+
+
+        $app  = Factory::getApplication();
+		if($app->getUserState('com_mymuse.convertTo4', false)){
+			$input = $app->input;
+			$input->set('view','products');
+			$input->set('task','update');
+		}
+
+
+
 		return parent::display();
 	}
 }

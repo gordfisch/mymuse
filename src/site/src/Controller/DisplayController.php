@@ -436,7 +436,7 @@ class DisplayController extends BaseController
 		//save the cart in the session
 		$this->MyMuseCart->setCart();
 	
-		$rand = JUserHelper::genRandomPassword(8);
+		$rand = UserHelper::genRandomPassword(8);
 		$document = Factory::getDocument();
 		$document->setMimeEncoding('application/json');
 		$app->setHeader("Expires","Sun, 19 Nov 1978 05:00:00 GMT");

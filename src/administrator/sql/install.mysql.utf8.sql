@@ -1,37 +1,42 @@
 -- phpMyAdmin SQL Dump
--- version 2.10.0.2
--- http://www.phpmyadmin.net
--- 
--- Host: localhost
--- Generation Time: Oct 26, 2009 at 01:26 PM
--- Server version: 5.0.51
--- PHP Version: 5.2.4-2ubuntu5.7
+-- version 4.9.5deb2
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Oct 26, 2022 at 05:38 PM
+-- Server version: 8.0.31-0ubuntu0.20.04.1
+-- PHP Version: 7.4.3
 
--- /////////SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
--- 
--- Database: `mymuse`
--- 
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `mymuse_joomla4`
+--
 
 -- --------------------------------------------------------
 
+--
 -- Table structure for table `#__mymuse_country`
--- 
-SET sql_mode = '';
+--
 
-DROP TABLE IF EXISTS `#__mymuse_country`;
-CREATE TABLE IF NOT EXISTS `#__mymuse_country` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bloc` tinytext NOT NULL,
-  `plugin` tinytext NOT NULL,
-  `country_name` varchar(64)  DEFAULT NULL,
-  `country_3_code` char(3)  DEFAULT NULL,
-  `country_2_code` char(2) DEFAULT NULL,
-  `ordering` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_country_name` (`country_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=245 ;
+CREATE TABLE `#__mymuse_country` (
+  `id` int NOT NULL,
+  `bloc` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `plugin` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country_3_code` char(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country_2_code` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ordering` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__mymuse_country`
@@ -89,7 +94,7 @@ INSERT INTO `#__mymuse_country` (`id`, `bloc`, `plugin`, `country_name`, `countr
 (49, '', '1', 'Congo', 'COG', 'CG', 49),
 (50, '', '1', 'Cook Islands', 'COK', 'CK', 50),
 (51, '', '1', 'Costa Rica', 'CRI', 'CR', 51),
-(52, '', '1', 'Cote D''Ivoire', 'CIV', 'CI', 52),
+(52, '', '1', 'Cote D\'Ivoire', 'CIV', 'CI', 52),
 (53, 'EU', 'paypal', 'Croatia', 'HRV', 'HR', 53),
 (54, '', '1', 'Cuba', 'CUB', 'CU', 54),
 (55, 'EU', 'paypal', 'Cyprus', 'CYP', 'CY', 55),
@@ -283,60 +288,56 @@ INSERT INTO `#__mymuse_country` (`id`, `bloc`, `plugin`, `country_name`, `countr
 (243, '', '1', 'St. Eustatius', 'XSE', 'XU', 202),
 (244, '', '1', 'Canary Islands', 'XCA', 'XC', 38);
 
+-- --------------------------------------------------------
 
 --
--- Table structure for table `#_mymuse_coupon`
+-- Table structure for table `#__mymuse_coupon`
 --
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_coupon` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(64)  DEFAULT '',
-  `state` tinyint(3) NOT NULL DEFAULT '0',
-  `code` varchar(64)  DEFAULT '',
+CREATE TABLE `#__mymuse_coupon` (
+  `id` int NOT NULL,
+  `title` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `state` tinyint NOT NULL DEFAULT '0',
+  `code` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `coupon_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0=Per Order, 1=Per Product',
-  `product_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `product_id` int UNSIGNED NOT NULL DEFAULT '0',
   `coupon_value` decimal(12,5) DEFAULT NULL,
   `coupon_value_type` tinyint(1) NOT NULL COMMENT '0=Flat-rate, 1=Percentage',
-  `description` text ,
+  `description` text COLLATE utf8mb4_unicode_ci,
   `created` datetime NOT NULL,
   `created_by` int UNSIGNED NOT NULL DEFAULT '0',
-  `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `created_by_alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `modified` datetime NOT NULL,
   `modified_by` int UNSIGNED NOT NULL DEFAULT '0',
   `checked_out` int UNSIGNED DEFAULT NULL,
   `checked_out_time` datetime DEFAULT NULL,
-
   `start_date` datetime NOT NULL COMMENT 'GMT Only',
   `expiration_date` datetime DEFAULT NULL COMMENT 'GMT Only',
   `published` tinyint(1) NOT NULL DEFAULT '0',
-  `coupon_uses` int(11) NOT NULL DEFAULT '0' COMMENT 'Running count of the number of uses of this coupon',
-  `coupon_max_uses` int(11) NOT NULL DEFAULT '-1' COMMENT '-1=Infinite',
-  `coupon_max_uses_per_user` int(11) NOT NULL DEFAULT '-1' COMMENT '-1=Infinite',
-
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `coupon_uses` int NOT NULL DEFAULT '0' COMMENT 'Running count of the number of uses of this coupon',
+  `coupon_max_uses` int NOT NULL DEFAULT '-1' COMMENT '-1=Infinite',
+  `coupon_max_uses_per_user` int NOT NULL DEFAULT '-1' COMMENT '-1=Infinite',
+  `ordering` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
--- 
+--
 -- Table structure for table `#__mymuse_currency`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_currency` (
-  `id` int(11) NOT NULL auto_increment,
-  `currency_name` varchar(64) default NULL,
-  `currency_code` char(3) default NULL,
-  `symbol` varchar(4) NOT NULL default '$',
-  PRIMARY KEY  (`id`),
-  KEY `idx_currency_name` (`currency_name`)
+CREATE TABLE `#__mymuse_currency` (
+  `id` int NOT NULL,
+  `currency_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `currency_code` char(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `symbol` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '$'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 
+--
 -- Dumping data for table `#__mymuse_currency`
--- 
+--
 
-INSERT IGNORE INTO `#__mymuse_currency` (`id`, `currency_name`, `currency_code`, `symbol`) VALUES 
+INSERT INTO `#__mymuse_currency` (`id`, `currency_name`, `currency_code`, `symbol`) VALUES
 (1, 'US Dollar', 'USD', '$'),
 (2, 'Canadian Dollar', 'CAD', '$'),
 (3, 'British Pound', 'GBP', '£'),
@@ -358,329 +359,274 @@ INSERT IGNORE INTO `#__mymuse_currency` (`id`, `currency_name`, `currency_code`,
 (19, 'Kenyan Shilling', 'KES', 'KSh'),
 (20, 'South African Rand', 'ZAR', 'R');
 
-
-
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_downloads`
 --
-CREATE TABLE IF NOT EXISTS `#__mymuse_downloads` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '1',
-  `user_name` varchar(64) DEFAULT NULL,
-  `user_email` varchar(255) NOT NULL,
-  `order_id` int(11) NOT NULL,
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `product_id` int(11) NOT NULL DEFAULT '1',
-  `product_filename` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `idx_product_filename` (`product_filename`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `#__mymuse_downloads` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL DEFAULT '1',
+  `user_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `order_id` int NOT NULL,
+  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `product_id` int NOT NULL DEFAULT '1',
+  `product_filename` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
--- 
--- Table structure for table `#__mymuse_formats`
 --
-DROP TABLE IF EXISTS `#__mymuse_format`;
-CREATE TABLE IF NOT EXISTS `#__mymuse_format` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `format_key` char(10)  DEFAULT NULL,
-  `format_value` varchar(64)  DEFAULT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+-- Table structure for table `#__mymuse_format`
+--
+
+CREATE TABLE `#__mymuse_format` (
+  `id` int NOT NULL,
+  `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ordering` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `#__mymuse_format`
+--
 
 INSERT INTO `#__mymuse_format` (`id`, `format_key`, `format_value`, `ordering`) VALUES
 (1, 'MP3', 'mp3', 1),
 (2, 'WAV', 'wav', 2);
+
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_order`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_order` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(32) NOT NULL DEFAULT '',
-  `store_id` int(11) NOT NULL DEFAULT '0',
-  `order_number` varchar(32) DEFAULT NULL,
-  `shopper_id` int(11) DEFAULT NULL,
-  `ship_info_id` int(11) NOT NULL,
+CREATE TABLE `#__mymuse_order` (
+  `id` int NOT NULL,
+  `user_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `store_id` int NOT NULL DEFAULT '0',
+  `order_number` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shopper_id` int DEFAULT NULL,
+  `ship_info_id` int NOT NULL,
   `order_subtotal` decimal(10,2) DEFAULT NULL,
   `order_shipping` decimal(10,2) DEFAULT NULL,
-  `order_currency` varchar(16) DEFAULT NULL,
-  `order_status` char(1) DEFAULT NULL,
-  `coupon_name` varchar(124) NOT NULL,
+  `order_currency` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order_status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `coupon_name` varchar(124) COLLATE utf8mb4_unicode_ci NOT NULL,
   `coupon_discount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `coupon_id` int(11) NOT NULL DEFAULT '0',
+  `coupon_id` int NOT NULL DEFAULT '0',
   `discount` decimal(10,2) DEFAULT NULL,
   `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `notes` text DEFAULT NULL,
+  `notes` text COLLATE utf8mb4_unicode_ci,
   `reservation_fee` float(10,2) NOT NULL DEFAULT '0.00',
   `non_res_total` float(10,2) NOT NULL DEFAULT '0.00',
   `pay_now` float(10,2) NOT NULL DEFAULT '0.00',
-  `extra` text DEFAULT NULL,
+  `extra` text COLLATE utf8mb4_unicode_ci,
   `created` datetime NOT NULL,
-  `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `created_by_alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `modified` datetime NOT NULL,
   `checked_out` int UNSIGNED DEFAULT NULL,
   `checked_out_time` datetime DEFAULT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `licence` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1001 ;
-
--- 
--- Dumping data for table `#__mymuse_order`
--- 
+  `ordering` int NOT NULL DEFAULT '0',
+  `licence` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_order_item`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_order_item` (
-  `id` int(11) NOT NULL auto_increment,
-  `order_id` int(11) default NULL,
-  `product_id` int(11) default NULL,
-  `variation_id` int(11) default NULL,
-  `product_quantity` int(11) default NULL,
-  `product_item_price` decimal(10,2) default NULL,
-  `product_sku` varchar(254) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `file_name` varchar(255) default NULL,
-  `end_date` int(20) default NULL,
-  `downloads` tinyint(2) NOT NULL default '0',
+CREATE TABLE `#__mymuse_order_item` (
+  `id` int NOT NULL,
+  `order_id` int DEFAULT NULL,
+  `product_id` int DEFAULT NULL,
+  `variation_id` int DEFAULT NULL,
+  `product_quantity` int DEFAULT NULL,
+  `product_item_price` decimal(10,2) DEFAULT NULL,
+  `product_sku` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `end_date` int DEFAULT NULL,
+  `downloads` tinyint NOT NULL DEFAULT '0',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `product_in_stock` int(1) default NULL,
-  PRIMARY KEY  (`id`)
+  `product_in_stock` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 
--- Dumping data for table `#__mymuse_order_item`
--- 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_order_payment`
--- 
-CREATE TABLE IF NOT EXISTS `#__mymuse_order_payment` (
-  `id` int(10) NOT NULL auto_increment,
-  `order_id` int(11) NOT NULL,
-  `currency` varchar(10) NOT NULL DEFAULT '',
-  `plugin` text NOT NULL,
-  `institution` varchar(255) NOT NULL DEFAULT '',
-  `date` varchar(255) NOT NULL DEFAULT '',
-  `description` text NOT NULL,
-  `amountin` decimal(10,2) NOT NULL default '0.00',
-  `fees` decimal(10,2) NOT NULL default '0.00',
-  `amountout` decimal(10,2) NOT NULL default '0.00',
-  `rate` decimal(10,5) NOT NULL default '1.00000',
-  `transaction_id` text NOT NULL,
-  `transaction_status` varchar(255) NOT NULL DEFAULT '',
-  `transaction_details` text NOT NULL,
-  `refundid` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `order_id` (`order_id`),
-  KEY `date` (`date`),
-  KEY `transaction_id` (`transaction_id`(32))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+--
 
+CREATE TABLE `#__mymuse_order_payment` (
+  `id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `currency` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `plugin` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `institution` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amountin` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `fees` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `amountout` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `rate` decimal(10,5) NOT NULL DEFAULT '1.00000',
+  `transaction_id` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transaction_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `transaction_details` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `refundid` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_order_shipping`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_order_shipping` (
-  `id` int(11) NOT NULL auto_increment,
-  `order_id` int(11) NOT NULL,
-  `ship_type` varchar(255) default NULL,
-  `ship_carrier_code` varchar(255) default NULL,
-  `ship_carrier_name` varchar(255) default NULL,
-  `ship_method_code` varchar(255) NOT NULL default '',
-  `ship_method_name` varchar(255) default NULL,
-  `cost` decimal(10,2) NOT NULL default '0.00',
-  `ship_handling_type` varchar(255) default NULL,
-  `ship_handling_fee` varchar(255) default NULL,
-  `ship_handling_charge` decimal(10,2) NOT NULL default '0.00',
+CREATE TABLE `#__mymuse_order_shipping` (
+  `id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `ship_type` varchar(255) DEFAULT NULL,
+  `ship_carrier_code` varchar(255) DEFAULT NULL,
+  `ship_carrier_name` varchar(255) DEFAULT NULL,
+  `ship_method_code` varchar(255) NOT NULL DEFAULT '',
+  `ship_method_name` varchar(255) DEFAULT NULL,
+  `cost` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `ship_handling_type` varchar(255) DEFAULT NULL,
+  `ship_handling_fee` varchar(255) DEFAULT NULL,
+  `ship_handling_charge` decimal(10,2) NOT NULL DEFAULT '0.00',
   `tracking_id` mediumtext NOT NULL,
-  `shipmentmethod_id` mediumint(1) UNSIGNED DEFAULT NULL,
+  `shipmentmethod_id` mediumint UNSIGNED DEFAULT NULL,
   `order_weight` decimal(10,4) DEFAULT NULL,
   `shipment_weight_unit` char(3) DEFAULT 'LB',
-  `tax_id` smallint(1) DEFAULT NULL,
-  `created` datetime default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8 ;
+  `tax_id` smallint DEFAULT NULL,
+  `created` datetime DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_order_status`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_order_status` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` char(1) NOT NULL,
-  `name` varchar(64) default NULL,
-  `ordering` int(11) default NULL,
-  PRIMARY KEY  (`id`)
+CREATE TABLE `#__mymuse_order_status` (
+  `id` int NOT NULL,
+  `code` char(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ordering` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 
+--
 -- Dumping data for table `#__mymuse_order_status`
--- 
+--
 
-INSERT IGNORE INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) VALUES 
+INSERT INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) VALUES
 (1, 'P', 'Pending', 1),
 (2, 'C', 'Confirmed', 2),
 (3, 'X', 'Cancelled', 3),
 (4, 'S', 'Shipped', 4),
 (5, 'I', 'Invalid', 5);
 
+-- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_product`
--- 
-CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) NOT NULL DEFAULT '',
-  `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
-  `parentid` int(11) unsigned NOT NULL DEFAULT '0',
-  `track_parentid` int(11) unsigned NOT NULL DEFAULT '0',
-  `product_sku` varchar(64) NOT NULL DEFAULT '',
-  
-  `title_alias` varchar(255) DEFAULT NULL,
-  `catid` int(11) NOT NULL,
-  `artistid` int(11) NOT NULL,
-  `introtext` mediumtext default NULL,
-  `fulltext` mediumtext default NULL,
-  `state` tinyint(3) NOT NULL DEFAULT '0',
-  `price` decimal(10,2) default NULL,
+--
+
+CREATE TABLE `#__mymuse_product` (
+  `id` int UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `asset_id` int UNSIGNED NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
+  `parentid` int UNSIGNED NOT NULL DEFAULT '0',
+  `track_parentid` int UNSIGNED NOT NULL DEFAULT '0',
+  `product_sku` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `title_alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `catid` int NOT NULL,
+  `artistid` int NOT NULL,
+  `introtext` mediumtext COLLATE utf8mb4_unicode_ci,
+  `fulltext` mediumtext COLLATE utf8mb4_unicode_ci,
+  `state` tinyint NOT NULL DEFAULT '0',
+  `price` decimal(10,2) DEFAULT NULL,
   `product_discount` decimal(10,2) DEFAULT NULL,
-  `version` int(11) unsigned NOT NULL DEFAULT '1',
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `access` int(11) unsigned NOT NULL DEFAULT '0',
-  `hits` int(11) unsigned NOT NULL DEFAULT '0',
+  `version` int UNSIGNED NOT NULL DEFAULT '1',
+  `ordering` int NOT NULL DEFAULT '0',
+  `access` int UNSIGNED NOT NULL DEFAULT '0',
+  `hits` int UNSIGNED NOT NULL DEFAULT '0',
   `product_physical` tinyint(1) NOT NULL DEFAULT '0',
   `product_downloadable` tinyint(1) NOT NULL DEFAULT '0',
   `product_allfiles` tinyint(1) NOT NULL DEFAULT '0',
-  `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
-  `language` char(7) NOT NULL COMMENT 'The language code for the article.',
+  `featured` tinyint UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
+  `language` char(7) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The language code for the article.',
   `product_release_date` date DEFAULT NULL,
-  `special_status` varchar(32) NULL,
-  `product_in_stock` int(11) NOT NULL DEFAULT '1',
-  `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
-  `recording` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
-  `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
-  `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry.',
-  `file_preview` varchar(255) default NULL,
-  `file_time` varchar(32) NULL,
-  `isrc_code` varchar(255) default NULL,
-  `list_image` varchar(255) default NULL,
-  `detail_image` varchar(255) default NULL,
-  `product_images` varchar(1024) DEFAULT NULL,
+  `special_status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_in_stock` int NOT NULL DEFAULT '1',
+  `attribs` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Registry.',
+  `recording` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Registry.',
+  `physical` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Registry.',
+  `digital` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Registry.',
+  `file_preview` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_time` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isrc_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `list_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `detail_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_images` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int UNSIGNED NOT NULL DEFAULT '0',
-  `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `created_by_alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `modified` datetime NOT NULL,
   `modified_by` int UNSIGNED NOT NULL DEFAULT '0',
   `checked_out` int UNSIGNED DEFAULT NULL,
   `checked_out_time` datetime DEFAULT NULL,
   `publish_up` datetime DEFAULT NULL,
   `publish_down` datetime DEFAULT NULL,
-  `metakey` text COLLATE utf8mb4_unicode_ci,
-  `metadesc` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.',
-  PRIMARY KEY (`id`),
-  KEY `idx_access` (`access`),
-  KEY `idx_checkout` (`checked_out`),
-  KEY `idx_state` (`state`),
-  KEY `idx_catid` (`catid`),
-  KEY `idx_artistid` (`artistid`),
-  KEY `idx_createdby` (`created_by`)
+  `metakey` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `metadesc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `metadata` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
--- 
--- Dumping data for table `#__mymuse_product`
--- 
-
 
 -- --------------------------------------------------------
 
-
--- 
+--
 -- Table structure for table `#__mymuse_product_attribute`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_attribute` (
-  `id` int(11) NOT NULL auto_increment,
-  `product_id` int(11) NOT NULL default '0',
-  `product_attribute_sku_id` int(11) NOT NULL default '0',
+CREATE TABLE `#__mymuse_product_attribute` (
+  `id` int NOT NULL,
+  `product_id` int NOT NULL DEFAULT '0',
+  `product_attribute_sku_id` int NOT NULL DEFAULT '0',
   `attribute_name` varchar(255) NOT NULL,
-  `attribute_value` char(255) default NULL,
-  PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8  ;
-
--- 
--- Dumping data for table `#__mymuse_product_attribute`
--- 
+  `attribute_value` char(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_product_attribute_sku`
--- 
+--
 
-
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_attribute_sku` (
-  `id` int(11) NOT NULL auto_increment,
+CREATE TABLE `#__mymuse_product_attribute_sku` (
+  `id` int NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `product_parent_id` int(11) NOT NULL DEFAULT '0',
-  `ordering` int(11) DEFAULT NULL,
+  `product_parent_id` int NOT NULL DEFAULT '0',
+  `ordering` int DEFAULT NULL,
   `extra_base` tinytext NOT NULL,
-  `extra_css` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- 
--- Dumping data for table `#__mymuse_product_attribute_sku`
--- 
+  `extra_css` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
-
-
--- 
+--
 -- Table structure for table `#__mymuse_product_category_xref`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_category_xref` (
-  `catid` int(11) NOT NULL default '0',
-  `product_id` int(11) NOT NULL default '0'
+CREATE TABLE `#__mymuse_product_category_xref` (
+  `catid` int NOT NULL DEFAULT '0',
+  `product_id` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 
--- Dumping data for table `#__mymuse_product_category_xref`
--- 
-
--- --------------------------------------------------------
-
--- 
--- Table structure for table `#__mymuse_product_recommend_xref`
--- 
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
-  `product_id` int(11) NOT NULL DEFAULT '0',
-  `recommend_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 
 -- --------------------------------------------------------
 
@@ -688,62 +634,66 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
 -- Table structure for table `#__mymuse_product_rating`
 --
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_rating` (
-  `product_id` int(11) NOT NULL DEFAULT '0',
-  `rating_sum` int(10) unsigned NOT NULL DEFAULT '0',
-  `rating_count` int(10) unsigned NOT NULL DEFAULT '0',
-  `lastip` varchar(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (`product_id`)
+CREATE TABLE `#__mymuse_product_rating` (
+  `product_id` int NOT NULL DEFAULT '0',
+  `rating_sum` int UNSIGNED NOT NULL DEFAULT '0',
+  `rating_count` int UNSIGNED NOT NULL DEFAULT '0',
+  `lastip` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 
 -- --------------------------------------------------------
 
--- 
--- Table structure for table `#__mymuseshopper_group`
--- 
+--
+-- Table structure for table `#__mymuse_product_recommend_xref`
+--
 
+CREATE TABLE `#__mymuse_product_recommend_xref` (
+  `product_id` int NOT NULL DEFAULT '0',
+  `recommend_id` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_shopper_group` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `usergroups_id` int(11) NOT NULL DEFAULT '2',
-  `shopper_group_description` text,
-  `discount` tinyint(2) DEFAULT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__mymuse_shopper_group`
+--
+
+CREATE TABLE `#__mymuse_shopper_group` (
+  `id` int NOT NULL,
+  `usergroups_id` int NOT NULL DEFAULT '2',
+  `shopper_group_description` text COLLATE utf8mb4_unicode_ci,
+  `discount` tinyint DEFAULT NULL,
+  `state` int NOT NULL DEFAULT '1',
   `checked_out` int UNSIGNED DEFAULT NULL,
-  `checked_out_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `checked_out_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `#__mymuseshopper_group`
+-- Dumping data for table `#__mymuse_shopper_group`
 --
 
-INSERT IGNORE INTO `#__mymuse_shopper_group` (`id`, `usergroups_id`, `shopper_group_description`, `discount`, `state`, `checked_out`, `checked_out_time`) VALUES
-(1, '2', 'Ordinary Shoppers', 0, 1, 0, '0000-00-00 00:00:00');
-
+INSERT INTO `#__mymuse_shopper_group` (`id`, `usergroups_id`, `shopper_group_description`, `discount`, `state`, `checked_out`, `checked_out_time`) VALUES
+(1, 2, 'Ordinary Shoppers', 0, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_state`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_state` (
-  `id` int(11) NOT NULL auto_increment,
-  `country_id` int(11) NOT NULL default '1',
-  `state_name` varchar(64) default NULL,
-  `state_3_code` char(3) default NULL,
-  `state_2_code` char(2) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `idx_country_id` (`country_id`)
+CREATE TABLE `#__mymuse_state` (
+  `id` int NOT NULL,
+  `country_id` int NOT NULL DEFAULT '1',
+  `state_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state_3_code` char(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state_2_code` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 
+--
 -- Dumping data for table `#__mymuse_state`
--- 
+--
 
-INSERT IGNORE INTO `#__mymuse_state` (`id`, `country_id`, `state_name`, `state_3_code`, `state_2_code`) VALUES
+INSERT INTO `#__mymuse_state` (`id`, `country_id`, `state_name`, `state_3_code`, `state_2_code`) VALUES
 (1, 223, 'Alabama', 'ALA', 'AL'),
 (2, 223, 'Alaska', 'ALK', 'AK'),
 (3, 223, 'Arizona', 'ARZ', 'AZ'),
@@ -998,7 +948,7 @@ INSERT IGNORE INTO `#__mymuse_state` (`id`, `country_id`, `state_name`, `state_3
 (252, 105, 'Grosseto', 'GRO', 'GR'),
 (253, 105, 'Imperia', 'IMP', 'IM'),
 (254, 105, 'Isernia', 'ISE', 'IS'),
-(255, 105, 'L''Aquila', 'AQU', 'AQ'),
+(255, 105, 'L\'Aquila', 'AQU', 'AQ'),
 (256, 105, 'La Spezia', 'LAS', 'SP'),
 (257, 105, 'Latina', 'LAT', 'LT'),
 (258, 105, 'Lecce', 'LEC', 'LE'),
@@ -1231,99 +1181,289 @@ INSERT IGNORE INTO `#__mymuse_state` (`id`, `country_id`, `state_name`, `state_3
 (485, 21, 'Brussels', 'BRU', NULL);
 
 -- --------------------------------------------------------
--- 
--- Table structure for table `#__mymuse_store`
--- 
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) NOT NULL DEFAULT '',
-  `description` text NOT NULL,
+--
+-- Table structure for table `#__mymuse_store`
+--
+
+CREATE TABLE `#__mymuse_store` (
+  `id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '0',
   `checked_out` int UNSIGNED DEFAULT NULL,
   `checked_out_time` datetime DEFAULT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `params` text NOT NULL,
-  `currency` varchar(16) DEFAULT NULL,
-  `metadesc` varchar(1024) NOT NULL DEFAULT '',
-  `metakey` varchar(1024) NOT NULL DEFAULT '',
-  `metadata` varchar(2048) NOT NULL DEFAULT '',
-  `state` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
+  `ordering` int NOT NULL DEFAULT '0',
+  `access` tinyint UNSIGNED NOT NULL DEFAULT '0',
+  `params` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metadesc` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `metakey` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `metadata` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `state` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 
+--
 -- Dumping data for table `#__mymuse_store`
--- 
+--
 
-
-INSERT IGNORE INTO `#__mymuse_store` (`id`, `title`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `params`, `currency`, `metadesc`, `metakey`, `metadata`, `state`) VALUES
-(1, 'MyMuse Store', 'mymuse-store', '<p>MyMuse Store Description</p>', 1, 0, '0000-00-00 00:00:00', 1, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"123 King Gordon","address_2":"","city":"Rockville","province":"Maryland","country":"US","zip":"20850","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images/logo150sq.jpg","my_downloads_enable":"1","my_formats":["1"] ,"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"/var/www/html/mymuseJ4/joomla-cms/images/A_MyMuseDownloads","my_preview_dir":"media/com_mymuse/previews","my_download_dir_format":"0","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_price_by_product":"0","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 1);
+INSERT INTO `#__mymuse_store` (`id`, `title`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `params`, `currency`, `metadesc`, `metakey`, `metadata`, `state`) VALUES
+(1, 'MyMuse Store', 'mymuse-store', '<p>MyMuse Store Description</p>', 1, NULL, NULL, 1, 0, '{\"contact_first_name\":\"Gord\",\"contact_last_name\":\"Fisch\",\"contact_title\":\"Mister\",\"contact_email\":\"gord@arboreta.ca\",\"phone\":\"514-481-8524\",\"fax\":\"514-481-3333\",\"twitter_handle\":\"@MyMuseforJoomla\",\"currency\":\"CAD\",\"store_thumb_image\":\"images\\/logo150sq.jpg#joomlaImage:\\/\\/local-images\\/logo150sq.jpg?width=150&height=150\",\"address_1\":\"123 King Gordon\",\"address_2\":\"\",\"city\":\"Rockville\",\"province\":\"Maryland\",\"country\":\"US\",\"zip\":\"20850\",\"my_downloads_enable\":\"1\",\"my_formats\":[\"1\"],\"my_download_require_release_date\":\"0\",\"my_download_allow_preorder\":\"0\",\"my_download_max\":\"3\",\"my_download_expire\":\"432000\",\"my_download_enable_status\":\"C\",\"my_use_zip\":\"0\",\"my_download_dir\":\"\\/var\\/www\\/html\\/mymuseJ4\\/joomla-cms\\/images\\/A_MyMuseDownloads\",\"my_download_dir_format\":\"0\",\"my_preview_dir\":\"media\\/com_mymuse\\/previews\",\"my_previews_in_one_dir\":\"0\",\"my_encode_filenames\":\"0\",\"my_use_string_url_safe\":\"1\",\"my_use_shipping\":\"0\",\"my_add_shipping_auto\":\"0\",\"my_use_stock\":\"0\",\"my_check_stock\":\"0\",\"my_add_stock_zero\":\"0\",\"my_saveorder\":\"before\",\"my_currency_separator\":\",\",\"my_currency_dec_point\":\".\",\"my_currency_position\":\"0\",\"my_registration_redirect\":\"registration\",\"my_registration\":\"joomla\",\"my_noreg_password\":\"buyer\",\"my_checkout\":\"regular\",\"my_profile_key\":\"mymuse\",\"my_use_coupons\":\"0\",\"my_use_alias\":\"0\",\"top_menu_item\":\"\",\"my_delay_fadeout\":\"4000\",\"my_show_cart_preview\":\"0\",\"my_show_cart_player\":\"0\",\"my_price_by_product\":\"0\",\"my_disable_css\":\"0\",\"my_plugin_email\":\"0\",\"my_cc_webmaster\":\"1\",\"my_webmaster\":\"info@joomlamymuse.com\",\"my_webmaster_name\":\"Joe Strummer\",\"my_continue_shopping\":\"index.php?option=com_mymuse\",\"my_date_format\":\"d M Y\",\"my_email_msg\":\"\",\"my_max_recommended\":\"4\",\"my_show_original_price\":\"0\",\"my_show_category_name\":\"1\",\"my_show_sku\":\"0\",\"my_default_shopper_group_id\":\"1\",\"my_order_msg\":\"\",\"my_ownergid\":\"3\",\"my_owner_percent\":\"100\",\"my_shop_test\":\"0\",\"my_debug\":\"0\"}', 'CAD', '', '', '{\"robots\":\"\",\"author\":\"\",\"rights\":\"\",\"xreference\":\"\"}', 1);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `#__mymuse_tax_rate`
--- 
+--
 
-CREATE TABLE IF NOT EXISTS `#__mymuse_tax_rate` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `#__mymuse_tax_rate` (
+  `id` int NOT NULL,
   `published` tinyint(1) DEFAULT '0',
-  `province` varchar(3) DEFAULT NULL,
-  `country` varchar(3) DEFAULT NULL,
+  `province` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tax_rate` decimal(10,4) DEFAULT NULL,
-  `tax_applies_to` char(1) NOT NULL DEFAULT 'S',
-  `tax_name` varchar(32) NOT NULL DEFAULT 'Tax',
-  `tax_format` set('RATE','AMOUNT') NOT NULL DEFAULT 'RATE',
-  `compounded` char(1) NOT NULL DEFAULT '0',
-  `ordering` tinyint(2) DEFAULT '99',
+  `tax_applies_to` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'S',
+  `tax_name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Tax',
+  `tax_format` set('RATE','AMOUNT') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'RATE',
+  `compounded` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `ordering` tinyint DEFAULT '99',
   `checked_out` int UNSIGNED DEFAULT NULL,
-  `checked_out_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `checked_out_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
--- 
--- Dumping data for table `#__mymuse_tax_rate`
--- 
 
--- To enable tags on MyMuse Categories
-INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
+--
+-- Indexes for dumped tables
+--
 
-('MyMuse Category', 'com_mymuse.category', 
-'{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},
-"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', 
-'', 
-'{"common":{"core_content_item_id":"id","core_title":"title","core_state":"published","core_alias":"alias","core_created_time":"created_time","core_modified_time":"modified_time","core_body":"description", "core_hits":"hits","core_publish_up":"null","core_publish_down":"null","core_access":"access", "core_params":"params", "core_featured":"null", "core_metadata":"metadata", "core_language":"language", "core_images":"null", "core_urls":"null", "core_version":"version", "core_ordering":"null", "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"parent_id", "core_xreference":"null", "asset_id":"asset_id"}, "special":{"parent_id":"parent_id","lft":"lft","rgt":"rgt","level":"level","path":"path","extension":"extension","note":"note"}}', 
-'mymuseHelperRoute::getCategoryRoute', 
-'{"formFile":"administrator/components/com_categories/models/forms/category.xml", 
-"hideFields":["asset_id","checked_out","checked_out_time","version","lft","rgt","level","path","extension"], 
-"ignoreChanges":["modified_user_id", "modified_time", "checked_out", "checked_out_time", "version", "hits", "path"],
-"convertToInt":["publish_up", "publish_down"], 
-"displayLookup":[{"sourceColumn":"created_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},
-{"sourceColumn":"modified_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},
-{"sourceColumn":"parent_id","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}]}'),
+--
+-- Indexes for table `#__mymuse_country`
+--
+ALTER TABLE `#__mymuse_country`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_country_name` (`country_name`);
 
+--
+-- Indexes for table `#__mymuse_coupon`
+--
+ALTER TABLE `#__mymuse_coupon`
+  ADD PRIMARY KEY (`id`);
 
--- To enable tags on MyMuse Products
-INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
-('MyMuse Product', 'com_mymuse.product', 
-'{"special":{"dbtable":"#__mymuse_product","key":"id","type":"ProductTable","prefix":"Joomla\Component\Mymuse\Administrator\Table","config":"array()"},
-"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"\Joomla\CMS\Table","config":"array()"}}', '', 
-'{"common":{"core_content_item_id":"id","core_title":"title","core_state":"state","core_alias":"alias","core_created_time":"created","core_modified_time":"modified",
-"core_body":"introtext", "core_hits":"hits","core_publish_up":"publish_up","core_publish_down":"publish_down","core_access":"access", "core_params":"attribs", 
-"core_featured":"featured", "core_metadata":"metadata", "core_language":"language", "core_images":"images", "core_urls":"urls", "core_version":"version", "core_ordering":"ordering", 
-"core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"catid", "asset_id":"asset_id", "note":"note"}, 
-"special":{"fulltext":"fulltext"}}', 
-'mymuseHelperRoute::getProductRoute', 
-'{"formFile":"administrator/components/com_mymuse/forms/product.xml", 
-"hideFields":["asset_id","checked_out","checked_out_time","version"],
-"ignoreChanges":["modified_by", "modified", "checked_out", "checked_out_time", "version", "hits", "ordering"],
-"convertToInt":["publish_up", "publish_down", "featured", "ordering"],"
-displayLookup":[{"sourceColumn":"catid","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"},
-{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},
-{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},
-{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"} ]}');
+--
+-- Indexes for table `#__mymuse_currency`
+--
+ALTER TABLE `#__mymuse_currency`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_currency_name` (`currency_name`);
 
+--
+-- Indexes for table `#__mymuse_downloads`
+--
+ALTER TABLE `#__mymuse_downloads`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_product_filename` (`product_filename`);
 
+--
+-- Indexes for table `#__mymuse_format`
+--
+ALTER TABLE `#__mymuse_format`
+  ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `#__mymuse_order`
+--
+ALTER TABLE `#__mymuse_order`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_order_item`
+--
+ALTER TABLE `#__mymuse_order_item`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_order_payment`
+--
+ALTER TABLE `#__mymuse_order_payment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `date` (`date`),
+  ADD KEY `transaction_id` (`transaction_id`(32));
+
+--
+-- Indexes for table `#__mymuse_order_shipping`
+--
+ALTER TABLE `#__mymuse_order_shipping`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_order_status`
+--
+ALTER TABLE `#__mymuse_order_status`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_product`
+--
+ALTER TABLE `#__mymuse_product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_access` (`access`),
+  ADD KEY `idx_checkout` (`checked_out`),
+  ADD KEY `idx_state` (`state`),
+  ADD KEY `idx_catid` (`catid`),
+  ADD KEY `idx_artistid` (`artistid`),
+  ADD KEY `idx_createdby` (`created_by`);
+
+--
+-- Indexes for table `#__mymuse_product_attribute`
+--
+ALTER TABLE `#__mymuse_product_attribute`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_product_attribute_sku`
+--
+ALTER TABLE `#__mymuse_product_attribute_sku`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_product_rating`
+--
+ALTER TABLE `#__mymuse_product_rating`
+  ADD PRIMARY KEY (`product_id`);
+
+--
+-- Indexes for table `#__mymuse_shopper_group`
+--
+ALTER TABLE `#__mymuse_shopper_group`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_state`
+--
+ALTER TABLE `#__mymuse_state`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_country_id` (`country_id`);
+
+--
+-- Indexes for table `#__mymuse_store`
+--
+ALTER TABLE `#__mymuse_store`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__mymuse_tax_rate`
+--
+ALTER TABLE `#__mymuse_tax_rate`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_country`
+--
+ALTER TABLE `#__mymuse_country`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=245;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_coupon`
+--
+ALTER TABLE `#__mymuse_coupon`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_currency`
+--
+ALTER TABLE `#__mymuse_currency`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_downloads`
+--
+ALTER TABLE `#__mymuse_downloads`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_format`
+--
+ALTER TABLE `#__mymuse_format`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_order`
+--
+ALTER TABLE `#__mymuse_order`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_order_item`
+--
+ALTER TABLE `#__mymuse_order_item`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_order_payment`
+--
+ALTER TABLE `#__mymuse_order_payment`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_order_shipping`
+--
+ALTER TABLE `#__mymuse_order_shipping`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_order_status`
+--
+ALTER TABLE `#__mymuse_order_status`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_product`
+--
+ALTER TABLE `#__mymuse_product`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_product_attribute`
+--
+ALTER TABLE `#__mymuse_product_attribute`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_product_attribute_sku`
+--
+ALTER TABLE `#__mymuse_product_attribute_sku`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_shopper_group`
+--
+ALTER TABLE `#__mymuse_shopper_group`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_state`
+--
+ALTER TABLE `#__mymuse_state`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=486;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_store`
+--
+ALTER TABLE `#__mymuse_store`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `#__mymuse_tax_rate`
+--
+ALTER TABLE `#__mymuse_tax_rate`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

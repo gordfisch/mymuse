@@ -8,13 +8,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\Registry\Registry;
 
-
+defined('_JEXEC') or die('Restricted access');
 /**
  * Script file of MyMuse component
  *
@@ -28,12 +30,19 @@ class Com_MymuseInstallerScript
      * @var    string
      * @since  5.0.0
      */
-    private $minimumJoomlaVersion = '4.0';
+    private $minimumJoomlaVersion = '3.10.11';
+    /**
+     * Target Joomla version
+     *
+     * @var    string
+     * @since  5.0.0
+     */
+    private $targetJoomlaVersion = '4.2.3';
     /**
      * Minimum PHP version to check
      *
      * @var    string
-     * @since  5.0.0
+     * @since  5.0.q0
      */
     private $minimumPHPVersion = JOOMLA_MINIMUM_PHP;
 
@@ -69,6 +78,217 @@ class Com_MymuseInstallerScript
      */
     var $mymuse_params = '';
 
+    /**
+     * convertTo4
+     *
+     * @var    int
+     * @since  5.0.0
+     */
+    var $convertTo4 = 0;
+
+    /**
+     * actions
+     *
+     * @var    int
+     * @since  5.0.0
+     */
+    var $actions = array();
+
+    /**
+     * convert_actions
+     *
+     * @var    int
+     * @since  5.0.0
+     */
+    var $convert_actions = array();
+
+
+   /**
+     * Function called before extension installation/update/removal procedure commences
+     *
+     * @param   string            $type    The type of change (install, update or discover_install, not uninstall)
+     * @param   InstallerAdapter  $parent  The class calling this method
+     *
+     * @return  boolean  True on success
+     *
+     * @since  1.0.0
+     *
+     * @throws Exception
+     */
+    public function preflight($type, $parent): bool
+    {
+
+        if ($type !== 'uninstall')
+        {
+            // Check for the minimum PHP version before continuing
+            if (!empty($this->minimumPHPVersion) && version_compare(PHP_VERSION, $this->minimumPHPVersion, '<'))
+            {
+                /*
+                Log::add(
+                    Text::sprintf('JLIB_INSTALLER_MINIMUM_PHP', $this->minimumPHPVersion),
+                    Log::WARNING,
+                    'jerror'
+                );
+                */
+                return false;
+            }
+            // Check for the minimum Joomla version before continuing
+            if (!empty($this->minimumJoomlaVersion) && version_compare(JVERSION, $this->minimumJoomlaVersion, '<'))
+            {
+               /* Log::add(
+                    Text::sprintf('JLIB_INSTALLER_MINIMUM_JOOMLA', $this->minimumJoomlaVersion),
+                    Log::WARNING,
+                    'jerror'
+                );
+                */
+                return false;
+            }
+        }
+        /*
+        Log::add(
+            Text::_('COM_MYMUSE_INSTALLERSCRIPT_PREFLIGHT'),
+            Log::WARNING,
+            'jerror'
+        );
+        */
+        $db = Factory::getDBO();
+        $query = "SELECT * from #__extensions WHERE element = 'com_mymuse' ";
+
+        $db->setQuery($query);
+        if($res = $db->loadObject()){
+            $this->already_installed = 1;
+            $manifest = json_decode($res->manifest_cache);
+            $this->old_version = $manifest ->version;
+
+            if ( version_compare( $this->old_version, '5.0', '<' )) {  
+                $this->convertTo4 = 1;
+                $session  = Factory::getSession();
+                $session->set('com_mymuse.convertTo4', true);
+                //echo "<p>Must convert to MyMuse 5</p>";
+
+            }
+            // get the current css file
+            if(file_exists(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse.css')){
+                $this->css = file_get_contents(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse.css');
+            }
+            $myFile = JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse_old.css';
+            
+            $name = Text::_('COM_MYMUSE_SAVE_CSS');
+            if($this->css != ""){
+                if(!FILE::write($myFile, $this->css)){
+                    $alt = Text::_( "COM_MYMUSE_FAILED" );
+                    $astatus = 0;
+                    $message =  Text::_("COM_MYMUSE_SAVE_CSS_FAILED");
+                }else{
+                    $alt = Text::_( "COM_MYMUSE_INSTALLED" );
+                    $astatus = 1;
+                    $message =  Text::_("COM_MYMUSE_SAVE_CSS_SUCCESS");
+                }
+                $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+            }
+            $parent->already_installed = $this->already_installed;
+            $parent->old_version = $this->old_version;
+
+        }
+        
+
+        if($this->convertTo4 == 1){
+
+            echo "<h3>Convert to Mymuse 5 for Joomla 4</h3>";
+            echo "<p>Old MyMuse version = ". $this->old_version  ."</p>";
+            $plugins = array();
+            $modules = array();
+            $db = Factory::getDBO();
+            $manifest = $parent->getManifest();
+            $super = $parent->getParent();
+
+            /* remove plugins */
+            $query = "SELECT * FROM `#__extensions` WHERE `name` LIKE '%mymuse%' AND `type` = 'plugin' ORDER BY `extension_id` ASC";
+            $db->setQuery($query);
+            if($res = $db->loadObjectList())
+            {
+                foreach ($res as $plugin) {
+                    $plugins[] = array(
+                        'id' => $plugin->extension_id,
+                        'name' => (string) $plugin->name,
+                        'type' => (string) 'plugin',
+                        'folder' => $super->getPath('source').'/'.(string) $plugin->folder,
+                        'installer' => new JInstaller,
+                        'status' => '<span style="color: red;">false</span>');
+
+                }
+            }
+            if(count($plugins)){
+                for ($i = 0; $i < count($plugins); $i++) {
+                    $plugin =& $plugins[$i];
+                    
+                    if ($plugins[$i]['installer']->uninstall('plugin', $plugins[$i]['id'])) {
+                        $plugins[$i]['status'] = true;
+                    }
+                    $this->convert_actions [] = array (
+                        'name' => "Removing old Plugin: ",
+                        'message' => $plugins[$i]['id']." ".$plugins[$i]['name'],
+                        'status' => $plugins[$i]['status']
+                    );
+   
+
+                }
+            }
+
+            /* remove modules */
+            $query = "SELECT * FROM `#__extensions` WHERE `name` LIKE '%mymuse%' AND `type` = 'module' ORDER BY `extension_id` ASC";
+            $db->setQuery($query);
+            if($res = $db->loadObjectList())
+            {
+                foreach ($res as $module) {
+                    $modules[] = array(
+                        'id' => $module->extension_id,
+                        'name' => (string) $module->name,
+                        'type' => (string) 'module',
+                        'installer' => new JInstaller,
+                        'status' => false);
+
+                }
+            }
+            if(count($modules)){
+                for ($i = 0; $i < count($modules); $i++) {
+                    $module =& $modules[$i];
+                    if ($modules[$i]['installer']->uninstall('module', $modules[$i]['id'])) {
+                        $modules[$i]['status'] = true;
+                    }
+                  
+                    $this->convert_actions [] = array (
+                        'name' => "Removing old Module: ",
+                        'message' => $modules[$i]['id']." ".$modules[$i]['name'],
+                        'status' => $modules[$i]['status']
+                    );
+                }
+            }
+            //remove update sites
+            $query = 'DELETE FROM #__update_sites WHERE name LIKE "%mymuse%" ';
+            $db->setQuery($query);
+            try
+            {
+                $db->execute();
+                $status = true;
+            }
+            catch (\Exception $e)
+            {
+                $query = $e->getMessage();
+                $status = false;
+                //return false;
+            }
+            $this->convert_actions [] = array (
+                        'name' => "Removing old Update Sites: ",
+                        'message' => "",
+                        'status' => $status
+                    );
+         
+
+        }
+
+        return true;
+    }
     /**
      * Method to install the extension
      *
@@ -116,7 +336,7 @@ class Com_MymuseInstallerScript
         for ($i = 0; $i < count($plugins); $i++) {
             $plugin =& $plugins[$i];
             $query = "SELECT extension_id FROM #__extensions
-			WHERE element ='".$plugins[$i]['type']."'";
+            WHERE element ='".$plugins[$i]['type']."'";
             $db->setQuery($query);
             $res = $db->loadResult();
             echo $res." ".$plugins[$i]['type']."<br />";
@@ -140,7 +360,7 @@ class Com_MymuseInstallerScript
         for ($i = 0; $i < count($modules); $i++) {
             $module =& $modules[$i];
             $query = "SELECT extension_id FROM #__extensions
-			WHERE element ='".$modules[$i]['type']."'";
+            WHERE element ='".$modules[$i]['type']."'";
             $db->setQuery($query);
             $res = $db->loadResult();
             if($res){
@@ -169,62 +389,8 @@ class Com_MymuseInstallerScript
         /*echo Text::_('COM_MYMUSE_INSTALLERSCRIPT_UPDATE');*/
         return true;
     }
-    /**
-     * Function called before extension installation/update/removal procedure commences
-     *
-     * @param   string            $type    The type of change (install, update or discover_install, not uninstall)
-     * @param   InstallerAdapter  $parent  The class calling this method
-     *
-     * @return  boolean  True on success
-     *
-     * @since  1.0.0
-     *
-     * @throws Exception
-     */
-    public function preflight($type, $parent): bool
-    {
-        if ($type !== 'uninstall')
-        {
-            // Check for the minimum PHP version before continuing
-            if (!empty($this->minimumPHPVersion) && version_compare(PHP_VERSION, $this->minimumPHPVersion, '<'))
-            {
-                Log::add(
-                    Text::sprintf('JLIB_INSTALLER_MINIMUM_PHP', $this->minimumPHPVersion),
-                    Log::WARNING,
-                    'jerror'
-                );
-                return false;
-            }
-            // Check for the minimum Joomla version before continuing
-            if (!empty($this->minimumJoomlaVersion) && version_compare(JVERSION, $this->minimumJoomlaVersion, '<'))
-            {
-                Log::add(
-                    Text::sprintf('JLIB_INSTALLER_MINIMUM_JOOMLA', $this->minimumJoomlaVersion),
-                    Log::WARNING,
-                    'jerror'
-                );
-                return false;
-            }
-        }
 
-
-        $db = Factory::getDBO();
-        $query = "SELECT * from #__extensions WHERE name = 'mymuse' ";
-
-        $db->setQuery($query);
-        if($res = $db->loadObject()){
-            $this->already_installed = 1;
-            $manifest = json_decode($res->manifest_cache);
-            $this->old_version = $manifest ->version;
-            // get the current css file
-            if(file_exists(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse.css')){
-                $this->css = file_get_contents(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse.css');
-            }
-        }
-        $parent->already_installed = $this->already_installed;
-        $parent->old_version = $this->old_version;
-        return true;
-    }
+ 
 
 
     /**
@@ -243,26 +409,278 @@ class Com_MymuseInstallerScript
         /*echo Text::_('COM_MYMUSE_INSTALLERSCRIPT_POSTFLIGHT');*/
         $db = Factory::getDBO();
         $app = Factory::getApplication();
-        $actions = array();
         $manifest = $parent->getManifest();
 
 
+        if($this->convertTo4){
+            echo "<h3>CONVERT TO JOOMLA 4</h3>";
+            //update DB
+            $queries = array(
+                "ALTER TABLE `#__mymuse_product` DROP `urls`;",
+                "ALTER TABLE `#__mymuse_product` ADD `track_parentid` int UNSIGNED NOT NULL DEFAULT '0';",
 
-        echo "<h3>TYPE = $type</h3>";
-        // add params
+                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                "ALTER TABLE `#__mymuse_product` MODIFY `metakey` text COLLATE utf8mb4_unicode_ci;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `metadesc` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
+                "ALTER TABLE `#__mymuse_product` MODIFY `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.';",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `created` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `modified` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `publish_up` datetime DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `publish_down` datetime DEFAULT NULL; ", 
+                "ALTER TABLE `#__mymuse_product` MODIFY `introtext` mediumtext COLLATE utf8mb4_unicode_ci;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `fulltext` mediumtext COLLATE utf8mb4_unicode_ci;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `product_discount` decimal(10,2) DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `list_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `detail_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_shopper_group`  ADD `usergroups_id` int NOT NULL DEFAULT '2';",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+
+                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` DROP DEFAULT;",
+                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` SET DEFAULT '0';",
+                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+
+                "ALTER TABLE `#__mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
+                "ALTER TABLE `#__mymuse_order` ALTER `extra` DROP DEFAULT;",
+                "ALTER TABLE `#__mymuse_order` ALTER `licence` SET DEFAULT '';",
+                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                            
+                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+
+                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+
+                "ALTER TABLE `#__mymuse_order_item` ADD `variation_id` int default NULL;",
+                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `created` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `modified` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_item` MODIFY `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_item` MODIFY `end_date` int DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` ADD `special_status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+
+                "CREATE INDEX `idx_catid` ON `#__mymuse_product` (`catid`);",
+                "CREATE INDEX `idx_artistid` ON `#__mymuse_product` (`artistid`);"
+            );
+
+            foreach($queries as $query){
+                $db->setQuery($query);
+                try
+                {
+                    $db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    $query = $e->getMessage();
+
+                    //return false;
+                }
+                $this->convert_actions [] = array (
+                    'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
+                    'message' => $query,
+                    'status' => 1
+                );
+            }
+
+            $query = "SHOW COLUMNS FROM #__mymuse_format LIKE 'id'";
+            $db->setQuery($query);
+            if(!$col = $db->loadObject()){
+                $query = "
+                    CREATE TABLE `#__mymuse_format` (
+                      `id` int NOT NULL,
+                      `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                      `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                      `ordering` int NOT NULL DEFAULT '0'
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+                    --
+                    -- Dumping data for table `#_mymuse_format`
+                    --
+
+                    INSERT INTO `#__mymuse_format` (`id`, `format_key`, `format_value`, `ordering`) VALUES
+                    (1, 'MP3', 'mp3', 1),
+                    (2, 'WAV', 'wav', 2);
+                    ";
+                try
+                {
+                    $db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    echo $e->getMessage();
+                    return false;
+                }
+                $this->convert_actions [] = array (
+                    'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
+                    'message' => Text::_ ( "COM_MYMUSE_ADD_FORMAT_TABLE"),
+                    'status' => 1
+                );
+
+            }
+
+            /* update store params */
+            $query = "SELECT * from `#__mymuse_store` WHERE id='1'";
+            $db->setQuery($query);
+            $store = $db->loadObject();
+            $params = new Registry($store->params);
+            $old_formats = $params->get('my_formats');
+            $ordering = 2;
+            foreach($old_formats as $f){
+                if(strtolower($f) == 'mp3'){
+                    $new_formats[0] = 1;
+                }
+                elseif(strtolower($f) == 'wav'){
+                    $new_formats[1] = 2;
+                }
+                else{
+                    //add it to the table
+                    $ordering++;
+                    $query = 'INSERT INTO `#__mymuse_format` (`format_key`, `format_value`, ) VALUES
+                    (' . strtoupper($f) . ', ' . $f . ', ' . $ordering .')';
+                    $db->setQuery($query);
+                    $db->execute();
+                    $new_formats[] = $db->insertid();
+                }
+            }
+            $params->set('my_formats',$new_formats);
+            $new_store_params = $db->quote((string)$params);
+            $query = 'UPDATE `#__mymuse_store` SET params = '.$new_store_params . ' WHERE id=1';
+            $db->setQuery($query);
+            try
+            {
+                $db->execute();
+            }
+            catch (\Exception $e)
+            {
+                echo $query;
+                echo $e->getMessage();
+                return false;
+            }
+            $this->convert_actions [] = array (
+                'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
+                'message' => Text::_ ( "COM_MYMUSE_UPDATE_STORE_FORMAT"),
+                'status' => 1
+            );
+            
+        }
+
+        if($this->convertTo4 || $type == 'install'){
+
+            //Content Types for custom fields
+            $query = "SELECT type_id FROM #__content_types WHERE type_title='MyMuse Category'";
+            $db->setQuery($query);
+            if(!$res = $db->loadResult()) {
+
+$query = <<<END
+INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
+('MyMuse Category', 'com_mymuse.category', 
+'{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},
+"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', 
+'', 
+'{"common":{"core_content_item_id":"id","core_title":"title","core_state":"published","core_alias":"alias","core_created_time":"created_time","core_modified_time":"modified_time","core_body":"description", "core_hits":"hits","core_publish_up":"null","core_publish_down":"null","core_access":"access", "core_params":"params", "core_featured":"null", "core_metadata":"metadata", "core_language":"language", "core_images":"null", "core_urls":"null", "core_version":"version", "core_ordering":"null", "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"parent_id", "core_xreference":"null", "asset_id":"asset_id"}, "special":{"parent_id":"parent_id","lft":"lft","rgt":"rgt","level":"level","path":"path","extension":"extension","note":"note"}}', 
+'mymuseHelperRoute::getCategoryRoute', 
+'{"formFile":"administrator/components/com_categories/models/forms/category.xml", 
+"hideFielDIRECTORY_SEPARATOR":["asset_id","checked_out","checked_out_time","version","lft","rgt","level","path","extension"], 
+"ignoreChanges":["modified_user_id", "modified_time", "checked_out", "checked_out_time", "version", "hits", "path"],
+"convertToInt":["publish_up", "publish_down"], 
+"displayLookup":[{"sourceColumn":"created_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},
+{"sourceColumn":"modified_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},
+{"sourceColumn":"parent_id","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}]}');
+END;
+
+                $status = true;
+                $db->setQuery($query);
+                try
+                {
+                    $db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    echo $e->getMessage();
+
+                    $status = false;
+                }
+                $this->convert_actions [] = array (
+                    'name' => Text::_ ( "COM_MYMUSE_CUSTOM_FIELDS" ),
+                    'message' => Text::_ ( "COM_MYMUSE_CUSTOM_FIELDS_CATEGORY"),
+                    'status' => $status
+                );
+
+            }
+
+            $query = "SELECT type_id FROM #__content_types WHERE type_title='MyMuse Product'";
+            $db->setQuery($query);
+            if(!$res = $db->loadResult()) {
+    $query = <<<END
+    INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
+    ('MyMuse Product', 'com_mymuse.product', 
+    '{"special":{"dbtable":"#__mymuse_product","key":"id","type":"ProductTable","prefix":"Joomla\Component\Mymuse\Administrator\Table","config":"array()"},
+    "common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"\Joomla\CMS\Table","config":"array()"}}', '', 
+    '{"common":{"core_content_item_id":"id","core_title":"title","core_state":"state","core_alias":"alias","core_created_time":"created","core_modified_time":"modified",
+    "core_body":"introtext", "core_hits":"hits","core_publish_up":"publish_up","core_publish_down":"publish_down","core_access":"access", "core_params":"attribs", 
+    "core_featured":"featured", "core_metadata":"metadata", "core_language":"language", "core_images":"images", "core_urls":"urls", "core_version":"version", "core_ordering":"ordering", 
+    "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"catid", "asset_id":"asset_id", "note":"note"}, 
+    "special":{"fulltext":"fulltext"}}', 
+    'mymuseHelperRoute::getProductRoute', 
+    '{"formFile":"administrator/components/com_mymuse/forms/product.xml", 
+    "hideFielDIRECTORY_SEPARATOR":["asset_id","checked_out","checked_out_time","version"],
+    "ignoreChanges":["modified_by", "modified", "checked_out", "checked_out_time", "version", "hits", "ordering"],
+    "convertToInt":["publish_up", "publish_down", "featured", "ordering"],"
+    displayLookup":[{"sourceColumn":"catid","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"},
+    {"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},
+    {"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},
+    {"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"} ]}');
+    END;
+                $status = true;
+                $db->setQuery($query);
+                try
+                {
+                    $db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    echo $e->getMessage();
+
+                    $status = false;
+                }
+                $this->convert_actions [] = array (
+                    'name' => Text::_ ( "COM_MYMUSE_CUSTOM_FIELDS" ),
+                    'message' => Text::_ ( "COM_MYMUSE_CUSTOM_FIELDS_PRODUCT"),
+                    'status' => $status
+                );
+            }
+        }
+        
+        // add params for mymuse extensions
         if ($type == 'install') {
 
             $query = $db->getQuery(true);
             $query->update($db->quoteName('#__extensions'));
-            $defaults = '{"store_show_title":"1","store_link_titles":"1","store_show_product_image":"1","store_product_image_height":"0","store_show_intro_text":"1","store_show_readmore":"0","store_show_readmore_title":"1","show_title":"1","show_intro":"1","product_show_product_image":"1","product_product_image_height":"0","show_recording_details":"1","show_minicart":"1","product_show_quantity":"0","product_item_selectbox":"1","show_recommends":"1","show_category_recommends":"1","product_show_tracks":"1","orderby_track":"alpha","order_track_date":"product_made_date","product_player_type":"single","product_player_width":"","product_player_height":"","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_category":"0","link_category":"0","show_parent_category":"0","link_parent_category":"0","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_readmore":"0","show_readmore_title":"1","show_icons":"0","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_noauth":"0","show_base_description":"1","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","cat_subcat_image_height":"0","category_layout":"_:default","show_category_title":"1","show_description":"1","show_description_image":"1","category_image_height":"0","maxLevel":"-1","subcat_columns":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"1","page_subheading":"","category_show_all_products":"1","category_show_product_image":"1","category_product_image_height":"0","category_show_intro_text":"1","category_product_link_titles":"1","category_show_comment_total":"0","num_leading_articles":"0","num_intro_articles":"10","num_columns":"2","num_links":"4","multi_column_order":"1","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_artist":"1","list_show_album":"1","list_show_file_length":"0","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"1","list_show_author":"0","list_show_sales":"0","list_show_discount":"0","display_num":"10","show_alphabet":"1","featured":"0","group_by":"","product_artist_alternate_itemid":"101","orderby_pri":"none","orderby_sec":"rdate","order_date":"product_made_date","show_pagination":"2","show_pagination_results":"1","category_match_level":"product","show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","username":"","password":""}'; // JSON format for the parameters
+            $defaults = '{"store_show_title":"1","store_link_titles":"1","store_show_product_image":"1","store_product_image_height":"0","store_show_intro_text":"1","store_show_readmore":"0","store_show_readmore_title":"1","show_title":"1","show_intro":"1","product_show_product_image":"1","product_product_image_height":"0","show_recording_details":"1","show_minicart":"1","product_show_quantity":"0","product_item_selectbox":"1","show_recommenDIRECTORY_SEPARATOR":"1","show_category_recommenDIRECTORY_SEPARATOR":"1","product_show_tracks":"1","orderby_track":"alpha","order_track_date":"product_made_date","product_player_type":"single","product_player_width":"","product_player_height":"","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_category":"0","link_category":"0","show_parent_category":"0","link_parent_category":"0","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_readmore":"0","show_readmore_title":"1","show_icons":"0","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_noauth":"0","show_base_description":"1","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","cat_subcat_image_height":"0","category_layout":"_:default","show_category_title":"1","show_description":"1","show_description_image":"1","category_image_height":"0","maxLevel":"-1","subcat_columns":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"1","page_subheading":"","category_show_all_products":"1","category_show_product_image":"1","category_product_image_height":"0","category_show_intro_text":"1","category_product_link_titles":"1","category_show_comment_total":"0","num_leading_articles":"0","num_intro_articles":"10","num_columns":"2","num_links":"4","multi_column_order":"1","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_artist":"1","list_show_album":"1","list_show_file_length":"0","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"1","list_show_author":"0","list_show_sales":"0","list_show_discount":"0","display_num":"10","show_alphabet":"1","featured":"0","group_by":"","product_artist_alternate_itemid":"101","orderby_pri":"none","orderby_sec":"rdate","order_date":"product_made_date","show_pagination":"2","show_pagination_results":"1","category_match_level":"product","show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","username":"","password":""}'; // JSON format for the parameters
             $query->set($db->quoteName('params') . ' = ' . $db->quote($defaults));
             $query->where($db->quoteName('name') . ' = ' . $db->quote('mymuse'));
             $db->setQuery($query);
-            if(!$db->execute()){
-
-                echo($query->__toString());
-                exit;
+            try
+            {
+                $db->execute();
             }
+            catch (\Exception $e)
+            {
+                echo $e->getMessage();
+
+                return false;
+            }
+            $this->actions [] = array (
+                'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
+                'message' => Text::_ ( "COM_MYMUSE_UPDATE_EXTENSIONS_PARAMS"),
+                'status' => 1
+            );
 
         }
 
@@ -273,7 +691,7 @@ class Com_MymuseInstallerScript
             $extensions = array();
 
             // reseting post installation session variables
-            $session  = JFactory::getSession();
+            $session  = Factory::getSession();
             $session->set('mymuse.postinstall', false);
             $session->set('mymuse.allplgpublish', false);
 
@@ -330,46 +748,74 @@ class Com_MymuseInstallerScript
 
             // rollback on installation errors
             if ($error) {
-                $this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Error'), 'component');
+                $this->parent->abort(Text::_('Component').' '.Text::_('Install').': '.Text::_('Error'), 'component');
                 for ($i = 0; $i < count($extensions); $i++) {
                     if ($extensions[$i]['status']) {
-                        $extensions[$i]['installer']->abort(JText::_($extensions[$i]['type']).' '.JText::_('Install').': '.JText::_('Error'), $extensions[$i]['type']);
+                        $extensions[$i]['installer']->abort(Text::_($extensions[$i]['type']).' '.Text::_('Install').': '.Text::_('Error'), $extensions[$i]['type']);
                         $extensions[$i]['status'] = false;
                     }
                 }
             }
 
+            if(count($this->convert_actions)){
+                ?>
+                <table class="adminlist">
+                    <thead>
+                    <tr>
+                        <th class="title"><?php echo Text::_('COM_MYMUSE_CONVERT_ACTIONS'); ?></th>
+                        <th class="title"><?php echo Text::_('COM_MYMUSE_ACTIONS'); ?></th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <?php
+                    $i = 0;
+                    foreach ($this->convert_actions as $ext) : ?>
+                        <tr class="row<?php echo $i % 2; $i++; ?>">
+                            <td class="key"><?php echo $ext['name']; ?> (<?php echo Text::_($ext['message']); ?>)</td>
+                            <td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
+                                <span style="<?php echo $style; ?>"><?php echo $ext['status'] ? Text::_('Success') : Text::_('NOT Successful'); ?>
+                            </span></td>
+                        </tr>
+                    <?php endforeach; ?>
 
-            ?>
+                    </tbody>
+                </table>
+            <?php } ?>
+
             <table cellpadding="4" cellspacing="0" border="0" width="800">
                 <tr>
-                    <td valign="top"><img
+                    <td valign="top" width="40%"><img
                             src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
-                            height="325" width="190" alt="MyMuse Logo" align="left" /></td>
-                    <td valign="top"><strong>MyMuse</strong><br /> <span>MyMuse
-                                        for Joomla! 3</span><br /> <font class="small">by <a
+                            height="325" width="190" alt="COM_MYMUSE Logo" align="left" /></td>
+                    <td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
+                                        for Joomla! 4</span><br /> <font class="small">by <a
                                 href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
                         </font><br /> To get started
                         <ol>
-                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE');?> <a
-                                    href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_('STORE'); ?></a></li>
-                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE');?> <a
-                                    href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_('COM_MYMUSE_PLUGINS'); ?></a>
+                            <li><?php echo Text::_('COM_MYMUSE_INSTALL_CONFIGURE');?> <a
+                                    href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo Text::_('STORE'); ?></a></li>
+                            <li><?php echo Text::_('COM_MYMUSE_INSTALL_CONFIGURE');?> <a
+                                    href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo Text::_('COM_MYMUSE_PLUGINS'); ?></a>
                             </li>
-                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
+                            <li><?php echo Text::_('COM_MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
                             </li>
-                            <li><?php echo JText::_('COM_MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
+                            <li><?php echo Text::_('COM_MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
                             </li>
                         </ol></td>
                 </tr>
             </table>
 
-            <h3><?php echo JText::_('Additional Extensions'); ?></h3>
+            <h3><?php echo Text::_('Additional Extensions'); ?></h3>
             <table class="adminlist">
                 <thead>
                 <tr>
-                    <th class="title"><?php echo JText::_('Extension'); ?></th>
-                    <th ><?php echo JText::_('Status'); ?></th>
+                    <th class="title"><?php echo Text::_('Extension'); ?></th>
+                    <th width="60%"><?php echo Text::_('Status'); ?></th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -380,54 +826,101 @@ class Com_MymuseInstallerScript
                 <tbody>
                 <?php foreach ($extensions as $i => $ext) : ?>
                     <tr class="row<?php echo $i % 2; ?>">
-                        <td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['type']); ?>)</td>
+                        <td class="key"><?php echo $ext['name']; ?> (<?php echo Text::_($ext['type']); ?>)</td>
                         <td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
-                            <span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Installed successfully') : JText::_('NOT Installed'); ?>
+                            <span style="<?php echo $style; ?>"><?php echo $ext['status'] ? Text::_('Installed successfully') : Text::_('NOT Installed'); ?>
                                     </span></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
 
-            <h3><?php echo JText::_('Actions'); ?></h3>
+            <h3><?php echo Text::_('Actions'); ?></h3>
             <?php
             /* DEFAULT DOWNLOAD DIRECTORY */
-            $name = JText::_ ( "COM_MYMUSE_MAKE_DOWNLOAD_DIR" );
-            $download_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseDownloads";
+            $name = Text::_ ( "COM_MYMUSE_MAKE_DOWNLOAD_DIR" );
+            $download_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseDownloaDIRECTORY_SEPARATOR";
             if (! file_exists ( $download_dir )) {
                 if (! JFolder::create ( $download_dir )) {
-                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
+                    $alt = Text::_ ( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$download_dir";
+                    $message = Text::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$download_dir";
                 } else {
-                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
+                    $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message = JText::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $download_dir;
+                    $message = Text::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $download_dir;
                 }
             } else {
-                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
+                $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "COM_MYMUSE_DIR_EXISTS" );
+                $message = Text::_ ( "COM_MYMUSE_DIR_EXISTS" );
             }
-            $actions [] = array (
+            $this->actions [] = array (
                 'name' => $name,
                 'message' => $message,
                 'status' => $astatus
             );
 
+            // DEFAULT PREVIEW DIRECTORY
+            $name = Text::_ ( "COM_MYMUSE_MAKE_PREVIEW_DIR" );
+            $preview_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMusePreviews";
+            if (! file_exists ( $preview_dir )) {
+                if (! JFolder::create ( $preview_dir )) {
+                    $alt = Text::_ ( "COM_MYMUSE_FAILED" );
+                    $astatus = 0;
+                    $message = Text::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$preview_dir";
+                } else {
+                    $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
+                    $astatus = 1;
+                    $message = Text::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $preview_dir;
+                }
+            } else {
+                $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
+                $astatus = 1;
+                $message = Text::_ ( "COM_MYMUSE_DIR_EXISTS" );
+            }
+            $this->actions [] = array (
+                'name' => $name,
+                'message' => $message,
+                'status' => $astatus
+            );
+
+            // DIRECTORY FOR GRAPHICS
+            $name = Text::_ ( "COM_MYMUSE_MAKE_ALBUM_DIR" );
+            $album_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseImages";
+            if (! file_exists ( $album_dir )) {
+                if (! JFolder::create ( $album_dir )) {
+                    $alt = Text::_ ( "COM_MYMUSE_FAILED" );
+                    $astatus = 0;
+                    $message = Text::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$album_dir";
+                } else {
+                    $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
+                    $astatus = 1;
+                    $message = Text::_ ( "COM_MYMUSE_DIR_CREATED" ) . " " . $album_dir;
+                }
+            } else {
+                $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
+                $astatus = 1;
+                $message = Text::_ ( "COM_MYMUSE_DIR_EXISTS" );
+            }
+            $this->actions [] = array (
+                'name' => $name,
+                'message' => $message,
+                'status' => $astatus
+            );
 
             // copy index.html to Download Dir
-            $name = Jtext::_ ( "index.html to Download Dir" );
+            $name = Text::_ ( "index.html to Download Dir" );
             if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $download_dir . DIRECTORY_SEPARATOR . "index.html" )) {
-                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
+                $alt = Text::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
+                $message = Text::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
             } else {
-                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
+                $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
+                $message = Text::_ ( "COM_MYMUSE_FILE_COPIED" );
             }
-            $actions [] = array (
+            $this->actions [] = array (
                 'name' => $name,
                 'message' => $message,
                 'status' => $astatus
@@ -437,53 +930,86 @@ class Com_MymuseInstallerScript
             if (stristr ( PHP_OS, 'win' )) {
                 // skip the htaccess
             } else {
-                $name = Jtext::_ ( "htaccess to Download Dir" );
+                $name = Text::_ ( "htaccess to Download Dir" );
                 if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "htaccess.txt", $download_dir . DIRECTORY_SEPARATOR . ".htaccess" )) {
-                    $alt = JText::_ ( "COM_MYMUSE_FAILED" );
+                    $alt = Text::_ ( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message = JText::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
+                    $message = Text::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
                 } else {
-                    $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
+                    $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message = JText::_ ( "COM_MYMUSE_FILE_COPIED" );
+                    $message = Text::_ ( "COM_MYMUSE_FILE_COPIED" );
                 }
 
             }
-            $actions [] = array (
+            $this->actions [] = array (
                 'name' => $name,
                 'message' => $message,
                 'status' => $astatus
             );
 
+            // copy index.html to Preview Dir
+            $name = Text::_ ( "index.html to Preview Dir" );
+            if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $preview_dir . DIRECTORY_SEPARATOR . "index.html" )) {
+                $alt = Text::_ ( "COM_MYMUSE_FAILED" );
+                $astatus = 0;
+                $message = Text::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
+            } else {
+                $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
+                $astatus = 1;
+                $message = Text::_ ( "COM_MYMUSE_FILE_COPIED" );
+            }
+            $this->actions [] = array (
+                'name' => $name,
+                'message' => $message,
+                'status' => $astatus
+            );
+
+            // copy index.html to Album Dir
+            $name = Text::_ ( "COM_MYMUSE_COPY_INDEX_TO_ALBUM_DIR" );
+            if (! JFile::copy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $album_dir . DIRECTORY_SEPARATOR . "index.html" )) {
+                $alt = Text::_ ( "COM_MYMUSE_FAILED" );
+                $astatus = 0;
+                $message = Text::_ ( "COM_MYMUSE_COULD_NOT_COPY_FILE" );
+            } else {
+                $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
+                $astatus = 1;
+                $message = Text::_ ( "COM_MYMUSE_FILE_COPIED" );
+            }
+            $this->actions [] = array (
+                'name' => $name,
+                'message' => $message,
+                'status' => $astatus
+            );
 
             // MOVE LOGO
-            $name = JText::_ ( "COM_MYMUSE_COPY_LOGO" ) . " /images/logo150sq.jpg";
+            $name = Text::_ ( "COM_MYMUSE_COPY_LOGO" ) . " /images/logo150sq.jpg";
             $logo = JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg";
             if (! file_exists ( $logo )) {
-                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
+                $alt = Text::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "COM_MYMUSE_COPY_LOGO_FAILED" ) . " File does not exist: " . $logo;
+                $message = Text::_ ( "COM_MYMUSE_COPY_LOGO_FAILED" ) . " File does not exist: " . $logo;
             } elseif (! JFile::copy ( $logo, JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg" )) {
-                $alt = JText::_ ( "COM_MYMUSE_FAILED" );
+                $alt = Text::_ ( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message = JText::_ ( "COM_MYMUSE_COPY_LOGO_FAILED" ) . $logo . " " . JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg";
+                $message = Text::_ ( "COM_MYMUSE_COPY_LOGO_FAILED" ) . $logo . " " . JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "logo150sq.jpg";
             } else {
-                $alt = JText::_ ( "COM_MYMUSE_INSTALLED" );
+                $alt = Text::_ ( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message = JText::_ ( "COM_MYMUSE_COPY_LOGO_SUCCESS" );
+                $message = Text::_ ( "COM_MYMUSE_COPY_LOGO_SUCCESS" );
             }
-            $actions [] = array (
+            $this->actions [] = array (
                 'name' => $name,
                 'message' => $message,
                 'status' => $astatus
             );
-        } //end of install or update
+        }
 
         if(!$this->already_installed && $type == "install"){
 
             // update store download dir
             $download_dir =  JPATH_ROOT.DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."A_MyMuseDownloads";
-            $name = JText::_("COM_MYMUSE_UPDATING_STORE");
+            $name = Text::_("COM_MYMUSE_UPDATING_STORE");
             $query = "SELECT params FROM #__mymuse_store WHERE id='1'";
             $db->setQuery($query);
             $store_params = json_decode($db->loadResult(), TRUE);
@@ -499,13 +1025,13 @@ class Com_MymuseInstallerScript
 
                 $db->setQuery($query);
                 if(!$db->execute()){
-                    $alt = JText::_( "COM_MYMUSE_FAILED" );
+                    $alt = Text::_( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message =  JText::_("COM_MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
+                    $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
                 }else{
-                    $alt = JText::_( "COM_MYMUSE_INSTALLED" );
+                    $alt = Text::_( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
-                    $message =  JText::_("COM_MYMUSE_STORE_UPDATED");
+                    $message =  Text::_("COM_MYMUSE_STORE_UPDATED");
                 }
 
             }else{
@@ -543,79 +1069,85 @@ class Com_MymuseInstallerScript
                 }
             }
 
-            $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+            $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
             //UPDATE PLUGINS
-            $name = JText::_("COM_MYMUSE_ENABLE_PLUGINS");
+            $name = Text::_("COM_MYMUSE_ENABLE_PLUGINS");
             $query = "UPDATE #__extensions SET enabled=1 WHERE
+                element='payment_paypal' OR
                 element='payment_offline' OR
                 element='shipping_standard' OR
-                element='mod_mymuse_amplitude' OR
-                element='payment_paypal' OR
-                element='search_mymuse' OR
-                element='install_mymuse'
+                element='audio_amplitude' OR
+                element='searchmymuse' 
                 ";
             $db->setQuery($query);
             if(!$db->execute()){
-                $alt = JText::_( "COM_MYMUSE_FAILED" );
+                $alt = Text::_( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
-                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
+                $message =  Text::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
             }else{
-                $alt = JText::_( "COM_MYMUSE_INSTALLED" );
+                $alt = Text::_( "COM_MYMUSE_INSTALLED" );
                 $astatus = 1;
-                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_SUCCESS");
+                $message =  Text::_("COM_MYMUSE_ENABLE_PLUGINS_SUCCESS");
             }
-            $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+            $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
-            // end of install
-        }elseif($type == "update"){
-            //update
-            //save the old css file
-
-            $name = JText::_("COM_MYMUSE_SAVE_CSS");
-            $myFile = JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse_old.css';
-            if($this->css != ""){
-                if(!JFILE::write($myFile, $this->css)){
-                    $alt = JText::_( "COM_MYMUSE_FAILED" );
-                    $astatus = 0;
-                    $message =  JText::_("COM_MYMUSE_SAVE_CSS_FAILED");
-                }else{
-                    $alt = JText::_( "COM_MYMUSE_INSTALLED" );
-                    $astatus = 1;
-                    $message =  JText::_("COM_MYMUSE_SAVE_CSS_SUCCESS");
-                }
-                $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-            }
-
-            
-            //UPDATE INSTALL PLUGIN
-            $name = JText::_("COM_MYMUSE_ENABLE_PLUGINS");
-            $query = "UPDATE #__extensions SET enabled=1 WHERE
-                element='install_mymuse'
-                ";
-            $db->setQuery($query);
-            if(!$db->execute()){
-                $alt = JText::_( "COM_MYMUSE_FAILED" );
-                $astatus = 0;
-                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
-            }else{
-                $alt = JText::_( "COM_MYMUSE_INSTALLED" );
-                $astatus = 1;
-                $message =  JText::_("COM_MYMUSE_ENABLE_PLUGINS_SUCCESS");
-            }
-            $actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
         }
 
+        //UPDATE MEDIA MANAGER TO ALLOW MP3's
+        $name = Text::_("COM_MYMUSE_UPDATING_MEDIA_MANAGER");
+        $query = "SELECT params FROM #__extensions WHERE element='com_media'";
+        $db->setQuery($query);
+        $media_params = json_decode($db->loadResult(), TRUE);
+        if($media_params){
+            if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
+                $media_params['upload_extensions'] .= ",mp3,MP3";
+            }
+            if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
+                $media_params['upload_mime'] .= ",audio/mpeg";
+            }
+            if (!stristr ( $media_params['ignore_extensions'], 'mp3' )) {
+                $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
+            }
 
+            if (!stristr ( $media_params['upload_extensions'], 'wav' )) {
+                $media_params['upload_extensions'] .= ",wav,WAV";
+            }
+            if (!stristr ( $media_params['upload_mime'], 'audio/wav' )) {
+                $media_params['upload_mime'] .= ",audio/wav";
+            }
+            if (!stristr ( $media_params['ignore_extensions'], 'wav' )) {
+                $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",wav" : "wav";
+            }
 
+            $registry = new JRegistry;
+            $registry->loadArray($media_params);
+            $new_params = (string)$registry;
 
-        if(count($actions)){
+            $query = "UPDATE #__extensions set ";
+            $query .= "params='$new_params' WHERE element='com_media'
+                ";
+
+            $db->setQuery($query);
+            if(!$db->execute()){
+                $alt = Text::_( "COM_MYMUSE_FAILED" );
+                $astatus = 0;
+                $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$db->_errorMsg;
+            }else{
+                $alt = Text::_( "COM_MYMUSE_INSTALLED" );
+                $astatus = 1;
+                $message =  Text::_("COM_MYMUSE_MEDIA_MANAGER_UPDATED");
+            }
+        }
+        $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+
+        if(count($this->actions)){
             ?>
             <table class="adminlist">
                 <thead>
                 <tr>
-                    <th class="title"><?php echo JText::_('Post Install Actions'); ?></th>
-                    <th class="title"><?php echo JText::_('Status'); ?></th>
+                    <th class="title"><?php echo Text::_('COM_MYMUSE_POST_INSTALL_ACTIONS'); ?></th>
+                    <th class="title"><?php echo Text::_('COM_MYMUSE_ACTIONS'); ?></th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -626,11 +1158,11 @@ class Com_MymuseInstallerScript
                 <tbody>
                 <?php
                 $i = 0;
-                foreach ($actions as $ext) : ?>
+                foreach ($this->actions as $ext) : ?>
                     <tr class="row<?php echo $i % 2; $i++; ?>">
-                        <td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['message']); ?>)</td>
+                        <td class="key"><?php echo $ext['name']; ?> (<?php echo Text::_($ext['message']); ?>)</td>
                         <td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
-                            <span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Success') : JText::_('NOT Successful'); ?>
+                            <span style="<?php echo $style; ?>"><?php echo $ext['status'] ? Text::_('Success') : Text::_('NOT Successful'); ?>
                         </span></td>
                     </tr>
                 <?php endforeach; ?>
@@ -638,6 +1170,30 @@ class Com_MymuseInstallerScript
                 </tbody>
             </table>
             <?php
+
+            if (!empty($this->targetJoomlaVersion) && version_compare(JVERSION, $this->targetJoomlaVersion, '<'))
+            {
+               ?>
+               <h3><?php echo Text::_('COM_MYMUSE_YOU_MUST_UPDATE_JOOMLA'); ?></h3>
+
+               <?php
+               $myFile = JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'mymuse.php';
+               $tmp = "
+
+<h3><?php echo JText::_('COM_MYMUSE_YOU_MUST_UPDATE_JOOMLA'); ?></h3>
+<?php
+return true;
+
+               ";
+            
+                if(!FILE::write($myFile, $tmp)){
+                    echo "<h2>Could not make $myFile. <br>Joomal 3 needs this.</h2>";
+                }
+                $myFile2 = JPATH_ROOT.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'mymuse.php';
+                if(!FILE::write($myFile2, $tmp)){
+                    echo "<h2>Could not make $myFile. <br>Joomal 3 needs this.</h2>";
+                }
+            }
             return true;
         }
     }

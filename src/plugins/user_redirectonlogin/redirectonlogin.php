@@ -52,9 +52,11 @@ class plgUserRedirectonlogin extends CMSPlugin
 	public function onUserLogin($user, $options = [])
 	{
 
+		$app = Factory::getApplication();
 		$session = Factory::getSession();
 		$cart = $session->get('cart');
-print_r($cart); exit;
+		$user = Factory::getUser();
+
 		if($cart && $cart['idx'] > 0 && $user->username != ''){
 			$return = Route::_("index.php?option=com_mymuse&view=cart&task=showcart");
 			$app->setUserState('users.login.form.return', $return);

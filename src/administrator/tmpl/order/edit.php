@@ -18,7 +18,6 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
-
 HTMLHelper::_('script', 'com_contenthistory/admin-history-versions.js', ['version' => 'auto', 'relative' => true]);
 
 $print = JFactory::getApplication()->input->get('print',0);
@@ -36,7 +35,6 @@ if($print){
 }else{
 	echo '<a href="index.php?option=com_mymuse&view=order&layout=edit&id='.$this->item->id.'&tmpl=component&print=1">'.JText::_("Print").'</a>';
 }
-
 ?>
 <h3>
 	<?php echo JText::_('COM_MYMUSE_ORDER'); ?>

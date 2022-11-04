@@ -312,18 +312,23 @@ class OrderModel extends AdminModel
         			
 
 		
-			
+			$item->user->shopper_group_name = "default";
+			$item->user->shopper_group_discount = 0;
+
 			if(isset($item->user->profile['shopper_group'])){
+
+				$query = "SELECT title from #__usergroups WHERE id = ".(int)$item->user->profile['shopper_group'];
+				$db->setQuery($query);
+				$title = $db->loadResult();
+
+
+				$item->user->shopper_group_name = $title;
 				$query = "SELECT * from #__mymuse_shopper_group WHERE id=".(int)$item->user->profile['shopper_group'];
 				$db->setQuery($query);
 				if($shopper_group = $db->loadObject()){
 		
-					$item->user->shopper_group_name = $shopper_group->shopper_group_name;
 					$item->user->shopper_group_discount = $shopper_group->discount;
 				}
-			}else{
-				$item->user->shopper_group_name = "default";
-				$item->user->shopper_group_discount = 0;
 			}
 		}
 

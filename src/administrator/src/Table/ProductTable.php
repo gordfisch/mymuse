@@ -364,7 +364,8 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 
 		$subtype		= $input->get('type');
 		$task 			= $input->get('task');
-		$form 			= $input->get('jform', array(), 'array'); 
+		$form 			= $input->get('jform', array(), 'array');
+
 		$select_files 	= $input->get('select_file', '' ,'array');
 		$formats 		= $input->get('formats', '' ,'array');
 		$format_ids 	= $input->get('format_id', '' ,'array');
@@ -929,5 +930,14 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 	public function getTypeAlias()
 	{
 		return 'com_mymuse.product';
+	}
+
+	public function updateDB()
+	{
+		$result = parent::store(false);
+		if(!$result){
+			return $this->getError();
+		}
+		return true;
 	}
 }

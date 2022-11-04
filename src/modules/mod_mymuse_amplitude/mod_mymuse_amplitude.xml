@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="module" client="site">
-	<name>mod_mymuse_amplitude</name>
+	<name>MOD_MYMUSE_AMPLITUDE</name>
 	<author>Arboreta</author>
 	<creationDate>June 2022</creationDate>
 	<copyright>Copyright (C) 2022 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>1.0.0</version>
+	<version>4.0.0</version>
 	<description>COM_MYMUSE_MOD_AMPLITUDE_DESC</description>
 	<files>
 		<filename module="mod_mymuse_amplitude">mod_mymuse_amplitude.php</filename>
