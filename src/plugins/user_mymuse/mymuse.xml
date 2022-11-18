@@ -327,8 +327,8 @@
 
 		</fields>
 	</config>
-	<!-- updateservers>
+	<updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse User Profile">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=49</server>
-</updateservers -->
+        name="Plug MyMuse User Profile">https://www.joomlamymuse.com/media/com_mymuse/mymuse-updates-user_mymuse.xml</server>
+</updateservers>
 </extension>

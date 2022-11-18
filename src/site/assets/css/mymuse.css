@@ -141,12 +141,16 @@ h2.product-title {
     vertical-align: middle;
 }
 
-.tracks .amplitude-play-pause {
+.tracks .amplitude-play-pause.amplitude-paused {
     background:  url(../images/play.svg) no-repeat;
     width:  20px;
     height:  22px;
 }
-
+.tracks .amplitude-play-pause.amplitude-playing {
+    background:  url(../images/pause.svg) no-repeat;
+    width:  20px;
+    height:  22px;
+}
 
 
 .list-image, .product-image {

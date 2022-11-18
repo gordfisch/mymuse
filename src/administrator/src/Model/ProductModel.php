@@ -1344,11 +1344,12 @@ class ProductModel extends AdminModel
 		   	$query 					= "SELECT * FROM #__mymuse_product 
 		   	WHERE product_physical=1 AND 
 		   	product_downloadable= 0 AND
-		   	track_parentid = 0
+		   	track_parentid = 0 AND 
+		   	updated = 0
 		   	ORDER BY id ASC
 		   	LIMIT $limitstart, $limit";
 
-		   	echo $query. "<br />";
+		   	$my_return[1] .=  $query. "<br />";
 
 		   	$db->setQuery($query);
 		   	if($res = $db->loadObjectList())
@@ -1381,6 +1382,7 @@ class ProductModel extends AdminModel
 		   				$registry = new Registry;
 							$registry->loadArray($physical);
 							$this->table->physical = (string)$registry;
+							$this->table->updated = 1;
 
 							if(!$result = $this->table->updateDB()){
 								$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PHYSICAL').' '.$this->table->getError(), 'error');
@@ -1403,11 +1405,12 @@ class ProductModel extends AdminModel
 		   	WHERE parentid > 0 AND 
 		   	product_physical=0 AND 
 		   	product_downloadable= 1 AND
-		   	track_parentid = 0
+		   	track_parentid = 0 AND 
+		   	updated = 0
 		   	ORDER BY id ASC
 		   	LIMIT $limitstart, $limit";
 
-		   	echo $query. "<br />";
+		   	$my_return[1] .=  $query. "<br />";
 
 		   	$db->setQuery($query);
 		   	if($res = $db->loadObjectList())
@@ -1430,6 +1433,13 @@ class ProductModel extends AdminModel
 
 		   				foreach($files_array as $file){
 		   						$file->file_format = isset($formats[$file->file_ext])? $formats[$file->file_ext] : '';
+		   						$file->file_type = "audio";
+		   						if($file->file_ext == "jpg" || $file->file_ext == "png"){
+		   							$file->file_type = "other";
+		   						}
+		   						if($file->file_ext == "pdf"){
+		   							$file->file_type = "other";
+		   						}
 
 									$this->table->reset();
 									$this->table->load($r->id);
@@ -1445,7 +1455,18 @@ class ProductModel extends AdminModel
 										$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->table->getError(), 'error');
 										return false;
 									}
-									$my_return[1] .= 'created '.$this->table->id.' FROM '.$r->id.' : '.$r->title.'<br />';
+									
+									//update track_parent
+									$this->table->reset();
+									$this->table->load($r->id);
+									$this->table->updated = 1;
+									if(!$result = $this->table->updateDB()){
+										$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK').' '.$this->table->getError(), 'error');
+										return false;
+									}
+
+
+									$my_return[1] .= 'created '.$this->table->id.' FROM '.$r->id.' : '.$r->title.' TRACK: '.$file->file_name.'<br />';
 		   				}
 		   			}
 		   		}

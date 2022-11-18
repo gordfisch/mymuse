@@ -16,7 +16,7 @@ echo $SUBVER
 echo -n "JVER = "
 echo $JVER
 
-version=5.0.5-$JVER-$SUBVER-alpha
+version=5.0.6-$JVER-$SUBVER-beta
 
 cd src
 

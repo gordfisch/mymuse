@@ -35,12 +35,7 @@
 				multiple="true"
 				description="" />
 			
-			<field 
-				name="preview_path" 
-				type="text" 
-				default="/media/com_mymuse/previews/" 
-				label="COM_MYMUSE_PREVIEW_PATH" 
-				description="COM_MYMUSE_PREVIEW_PATH_DESC" />
+			
 
 			<field 
 				name="playlist_path" 
@@ -56,7 +51,18 @@
 				label="COM_MYMUSE_ART_PATH" 
 				description="COM_MYMUSE_ART_PATH_DESC" />
 
+			<field 
+				name="first_album_preview_path" 
+				type="text" 
+				default="/media/com_mymuse/previews/00_-_silence.mp3" 
+				label="COM_MYMUSE_PREVIEW_PATH" 
+				description="COM_MYMUSE_PREVIEW_PATH_DESC" />
+
 		</fieldset>
 	</fields>
 	</config>
+	<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Amplitude">https://www.joomlamymuse.com/media/com_mymuse/mymuse-updates-plg_mymuse_audio_amplitude.xml</server>
+</updateservers>
 </extension>

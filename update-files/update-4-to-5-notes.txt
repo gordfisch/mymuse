@@ -1,0 +1,46 @@
+STEPS TO UPDATE MYMUSE TO JOOMLA! 4
+
+On your Joomla! 3 installation:
+
+1) Go to Components -> Joomla! Update. 
+If you are not on Joomla! Next channel for updates, click on Options on the top right and set 
+"Update Channel" to "Joomla Next". Save and Close.
+Joomla will chack all your extensions run a Pre-Update check.
+Update or deal with other extensions that need it.
+
+2) Go to Extensions -> Manage -> Install and install MyMuse 5
+You should see a screen "Convert to Mymuse 5 for Joomla 4"
+It will remove old plugins, update database tables in prepartion for Joomla! 4, Add new plugins and modules and show additional actiuons.
+
+3) Go back to Components -> Joomla! Update. Click the "Live Update" tab.
+Install the Update. Joomla! to version 4.
+You should see "Your site has been updated. Your Joomla version is now ‎4.*.*"
+
+4) Go to Components -> MyMuse -> MyMuse and update database records.
+Click on "MUST UPDATE DB"
+
+It will update 200 entries at a time, If you have more than that it will prompt you to keep going.
+It goes through physical products, then tracks. With each click, let it run until finished.
+If if dies you try adjusting the limit per cycle at Components->MyMuse->Store->Testing.
+
+Keep clicking on "MORE PHYSICAL ITEMS TO PROCESS" or "MORE TRACKS TO PROCESS" untill it reaches the end.
+
+5) PLAYER:
+	A) MyMuse Amplitude Plugin: make sure it is published. Open it up and choose the top level categories you want playlists for.
+	Go to MyMuse Products and save any product. This will generate the playlists for Amplitude.
+	
+	B) MyMuse Amplitude Module: go and publish the Amplitude Module, choose a position (ex: bottom)
+
+
+
+PLUGINS NO LONGER SUPPORTED
+plg_mymuse_preorder
+plg_mymuse_shoppergroup_view
+plg_mymuse_vote
+plg_mymuse_audio_jplayer
+plg_shipping_usps
+mod_mymuse_latest
+mod_mymuse_minicart
+mod_mymuse_jplayer
+
+

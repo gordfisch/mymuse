@@ -321,7 +321,7 @@ class ProductsModel extends ListModel
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-                $query->where("title LIKE $search");
+                $query->where("a.title LIKE $search");
 			}
 		}
 

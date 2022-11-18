@@ -367,7 +367,7 @@ class ProductModel extends ItemModel
 				/* get tracks for this product */
 				$this->_item[$pk]->tracks = $this->getTracks($pk);
 
-				/* get tracks for this product */
+				/* get physical items for this product */
 				$this->_item[$pk]->items = $this->getPhysicalItems($pk);			
 
 				//get maincategory
@@ -640,6 +640,7 @@ class ProductModel extends ItemModel
 				if(!isset($track->sales) || $track->sales == ''){
 					$track->sales = 0;
 				}
+				
 				//other cats
 				$track->othercats = '';
 				$othercats = array();
@@ -785,7 +786,7 @@ class ProductModel extends ItemModel
 				$video = 0;
 				foreach($preview_tracks as $track){
 					if($track->file_preview){
-						
+						$track->file_type = isset($track->digital[0]->file_type) ? $track->digital[0]->file_type : 'audio';
 						if(substr_count($track->file_type,"video") && !$video){
 							//movie
 
@@ -1654,13 +1655,13 @@ class ProductModel extends ItemModel
 
 	  		if($catsin){
 	  			//get the products
-		  		$query = "SELECT id, title, catid, list_image, product_made_date FROM #__mymuse_product
+		  		$query = "SELECT id, title, catid, list_image, product_release_date FROM #__mymuse_product
 				WHERE ( catid IN ($catsin) OR id IN ($prodsin) )
 				AND product_downloadable != 1
 		  		AND id != $productid
 		  		AND state = 1
 		  		AND parentid = 0
-		  		ORDER BY FIELD(catid, $catsin), product_made_date DESC 
+		  		ORDER BY FIELD(catid, $catsin), product_release_date DESC 
 		  		LIMIT ".$params->get('my_max_recommended', 4);
 	
 		  		$db->setQuery($query);

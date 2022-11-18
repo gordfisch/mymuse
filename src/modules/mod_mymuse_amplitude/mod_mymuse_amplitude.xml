@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="module" client="site">
-	<name>MOD_MYMUSE_AMPLITUDE</name>
+	<name>Module MyMuse Amplitude</name>
 	<author>Arboreta</author>
 	<creationDate>June 2022</creationDate>
 	<copyright>Copyright (C) 2022 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>4.0.0</version>
+	<version>5.0.0</version>
 	<description>COM_MYMUSE_MOD_AMPLITUDE_DESC</description>
 	<files>
 		<filename module="mod_mymuse_amplitude">mod_mymuse_amplitude.php</filename>
@@ -47,9 +47,9 @@
 			</fieldset>
 		</fields>
 	</config>
-<!-- updateservers>
+<updateservers>
     <server type="extension" priority="1"
-        name="Mod MyMuse Amplitude"></server>
-</updateservers -->
+        name="Mod MyMuse Amplitude">https://www.joomlamymuse.com/media/com_mymuse/mymuse-updates-mod_mymuse_amplitude.xml</server>
+</updateservers>
 </extension>
 

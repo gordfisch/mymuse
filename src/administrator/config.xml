@@ -92,7 +92,7 @@
 			label="COM_MYMUSE_SPLIT_TEXT_LABEL"
 			description="COM_MYMUSE_SPLIT_TEXT_DESC"
 			layout="joomla.form.field.radio.switcher"
-			default="0"
+			default="1"
 			>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -435,7 +435,7 @@
 			label="JGLOBAL_ORDERING_DATE_LABEL"
 			default="released"
 		>
-		 <option value="released">COM_MYMUSE_DATE_PRODUCT_RELEASE_DATE</option>
+		 	<option value="released">COM_MYMUSE_DATE_PRODUCT_RELEASE_DATE</option>
 			<option value="created">JGLOBAL_CREATED</option>
 			<option value="modified">JGLOBAL_MODIFIED</option>
 			<option value="published">JPUBLISHED</option>
@@ -954,17 +954,7 @@
  			<option value="0">JHIDE</option>
  			<option value="1">JSHOW</option>
  		</field>
- 		<field
- 			name="link_intro_image"
- 			type="radio"
-			layout="joomla.form.field.radio.switcher"
- 			label="JGLOBAL_LINKED_INTRO_IMAGE_LABEL"
- 			validate="options"
- 			default="1"
- 			>
- 			<option value="0">JNO</option>
- 			<option value="1">JYES</option>
- 		</field>
+
 		<field 
 			name="category_product_show_title" 
 			type="radio"

@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>4.0.0</version>
+	<version>5.0.0</version>
 	<description>PLG_SEARCH_MYMUSE</description>
 	
 	<files>
@@ -56,8 +56,8 @@
 	</fieldset>
 	</fields>
 	</config>
-<!-- updateservers>
+<updateservers>
     <server type="extension" priority="1"
-        name="Plug Search MyMuse">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=45</server>
-</updateservers -->
+        name="Plug Search MyMuse">https://www.joomlamymuse.com/media/com_mymuse/mymuse-updates-searchmymuse.xml</server>
+</updateservers>
 </extension>

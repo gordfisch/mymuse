@@ -772,6 +772,15 @@
                 <option value="0">COM_MYMUSE_NO</option>
                 <option value="1">COM_MYMUSE_YES</option>>
         </field>
+        <field
+                name="my_upddate_limit"
+                type="text"
+                label="COM_MYMUSE_UPDATE_LIMIT"
+                class="btn-group btn-group-yesno"
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
+        </field>
       </fieldset>
     </fields>
     <fields name="metadata">

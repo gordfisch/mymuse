@@ -58,6 +58,14 @@ class ProductController extends FormController
      */
     protected $id = 0;
 
+    /**
+     * Mymuse Storage.
+     *
+     * @var    object
+     * @since  1.6
+     */
+    protected $storage = NULL;
+
     
     /**
      * Constructor.
@@ -693,30 +701,48 @@ class ProductController extends FormController
         $app        = Factory::getApplication();
         $input      = Factory::getApplication()->input;
         $limitstart = $input->get('limitstart',0);
-        $limit      = $input->get('limit',200);
+        $params     = MyMuseHelper::getParams();
+        $my_limit   = $params->get('my_update_limit', 200);
+        $limit      = $input->get('limit',$my_limit);
         $type       = $input->get('type','physical');
+        $this->storage = new MymuseStorage();
+
 
         if($res = $model->updateDB($limit, $limitstart, $type)){
             //echo "result $res <BR />";
             if($res[0] == "tracks-done"){
-                echo "<h3>We are all done!</h3>";
+                echo "<h3>". Text::_('COM_MYMUSE_UPDATE_ALL_DONE')."</h3>";
                 echo $res[1];
+                // updated physical and tracks. Remove the blocking file
+                $v3File = JPATH_ROOT.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'manifest.xml';
+
+                if($this->storage->fileDelete($v3File)){
+
+                    echo Text::_('COM_MYMUSE_DB_UPDATED');
+                    $session  = Factory::getSession();
+                    $session->set('com_mymuse.convertTo4', false);
+                
+                }else{
+                    echo Text::_('COM_MYMUSE_COULD_NOT_DELETE_FILE').' : '. $v3File;
+                }
+                
+              
                 return true;
             }elseif($res[0] == "physical-continue"){
                 $limitstart = $limitstart + $limit;
-                echo '<h3><a href="index.php?option=com_mymuse&task=product.update&limit='.$limit.'&limitstart='.$limitstart.'&type=physical">More physical products to process!</a></h3>';
+                echo '<h3><a href="index.php?option=com_mymuse&task=product.update&limit='.$limit.'&limitstart='.$limitstart.'&type=physical">--> More physical products to process!</a></h3>';
                 echo $res[1];
                 return true;
             }elseif($res[0] == "physical-done"){
                 $limitstart = 0;
-                echo '<h3><a href="index.php?option=com_mymuse&task=product.update&limit='.$limit.'&limitstart='.$limitstart.'&type=tracks">Tracks to process!</a></h3>';
+                echo '<h3><a href="index.php?option=com_mymuse&task=product.update&limit='.$limit.'&limitstart='.$limitstart.'&type=tracks">-->Tracks to process!</a></h3>';
                 echo $res[1];
                 return true;
 
             }elseif($res[0] == 'tracks-continue'){
 
                 $limitstart = $limitstart + $limit;
-                echo '<h3><a href="index.php?option=com_mymuse&task=product.update&limit='.$limit.'&limitstart='.$limitstart.'&type=tracks">MORE TRACKS TO PROCESS</a></h3>';
+                echo '<h3><a href="index.php?option=com_mymuse&task=product.update&limit='.$limit.'&limitstart='.$limitstart.'&type=tracks">-->MORE TRACKS TO PROCESS</a></h3>';
                 echo $res[1];
                 return true;
 
@@ -730,16 +756,7 @@ class ProductController extends FormController
             $model->getError();
             return false;
         }
-        // updated physical and tracks. Remove the blocking file
-        $v3File = JPATH_ROOT.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'manifest.xml';
-
-        if(MymuseStorage::fileDelete($v3File)){
-
-            echo Text::_('COM_MYMUSE_DB_UPDATED');
-        
-        }else{
-            echo Text::_('COM_MYMUSE_COULD_NOT_DELETE_FILE').' : '. $v3File;
-        }
+        return true;
 
     }
 

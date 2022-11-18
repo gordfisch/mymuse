@@ -221,7 +221,7 @@ class Com_MymuseInstallerScript
             if(count($plugins)){
                 for ($i = 0; $i < count($plugins); $i++) {
                     $plugin =& $plugins[$i];
-                    
+                    //echo $plugin['folder'].'<br />';
                     if ($plugins[$i]['installer']->uninstall('plugin', $plugins[$i]['id'])) {
                         $plugins[$i]['status'] = true;
                     }
@@ -417,13 +417,30 @@ class Com_MymuseInstallerScript
             //update DB
             $queries = array(
                 "ALTER TABLE `#__mymuse_product` DROP `urls`;",
-                "ALTER TABLE `#__mymuse_product` ADD `track_parentid` int UNSIGNED NOT NULL DEFAULT '0';",
 
-                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
-                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
-                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                //ALTER TABLE tableName MODIFY [COLUMN] columnName column_definition [FIRST | AFTER col_name]
+                "ALTER TABLE `#__mymuse_product` MODIFY `parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `asset_id`;",
+
+                 "ALTER TABLE `#__mymuse_product` ADD `track_parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `parentid`;",
+
+                "ALTER TABLE `#__mymuse_product` MODIFY `catid` int NOT NULL AFTER `track_parentid`;",
+
+                "ALTER TABLE `#__mymuse_product` MODIFY `artistid` int NOT NULL AFTER `catid`;",
+
+
+               
+
+                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `artistid`;",
+                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `physical`;",
+                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(2048) COLLATE utf8mb4_unicode_ci AFTER `digital`;",
+                "ALTER TABLE `#__mymuse_product` RENAME COLUMN `product_made_date` TO `product_release_date`;",
+                
+                "ALTER TABLE `#__mymuse_product` MODIFY `product_release_date` date DEFAULT NULL,;",
+                "UPDATE `#__mymuse_product` SET `product_release_date` = NULL WHERE `product_release_date`='0000-00-00'",
+
+                "ALTER TABLE `#__mymuse_product` ADD`updated` char(1) default '0';",
                 "ALTER TABLE `#__mymuse_product` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out_time` datetime DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metakey` text COLLATE utf8mb4_unicode_ci;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metadesc` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
@@ -440,24 +457,24 @@ class Com_MymuseInstallerScript
 
                 "ALTER TABLE `#__mymuse_shopper_group`  ADD `usergroups_id` int NOT NULL DEFAULT '2';",
                 "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",
 
                 "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` DROP DEFAULT;",
                 "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` SET DEFAULT '0';",
                 "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL;",
 
                 "ALTER TABLE `#__mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
                 "ALTER TABLE `#__mymuse_order` ALTER `extra` DROP DEFAULT;",
                 "ALTER TABLE `#__mymuse_order` ALTER `licence` SET DEFAULT '';",
                 "ALTER TABLE `#__mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL;",
                             
                 "ALTER TABLE `#__mymuse_store` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out_time` datetime DEFAULT NULL;",
 
                 "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out_time` datetime DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out_time` datetime DEFAULT NULL;",
 
                 "ALTER TABLE `#__mymuse_order_item` ADD `variation_id` int default NULL;",
                 "ALTER TABLE `#__mymuse_order_item`  MODIFY  `created` datetime NOT NULL;",
@@ -467,7 +484,26 @@ class Com_MymuseInstallerScript
                 "ALTER TABLE `#__mymuse_product` ADD `special_status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
 
                 "CREATE INDEX `idx_catid` ON `#__mymuse_product` (`catid`);",
-                "CREATE INDEX `idx_artistid` ON `#__mymuse_product` (`artistid`);"
+                "CREATE INDEX `idx_artistid` ON `#__mymuse_product` (`artistid`);",
+
+                "UPDATE `#__mymuse_product` SET `publish_down` = NULL WHERE `publish_down` = '0000-00-00 00:00:00'",
+                "UPDATE `#__mymuse_product` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_product` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_shopper_group` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_shopper_group` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_coupon` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_coupon` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_order` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_order` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_store` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_store` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_tax_rate` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_tax_rate` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
             );
 
             foreach($queries as $query){
@@ -475,17 +511,18 @@ class Com_MymuseInstallerScript
                 try
                 {
                     $db->execute();
+                    $status = 1;
                 }
                 catch (\Exception $e)
                 {
                     $query = $e->getMessage();
-
+                    $status = 0;
                     //return false;
                 }
                 $this->convert_actions [] = array (
                     'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
                     'message' => $query,
-                    'status' => 1
+                    'status' => $status
                 );
             }
 
@@ -567,6 +604,28 @@ class Com_MymuseInstallerScript
                 'message' => Text::_ ( "COM_MYMUSE_UPDATE_STORE_FORMAT"),
                 'status' => 1
             );
+
+            //UPDATE PLUGINS
+            $name = Text::_("COM_MYMUSE_ENABLE_PLUGINS");
+            $query = "UPDATE #__extensions SET enabled=1 WHERE
+                element='payment_paypal' OR
+                element='payment_offline' OR
+                element='shipping_standard' OR
+                element='audio_amplitude' OR
+                element='searchmymuse' 
+                ";
+            $db->setQuery($query);
+            if(!$db->execute()){
+                $alt = Text::_( "COM_MYMUSE_FAILED" );
+                $astatus = 0;
+                $message =  Text::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
+            }else{
+                $alt = Text::_( "COM_MYMUSE_INSTALLED" );
+                $astatus = 1;
+                $message =  Text::_("COM_MYMUSE_ENABLE_PLUGINS_SUCCESS");
+            }
+            $this->convert_actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+
             
         }
 
@@ -658,11 +717,11 @@ END;
         }
         
         // add params for mymuse extensions
-        if ($type == 'install') {
+        if($this->convertTo4 || $type == 'install'){
 
             $query = $db->getQuery(true);
             $query->update($db->quoteName('#__extensions'));
-            $defaults = '{"store_show_title":"1","store_link_titles":"1","store_show_product_image":"1","store_product_image_height":"0","store_show_intro_text":"1","store_show_readmore":"0","store_show_readmore_title":"1","show_title":"1","show_intro":"1","product_show_product_image":"1","product_product_image_height":"0","show_recording_details":"1","show_minicart":"1","product_show_quantity":"0","product_item_selectbox":"1","show_recommenDIRECTORY_SEPARATOR":"1","show_category_recommenDIRECTORY_SEPARATOR":"1","product_show_tracks":"1","orderby_track":"alpha","order_track_date":"product_made_date","product_player_type":"single","product_player_width":"","product_player_height":"","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_category":"0","link_category":"0","show_parent_category":"0","link_parent_category":"0","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_readmore":"0","show_readmore_title":"1","show_icons":"0","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_noauth":"0","show_base_description":"1","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","cat_subcat_image_height":"0","category_layout":"_:default","show_category_title":"1","show_description":"1","show_description_image":"1","category_image_height":"0","maxLevel":"-1","subcat_columns":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"1","page_subheading":"","category_show_all_products":"1","category_show_product_image":"1","category_product_image_height":"0","category_show_intro_text":"1","category_product_link_titles":"1","category_show_comment_total":"0","num_leading_articles":"0","num_intro_articles":"10","num_columns":"2","num_links":"4","multi_column_order":"1","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_artist":"1","list_show_album":"1","list_show_file_length":"0","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"1","list_show_author":"0","list_show_sales":"0","list_show_discount":"0","display_num":"10","show_alphabet":"1","featured":"0","group_by":"","product_artist_alternate_itemid":"101","orderby_pri":"none","orderby_sec":"rdate","order_date":"product_made_date","show_pagination":"2","show_pagination_results":"1","category_match_level":"product","show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","username":"","password":""}'; // JSON format for the parameters
+            $defaults = '{"store_show_title":"1","store_link_titles":"1","store_show_product_image":"1","store_product_image_height":"0","store_show_intro_text":"1","store_show_readmore":"0","store_show_readmore_title":"1","show_title":"1","show_intro":"1","product_show_product_image":"1","product_product_image_height":"0","show_recording_details":"1","show_minicart":"1","product_show_quantity":"0","product_item_selectbox":"1","show_recommenDIRECTORY_SEPARATOR":"1","show_category_recommenDIRECTORY_SEPARATOR":"1","product_show_tracks":"1","orderby_track":"alpha","order_track_date":"product_made_date","product_player_type":"single","product_player_width":"","product_player_height":"","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_category":"0","link_category":"0","show_parent_category":"0","link_parent_category":"0","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_readmore":"0","show_readmore_title":"1","show_icons":"0","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_noauth":"0","show_base_description":"1","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","cat_subcat_image_height":"0","category_layout":"_:default","show_category_title":"1","show_description":"1","show_description_image":"1","category_image_height":"0","maxLevel":"-1","subcat_columns":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"1","page_subheading":"","category_show_all_products":"1","category_show_product_image":"1","category_product_image_height":"0","category_show_intro_text":"1","category_product_link_titles":"1","category_show_comment_total":"0","num_leading_products":"0","num_intro_products":"10","num_columns":"2","num_links":"4","multi_column_order":"1","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_artist":"1","list_show_album":"1","list_show_file_length":"0","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"1","list_show_author":"0","list_show_sales":"0","list_show_discount":"0","display_num":"10","show_alphabet":"1","featured":"0","group_by":"","product_artist_alternate_itemid":"101","orderby_pri":"none","orderby_sec":"rdate","order_date":"product_made_date","show_pagination":"2","show_pagination_results":"1","category_match_level":"product","show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","username":"","password":""}'; // JSON format for the parameters
             $query->set($db->quoteName('params') . ' = ' . $db->quote($defaults));
             $query->where($db->quoteName('name') . ' = ' . $db->quote('mymuse'));
             $db->setQuery($query);
