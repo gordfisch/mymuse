@@ -9,7 +9,10 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('radio');
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('radio');
+
 
 /**
  * Provides input for TOS

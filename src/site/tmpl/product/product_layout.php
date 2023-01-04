@@ -55,7 +55,7 @@ if( $this->params->get('info_block_show')) {
 }
 ?>
 
-
+<section id="product-details">
 <div class="product-top blog-items columns-<?php echo $cols; ?>">
 
 	<?php echo $this->loadTemplate('image'); ?>
@@ -64,28 +64,34 @@ if( $this->params->get('info_block_show')) {
 	<?php echo $this->loadTemplate('details'); ?>
 		
 </div>
+</section>
 
 
+<section id="product-physical">
+	<?php echo $this->loadTemplate('physical'); ?>
+</section>
 
 
-<?php echo $this->loadTemplate('physical'); ?>
-
-
-<?php echo $this->loadTemplate('items'); ?>
-
+<section id="product-items">
+	<?php echo $this->loadTemplate('items'); ?>
+</section>
 
 <?php echo $this->loadTemplate('tracks'); ?>
 
 
 <?php 
 if( $this->params->get('split_text') ): ?>
-	<div id="readmore" class="product-fulltext">
-		<?php echo $this->item->fulltext ?>
-	</div>
+	<section id="product-readmore">
+		<div id="readmore" class="product-fulltext">
+			<?php echo $this->item->fulltext ?>
+		</div>
+	</section>
 <?php endif; ?>
 
 <?php 
-if( $this->params->get('show_recommends') ): 
-	echo $this->loadTemplate('recommends'); 
-endif; 
-?>
+if( $this->params->get('show_recommends') ):  ?>
+	<section id="product-recommends">
+		<?php echo $this->loadTemplate('recommends'); ?>
+	</section>
+
+<?php endif; ?>

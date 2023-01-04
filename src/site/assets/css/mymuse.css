@@ -1,5 +1,8 @@
 @CHARSET "UTF-8";
 /* MORE */
+.mymuse section {
+    padding-bottom: 2em;
+}
 .product-detail-item {
     padding: 0.5em 0;
     border-bottom: 1px solid #ddd;
@@ -141,7 +144,7 @@ h2.product-title {
     vertical-align: middle;
 }
 
-.tracks .amplitude-play-pause.amplitude-paused {
+.tracks .amplitude-play-pause, .tracks .amplitude-play-pause.amplitude-paused {
     background:  url(../images/play.svg) no-repeat;
     width:  20px;
     height:  22px;
@@ -375,6 +378,9 @@ ul.mymuse-container, .product-recommends.mymuse-container {
     }
     .mymuse-container .item-container.cols-7 {
       grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+    .mymuse-container .item-container.cols-8 {
+      grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 
     .list-products .item-container, .list-products .item-container.cols-4 {

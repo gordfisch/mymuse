@@ -19,6 +19,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\User\User;
+use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
@@ -415,7 +416,7 @@ class ShopperModel extends FormModel
 		catch (RuntimeException $e)
 		{
 		    $msg = $e->getMessage();
-			$this->setRedirect( JRoute::_('index.php?option=com_mymuse'), $msg );
+			$this->setRedirect( Route::_('index.php?option=com_mymuse'), $msg );
 	        return false;
 		}
 		

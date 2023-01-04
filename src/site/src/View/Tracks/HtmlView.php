@@ -119,14 +119,14 @@ class HtmlView extends BaseHtmlView
 		
 
 
-
-
         if($result){
 			$items = $result [0];
-			
-			//$category->flash = $result [1]->flash;
 			$pagination = $result [2];
-			//$pagination = $this->getPagination();
+		}else{
+			$items = array();
+			$pagination = NULL;
+		}
+
 			
 			if ($params->get ( 'show_alphabet', 1 )) {
 				$alpha = array ();
@@ -134,7 +134,7 @@ class HtmlView extends BaseHtmlView
 				if ($filter_alpha == "ALL") {
 						$class = "selected";
 					}
-				$alpha [] = '<a class="letter ' . $class . '" href="' . Route::_ ( 'index.php?option=com_mymuse&view=tracks&layout=tracks&id=' . $category->id . '&filter_alpha=&Itemid=' . $this->Itemid ) . '">' . Text::_('COM_MYMUSE_ALL') . '</a>';
+				$alpha [] = '<a class="letter ' . $class . '" href="' . Route::_ ( 'index.php?option=com_mymuse&view=tracks&layout=tracks&id=' . $category->id . '&filter_alpha=ALL&Itemid=' . $this->Itemid ) . '">' . Text::_('COM_MYMUSE_ALL') . '</a>';
 
 				$alphabet = explode ( ":", Text::_ ( 'COM_MYMUSE_ALPHABET' ) );
 				$IN = $state->get ( 'list.prods', '' );
@@ -186,10 +186,7 @@ class HtmlView extends BaseHtmlView
 			}
 			$this->total = $this->get ( 'Total' );
 			$this->limit = $params->get ( 'display_num', 10 );
-        }else{
-        	$app->enQueueMessage(Text::_('COM_MYMUSE_NO_PRODUCTS'));
-        	return false;
-        }
+
         
         
         
@@ -217,7 +214,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		//if multiple track variations, create select box
-		if(is_countable($items) && count($items)){
+		if(isset($items) && is_countable($items) && count($items)){
 			for($i=0; $i < count($items); $i++){
 				if(is_array($items[$i]->digital) && count($items[$i]->digital) > 1){
 					$items[$i]->variation_select = '<select name="variation['.$items[$i]->id.']" 
@@ -254,10 +251,10 @@ class HtmlView extends BaseHtmlView
 
 		$this->maxLevel 	= $params->get('maxLevel', -1);
 		$this->state 		= $state;
-		$this->items 		= $items;
+		$this->items 		= isset($items)? $items : array();
 		$this->category 	= $category;
 		
-		$this->pagination 	= $pagination;
+		$this->pagination 	= isset($pagination)? $pagination: NULL;
 		$this->user 		= $user;
 
 		$this->_prepareDocument();

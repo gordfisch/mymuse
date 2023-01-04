@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\CategoryFeedView;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
 /**
@@ -68,7 +69,7 @@ class FeedView extends CategoryFeedView
 			$link = Route::_(
 				RouteHelper::getArticleRoute($item->slug, $item->catid, $item->language),
 				true,
-				$app->get('force_ssl') == 2 ? \JRoute::TLS_FORCE : \JRoute::TLS_IGNORE,
+				$app->get('force_ssl') == 2 ? \Route::TLS_FORCE : \Route::TLS_IGNORE,
 				true
 			);
 

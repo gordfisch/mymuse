@@ -583,7 +583,11 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 						$this->featured = 0;
 						$this->track_parentid = $track_parentid;
 						$this->product_sku = $form['product_sku'].':'.$formats[$i];
-						$this->check();
+						if(!$this->check()){
+							echo "back check"; exit;
+							$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK'));
+								return false;
+						}
 						$result = parent::store(false);
 						if(!$result){
 			                $app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->getError(), 'error');

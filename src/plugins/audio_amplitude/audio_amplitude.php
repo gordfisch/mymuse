@@ -136,7 +136,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 $filename = "catalog.js";
             }
 
-       // echo "Using playlist: ".$filename. " view = ".$jinput->get('view'). " id = ".$jinput->get('id');
+        //echo "Using playlist: ".$filename. " view = ".$jinput->get('view'). " id = ".$jinput->get('id');
             $path = JPATH_ROOT . $playlist_path . $filename;
             $js_path = $site_url . $playlist_path . $filename;
             if (! file_exists ( $path )) {
@@ -260,9 +260,11 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             return $text;
         }
 
-        
+
         $first_album_art_path       = $this->params->get('first_album_art_path', '/media/com_mymuse/images/mymuse-180x180.png ');
+
         $first_album_preview_path   = $this->params->get('first_album_preview_path', '/media/com_mymuse/previews/');
+
         $playlist_path              = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
         //$preview_path             = $this->params->get('preview_path', '/media/com_mymuse/previews/');
         
@@ -329,6 +331,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                         $track->url = $root_uri.$preview_path.$track->url;
                     }
                     $track->name = preg_replace("/\r|\n/", " ", $track->name);
+
+
                     unset($track->track_parentid);
                     unset($track->album_alias);
                     unset($track->artist_alias);
@@ -342,7 +346,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 }
     
                 $jstring = "Amplitude.init(".json_encode($arr).");";
-                $jstring = preg_replace("~,~",",\n",$jstring);
+               // $jstring = preg_replace("~,~",",\n",$jstring);
                 $jstring = preg_replace("~\[~","[\n",$jstring);
                 $jstring = preg_replace("~\{~","{\n",$jstring);
                 $jstring = preg_replace("~\},~","\n},",$jstring);
@@ -381,7 +385,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         }
         $text .= "Making list for catalog.js <br />";
         $jstring = "Amplitude.init(".json_encode($all).");";
-        $jstring = preg_replace("~,~",",\n",$jstring);
+       // $jstring = preg_replace("~,~",",\n",$jstring);
         $jstring = preg_replace("~\[~","[\n",$jstring);
         $jstring = preg_replace("~\{~","{\n",$jstring);
         $jstring = preg_replace("~\},~","\n},",$jstring);
@@ -413,7 +417,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         }
         $text .= "Making list for homepage.js <br />";
         $jstring = "Amplitude.init(".json_encode($all).");";
-        $jstring = preg_replace("~,~",",\n",$jstring);
+       // $jstring = preg_replace("~,~",",\n",$jstring);
         $jstring = preg_replace("~\[~","[\n",$jstring);
         $jstring = preg_replace("~\{~","{\n",$jstring);
         $jstring = preg_replace("~\},~","\n},",$jstring);
@@ -571,17 +575,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
 
 
-   //echo 'home query '.$db->replacePrefix((string) $track_query)." \n\n"; exit;
+        //echo 'home query '.$db->replacePrefix((string) $track_query)." \n\n"; exit;
         return $track_query;
     }
 }
-/*
-            LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
-            (SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
-            i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
-            FROM #__mymuse_order_item as i
-            LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-            GROUP BY i.product_id )
-            as x GROUP BY x.all_id) as s ON s.product_id = p.id
-
-*/

@@ -1,4 +1,7 @@
 <?php 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 $Itemid		= $this->Itemid;
 ?>
 <!--  HEADING / MINICART / TITLE / ICONS -->
@@ -27,9 +30,9 @@ if($this->params->get('show_minicart')) :?>
 	?></div>
 				<div class="mini-cart-link" id="mini-cart-link"><?php
 	if($this->cart['idx']) :
-	    echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>';
+	    echo '<a href="'.Route::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.Text::_('COM_MYMUSE_VIEW_CART').'</a>';
 	else :
-	    echo JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY');
+	    echo Text::_('COM_MYMUSE_YOUR_CART_IS_EMPTY');
 	endif;
 	?></div>
 			</div>

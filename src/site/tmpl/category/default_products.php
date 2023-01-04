@@ -66,19 +66,9 @@ if ($this->params->get('list_show_sales', 0)) {
 	$inner_cols++;
 }
 ?>
-<?php if (empty($this->items) || $inner_cols == 0) : ?>
 
-	<?php if ($this->params->get('show_no_products', 1)) : ?>
-	<p><?php echo Text::_('COM_MYMUSE_NO_PRODUCTS'); ?></p>
-	<?php endif; ?>
 
-<?php else : ?>
 
-<form action="<?php echo htmlspecialchars($uri->toString()); ?>" method="post" name="adminForm" id="adminForm">
-<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="limitstart" value="" />
 
 <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="com-content-category__articles">
     <?php if ($this->params->get('filter_field') !== 'hide') : ?>
@@ -127,7 +117,7 @@ if ($this->params->get('list_show_sales', 0)) {
     <?php endif; ?>
 
 
-<!-- table less -->
+
 <section>
 	<ul class="list-products ">
 <?php if ($this->params->get('show_headings')) :?>
@@ -140,7 +130,7 @@ if ($this->params->get('list_show_sales', 0)) {
 		<?php endif; ?>
 
 		<?php if($this->params->get('category_product_show_title')) :?>
-		<div class="mymuse_cart_top list-head-title "><?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?></div>
+		<div class="mymuse_cart_top list-head-title "><?php  echo HtmlHelper::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?></div>
 		<?php endif; ?>
 
 		<?php if($this->params->get('list_show_artist')) :?>
@@ -155,35 +145,43 @@ if ($this->params->get('list_show_sales', 0)) {
 				?>
 			<div class="mymuse_cart_top list-head-date   ">
 				<?php if ($date == "created") : ?>
-					<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
+					<?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
 				<?php elseif ($date == "modified") : ?>
-					<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
+					<?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
 				<?php elseif ($date == "published") : ?>
-					<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+					<?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
 				<?php elseif ($date == "product_made_date") : ?>
-					<?php echo JHtml::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.product_made_date', $listDirn, $listOrder); ?>
+					<?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_'.$date.'_DATE', 'a.product_made_date', $listDirn, $listOrder); ?>
 				<?php endif; ?></div>
 		<?php endif; ?>
 		<?php if ($this->params->get('list_show_author')) : ?>
-			<div class="mymuse_cart_top list-head-author   "><?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?></div>
+			<div class="mymuse_cart_top list-head-author   "><?php echo HtmlHelper::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?></div>
 		<?php endif; ?>
 		<?php if ($this->params->get('list_show_hits')) : ?>
-			<div class="mymuse_cart_top list-head-hits   "><?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?></div>
+			<div class="mymuse_cart_top list-head-hits   "><?php echo HtmlHelper::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?></div>
 		<?php endif; ?>
 		<?php if ($this->params->get('list_show_price')) : ?>
-			<div class="mymuse_cart_top list-head-price   "><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?></div>
+			<div class="mymuse_cart_top list-head-price   "><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?></div>
 		<?php endif; ?>
 		<?php if ($this->params->get('list_show_discount')) : ?>
-			<div class="mymuse_cart_top list-head-discount   "><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?></div>
+			<div class="mymuse_cart_top list-head-discount   "><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?></div>
 		<?php endif; ?>
 		<?php if ($this->params->get('list_show_sales')) : ?>
-			<div class="mymuse_cart_top list-head-sales   "><?php echo JHtml::_('grid.sort', 'COM_MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?></div>
+			<div class="mymuse_cart_top list-head-sales   "><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?></div>
 		<?php endif; ?>
 
 	</li>
 			
 <?php endif; ?>
 
+<?php if (empty($this->items) || $inner_cols == 0) : ?>
+
+	<?php if ($this->params->get('show_no_products', 1)) : ?>
+	<p><?php echo Text::_('COM_MYMUSE_NO_PRODUCTS'); ?></p>
+	<?php endif; ?>
+
+<?php else : ?>
+	
 <?php foreach ($this->items as $i => $product) : ?>
 
 
@@ -192,7 +190,7 @@ if ($this->params->get('list_show_sales', 0)) {
 	 	<?php if($this->params->get('category_show_product_image')) :?>
 		<div class="mycart-inner list-image " data-name="<?php echo Text::_('COM_MYMUSE_IMAGE'); ?>">
 			<?php if($this->params->get('link_intro_image')) :?>
-				<a href="<?php echo JRoute::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
+				<a href="<?php echo Route::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
 				<img src="<?php echo $product->list_image; ?>"
 				alt="<?php echo htmlspecialchars($product->list_image); ?>" />
 				</a>
@@ -210,7 +208,7 @@ if ($this->params->get('list_show_sales', 0)) {
 
 			<?php if($this->params->get('category_link_titles')) :?>
 			<a href="<?php 
-				echo JRoute::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
+				echo Route::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
 				<?php echo $this->escape($product->title); ?>
 				</a>
 			<?php else: ?>
@@ -227,18 +225,18 @@ if ($this->params->get('list_show_sales', 0)) {
 		<?php endif; ?>
 
 		<?php if($this->params->get('category_show_intro_text')) :?>
-			<div class="mycart-inner list-desc " data-name="<?php echo Text::_('COM_MYMUSE_DESCRIPTION'); ?>"><?php echo JHtml::_('string.truncate', strip_tags($product->introtext), 200, true); ?>
+			<div class="mycart-inner list-desc " data-name="<?php echo Text::_('COM_MYMUSE_DESCRIPTION'); ?>"><?php echo HtmlHelper::_('string.truncate', strip_tags($product->introtext), 200, true); ?>
 		
 
 			<?php if ($this->params->get('category_show_readmore') && $product->readmore) :
 				if ($product->access) :
-					$link = JRoute::_(RouteHelper::getProductRoute($product->slug, $product->catid));
+					$link = Route::_(RouteHelper::getProductRoute($product->slug, $product->catid));
 				else :
 					$menu = Factory::getApplication()->getMenu();
 					$active = $menu->getActive();
 					$itemId = $active->id;
-					$link1 = JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
-					$returnURL = JRoute::_(RouteHelper::getProductRoute($product->slug, $product->catid));
+					$link1 = Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
+					$returnURL = Route::_(RouteHelper::getProductRoute($product->slug, $product->catid));
 					$link = new JURI($link1);
 					$link->setVar('return', base64_encode($returnURL));
 				endif;
@@ -250,13 +248,13 @@ if ($this->params->get('list_show_sales', 0)) {
 								elseif ($readmore = $product->alternative_readmore) :
 									echo $readmore;
 									if ($this->params->get('category_show_readmore_title', 0) != 0) :
-									    echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
+									    echo HtmlHelper::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
 									endif;
 								elseif ($this->params->get('category_show_readmore_title', 0) == 0) :
 									echo Text::sprintf('COM_MYMUSE_READ_MORE_TITLE');
 								else :
 									echo Text::_('COM_MYMUSE_READ_MORE').' ';
-									echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
+									echo HtmlHelper::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
 								endif; ?></a>
 					</spans>
 			<?php endif; ?>
@@ -265,7 +263,7 @@ if ($this->params->get('list_show_sales', 0)) {
 			<?php if ($this->params->get('list_show_date')) : ?>
 				<div class="mycart-inner list-date mydate  " data-name="<?php echo Text::_($date_string); ?>"><?php 
 						if($product->displayDate != '0000-00-00'){
-							echo JHtml::_('date', $product->displayDate, $this->escape(
+							echo HtmlHelper::_('date', $product->displayDate, $this->escape(
 							$this->params->get('date_format', Text::_('DATE_FORMAT_LC3')))); 
 						}
 						?>
@@ -279,9 +277,9 @@ if ($this->params->get('list_show_sales', 0)) {
 						<?php $author = ($product->created_by_alias ? $product->created_by_alias : $author);?>
 
 						<?php if (!empty($product->contactid ) &&  $this->params->get('link_author') == true):?>
-							<?php echo JHtml::_(
+							<?php echo HtmlHelper::_(
 									'link',
-									JRoute::_('index.php?option=com_contact&view=contact&id='.$product->contactid),
+									Route::_('index.php?option=com_contact&view=contact&id='.$product->contactid),
 									$author
 							); ?>
 

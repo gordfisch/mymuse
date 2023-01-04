@@ -7,7 +7,7 @@
  * @author      Gord Fisch info@mymuse.ca
  */
 
-
+use Joomla\CMS\Language\Text;
 
 
 
@@ -23,7 +23,7 @@ JHTML::_( 'behavior.calendar' );
 ?>
 		
 		<form action="index.php" method="post" name="adminForm" >
-		<h2><?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></h2>
+		<h2><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></h2>
 		<table class="mymuse_cart">
 		<tr>
 
@@ -44,7 +44,7 @@ JHTML::_( 'behavior.calendar' );
 		</tr>
 		<tr>
 			<td colspan="2" valign="top">
-			<button onclick="this.form.submit();"><?php echo JText::_( 'COM_MYMUSE_CREATE_REPORT' ); ?></button>
+			<button onclick="this.form.submit();"><?php echo Text::_( 'COM_MYMUSE_CREATE_REPORT' ); ?></button>
 			</td>
 		</table>
 		<input type="hidden" name="option" value="com_mymuse" />
@@ -59,60 +59,60 @@ JHTML::_( 'behavior.calendar' );
 		
 <?php 
 if($orders_total >0 && count( $rows )){ ?>
-		<h2><?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY'); ?></h2>
-		<?php echo JText::_('COM_MYMUSE_ORDER_SUMMARY_EXPLANATION'); ?>
+		<h2><?php echo Text::_('COM_MYMUSE_ORDER_SUMMARY'); ?></h2>
+		<?php echo Text::_('COM_MYMUSE_ORDER_SUMMARY_EXPLANATION'); ?>
 		<table class="mymuse_cart">
 		<tr>
-			<td width="200"><?php echo JText::_( 'COM_MYMUSE_TOTAL_NO_ORDERS' ); ?>:</td>
+			<td width="200"><?php echo Text::_( 'COM_MYMUSE_TOTAL_NO_ORDERS' ); ?>:</td>
 			<td width="100" align="right"><?php echo $orders_total; ?></td>
 		</tr>
 		<tr>
-			<td width="200"><?php echo JText::_( 'COM_MYMUSE_TOTAL_SUBTOTAL' ); ?>:</td>
+			<td width="200"><?php echo Text::_( 'COM_MYMUSE_TOTAL_SUBTOTAL' ); ?>:</td>
 			<td width="100" align="right"><?php echo MyMuseHelper::printMoney($orders_summary->total_subtotal); ?></td>
 		</tr>
 		<tr>
-			<td width="200"><?php echo JText::_( 'COM_MYMUSE_TOTAL_SHIPPING' ); ?>:</td>
+			<td width="200"><?php echo Text::_( 'COM_MYMUSE_TOTAL_SHIPPING' ); ?>:</td>
 			<td width="100" align="right"><?php echo MyMuseHelper::printMoney($orders_summary->total_shipping); ?></td>
 		</tr>
 		<tr>
-			<td width="200"><?php echo JText::_( 'COM_MYMUSE_TOTAL_DISCOUNTS' ); ?>:</td>
+			<td width="200"><?php echo Text::_( 'COM_MYMUSE_TOTAL_DISCOUNTS' ); ?>:</td>
 			<td width="100" align="right"><?php echo MyMuseHelper::printMoney($orders_summary->total_discount); ?></td>
 		</tr>
 	<?php foreach($orders_summary->tax_array as $tax){ ?>
 		<tr>
-			<td width="200"><?php echo JText::_( $tax ); ?>:</td>
+			<td width="200"><?php echo Text::_( $tax ); ?>:</td>
 			<td width="100" align="right"><?php echo MyMuseHelper::printMoney($orders_summary->$tax); ?></td>
 		</tr>
 	<?php } ?>	
 		</table>
 <?php 	}else{ ?>
-			<h3><?php echo JText::_( 'COM_MYMUSE_NO_ORDER' ); ?></h3>
+			<h3><?php echo Text::_( 'COM_MYMUSE_NO_ORDER' ); ?></h3>
 <?php } ?>
 
 
 <?php if(count( $rows )){ ?>
-		<h2><?php echo JText::_('COM_MYMUSE_ITEMS_SUMMARY'); ?></h2>
+		<h2><?php echo Text::_('COM_MYMUSE_ITEMS_SUMMARY'); ?></h2>
 		
 		<table class="mymuse_cart">
 		<thead>
 			<tr>
 				<th class="title">
-					<?php echo JText::_('COM_MYMUSE_PRODUCT'); ?>
+					<?php echo Text::_('COM_MYMUSE_PRODUCT'); ?>
 				</th>
 				<th class="title">
-					<?php echo JText::_('COM_MYMUSE_ARTIST'); ?>
+					<?php echo Text::_('COM_MYMUSE_ARTIST'); ?>
 				</th>
 				<th class="title">
-					<?php echo JText::_('COM_MYMUSE_CATEGORY'); ?>
+					<?php echo Text::_('COM_MYMUSE_CATEGORY'); ?>
 				</th>
 				<th class="title">
-					<?php echo JText::_('COM_MYMUSE_NUMBER_SOLD'); ?>
+					<?php echo Text::_('COM_MYMUSE_NUMBER_SOLD'); ?>
 				</th>
 				<th class="title">
-					<?php echo JText::_('COM_MYMUSE_TOTAL_SALES'); ?>
+					<?php echo Text::_('COM_MYMUSE_TOTAL_SALES'); ?>
 				</th>
 				<th class="title">
-					<?php echo JText::_( 'COM_MYMUSE_TOTAL_ARTIST' ); ?>
+					<?php echo Text::_( 'COM_MYMUSE_TOTAL_ARTIST' ); ?>
 				</th>
 			</tr>
 		</thead>
@@ -153,7 +153,7 @@ if($orders_total >0 && count( $rows )){ ?>
 		}
 		?>
 			<tr>
-				<td colspan="3" align="right"><?php echo Jtext::_('COM_MYMUSE_TOTAL'); ?></td>
+				<td colspan="3" align="right"><?php echo Text::_('COM_MYMUSE_TOTAL'); ?></td>
 				<td align="right"><?php echo MyMuseHelper::printMoney($total); ?></td>
 				<td align="right"><?php echo MyMuseHelper::printMoney($total*$this->params->get('my_owner_percent')/100); ?>
 			</tr>

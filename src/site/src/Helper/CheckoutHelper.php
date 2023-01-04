@@ -760,7 +760,7 @@ class CheckoutHelper
 		$params 	= MyMuseHelper::getParams();
 
 		if(!$id){
-			$this->error = JText::_('COM_MYMUSE_NO_ORDER_ID');
+			$this->error = Text::_('COM_MYMUSE_NO_ORDER_ID');
 			return false;
 		}
 

@@ -8,6 +8,7 @@
  * @author mail	info@joomlamymuse.com
  * @website		http://www.joomlamymuse.com
  */
+use Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -16,7 +17,7 @@ if(count($this->footer)) :
 	?>
 	<div id="mymuse-container-wrap">
 	
-	<h3><?php echo JText::_('COM_MYMUSE_WE_RECOMMEND'); ?></h3>
+	<h3><?php echo Text::_('COM_MYMUSE_WE_RECOMMEND'); ?></h3>
 	<?php foreach($this->footer as $item) : 
 
 	?>

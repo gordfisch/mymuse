@@ -42,21 +42,21 @@ endif;
       	}
   	}
 	</style>
-		<h3><?php echo JText::_('COM_MYMUSE_ITEMS'); ?></h3>
+		<h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3>
 
 
   <section>
     <ul class="mymuse-container">
     <li class="items-container">
-        <div class="mymuse_cart_top mytitle"  ><?php echo JText::_('COM_MYMUSE_NAME'); ?></div>
+        <div class="mymuse_cart_top mytitle"  ><?php echo Text::_('COM_MYMUSE_NAME'); ?></div>
         <?php foreach($product->attribute_sku as $a_sku){ ?>
 				<div class="my<?php echo $a_sku->name ?>"><?php echo $a_sku->name; ?></div>
 		<?php } ?>
-		<div class="mymuse_cart_top myprice mycenter"  ><?php echo JText::_('COM_MYMUSE_COST'); ?></div>
+		<div class="mymuse_cart_top myprice mycenter"  ><?php echo Text::_('COM_MYMUSE_COST'); ?></div>
 		<?php if ($this->params->get('product_show_quantity')) :?>
-			<div class="mymuse_cart_top myprice"  ><?php echo JText::_('COM_MYMUSE_Quantity'); ?></div>
+			<div class="mymuse_cart_top myprice"  ><?php echo Text::_('COM_MYMUSE_Quantity'); ?></div>
 		<?php endif; ?>
-		<div class="mymuse_cart_top myselect" ><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
+		<div class="mymuse_cart_top myselect" ><?php echo Text::_('COM_MYMUSE_SELECT'); ?></div>
 	</li>
 
 
@@ -64,17 +64,17 @@ endif;
 							
 			  		<li class="items-container">
         				
-        				<div class="mytitle mycart-inner" data-name="<?php echo JText::_('MYMUSE_NAME'); ?>"><?php echo $item->title; ?></div>
+        				<div class="mytitle mycart-inner" data-name="<?php echo Text::_('MYMUSE_NAME'); ?>"><?php echo $item->title; ?></div>
         			<?php foreach($product->attribute_sku as $a_sku){ ?>
 						<div class="my<?php echo $a_sku->name ?> attribute" data-name="<?php echo $item->attributes[$a_sku->name]; ?>" ><?php echo $item->attributes[$a_sku->name]; ?></div>
 					<?php } ?>
-						<div class="myprice mycart-inner" data-name="<?php echo JText::_('MYMUSE_COST'); ?>">
+						<div class="myprice mycart-inner" data-name="<?php echo Text::_('MYMUSE_COST'); ?>">
 						<?php echo MyMuseHelper::printMoneyPublic($item->price); 
 					?></div>
         			<?php if ($this->params->get('product_show_quantity')) :?>
-						<div class="myquantity mycart-inner" data-name="<?php echo JText::_('MYMUSE_QUANTITY'); ?>"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></div>
+						<div class="myquantity mycart-inner" data-name="<?php echo Text::_('MYMUSE_QUANTITY'); ?>"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></div>
 					<?php endif; ?>
-					<div class="myselect mycart-inner" data-name="<?php echo JText::_('MYMUSE_SELECT'); ?>"><a href="javascript:void(0)"
+					<div class="myselect mycart-inner" data-name="<?php echo Text::_('MYMUSE_SELECT'); ?>"><a href="javascript:void(0)"
 					id="box_<?php echo $item->id; ?>"><img
 						id="img_<?php echo $item->id; ?>"
 						src="<?php
@@ -220,7 +220,7 @@ $js .= "</script>\n";
 echo $js;
 ?>
 <div class="mymuse">
-<h3><?php echo JText::_('COM_MYMUSE_ITEMS'); ?></h3> 
+<h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3> 
     <div class="product-items">
     <ul class="product-content">
         <li class="product-content-item-actions">

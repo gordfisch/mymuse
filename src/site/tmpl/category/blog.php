@@ -99,7 +99,14 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         </div>
     <?php endif; ?>
 
-
+    <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
+        <div class="com-mymuse-category-blog__children cat-children">
+    
+            <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
+                <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
+            <?php endif; ?>
+            <?php echo $this->loadTemplate('children'); ?> </div>
+    <?php endif; ?>
 
     <?php if (empty($this->lead_items) && empty($this->link_items) && empty($this->intro_items)) : ?>
         <?php if ($this->params->get('show_no_articles', 1)) : ?>
@@ -109,6 +116,8 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
             </div>
         <?php endif; ?>
     <?php endif; ?>
+
+    <h3><?php echo JText::_("COM_MYMUSE_PRODUCTS"); ?></h3>
 
     <?php if (!empty($this->lead_items)) : ?>
         <div class="com-mymuse-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">
@@ -151,14 +160,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         </div>
     <?php endif; ?>
 
-    <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
-        <div class="com-mymuse-category-blog__children cat-children">
-  
-            <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
-                <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
-            <?php endif; ?>
-            <?php echo $this->loadTemplate('children'); ?> </div>
-    <?php endif; ?>
+    
     <?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
         <div class="com-mymuse-category-blog__navigation w-100">
             <?php if ($this->params->def('show_pagination_results', 1)) : ?>

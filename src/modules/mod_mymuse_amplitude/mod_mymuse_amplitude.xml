@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="module" client="site">
-	<name>Module MyMuse Amplitude</name>
+	<name>MyMuse Module Amplitude</name>
 	<author>Arboreta</author>
 	<creationDate>June 2022</creationDate>
 	<copyright>Copyright (C) 2022 Arboreta Internet Services. All rights reserved.</copyright>

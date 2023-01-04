@@ -87,7 +87,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 		/>
 		<?php endif; ?>
 		<?php if ($this->params->get('show_description') && $this->category->description) : ?>
-			<?php echo JHtml::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
+			<?php echo HTMLHelper::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
 		<?php endif; ?>
 		<div class="clr"></div>
 	</div>
@@ -99,7 +99,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 /* Mymuse is not going to show children
 if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
 		<div class="cat-children cat-items">
-		<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
+		<h3><?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
 			<?php echo $this->loadTemplate('children'); ?>
 		</div>
 <?php endif; 

@@ -156,7 +156,7 @@ $js .= '	for(i = 1; i < count+1; i++)
 			return true;
 		}
 	}
-	alert("'.JText::_("COM_MYMUSE_PLEASE_SELECT_A_PRODUCT").'");
+	alert("'.Text::_("COM_MYMUSE_PLEASE_SELECT_A_PRODUCT").'");
 	return false;
 }
 
@@ -232,10 +232,11 @@ if(count($params->get('my_formats', array())) > 1 ){
 
 //set up the ajax cart add
 $url = URI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
-
+//MymuseHelper::print_pre($product);
 /* PRODUCT PHYSICAL JAVASCRIPT */
-if($product->product_physical){
+if($product->product_physical && !count(is_countable($items)?$items:[])){
 	$js .= '
+/* PRODUCT PHYSICAL JAVASCRIPT */
 jQuery(document).ready(function($){
 		$("#box_'.$product->id.'").click(function(e){
 
@@ -264,13 +265,13 @@ jQuery(document).ready(function($){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.Text::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
 	
                     $("#mini-cart-text").html(" ");
-                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+                    $("#mini-cart-link").html(\''.json_encode(Text::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
                     link = "";
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300, delay:'. $params->get('my_delay_fadeout', 3000)  .' });
@@ -286,7 +287,7 @@ jQuery(document).ready(function($){
 if(count(is_countable($items)?$items:[]) && $items_select){
 
 	$js .= '
-	//with items select
+	/* ITEMS WITH SELECT BOX JAVASCRIPT */
 	jQuery(document).ready(function($){
 		$("#box_'.$product->id.'").click(function(e){
 
@@ -316,13 +317,13 @@ if(count(is_countable($items)?$items:[]) && $items_select){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.Text::_('COM_MYMUSE_VIEW_CART').'</a>\';
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
 	
                     $("#mini-cart-text").html(" ");
-                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+                    $("#mini-cart-link").html(\''.json_encode(Text::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
                     link = "";
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$product->id.', delay:'. $params->get('my_delay_fadeout', 3000)  .'});
@@ -368,13 +369,13 @@ if(count(is_countable($items)?$items:[]) && !$items_select){
 		                    }else{
 		                        txt = idx+" "+"items";
 		                    }
-		                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+		                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.Text::_('COM_MYMUSE_VIEW_CART').'</a>\';
 		                        $("#mini-cart-text").html(txt);
 		                        $("#mini-cart-link").html(link);
 		                    }else{
 		                    
 		                        $("#mini-cart-text").html(" ");
-		                        $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+		                        $("#mini-cart-link").html(\''.json_encode(Text::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
 		                        link = "";
 		                }
 		                my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$product->id.', delay:'. $params->get('my_delay_fadeout', 3000)  .'});
@@ -425,13 +426,13 @@ if(is_countable($tracks)){
 		                    }else{
 		                        txt = idx+" "+"items";
 		                    }
-		                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('COM_MYMUSE_VIEW_CART').'</a>\';
+		                    link = \''.'<a href="'.Route::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.Text::_('COM_MYMUSE_VIEW_CART').'</a>\';
 		                    $("#mini-cart-text").html(txt);
 		                    $("#mini-cart-link").html(link);
 		                }else{
 
 		                    $("#mini-cart-text").html(" ");
-		                    $("#mini-cart-link").html(\''.json_encode(JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
+		                    $("#mini-cart-link").html(\''.json_encode(Text::_('COM_MYMUSE_YOUR_CART_IS_EMPTY')).'\');
 		                    link = "";
 		                }
 		                my_modal.open({content: msg+"<br />"+link, width: 300,target:id, delay:'. $params->get('my_delay_fadeout', 3000)  .'});

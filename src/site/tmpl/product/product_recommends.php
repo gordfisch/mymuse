@@ -9,6 +9,7 @@
  * @website		http://www.joomlamymuse.com
  */
 
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 // no direct access
@@ -21,7 +22,7 @@ $cols = count($this->item->recommends);
 
 ?>
 
-	<h3><?php echo JText::_('COM_MYMUSE_RELATED_ITEMS'); ?></h3>
+	<h3><?php echo Text::_('COM_MYMUSE_RELATED_ITEMS'); ?></h3>
 
 	<div class="product-recommends mymuse-container">
 		<div class="my-grid columns-<?php echo $cols ?>">	

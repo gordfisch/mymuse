@@ -40,7 +40,7 @@ class ShoppergroupsController extends AdminController
 	 */
 	public function __construct($config = array(), MVCFactoryInterface $factory = null, $app = null, $input = null)
 	{
-		echo "construct"; exit;
+
 		parent::__construct($config, $factory, $app, $input);
 
 	}

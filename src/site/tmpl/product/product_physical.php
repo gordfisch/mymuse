@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 $product 	=& $this->item;
@@ -44,68 +46,68 @@ endif;
 
 
 <!--  PRODUCT PHYSICAL -->
-		<h3><?php echo JText::_('COM_MYMUSE_PRODUCT'); ?></h3>
+		<h3><?php echo Text::_('COM_MYMUSE_PRODUCT'); ?></h3>
 
 
   <section class="physical">
     <ul class="mymuse-container">
     <li class="my-grid">
         <div class="mymuse-header title">
-        		<?php echo JText::_('COM_MYMUSE_NAME'); ?>
+        		<?php echo Text::_('COM_MYMUSE_NAME'); ?>
         </div>
 
         <?php  if($params->get('product_show_filetime', 0)) :?>
           <div class="mymuse-header time" >
-          <?php echo JText::_('COM_MYMUSE_TIME'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_TIME'); ?></div>
         <?php endif; ?>
 
         <div class="mymuse-header price right">
-        		<?php echo JText::_('COM_MYMUSE_COST'); ?>
+        		<?php echo Text::_('COM_MYMUSE_COST'); ?>
         </div>
 
         <?php if ($this->params->get('product_show_quantity') && $this->available) :?>
         		<div class="mymuse-header quantity" >
-          <?php echo JText::_('COM_MYMUSE_QUANTITY'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_QUANTITY'); ?></div>
         <?php endif; ?>
 
         <?php if($this->available) : ?>
         <div class="mymuse-header select">
-        		<?php echo JText::_('COM_MYMUSE_SELECT'); ?>
+        		<?php echo Text::_('COM_MYMUSE_SELECT'); ?>
         </div>
         <?php endif; ?>
      </li>
 
      <li class="my-grid">
-        <div class="mycart-inner title" data-name="<?php echo JText::_('COM_MYMUSE_NAME'); ?>">
+        <div class="mycart-inner title" data-name="<?php echo Text::_('COM_MYMUSE_NAME'); ?>">
         		<?php echo $product->title; ?>
         </div>
 
         <?php  if($params->get('product_show_filetime', 0)) :?>
-          <div class="mycart-inner  mytime" data-name="<?php echo JText::_('COM_MYMUSE_TIME'); ?>">
-          <?php echo $product->product_full_time ?></div>
+          <div class="mycart-inner  mytime" data-name="<?php echo Text::_('COM_MYMUSE_TIME'); ?>">
+          <?php echo $product->recording->get('product_full_time','0'); ?></div>
         <?php endif; ?>
 
-        <div class="mycart-inner price right" data-name="<?php echo JText::_('COM_MYMUSE_COST'); ?>">
+        <div class="mycart-inner price right" data-name="<?php echo Text::_('COM_MYMUSE_COST'); ?>">
         		<?php  echo MyMuseHelper::printMoneyPublic($product->price);
 				?>
         </div>
 
         <?php if ($this->params->get('product_show_quantity') && $this->available) :?>
-        		<div class="mycart-inner  quantity" data-name="<?php echo JText::_('COM_MYMUSE_QUANTITY'); ?>">
+        		<div class="mycart-inner  quantity" data-name="<?php echo Text::_('COM_MYMUSE_QUANTITY'); ?>">
           <input class="inputbox" type="text"
 					name="quantity[<?php echo $product->id; ?>]" size="2" value="1" /></div>
         <?php endif; ?>
 
         <?php if($this->available) : ?>
-        <div class="mycart-inner  select" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>">
+        <div class="mycart-inner  select" data-name="<?php echo Text::_('COM_MYMUSE_SELECT'); ?>">
         		<a href="javascript:void(0)"
 					id="box_<?php echo $product->id; ?>"><img
 						id="cart_image_<?php echo $product->id; ?>"
 						src="<?php
                     if(in_array($product->id, $this->products)) :
-                       echo JRoute::_("components/com_mymuse/assets/images/minus-button-30.png");
+                       echo Route::_("components/com_mymuse/assets/images/minus-button-30.png");
                     else :
-                        echo JRoute::_("components/com_mymuse/assets/images/plus-button-30.png");
+                        echo Route::_("components/com_mymuse/assets/images/plus-button-30.png");
                      endif;
                  ?>"></a> <span class="mycheckbox"><input
 						style="display: none;" type="checkbox" name="productid[]"

@@ -11,9 +11,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
 global $store, $shopper, $cart;
 
@@ -32,7 +34,7 @@ if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_t
 
 <div class="product-tracks">
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
-    <h3><?php echo JText::_('COM_MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
+    <h3><?php echo Text::_('COM_MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
 
 <?php if ($this->params->get('show_player','1')) : ?>
@@ -47,7 +49,7 @@ if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_t
         <?php echo $product->flash; ?>
       </div>
       <?php if(isset($product->flash) && $product->flash != '') : ?>
-      <div><?php echo JText::_('COM_MYMUSE_NOW_PLAYING');?> <span
+      <div><?php echo Text::_('COM_MYMUSE_NOW_PLAYING');?> <span
         id="jp-title-li"></span>
       </div>
       <?php endif; ?>
@@ -148,15 +150,15 @@ endif;
         <?php endif; ?>
           
           <?php if(count($this->formats) > 1) :?>
-        <div class="mymuse-header format"><?php echo JText::_('COM_MYMUSE_FORMAT'); ?></div>
+        <div class="mymuse-header format"><?php echo Text::_('COM_MYMUSE_FORMAT'); ?></div>
         <?php endif;?>
           
           <?php  if($this->params->get('product_show_select_column', 1) && $this->available) :?>
-        <div class="mymuse-header select"><?php echo JText::_('COM_MYMUSE_SELECT'); ?></div>
+        <div class="mymuse-header select"><?php echo Text::_('COM_MYMUSE_SELECT'); ?></div>
         <?php endif; ?>
 
         <?php if($this->params->get('product_show_preview_column', 1) ) : ?>
-          <div class="mymuse-header previews"><?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?></div>
+          <div class="mymuse-header previews"><?php echo Text::_('COM_MYMUSE_PREVIEWS'); ?></div>
         <?php endif; ?>
     </li>
 
@@ -172,14 +174,14 @@ endif;
 ?>
 
       <li class="my-grid item-container cols-<?php echo $cols; ?>">
-      <div class="mycart-inner title" data-name="<?php echo JText::_('COM_MYMUSE_TITLE'); ?>"><?php if($track->detail_image && $track->detail_image != '') :
+      <div class="mycart-inner title" data-name="<?php echo Text::_('COM_MYMUSE_TITLE'); ?>"><?php if($track->detail_image && $track->detail_image != '') :
                 echo '<span class="track-img"><img src="'.$track->detail_image.'"></span>';
               endif; 
               ?>
                  <span class="track-title"><?php echo $track->title; ?></span>
                   <?php  
                   if($track->product_allfiles == "1") : 
-                echo "(".JText::_("COM_MYMUSE_ALL_TRACKS").")";
+                echo "(".Text::_("COM_MYMUSE_ALL_TRACKS").")";
               endif; ?>
               <?php if($track->introtext && $track->introtext != $track->title) :
                 echo '<br /><span class="track-text">'.$track->introtext.'</span>';
@@ -187,25 +189,25 @@ endif;
               ?></div>
 
     <?php  if($this->params->get('product_show_artist', 0)) :?>
-      <div class="mycart-inner artist" data-name="<?php echo JText::_('COM_MYMUSE_GENRE'); ?>"><a
+      <div class="mycart-inner artist" data-name="<?php echo Text::_('COM_MYMUSE_GENRE'); ?>"><a
             href="<?php 
-            echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->catid, true));?>">
+            echo Route::_(MyMuseHelperRoute::getCategoryRoute($track->catid, true));?>">
             <?php if(!empty($track->category_name )) { echo $track->category_name; } ?></a>
             <?php foreach((array)$track->othercats as $id=>$name): ?>
                 <br /> <a
             href="<?php
-                echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($id, true));?>">
+                echo Route::_(MyMuseHelperRoute::getCategoryRoute($id, true));?>">
                 <?php echo $name ?></a>
             <?php endforeach; ?></div>
     <?php endif; ?>
     
     <?php  if($this->params->get('product_show_filetime', 0)) :?>
-      <div class="mycart-inner time" data-name="<?php echo JText::_('COM_MYMUSE_TIME'); ?>">
+      <div class="mycart-inner time" data-name="<?php echo Text::_('COM_MYMUSE_TIME'); ?>">
       <?php echo $track->file_time ?></div>
     <?php endif; ?>
     
     <?php  if($this->params->get('product_show_filesize', 0)) :?>
-      <div class="mycart-inner filesize" data-name="<?php echo JText::_('COM_MYMUSE_FILE_SIZE'); ?>">
+      <div class="mycart-inner filesize" data-name="<?php echo Text::_('COM_MYMUSE_FILE_SIZE'); ?>">
       <?php 
                 if(!$track->product_allfiles && $track->file_length > 0) :
                   $first = 1;
@@ -226,12 +228,12 @@ endif;
     <?php endif; ?>
     
     <?php if($this->params->get('product_show_sales', 0)) : ?>
-      <div class="mycart-inner sales" data-name="<?php echo JText::_('COM_MYMUSE_SALES'); ?>">
+      <div class="mycart-inner sales" data-name="<?php echo Text::_('COM_MYMUSE_SALES'); ?>">
       <?php echo $track->sales; ?></div>
     <?php endif; ?>
     
     <?php if($this->params->get('product_show_downloads', 0)) : ?>
-      <div class="mycart-inner downloads" data-name="<?php echo JText::_('COM_MYMUSE_DOWNLOADS'); ?>">
+      <div class="mycart-inner downloads" data-name="<?php echo Text::_('COM_MYMUSE_DOWNLOADS'); ?>">
       <?php if(!$track->product_allfiles && $track->file_length > 0) :
                   $first = 1;
                   foreach($track->digital as $file){
@@ -251,7 +253,7 @@ endif;
     <?php endif; ?>
     
     <?php  if($this->params->get('product_show_cost_column', 1)) :?>
-      <div class="mycart-inner price" data-name="<?php echo JText::_('COM_MYMUSE_CART_PRICE'); ?>">
+      <div class="mycart-inner price" data-name="<?php echo Text::_('COM_MYMUSE_CART_PRICE'); ?>">
       <?php 
 
                 if("1" == $this->params->get('my_price_by_product')) :
@@ -281,8 +283,8 @@ endif;
                     $menu = JFactory::getApplication()->getMenu();
                     $active = $menu->getActive();
                     $itemId = $active->id;
-                    $link = new JUri(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
-                    $link->setVar('return', base64_encode(JRoute::_(myMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language))));
+                    $link = new JUri(Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
+                    $link->setVar('return', base64_encode(Route::_(myMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language))));
                   else :
                     if(is_array($track->free_download_link)) :
                       $first = 1;
@@ -293,7 +295,7 @@ endif;
                           echo ' style="display:none" ';
                         endif;
                         $first = 0;
-                        $img_link = JRoute::_("components/com_mymuse/assets/images/download_dark.png");
+                        $img_link = Route::_("components/com_mymuse/assets/images/download_dark.png");
                         echo '><a class="free_download_link"
                     href="'.$link.'"><img
                     src="'.$img_link.'"
@@ -301,7 +303,7 @@ endif;
                       endforeach;
                     else :
                   $link = $track->free_download_link;
-                  $img_link = JRoute::_("components/com_mymuse/assets/images/download_dark.png");
+                  $img_link = Route::_("components/com_mymuse/assets/images/download_dark.png");
                   ?>
                       <a class="free_download_link"
                   href="<?php echo $link; ?>"><img
@@ -327,16 +329,16 @@ endif;
     <?php endif;?>
       
       <?php  if($this->params->get('product_show_select_column', 1) && $this->available) :?>
-        <div class="mycart-inner select" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>"><?php if($track->digital || $track->product_allfiles) :?>
+        <div class="mycart-inner select" data-name="<?php echo Text::_('COM_MYMUSE_SELECT'); ?>"><?php if($track->digital || $track->product_allfiles) :?>
 
                     <a href="javascript:void(0)" class="trackpicker" data-id="<?php echo $track->id; ?>"
                       data-variation="<?php echo $track->digital[0]->file_id; ?>"
                     id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>"
                     src="<?php
                       if(isset($this->products) && in_array($track->id, $this->products)) :
-                          echo JRoute::_("components/com_mymuse/assets/images/minus-button-30.png");
+                          echo Route::_("components/com_mymuse/assets/images/minus-button-30.png");
                       else :
-                          echo JRoute::_("components/com_mymuse/assets/images/plus-button-30.png");
+                          echo Route::_("components/com_mymuse/assets/images/plus-button-30.png");
                       endif;
                       ?>"></a>
                 <?php  endif; ?>
@@ -351,7 +353,7 @@ endif;
     <?php endif; ?>
 
     <?php if($this->params->get('product_show_preview_column', 1) ) : ?>
-      <div class="mycart-inner previews" data-name="<?php echo JText::_('COM_MYMUSE_PREVIEWS'); ?>"><span class="jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></span></div>
+      <div class="mycart-inner previews" data-name="<?php echo Text::_('COM_MYMUSE_PREVIEWS'); ?>"><span class="jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></span></div>
     <?php endif; ?>
     </li>
     <?php endif; ?>

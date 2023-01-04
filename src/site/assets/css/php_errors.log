@@ -1,8 +1,0 @@
-[17-Feb-2021 05:03:19 America/Denver] PHP Fatal error:  Uncaught Error: Class 'MyMuse' not found in /var/www/html/mymuseJ4/src/site/assets/css/mobile_css.php:13
-Stack trace:
-#0 {main}
-  thrown in /var/www/html/mymuseJ4/src/site/assets/css/mobile_css.php on line 13
-[10-Mar-2021 11:28:08 America/Denver] PHP Fatal error:  Uncaught Error: Class 'MyMuse' not found in /var/www/html/mymuseJ4/src/site/assets/css/mobile_css.php:13
-Stack trace:
-#0 {main}
-  thrown in /var/www/html/mymuseJ4/src/site/assets/css/mobile_css.php on line 13

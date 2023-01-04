@@ -1017,7 +1017,6 @@ class CartHelper
   public function getProduct($id=null, $variation=0)
   {
     
-
     $params   = MyMuseHelper::getParams();;
     
     
@@ -1038,7 +1037,7 @@ class CartHelper
     if($variation){
       $var = $model->getItem($variation);
       if($var->digital){
-        $row->digital = array();
+
         $row->digital = json_decode($var->digital);
         $row->digital->file_id = $variation;
         $row->format = strtolower($row->digital->file_format);
@@ -1054,10 +1053,8 @@ class CartHelper
       $shopper_group_id = $params->get("my_default_shopper_group_id");
     }
 
-
-
     $row->price = ProductModel::getPrice($row);
-    //MyMuseHelper::print_pre($row); exit;
+
     return $row;
 
   }

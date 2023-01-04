@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset addfieldprefix="Joomla\Component\Mymuse\Administrator\Field">
+		<field 
+    	  	name="catid" 
+    	  	type="categorytree" 
+    	  	extension="com_mymuse"
+    		label="COM_MYMUSE_MAIN_CATEGORY_LABEL" 
+    		description="COM_MYMUSE_MAIN_CATEGORY_DESC"
+    		class="form-select" 
+    		required="true"
+    		multiple="false" 
+            size="1"
+		/>
+		<field
+            name="filter_order_status"
+            type="orderstatus"
+            label="COM_MYMUSE_ORDER_STATUS"
+            description="COM_MYMUSE_ORDER_STATUS"
+            class="form-select" 
+            size="1"
+      	/>
+      	<field
+            name="filter_start_date"
+            type="calendar"
+            label="COM_MYMUSE_START_DATE"
+            description="COM_MYMUSE_START_DATE"
+            class="form-control"
+            hint="COM_MYMUSE_START_DATE"
+
+      	/>
+      	<field
+            name="filter_end_date"
+            type="calendar"
+            label="COM_MYMUSE_END_DATE"
+            description="COM_MYMUSE_END_DATE"
+            class="form-control"
+            hint="COM_MYMUSE_END_DATE"
+      	/>
+        <field
+            name="filter_show_format"
+            type="radio"
+            class="switcher"
+            label="COM_MYMUSE_SHOW_FORMAT"
+            default="0"
+            >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+	</fieldset>
+</form>

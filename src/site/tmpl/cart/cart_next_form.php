@@ -8,10 +8,13 @@
  * @author mail	info@joomlamymuse.com
  * @website		http://www.joomlamymuse.com
  */
+
+ use Joomla\CMS\Router\Route;
+
  // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-    <form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=cart&task='.$this->task.'&Itemid='.$this->Itemid); ?>" method="post" name="adminForm">
+    <form action="<?php echo Route::_('index.php?option=com_mymuse&view=cart&task='.$this->task.'&Itemid='.$this->Itemid); ?>" method="post" name="adminForm">
    <?php if ($this->params->get('my_muse_use_shipping')){ ?>
         <input type="hidden" name="shipmethodid" value="<?php echo $this->shipmethodid; ?>">
 	<?php } ?>

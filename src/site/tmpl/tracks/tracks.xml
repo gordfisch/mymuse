@@ -347,7 +347,6 @@
 		
 		<field name="orderby_track"
 			type="list"
-			default=""
 			label="COM_MYMUSE_TRACK_ORDER_LABEL"
 			description="COM_MYMUSE_TRACK_ORDER_DESC">
 			<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -417,7 +416,6 @@
 				<option value="1">JSHOW</option>
 		</field>
 		<field name="display_num" type="list"
-				default="10"
 				description="COM_MYMUSE_NUMBER_ITEMS_LIST_DESC"
 				label="COM_MYMUSE_NUMBER_ITEMS_LIST_LABEL">
 				<option value="5">J5</option>

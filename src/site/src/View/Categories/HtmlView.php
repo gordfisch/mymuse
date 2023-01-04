@@ -13,6 +13,7 @@ namespace Joomla\Component\Mymuse\Site\View\Categories;
 
 use Joomla\CMS\MVC\View\CategoriesView;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Site\Model\StoreModel;
@@ -65,13 +66,13 @@ class HtmlView extends CategoriesView
 
 			if ($items === false)
 			{
-				JError::raiseError(404, JText::_('MYMUSE_ERROR_CATEGORY_NOT_FOUND'));
+				JError::raiseError(404, Text::_('MYMUSE_ERROR_CATEGORY_NOT_FOUND'));
 				return false;
 			}
 
 			if ($parent == false)
 			{
-				JError::raiseError(404, JText::_('MYMUSE_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+				JError::raiseError(404, Text::_('MYMUSE_ERROR_PARENT_CATEGORY_NOT_FOUND'));
 				return false;
 			}
 
@@ -108,17 +109,17 @@ class HtmlView extends CategoriesView
 			{
 				$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 			} else {
-				$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+				$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 			}
 			$title = $this->params->get('page_title', '');
 			if (empty($title)) {
 				$title = $app->getCfg('sitename');
 			}
 			elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-				$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+				$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 			}
 			elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-				$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+				$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 			}
 			$this->document->setTitle($title);
 

@@ -28,124 +28,76 @@ use Joomla\Utilities\ArrayHelper;
 class AdministratorService
 {
     /**
-     * Get the associated language flags
+     * Render the list of associated items
      *
-     * @param   integer  $mymuseid  The item id to search associations
+     * @param   integer  $productid  The product item id
      *
      * @return  string  The language HTML
      *
-     * @throws  Exception
+     * @throws  \Exception
      */
-    public function association($mymuseid)
+    public function association($productid)
     {
         // Defaults
         $html = '';
 
         // Get the associations
-        if ($associations = Associations::getAssociations('com_mymuse', '#__mymuse_product', 'com_mymuse.item', $mymuseid))
-        {
-            foreach ($associations as $tag => $associated)
-            {
+        if ($associations = Associations::getAssociations('com_mymuse', '#__mymuse', 'com_mymuse.item', $productid)) {
+            foreach ($associations as $tag => $associated) {
                 $associations[$tag] = (int) $associated->id;
             }
 
-            // Get the associated mymuse items
+            // Get the associated menu items
             $db = Factory::getDbo();
             $query = $db->getQuery(true)
                 ->select(
                     [
-                        $db->quoteName('c.id'),
-                        $db->quoteName('c.title'),
+                        'c.*',
                         $db->quoteName('l.sef', 'lang_sef'),
-                        $db->quoteName('lang_code'),
+                        $db->quoteName('l.lang_code'),
                         $db->quoteName('cat.title', 'category_title'),
                         $db->quoteName('l.image'),
                         $db->quoteName('l.title', 'language_title'),
                     ]
                 )
-                ->from($db->quoteName('#__mymuse_product', 'c'))
+                ->from($db->quoteName('#__mymuse', 'c'))
                 ->join('LEFT', $db->quoteName('#__categories', 'cat'), $db->quoteName('cat.id') . ' = ' . $db->quoteName('c.catid'))
                 ->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('c.language') . ' = ' . $db->quoteName('l.lang_code'))
                 ->whereIn($db->quoteName('c.id'), array_values($associations))
-                ->where($db->quoteName('c.id') . ' != :id')
-                ->bind(':id', $mymuseid, ParameterType::INTEGER);
+                ->where($db->quoteName('c.id') . ' != :productId')
+                ->bind(':productId', $productid, ParameterType::INTEGER);
+
             $db->setQuery($query);
 
-            try
-            {
+            try {
                 $items = $db->loadObjectList('id');
-            }
-            catch (\RuntimeException $e)
-            {
+            } catch (\RuntimeException $e) {
                 throw new \Exception($e->getMessage(), 500, $e);
             }
 
-            if ($items)
-            {
-                $languages = LanguageHelper::getContentLanguages(array(0, 1));
-                $content_languages = array_column($languages, 'lang_code');
+            if ($items) {
+                $languages = LanguageHelper::getmymuseLanguages(array(0, 1));
+                $mymuse_languages = array_column($languages, 'lang_code');
 
-                foreach ($items as &$item)
-                {
-                    if (in_array($item->lang_code, $content_languages))
-                    {
-                        $text = $item->lang_code;
-                        $url = Route::_('index.php?option=com_mymuse&task=product.edit&id=' . (int) $item->id);
+                foreach ($items as &$item) {
+                    if (in_array($item->lang_code, $mymuse_languages)) {
+                        $text    = $item->lang_code;
+                        $url     = Route::_('index.php?option=com_mymuse&task=product.edit&id=' . (int) $item->id);
                         $tooltip = '<strong>' . htmlspecialchars($item->language_title, ENT_QUOTES, 'UTF-8') . '</strong><br>'
                             . htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8') . '<br>' . Text::sprintf('JCATEGORY_SPRINTF', $item->category_title);
                         $classes = 'badge bg-secondary';
 
                         $item->link = '<a href="' . $url . '" class="' . $classes . '">' . $text . '</a>'
-                            . '<div role="tooltip" id="tip-' . (int) $mymuseid . '-' . (int) $item->id . '">' . $tooltip . '</div>';
-                    }
-                    else
-                    {
-                        // Display warning if Content Language is trashed or deleted
-                        Factory::getApplication()->enqueueMessage(Text::sprintf('JGLOBAL_ASSOCIATIONS_CONTENTLANGUAGE_WARNING', $item->lang_code), 'warning');
+                            . '<div role="tooltip" id="tip-' . (int) $productid . '-' . (int) $item->id . '">' . $tooltip . '</div>';
+                    } else {
+                        // Display warning if mymuse Language is trashed or deleted
+                        Factory::getApplication()->enqueueMessage(Text::sprintf('JGLOBAL_ASSOCIATIONS_mymuseLANGUAGE_WARNING', $item->lang_code), 'warning');
                     }
                 }
             }
 
-            $html = LayoutHelper::render('joomla.content.associations', $items);
+            $html = LayoutHelper::render('joomla.mymuse.associations', $items);
         }
-
-        return $html;
-    }
-
-    /**
-     * Show the featured/not-featured icon.
-     *
-     * @param   integer  $value      The featured value.
-     * @param   integer  $i          Id of the item.
-     * @param   boolean  $canChange  Whether the value can be changed or not.
-     *
-     * @return  string  The anchor tag to toggle featured/unfeatured mymuses.
-     *
-     * @since   1.6
-     */
-    public function featured($value, $i, $canChange = true)
-    {
-        // Array of image, task, title, action
-        $states = array(
-            0 => array('unfeatured', 'product.featured', 'COM_MYMUSE_UNFEATURED', 'JGLOBAL_ITEM_FEATURE'),
-            1 => array('featured', 'product.unfeatured', 'JFEATURED', 'JGLOBAL_ITEM_UNFEATURE'),
-        );
-        $state = ArrayHelper::getValue($states, (int) $value, $states[1]);
-        $icon = $state[0] === 'featured' ? 'star featured' : 'circle';
-        $onclick = 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')"';
-        $tooltipText = Text::_($state[3]);
-
-        if (!$canChange)
-        {
-            $onclick     = 'disabled';
-            $tooltipText = Text::_($state[2]);
-        }
-
-        $html = '<button type="submit" class="tbody-icon' . ($value == 1 ? ' active' : '') . '"'
-            . ' aria-labelledby="cb' . $i . '-desc" ' . $onclick . '>'
-            . '<span class="icon-' . $icon . '" aria-hidden="true"></span>'
-            . '</button>'
-            . '<div role="tooltip" id="cb' . $i . '-desc">' . $tooltipText . '</div>';
 
         return $html;
     }

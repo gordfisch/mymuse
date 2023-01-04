@@ -47,7 +47,7 @@ if($this->params->get('category_layout') == "_:tracks"){
 	?>
 	<li <?php echo $class; ?>>
 	<?php $class = ''; ?>
-		<span class="item-title"><a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($item->id));?>">
+		<span class="item-title"><a href="<?php echo Route::_(RouteHelper::getCategoryRoute($item->id));?>">
 			<?php echo $this->escape($item->title); ?></a> 
 			<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :
 					if($this->params->get('category_layout') == "_:tracks"){ ?>
@@ -60,7 +60,7 @@ if($this->params->get('category_layout') == "_:tracks"){
 		</span>
 		<?php if ($this->params->get('show_cat_subcat_image') && $item_params->get('image')): ?>
 <div class="list_image">
-<a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($item->id)); ?>"
+<a href="<?php echo Route::_(RouteHelper::getCategoryRoute($item->id)); ?>"
 ><img src="<?php echo  $item_params->get('image'); ?>" 
 alt="<?php echo htmlspecialchars($item_params->get('image')); ?>" border="0" /></a></div>
 <?php endif; ?>

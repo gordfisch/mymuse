@@ -452,7 +452,6 @@
 				type="list"
 				useglobal="true"
 			    class="chzn-color"
-			    default="1"
 				label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
 			>
 	 			<option value="0">JHIDE</option>
@@ -464,7 +463,6 @@
 				useglobal="true"
 			    class="chzn-color"
 				label="COM_MYMUSE_SHOW_TITLE_LABEL"
-				default="1"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -523,7 +521,6 @@
           		class="form-select-color-state"
           		validate="options"
           		parentclass="stack span-1"
-          		default="1"
           		>
           		<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_ARTICLE_SETTINGS</option>
           		<option	value="0">JHIDE</option>
@@ -538,7 +535,6 @@
           		class="form-select-color-state"
           		validate="options"
           		parentclass="stack span-1-inline"
-          		default="1"
           		>
           		<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_ARTICLE_SETTINGS</option>
           		<option	value="0">JHIDE</option>

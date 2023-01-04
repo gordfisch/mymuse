@@ -10,6 +10,8 @@
  */
 
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -17,11 +19,11 @@ $params 	= $this->params;
 ?>
 
 <?php if($this->order->need_shipping && count($this->shipMethods) == 0){ ?>
-	<div class="message alert"><?php echo JText::_('COM_MYMUSE_NO_SHIPPING_AVAILABLE'); ?></div>
+	<div class="message alert"><?php echo Text::_('COM_MYMUSE_NO_SHIPPING_AVAILABLE'); ?></div>
 <?php  }else{ ?>
 
 
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&task=confirm&Itemid='.$this->Itemid); ?>" 
+<form action="<?php echo Route::_('index.php?option=com_mymuse&task=confirm&Itemid='.$this->Itemid); ?>" 
 method="post" name="adminForm">
 
 
@@ -30,17 +32,17 @@ method="post" name="adminForm">
 <ul class="mymuse-container mymuse-cart">
 
 	<li class="mymuse-shipping item-container my-grid columns-3">
-		<div class="myselect mymuse_cart_top"><b><?php echo JText::_('COM_MYMUSE_SELECT'); ?></b></div>
-		<div class="myshipmethod mymuse_cart_top "><b><?php echo JText::_('COM_MYMUSE_SHIP_METHOD'); ?></b></div>
-		<div class="myprice mymuse_cart_top "><b><?php echo JText::_('COM_MYMUSE_COST'); ?></b></div>
+		<div class="myselect mymuse_cart_top"><b><?php echo Text::_('COM_MYMUSE_SELECT'); ?></b></div>
+		<div class="myshipmethod mymuse_cart_top "><b><?php echo Text::_('COM_MYMUSE_SHIP_METHOD'); ?></b></div>
+		<div class="myprice mymuse_cart_top "><b><?php echo Text::_('COM_MYMUSE_COST'); ?></b></div>
 	</li>
 
 <?php foreach($this->shipMethods as $sm){ ?>
 	<li class="mymuse-shipping item-container my-grid columns-3">
-		<div class="myselect mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_SELECT'); ?>"><input type="radio" name="shipmethodid" value="<?php echo $sm->id; ?>" 
+		<div class="myselect mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_SELECT'); ?>"><input type="radio" name="shipmethodid" value="<?php echo $sm->id; ?>" 
 			id="shipmethodid<?php echo $sm->id; ?>" /></div>
-		<div class="myshipmethod mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_SHIP_METHOD'); ?>"><?php echo $sm->ship_carrier_name." ".$sm->ship_method_name; ?></div>
-		<div class="myprice mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_COST'); ?>"><?php echo MyMuseHelper::printMoney($sm->cost); ?></div>
+		<div class="myshipmethod mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_SHIP_METHOD'); ?>"><?php echo $sm->ship_carrier_name." ".$sm->ship_method_name; ?></div>
+		<div class="myprice mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_COST'); ?>"><?php echo MyMuseHelper::printMoney($sm->cost); ?></div>
 	</li>
 <?php } ?>
 
@@ -56,7 +58,7 @@ method="post" name="adminForm">
 
 <?php  }else{ ?>
 	<input type="hidden" name="shipmethodid" value="60">
-		<?php echo JText::_('COM_MYMUSE_NO_SHIPPING_NEEDED')?> <input type="submit" class="btn uk-button btn-primary" name="confirm" value="<?php echo JText::_('Next'); ?>">
+		<?php echo Text::_('COM_MYMUSE_NO_SHIPPING_NEEDED')?> <input type="submit" class="btn uk-button btn-primary" name="confirm" value="<?php echo Text::_('Next'); ?>">
 <?php }?>
 </form>
 

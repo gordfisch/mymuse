@@ -47,6 +47,14 @@ class Com_MymuseInstallerScript
     private $minimumPHPVersion = JOOMLA_MINIMUM_PHP;
 
     /**
+     * db
+     *
+     * @var    int
+     * @since  5.0.0
+     */
+    var $db = null;
+
+    /**
      * Already Installed
      *
      * @var    int
@@ -102,6 +110,14 @@ class Com_MymuseInstallerScript
      */
     var $convert_actions = array();
 
+    public function __construct() {
+        if(version_compare(JVERSION, '4.0.0', '<')){
+            $this->db = JFactory::getDBO();
+        }else{
+            $this->db = Factory::getContainer()->get('DatabaseDriver');
+        }
+    }
+
 
    /**
      * Function called before extension installation/update/removal procedure commences
@@ -118,44 +134,38 @@ class Com_MymuseInstallerScript
     public function preflight($type, $parent): bool
     {
 
+
         if ($type !== 'uninstall')
         {
-            // Check for the minimum PHP version before continuing
-            if (!empty($this->minimumPHPVersion) && version_compare(PHP_VERSION, $this->minimumPHPVersion, '<'))
+            try
             {
-                /*
-                Log::add(
-                    Text::sprintf('JLIB_INSTALLER_MINIMUM_PHP', $this->minimumPHPVersion),
-                    Log::WARNING,
-                    'jerror'
-                );
-                */
-                return false;
+                $minJoomla = '3.8.0';
+                $minPHP = '5.4.0';
+
+                $jversion = new JVersion();
+                if (!$jversion->isCompatible($this->minimumJoomlaVersion))
+                {
+                    throw new Exception(sprintf('Please upgrade to at least Joomla! %s before continuing!', $this->minimumJoomlaVersion));
+                }
+
+                if (version_compare(PHP_VERSION, $this->minimumPHPVersion, '<'))
+                {
+                    throw new Exception(sprintf('You have a very old PHP version and RSFirewall! requires at least %s; please ask your hosting provider to upgrade to a newer version of PHP.', $this->minimumPHPVersion));
+                }
             }
-            // Check for the minimum Joomla version before continuing
-            if (!empty($this->minimumJoomlaVersion) && version_compare(JVERSION, $this->minimumJoomlaVersion, '<'))
+            catch (Exception $e)
             {
-               /* Log::add(
-                    Text::sprintf('JLIB_INSTALLER_MINIMUM_JOOMLA', $this->minimumJoomlaVersion),
-                    Log::WARNING,
-                    'jerror'
-                );
-                */
+                JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
                 return false;
             }
         }
-        /*
-        Log::add(
-            Text::_('COM_MYMUSE_INSTALLERSCRIPT_PREFLIGHT'),
-            Log::WARNING,
-            'jerror'
-        );
-        */
-        $db = Factory::getDBO();
+
+
+
         $query = "SELECT * from #__extensions WHERE element = 'com_mymuse' ";
 
-        $db->setQuery($query);
-        if($res = $db->loadObject()){
+        $this->db->setQuery($query);
+        if($res = $this->db->loadObject()){
             $this->already_installed = 1;
             $manifest = json_decode($res->manifest_cache);
             $this->old_version = $manifest ->version;
@@ -164,8 +174,6 @@ class Com_MymuseInstallerScript
                 $this->convertTo4 = 1;
                 $session  = Factory::getSession();
                 $session->set('com_mymuse.convertTo4', true);
-                //echo "<p>Must convert to MyMuse 5</p>";
-
             }
             // get the current css file
             if(file_exists(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'mymuse.css')){
@@ -198,14 +206,23 @@ class Com_MymuseInstallerScript
             echo "<p>Old MyMuse version = ". $this->old_version  ."</p>";
             $plugins = array();
             $modules = array();
-            $db = Factory::getDBO();
             $manifest = $parent->getManifest();
             $super = $parent->getParent();
 
             /* remove plugins */
-            $query = "SELECT * FROM `#__extensions` WHERE `name` LIKE '%mymuse%' AND `type` = 'plugin' ORDER BY `extension_id` ASC";
-            $db->setQuery($query);
-            if($res = $db->loadObjectList())
+            $query = "SELECT * FROM `#__extensions` WHERE 
+            (
+                `name` LIKE '%installer_mymuse%' 
+                OR `name` LIKE '%mymuse_socialshare%' 
+                OR `name` LIKE '%PLG_MYMUSE_MYMUSE_VOTE%' 
+                OR `name` LIKE '%plg_mymuse_shoppergroup_view%' 
+                OR `name` LIKE '%PLG_MYMUSE_AUDIO_JPLAYER%' 
+                OR `name` LIKE '%Installer - MyMuse%'
+            ) 
+
+            AND `type` = 'plugin'";
+            $this->db->setQuery($query);
+            if($res = $this->db->loadObjectList())
             {
                 foreach ($res as $plugin) {
                     $plugins[] = array(
@@ -237,8 +254,8 @@ class Com_MymuseInstallerScript
 
             /* remove modules */
             $query = "SELECT * FROM `#__extensions` WHERE `name` LIKE '%mymuse%' AND `type` = 'module' ORDER BY `extension_id` ASC";
-            $db->setQuery($query);
-            if($res = $db->loadObjectList())
+            $this->db->setQuery($query);
+            if($res = $this->db->loadObjectList())
             {
                 foreach ($res as $module) {
                     $modules[] = array(
@@ -266,17 +283,18 @@ class Com_MymuseInstallerScript
             }
             //remove update sites
             $query = 'DELETE FROM #__update_sites WHERE name LIKE "%mymuse%" ';
-            $db->setQuery($query);
+            $this->db->setQuery($query);
             try
             {
-                $db->execute();
+                $this->db->execute();
                 $status = true;
             }
             catch (\Exception $e)
             {
                 $query = $e->getMessage();
                 $status = false;
-                //return false;
+                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                return false;
             }
             $this->convert_actions [] = array (
                         'name' => "Removing old Update Sites: ",
@@ -300,9 +318,9 @@ class Com_MymuseInstallerScript
      */
     public function install($parent): bool
     {
-        /* echo Text::_('COM_MYMUSE_INSTALLERSCRIPT_INSTALL');*/
-        return true;;
+        return true;
     }
+
     /**
      * Method to uninstall the extension
      *
@@ -316,7 +334,6 @@ class Com_MymuseInstallerScript
     {
         $plugins = array();
         $modules = array();
-        $db = Factory::getDBO();
         $manifest = $parent->getManifest();
         $super = $parent->getParent();
         /* remove plugins */
@@ -337,8 +354,8 @@ class Com_MymuseInstallerScript
             $plugin =& $plugins[$i];
             $query = "SELECT extension_id FROM #__extensions
             WHERE element ='".$plugins[$i]['type']."'";
-            $db->setQuery($query);
-            $res = $db->loadResult();
+            $this->db->setQuery($query);
+            $res = $this->db->loadResult();
             echo $res." ".$plugins[$i]['type']."<br />";
             if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
                 $plugins[$i]['status'] = true;
@@ -361,8 +378,8 @@ class Com_MymuseInstallerScript
             $module =& $modules[$i];
             $query = "SELECT extension_id FROM #__extensions
             WHERE element ='".$modules[$i]['type']."'";
-            $db->setQuery($query);
-            $res = $db->loadResult();
+            $this->db->setQuery($query);
+            $res = $this->db->loadResult();
             if($res){
                 echo $res." ".$modules[$i]['type']."<br />";
                 if ($modules[$i]['installer']->uninstall('module', $res)) {
@@ -406,8 +423,13 @@ class Com_MymuseInstallerScript
      */
     public function postflight($type, $parent)
     {
+
+        if ($type == 'uninstall') {
+            return true;
+        }
+
+        
         /*echo Text::_('COM_MYMUSE_INSTALLERSCRIPT_POSTFLIGHT');*/
-        $db = Factory::getDBO();
         $app = Factory::getApplication();
         $manifest = $parent->getManifest();
 
@@ -417,31 +439,22 @@ class Com_MymuseInstallerScript
             //update DB
             $queries = array(
                 "ALTER TABLE `#__mymuse_product` DROP `urls`;",
-
-                //ALTER TABLE tableName MODIFY [COLUMN] columnName column_definition [FIRST | AFTER col_name]
                 "ALTER TABLE `#__mymuse_product` MODIFY `parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `asset_id`;",
-
-                 "ALTER TABLE `#__mymuse_product` ADD `track_parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `parentid`;",
-
+                "ALTER TABLE `#__mymuse_product` ADD `track_parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `parentid`;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `catid` int NOT NULL AFTER `track_parentid`;",
 
                 "ALTER TABLE `#__mymuse_product` MODIFY `artistid` int NOT NULL AFTER `catid`;",
-
-
-               
-
-                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `artistid`;",
-                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `physical`;",
-                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(2048) COLLATE utf8mb4_unicode_ci AFTER `digital`;",
+                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `artistid`;",
+                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `physical`;",
+                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(1024) COLLATE utf8mb4_unicode_ci AFTER `digital`;",
                 "ALTER TABLE `#__mymuse_product` RENAME COLUMN `product_made_date` TO `product_release_date`;",
-                
-                "ALTER TABLE `#__mymuse_product` MODIFY `product_release_date` date DEFAULT NULL,;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `product_release_date` date DEFAULT NULL;",
                 "UPDATE `#__mymuse_product` SET `product_release_date` = NULL WHERE `product_release_date`='0000-00-00'",
 
-                "ALTER TABLE `#__mymuse_product` ADD`updated` char(1) default '0';",
+                "ALTER TABLE `#__mymuse_product` ADD`updated` char(1) NOT NULL default '0';",
                 "ALTER TABLE `#__mymuse_product` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metakey` text COLLATE utf8mb4_unicode_ci;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metadesc` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.';",
@@ -455,33 +468,8 @@ class Com_MymuseInstallerScript
                 "ALTER TABLE `#__mymuse_product` MODIFY `list_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `detail_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
 
-                "ALTER TABLE `#__mymuse_shopper_group`  ADD `usergroups_id` int NOT NULL DEFAULT '2';",
-                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` DROP DEFAULT;",
-                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` SET DEFAULT '0';",
-                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
-                "ALTER TABLE `#__mymuse_order` ALTER `extra` DROP DEFAULT;",
-                "ALTER TABLE `#__mymuse_order` ALTER `licence` SET DEFAULT '';",
-                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-                            
-                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_order_item` ADD `variation_id` int default NULL;",
-                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `created` datetime NOT NULL;",
-                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `modified` datetime NOT NULL;",
-                "ALTER TABLE `#__mymuse_order_item` MODIFY `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order_item` MODIFY `end_date` int DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` ADD `special_status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                
+                "ALTER TABLE `#__mymuse_product` ADD `special_status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `alias`;",
 
                 "CREATE INDEX `idx_catid` ON `#__mymuse_product` (`catid`);",
                 "CREATE INDEX `idx_artistid` ON `#__mymuse_product` (`artistid`);",
@@ -504,18 +492,48 @@ class Com_MymuseInstallerScript
 
                 "UPDATE `#__mymuse_tax_rate` SET `checked_out` = NULL WHERE `checked_out` = '0'",
                 "UPDATE `#__mymuse_tax_rate` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "ALTER TABLE `#__mymuse_shopper_group`  ADD `usergroups_id` int NOT NULL DEFAULT '2';",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_coupon` CHANGE `params` `params` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` DROP DEFAULT;",
+                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` SET DEFAULT '0';",
+                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
+                "ALTER TABLE `#__mymuse_order` ALTER `extra` DROP DEFAULT;",
+                "ALTER TABLE `#__mymuse_order` ALTER `licence` SET DEFAULT '';",
+                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+                            
+                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_tax_rate` RENAME COLUMN `state` TO `published`;",
+                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_order_item` ADD `variation_id` int default NULL;",
+                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `created` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `modified` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_item` MODIFY `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_item` MODIFY `end_date` int DEFAULT NULL;",
             );
 
             foreach($queries as $query){
-                $db->setQuery($query);
+                $this->db->setQuery($query);
                 try
                 {
-                    $db->execute();
+                    $this->db->execute();
                     $status = 1;
                 }
                 catch (\Exception $e)
                 {
                     $query = $e->getMessage();
+                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
                     $status = 0;
                     //return false;
                 }
@@ -527,8 +545,8 @@ class Com_MymuseInstallerScript
             }
 
             $query = "SHOW COLUMNS FROM #__mymuse_format LIKE 'id'";
-            $db->setQuery($query);
-            if(!$col = $db->loadObject()){
+            $this->db->setQuery($query);
+            if(!$col = $this->db->loadObject()){
                 $query = "
                     CREATE TABLE `#__mymuse_format` (
                       `id` int NOT NULL,
@@ -544,13 +562,14 @@ class Com_MymuseInstallerScript
                     (1, 'MP3', 'mp3', 1),
                     (2, 'WAV', 'wav', 2);
                     ";
+                $this->db->setQuery($query);
                 try
                 {
-                    $db->execute();
+                    $this->db->execute();
                 }
                 catch (\Exception $e)
                 {
-                    echo $e->getMessage();
+                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
                     return false;
                 }
                 $this->convert_actions [] = array (
@@ -563,40 +582,41 @@ class Com_MymuseInstallerScript
 
             /* update store params */
             $query = "SELECT * from `#__mymuse_store` WHERE id='1'";
-            $db->setQuery($query);
-            $store = $db->loadObject();
+            $this->db->setQuery($query);
+            $store = $this->db->loadObject();
             $params = new Registry($store->params);
             $old_formats = $params->get('my_formats');
-            $ordering = 2;
+            $ordering = 0;
             foreach($old_formats as $f){
                 if(strtolower($f) == 'mp3'){
                     $new_formats[0] = 1;
+                    $ordering++;
                 }
                 elseif(strtolower($f) == 'wav'){
                     $new_formats[1] = 2;
+                    $ordering++;
                 }
                 else{
                     //add it to the table
                     $ordering++;
                     $query = 'INSERT INTO `#__mymuse_format` (`format_key`, `format_value`, ) VALUES
                     (' . strtoupper($f) . ', ' . $f . ', ' . $ordering .')';
-                    $db->setQuery($query);
-                    $db->execute();
-                    $new_formats[] = $db->insertid();
+                    $this->db->setQuery($query);
+                    $this->db->execute();
+                    $new_formats[] = $ordering;
                 }
             }
             $params->set('my_formats',$new_formats);
-            $new_store_params = $db->quote((string)$params);
+            $new_store_params = $this->db->quote((string)$params);
             $query = 'UPDATE `#__mymuse_store` SET params = '.$new_store_params . ' WHERE id=1';
-            $db->setQuery($query);
+            $this->db->setQuery($query);
             try
             {
-                $db->execute();
+                $this->db->execute();
             }
             catch (\Exception $e)
             {
-                echo $query;
-                echo $e->getMessage();
+                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
                 return false;
             }
             $this->convert_actions [] = array (
@@ -614,8 +634,8 @@ class Com_MymuseInstallerScript
                 element='audio_amplitude' OR
                 element='searchmymuse' 
                 ";
-            $db->setQuery($query);
-            if(!$db->execute()){
+            $this->db->setQuery($query);
+            if(!$this->db->execute()){
                 $alt = Text::_( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
                 $message =  Text::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
@@ -627,14 +647,15 @@ class Com_MymuseInstallerScript
             $this->convert_actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
             
-        }
+        } //end of convertTo4
+
 
         if($this->convertTo4 || $type == 'install'){
 
             //Content Types for custom fields
             $query = "SELECT type_id FROM #__content_types WHERE type_title='MyMuse Category'";
-            $db->setQuery($query);
-            if(!$res = $db->loadResult()) {
+            $this->db->setQuery($query);
+            if(!$res = $this->db->loadResult()) {
 
 $query = <<<END
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
@@ -654,14 +675,14 @@ INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `f
 END;
 
                 $status = true;
-                $db->setQuery($query);
+                $this->db->setQuery($query);
                 try
                 {
-                    $db->execute();
+                    $this->db->execute();
                 }
                 catch (\Exception $e)
                 {
-                    echo $e->getMessage();
+                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
                     $status = false;
                 }
@@ -674,8 +695,8 @@ END;
             }
 
             $query = "SELECT type_id FROM #__content_types WHERE type_title='MyMuse Product'";
-            $db->setQuery($query);
-            if(!$res = $db->loadResult()) {
+            $this->db->setQuery($query);
+            if(!$res = $this->db->loadResult()) {
     $query = <<<END
     INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
     ('MyMuse Product', 'com_mymuse.product', 
@@ -697,14 +718,14 @@ END;
     {"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"} ]}');
     END;
                 $status = true;
-                $db->setQuery($query);
+                $this->db->setQuery($query);
                 try
                 {
-                    $db->execute();
+                    $this->db->execute();
                 }
                 catch (\Exception $e)
                 {
-                    echo $e->getMessage();
+                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
                     $status = false;
                 }
@@ -716,22 +737,30 @@ END;
             }
         }
         
-        // add params for mymuse extensions
-        if($this->convertTo4 || $type == 'install'){
+        // add params for mymuse extensions **
+        if($this->convertTo4 ){
 
-            $query = $db->getQuery(true);
-            $query->update($db->quoteName('#__extensions'));
-            $defaults = '{"store_show_title":"1","store_link_titles":"1","store_show_product_image":"1","store_product_image_height":"0","store_show_intro_text":"1","store_show_readmore":"0","store_show_readmore_title":"1","show_title":"1","show_intro":"1","product_show_product_image":"1","product_product_image_height":"0","show_recording_details":"1","show_minicart":"1","product_show_quantity":"0","product_item_selectbox":"1","show_recommenDIRECTORY_SEPARATOR":"1","show_category_recommenDIRECTORY_SEPARATOR":"1","product_show_tracks":"1","orderby_track":"alpha","order_track_date":"product_made_date","product_player_type":"single","product_player_width":"","product_player_height":"","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_category":"0","link_category":"0","show_parent_category":"0","link_parent_category":"0","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_readmore":"0","show_readmore_title":"1","show_icons":"0","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_noauth":"0","show_base_description":"1","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","cat_subcat_image_height":"0","category_layout":"_:default","show_category_title":"1","show_description":"1","show_description_image":"1","category_image_height":"0","maxLevel":"-1","subcat_columns":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"1","page_subheading":"","category_show_all_products":"1","category_show_product_image":"1","category_product_image_height":"0","category_show_intro_text":"1","category_product_link_titles":"1","category_show_comment_total":"0","num_leading_products":"0","num_intro_products":"10","num_columns":"2","num_links":"4","multi_column_order":"1","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_artist":"1","list_show_album":"1","list_show_file_length":"0","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"1","list_show_author":"0","list_show_sales":"0","list_show_discount":"0","display_num":"10","show_alphabet":"1","featured":"0","group_by":"","product_artist_alternate_itemid":"101","orderby_pri":"none","orderby_sec":"rdate","order_date":"product_made_date","show_pagination":"2","show_pagination_results":"1","category_match_level":"product","show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","username":"","password":""}'; // JSON format for the parameters
-            $query->set($db->quoteName('params') . ' = ' . $db->quote($defaults));
-            $query->where($db->quoteName('name') . ' = ' . $db->quote('mymuse'));
-            $db->setQuery($query);
+            
+            $defaults = '{"product_layout":"_:product","show_minicart":"1","show_title":"1","link_titles":"","product_show_product_image":"1","info_block_show":"1","info_block_show_title":"1","split_text":"1","show_readmore":"1","show_readmore_title":"1","show_artist":"1","link_artist":"0","show_category":"1","link_category":"1","show_associations":"0","show_author":"0","link_author":"0","show_date":"1","show_which_date":"product_release_date","show_hits":"0","show_tags":"0","show_product_sku":"1","show_special_status":"0","show_news_release_link":"0","show_media_link":"0","show_product_full_time":"0","show_product_studio":"0","show_product_publisher":"0","show_product_producer":"0","show_product_country":"0","product_show_quantity":"0","product_item_selectbox":"0","show_player":"1","product_show_tracks":"1","orderby_track":"order","order_track_date":"published","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_downloads":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_recommends":"1","show_category_recommends":"1","show_base_description":"0","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","category_layout":"_:blog","show_category_title":"1","show_description":"1","show_description_image":"1","maxLevel":"0","show_empty_categories":"0","show_no_articles":"0","show_category_heading_title_text":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"0","show_cat_tags":"0","num_leading_products":"0","blog_class_leading":"","num_intro_products":"10","blog_class":"","num_columns":"4","multi_column_order":"1","blog_product_introtext":"1","num_links":"100","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","category_show_product_image":"1","category_product_show_title":"1","category_link_titles":"1","category_show_intro_text":"1","category_show_readmore":"0","category_show_readmore_title":"1","readmore_limit":100,"list_show_artist":"1","list_show_album":"1","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"0","list_show_author":"1","list_show_sales":"0","list_show_discount":"0","product_artist_alternate_itemid":"4","show_featured":"show","link_intro_image":"1","orderby_pri":"order","orderby_sec":"order","order_date":"published","display_num":"10","show_pagination":"2","show_pagination_results":"1","group_by":"","custom_fields_enable":0,"sef_ids":0,"show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","downloadid":""}'; // JSON format for the parameters
+            
+            /*
+            $query = $this->db->getQuery(true);
+            $query->update($this->db->quoteName('#__extensions'));
+            $query->set($this->db->quoteName('params') . ' = ' . $defaults);
+            $query->where($this->db->quoteName('name') . ' = ' . $this->db->quote('mymuse'));
+            */
+            $query = "UPDATE #__extensions SET params = ".$this->db->quote($defaults). "
+            WHERE name = mymuse";
+
+
+            $this->db->setQuery($query);
             try
             {
-                $db->execute();
+                $this->db->execute();
             }
             catch (\Exception $e)
             {
-                echo $e->getMessage();
+                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
                 return false;
             }
@@ -1070,23 +1099,21 @@ END;
             $download_dir =  JPATH_ROOT.DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."A_MyMuseDownloads";
             $name = Text::_("COM_MYMUSE_UPDATING_STORE");
             $query = "SELECT params FROM #__mymuse_store WHERE id='1'";
-            $db->setQuery($query);
-            $store_params = json_decode($db->loadResult(), TRUE);
+            $this->db->setQuery($query);
+            $store_params = json_decode($this->db->loadResult(), TRUE);
             if($store_params){
                 $store_params['my_download_dir'] = $download_dir;
                 $registry = new JRegistry;
                 $registry->loadArray($store_params);
                 $new_params = (string)$registry;
 
-                $query = "UPDATE #__mymuse_store set ";
-                $query .= "params='$new_params' WHERE id=1
-                    ";
+                $query = "UPDATE #__mymuse_store set params='$new_params' WHERE id=1";
 
-                $db->setQuery($query);
-                if(!$db->execute()){
+                $this->db->setQuery($query);
+                if(!$this->db->execute()){
                     $alt = Text::_( "COM_MYMUSE_FAILED" );
                     $astatus = 0;
-                    $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
+                    $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_STORE").$this->db->_errorMsg;
                 }else{
                     $alt = Text::_( "COM_MYMUSE_INSTALLED" );
                     $astatus = 1;
@@ -1130,7 +1157,7 @@ END;
 
             $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
-            //UPDATE PLUGINS
+            //UPDATE PLUGINS **
             $name = Text::_("COM_MYMUSE_ENABLE_PLUGINS");
             $query = "UPDATE #__extensions SET enabled=1 WHERE
                 element='payment_paypal' OR
@@ -1139,8 +1166,8 @@ END;
                 element='audio_amplitude' OR
                 element='searchmymuse' 
                 ";
-            $db->setQuery($query);
-            if(!$db->execute()){
+            $this->db->setQuery($query);
+            if(!$this->db->execute()){
                 $alt = Text::_( "COM_MYMUSE_FAILED" );
                 $astatus = 0;
                 $message =  Text::_("COM_MYMUSE_ENABLE_PLUGINS_FAILED");
@@ -1151,54 +1178,55 @@ END;
             }
             $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
+        
+
+            //UPDATE MEDIA MANAGER TO ALLOW MP3's
+            $name = Text::_("COM_MYMUSE_UPDATING_MEDIA_MANAGER");
+            $query = "SELECT params FROM #__extensions WHERE element='com_media'";
+            $this->db->setQuery($query);
+            $media_params = json_decode($this->db->loadResult(), TRUE);
+            if($media_params){
+                if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
+                    $media_params['upload_extensions'] .= ",mp3,MP3";
+                }
+                if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
+                    $media_params['upload_mime'] .= ",audio/mpeg";
+                }
+                if (!stristr ( $media_params['ignore_extensions'], 'mp3' )) {
+                    $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
+                }
+
+                if (!stristr ( $media_params['upload_extensions'], 'wav' )) {
+                    $media_params['upload_extensions'] .= ",wav,WAV";
+                }
+                if (!stristr ( $media_params['upload_mime'], 'audio/wav' )) {
+                    $media_params['upload_mime'] .= ",audio/wav";
+                }
+                if (!stristr ( $media_params['ignore_extensions'], 'wav' )) {
+                    $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",wav" : "wav";
+                }
+
+                $registry = new JRegistry;
+                $registry->loadArray($media_params);
+                $new_params = (string)$registry;
+
+                $query = "UPDATE #__extensions set params='$new_params' WHERE element='com_media'";
+
+                $this->db->setQuery($query);
+                if(!$this->db->execute()){
+                    $alt = Text::_( "COM_MYMUSE_FAILED" );
+                    $astatus = 0;
+                    $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$this->db->_errorMsg;
+                }else{
+                    $alt = Text::_( "COM_MYMUSE_INSTALLED" );
+                    $astatus = 1;
+                    $message =  Text::_("COM_MYMUSE_MEDIA_MANAGER_UPDATED");
+                }
+            }
+            $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
         }
 
-        //UPDATE MEDIA MANAGER TO ALLOW MP3's
-        $name = Text::_("COM_MYMUSE_UPDATING_MEDIA_MANAGER");
-        $query = "SELECT params FROM #__extensions WHERE element='com_media'";
-        $db->setQuery($query);
-        $media_params = json_decode($db->loadResult(), TRUE);
-        if($media_params){
-            if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
-                $media_params['upload_extensions'] .= ",mp3,MP3";
-            }
-            if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
-                $media_params['upload_mime'] .= ",audio/mpeg";
-            }
-            if (!stristr ( $media_params['ignore_extensions'], 'mp3' )) {
-                $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
-            }
 
-            if (!stristr ( $media_params['upload_extensions'], 'wav' )) {
-                $media_params['upload_extensions'] .= ",wav,WAV";
-            }
-            if (!stristr ( $media_params['upload_mime'], 'audio/wav' )) {
-                $media_params['upload_mime'] .= ",audio/wav";
-            }
-            if (!stristr ( $media_params['ignore_extensions'], 'wav' )) {
-                $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",wav" : "wav";
-            }
-
-            $registry = new JRegistry;
-            $registry->loadArray($media_params);
-            $new_params = (string)$registry;
-
-            $query = "UPDATE #__extensions set ";
-            $query .= "params='$new_params' WHERE element='com_media'
-                ";
-
-            $db->setQuery($query);
-            if(!$db->execute()){
-                $alt = Text::_( "COM_MYMUSE_FAILED" );
-                $astatus = 0;
-                $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$db->_errorMsg;
-            }else{
-                $alt = Text::_( "COM_MYMUSE_INSTALLED" );
-                $astatus = 1;
-                $message =  Text::_("COM_MYMUSE_MEDIA_MANAGER_UPDATED");
-            }
-        }
-        $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
         if(count($this->actions)){
             ?>

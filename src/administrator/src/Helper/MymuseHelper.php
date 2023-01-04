@@ -237,8 +237,8 @@ class MymuseHelper extends ContentHelper
 					$f_array[] = $f;
 				}
 				$IN = implode(",",$f_array);
-				$query = "SELECT * from `#__mymuse_format` WHERE id IN (".$db->quote($IN).") 
-				OR format_key IN (".$db->quote($IN).")";
+				$query = "SELECT * from `#__mymuse_format` WHERE id IN (".$IN.") 
+				OR format_key IN (".$IN.")";
 				$db->setQuery($query);
 				$formats = $db->loadObjectList();
 				$params->set('my_formats', $formats) ;

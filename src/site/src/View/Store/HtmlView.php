@@ -58,11 +58,11 @@ class HtmlView extends BaseHtmlView
 
 		$store 		= $this->get('Store');
 
-		//$params 	= MyMuseHelper::getParams();
-		//$this->params = $params;
-		//$this->params->merge($state->params);
+		$params 	= MyMuseHelper::getParams();
+		$this->params = $params;
+		$this->params->merge($state->params);
 
-		$this->params = $state->params;
+		//$this->params = $state->params;
 
 		$Itemid 	= $jinput->get('Itemid');
 
@@ -221,7 +221,7 @@ class HtmlView extends BaseHtmlView
 			}
 			
         	//make sure the order is confirmed
-        	if(! $row->order_status == $this->params->get('my_download_enable_status'))
+        	if(! $row->order_status == $params->get('my_download_enable_status'))
         	{
         		$message = Text::_('COM_MYMUSE_USER_ORDER_NOT_CONFIRMED');
         		$app->enqueueMessage($message, 'error');
@@ -232,13 +232,13 @@ class HtmlView extends BaseHtmlView
 			$MyMuseCart 	=& Mymuse::getObject('cart','helper');
 			
         	$order = $MyMuseCheckout->getOrder($row->id);
-     
+
         	for($i = 0; $i < count($order->items); $i++){
         		if($order->items[$i]->id == $item_id){
         			$order_item = $order->items[$i];
         		}
         	}
-        	
+     
         	// check number of downloads
         	if($params->get('my_download_max') && intval($order_item->downloads) >= $params->get('my_download_max')){
         		$message = Text::_('COM_MYMUSE_MAX_NUMBER_OF_DOWNLOADS_REACHED');
@@ -249,7 +249,7 @@ class HtmlView extends BaseHtmlView
         	// check expiry date
         	if($order_item->end_date 
         			&& $order_item->end_date <= time() 
-        			&& $prarams->get('my_download_expire') != "-"){
+        			&& $params->get('my_download_expire') != "-"){
         		$message = Text::_('COM_MYMUSE_DOWNLOAD_EXPIRED');
         		$app->enqueueMessage($message, 'error');
         		return false;
@@ -712,7 +712,7 @@ class HtmlView extends BaseHtmlView
 	protected  function _logDownload($shopper, $product, $order_item = '')
 	{
 		$db = Factory::getDBO();
-		//MymuseHelper::print_pre($product); exit;
+
 		$user_id = $shopper->get('id');
 		$user_name = $shopper->get('name');
 		$user_email = $shopper->get('email');
@@ -740,7 +740,7 @@ class HtmlView extends BaseHtmlView
 			}
 
 		}
-		
+
 		//add to downloads table
         $user_email = $db->quote($user_email);
         $user_name = $db->quote($user_name);

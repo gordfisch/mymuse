@@ -22,7 +22,9 @@ use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
  * Form Field class for the Joomla Framework.
@@ -60,7 +62,7 @@ class CategorytreeField extends ListField
 		//product id
 		$id = $jinput->get('id',0);
 		$arr = array();
-		
+		$this->value = array();
 		if($id){
 			$db = Factory::getDBO();
 			$query = 'SELECT catid' .
@@ -81,7 +83,6 @@ class CategorytreeField extends ListField
 		
 		//a catid coming in
 		$catid = $jinput->get('catid', 0);
-		//echo "catid = $catid<br>";
 		if($catid){
 			$this->value[$catid] = $catid;
 		}
@@ -103,11 +104,12 @@ class CategorytreeField extends ListField
 
 		// Get the field options.
 		$options = (array) $this->getOptions();
-
+		
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->element['readonly'] == 'true') {			
 			$html[] = '<select name="" '.trim($attr).'>';
 			foreach($options as $opt) {
+
 				$disabled = '';
 				$selected = '';
 				if( @$opt->disable )
@@ -124,7 +126,7 @@ class CategorytreeField extends ListField
 		else {
 			
 			$html[] = '<select name="'.$this->name.'" '.trim($attr).'>';
-			$html[] = '<option value=""> - NONE SELECTED - </option>';
+			$html[] = '<option value=""> - '.Text::_('COM_MYMUSE_SELECT_CATEGORY').' - </option>';
 			foreach($options as $opt) {
 				$disabled = '';
 				$selected = '';
@@ -248,7 +250,7 @@ class CategorytreeField extends ListField
 			{
 				if ($options[$i]->level == 0)
 				{
-					$options[$i]->text = JText::_('JGLOBAL_ROOT_PARENT');
+					$options[$i]->text = Text::_('JGLOBAL_ROOT_PARENT');
 				}
 			}
 			if ($options[$i]->published == 1)
@@ -330,10 +332,10 @@ class CategorytreeField extends ListField
 			if ($row->parent_id == '1')
 			{
 				$parent = new stdClass;
-				$parent->text = JText::_('JGLOBAL_ROOT_PARENT');
+				$parent->text = Text::_('JGLOBAL_ROOT_PARENT');
 				array_unshift($options, $parent);
 			}
-			array_unshift($options, JHtml::_('select.option', '0', JText::_('JGLOBAL_ROOT')));
+			array_unshift($options, HTMLHelper::_('select.option', '0', Text::_('JGLOBAL_ROOT')));
 		}
 
 		// Merge any additional options in the XML definition.

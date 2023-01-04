@@ -12,6 +12,7 @@
 namespace Joomla\Component\Mymuse\Site\Helper;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 
@@ -102,14 +103,14 @@ class ShopperHelper extends CMSObject
         			&& ($task == 'accdownloads' || $task == 'downloads') ){
         		$id = $jinput->get('id','');
         		if(!$id){
-        			$this->setError(JText::_('MYMUSE_NO_DOWNLOAD_KEY'));
+        			$this->setError(Text::_('MYMUSE_NO_DOWNLOAD_KEY'));
         			return false;
         		}
         		$query = "SELECT notes from #__mymuse_order where order_number='$id'";
         		$db->setQuery($query);
         		$notes = $db->loadResult();
         		if(!$notes){
-        			$this->setError(JText::_('MYMUSE_NO_MATCHING_ORDER'));
+        			$this->setError(Text::_('MYMUSE_NO_MATCHING_ORDER'));
         			return false;
         		}
       			
@@ -191,7 +192,7 @@ class ShopperHelper extends CMSObject
     								(!isset($profile[$field]) || $profile[$field] == "")
     						) {
     							//this guy needs to update profile
-								$this->setError(JText::_('MYMUSE_MISSING').$field);
+								$this->setError(Text::_('MYMUSE_MISSING').$field);
     							$this->_shopper->perms = 0;
     							return $this->_shopper;
     						}
@@ -526,7 +527,7 @@ class ShopperHelper extends CMSObject
 			$guest = $db->loadObject();
 		}
 		if(!$guest){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_FIND_GUEST"));
+			$this->setError(Text::_("MYMUSE_COULD_NOT_FIND_GUEST"));
 			return false;
 		}
 
@@ -678,7 +679,7 @@ class ShopperHelper extends CMSObject
  		//print_pre($data); exit;
  		// Bind the data.
  		if (!$user->bind($data)) {
- 			$this->setError(JText::sprintf('MYMUSE_REGISTRATION_BIND_FAILED', $user->getError()));
+ 			$this->setError(Text::sprintf('MYMUSE_REGISTRATION_BIND_FAILED', $user->getError()));
  			return false;
  		}
  		
@@ -687,7 +688,7 @@ class ShopperHelper extends CMSObject
  		
  		// Store the data.
  		if (!$user->save()) {
- 			$this->setError(JText::sprintf('MYMUSE_REGISTRATION_SAVE_FAILED', $user->getError()));
+ 			$this->setError(Text::sprintf('MYMUSE_REGISTRATION_SAVE_FAILED', $user->getError()));
  			return false;
  		}
 
@@ -726,7 +727,7 @@ class ShopperHelper extends CMSObject
 			$guest = $db->loadObject();
 		}
 		if(!$guest){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_FIND_GUEST"));
+			$this->setError(Text::_("MYMUSE_COULD_NOT_FIND_GUEST"));
 			return false;
 		}
 
@@ -742,7 +743,7 @@ class ShopperHelper extends CMSObject
 		if(!JError::isError($error)){
 			return true;
 		}else{
-			$this->setError(JText::_($error->code));
+			$this->setError(Text::_($error->code));
 			return false;
 		}
 		

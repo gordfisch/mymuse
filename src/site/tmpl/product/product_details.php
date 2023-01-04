@@ -6,7 +6,7 @@ use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Layout\FileLayout;
 
 $product = $this->item;
-
+//MymuseHelper::print_pre($this->all_tracks);
 if( ($this->params->get('info_block_show'))) : ?>
 	<div class="product-details">
 
@@ -60,7 +60,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		    <?php if( $this->params->get("show_product_sku",0) ) : ?>
 		    	<li class="product-detail-item mymuse-grid-1-2">
-            		<div class="key product-sku"><?php echo JText::_('COM_MYMUSE_CATALOG'); ?></div>
+            		<div class="key product-sku"><?php echo Text::_('COM_MYMUSE_CATALOG'); ?></div>
 					<div class="value"><?php echo $this->item->product_sku;?></div>
         		</li>
 
@@ -152,7 +152,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 		        		$item = $menu->getItems('link', $needle, true);
 		        		$cntlink = !empty($item) ? $needle . '&Itemid=' . $item->id : $needle;
 		        	?>
-		        		<?php echo JHtml::_('link', JRoute::_($cntlink), $author); ?>
+		        		<?php echo JHtml::_('link', Route::_($cntlink), $author); ?>
 		        	<?php else: ?>
 		        		<?php echo $author; ?>
 		        	<?php endif; ?>
@@ -189,12 +189,12 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    <?php endif; ?>
 
 
-		    <?php if(isset($tracks[0]->flash) || $this->all_tracks && $this->available) : ?>
+		    <?php if(isset($this->all_tracks->flash) && isset($this->all_tracks->digital[0])) : ?>
 		    <li class="product-detail-item product-purchase mymuse-grid-1-2">
 		    
 			    <div class="key full-release">
-			    	<div class="product-preview-play"><?php echo isset($tracks[0]->flash)? $tracks[0]->flash : ''; ?></div>
-			    	<?php echo JText::_('COM_MYMUSE_BUY_FULL_RELEASE'); ?>
+			    	<div class="product-preview-play"><?php echo $this->all_tracks->flash; ?></div>
+			    	<?php echo Text::_('COM_MYMUSE_BUY_FULL_RELEASE'); ?>
 			    </div>
 			    <div class="value">
 			       <?php if($this->all_tracks) : ?>
@@ -207,13 +207,13 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                        	> <img id="img_<?php echo $this->all_tracks->id; ?>"
 		                    	src="<?php
 			                    if(isset($this->products) && in_array($this->all_tracks->id, $this->products)) :
-			                        echo JRoute::_("components/com_mymuse/assets/images/minus-button-30.png");
+			                        echo Route::_("components/com_mymuse/assets/images/minus-button-30.png");
 			                    else :
-			                        echo JRoute::_("components/com_mymuse/assets/images/plus-button-30.png");
+			                        echo Route::_("components/com_mymuse/assets/images/plus-button-30.png");
 			                    endif;
 			                    ?>"></a>
-	                      
-	                    
+
+
 	                    <?php
 	                    if("1" == $this->params->get('my_price_by_product')) :
 	                      $first = 1;
@@ -270,7 +270,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    endif; ?>
 
 			<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore') && $this->params->get('split_text')) : ?>
-				<div><a href="#readmore" class="readon"><?php echo JText::_("COM_MYMUSE_READ_MORE"); ?>
+				<div><a href="#readmore" class="readon"><?php echo Text::_("COM_MYMUSE_READ_MORE"); ?>
 		        <?php 
 		        if ($this->params->get('show_readmore_title', 0) != 0) :
 		            echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
@@ -283,5 +283,3 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		</div>
 <?php endif; ?>
-
-

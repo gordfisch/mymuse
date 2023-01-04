@@ -126,7 +126,7 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 
         if(file_exists($v3File)){
 
-        	echo '<a href="index.php?option=com_mymuse&task=product.update">MUST UPGRADE DB!!!!!!</a>';
+        	echo '<h1><a href="index.php?option=com_mymuse&task=product.update">MUST UPGRADE DB!!!!!!</a></h1>';
         
         }
 

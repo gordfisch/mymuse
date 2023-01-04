@@ -23,7 +23,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Mymuse\Administrator\Model\FormatModel;
 
 /**
- * View to edit a tax rate.
+ * View to edit a format.
  *
  * @since  1.5
  */

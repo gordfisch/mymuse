@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
@@ -36,7 +37,7 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 	
 <?php 
 if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->link_items) ) : ?>
-	<h2><?php echo JText::_("COM_MYMUSE_FEATURED") ?></h2>
+	<h2><?php echo Text::_("COM_MYMUSE_FEATURED") ?></h2>
 <?php endif; ?>
 
 <?php $leadingcount = 0; ?>

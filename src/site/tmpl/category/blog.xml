@@ -81,7 +81,7 @@
 			<field name="maxLevel" type="list"
 				description="JGLOBAL_MAXLEVEL_DESC"
 				label="JGLOBAL_MAXLEVEL_LABEL"
-			>
+				>
 				
 				<option value="-1">JALL</option>
 				<option value="0">JNONE</option>
@@ -92,29 +92,44 @@
 				<option value="5">J5</option>
 			</field>
 
+			<field 
+				name="subcat_columns" 
+				type="list"
+				description="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
+				label="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				>
+				
+				<option value="1">J1</option>
+				<option value="2">J2</option>
+				<option value="3">J3</option>
+				<option value="4">J4</option>
+			</field>
+
 			<field name="show_empty_categories" 
 				type="list"
 				useglobal="true"
 			    class="form-select-color-state"
 				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
 				description="COM_MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
-			>
+				>
 				
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 			
 			<field
-					name="show_no_articles"
-					type="list"
-					label="COM_MYMUSE_NO_ARTICLES_LABEL"
-					useglobal="true"
-					class="form-select-color-state"
-					validate="options"
-					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
+				name="show_no_articles"
+				type="list"
+				label="COM_MYMUSE_NO_ARTICLES_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 
 			<field
 				name="show_category_heading_title_text"
@@ -128,6 +143,17 @@
 				<option value="1">JSHOW</option>
 			</field>
 
+			<field 
+				name="show_subcat_image" 
+				type="list"
+				useglobal="true"
+				class="form-select-color-state"
+				label="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_LABEL"
+				description="JGLOBAL_SHOW_SUBCATEGORIES_IMAGE_DESC"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 
 			<field
 				name="show_subcat_desc"
@@ -141,7 +167,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 			
-			<field name="subcat_desc_truncate" type="text" default="" 
+			<field name="subcat_desc_truncate" 
+				type="text"
 	 			label="COM_MYMUSE_TRUNCATE_DESCRIPTION_LABEL" 
 	 			description="COM_MYMUSE_TRUNCATE_DESCRIPTION_DESC">
 	 		</field>
@@ -498,7 +525,6 @@
 				type="list"
 				useglobal="true"
 			    class="chzn-color"
-			    default="1"
 				label="COM_MYMUSE_SHOW_PRODUCT_IMAGE" 
 			>
 	 			<option value="0">JHIDE</option>
@@ -510,7 +536,6 @@
 				useglobal="true"
 			    class="chzn-color"
 				label="COM_MYMUSE_SHOW_TITLE_LABEL"
-				default="1"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -522,7 +547,7 @@
 				label="COM_MYMUSE_SPLIT_TEXT_LABEL"
 				description="COM_MYMUSE_SPLIT_TEXT_DESC"
 				useglobal="true"
-				class="form-select-color-state"
+				class="chzn-color"
 				validate="options"
 				parentclass="stack span-2"
 				>
@@ -569,7 +594,6 @@
           		class="form-select-color-state"
           		validate="options"
           		parentclass="stack span-1"
-          		default="1"
           		>
           		<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_ARTICLE_SETTINGS</option>
           		<option	value="0">JHIDE</option>
@@ -584,7 +608,6 @@
           		class="form-select-color-state"
           		validate="options"
           		parentclass="stack span-1-inline"
-          		default="1"
           		>
           		<option value="use_article">COM_MYMUSE_FIELD_VALUE_USE_ARTICLE_SETTINGS</option>
           		<option	value="0">JHIDE</option>

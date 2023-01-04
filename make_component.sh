@@ -19,6 +19,8 @@ echo $JVER
 version=5.0.6-$JVER-$SUBVER-beta
 
 cd src
+rm ../releases/com_mymuse-$version.zip
+ 
 
 zip -r  ../releases/com_mymuse-$version.zip * -x *build.xml*  *rerun* tests/\* plugins/storage_s3/\* 
 

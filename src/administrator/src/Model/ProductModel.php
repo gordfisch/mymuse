@@ -1347,7 +1347,7 @@ class ProductModel extends AdminModel
 		   	track_parentid = 0 AND 
 		   	updated = 0
 		   	ORDER BY id ASC
-		   	LIMIT $limitstart, $limit";
+		   	LIMIT 0, $limit";
 
 		   	$my_return[1] .=  $query. "<br />";
 
@@ -1388,7 +1388,7 @@ class ProductModel extends AdminModel
 								$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PHYSICAL').' '.$this->table->getError(), 'error');
 								return false;
 							}
-							$my_return[1] .= 'created '.$this->table->id.' FROM '.$r->id.' : '.$r->title.'<br />';
+							$my_return[1] .= 'updated '.$this->table->id.' FROM '.$r->id.' : '.$r->title.'<br />';
 		   		
 		   			
 		   		}
@@ -1402,13 +1402,13 @@ class ProductModel extends AdminModel
 		   	//tracks. Save a child track for each file format
 		   	$process = 0;
 		   	$query 					= "SELECT * FROM #__mymuse_product 
-		   	WHERE parentid > 0 AND 
-		   	product_physical=0 AND 
-		   	product_downloadable= 1 AND
-		   	track_parentid = 0 AND 
-		   	updated = 0
+		   	WHERE `parentid` > 0 AND 
+		   	`product_physical`=0 AND 
+		   	`product_downloadable`=1 AND
+		   	`track_parentid`=0 AND 
+		   	`updated`=0
 		   	ORDER BY id ASC
-		   	LIMIT $limitstart, $limit";
+		   	LIMIT 0, $limit";
 
 		   	$my_return[1] .=  $query. "<br />";
 
@@ -1455,20 +1455,21 @@ class ProductModel extends AdminModel
 										$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->table->getError(), 'error');
 										return false;
 									}
-									
-									//update track_parent
-									$this->table->reset();
-									$this->table->load($r->id);
-									$this->table->updated = 1;
-									if(!$result = $this->table->updateDB()){
-										$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK').' '.$this->table->getError(), 'error');
-										return false;
-									}
-
-
 									$my_return[1] .= 'created '.$this->table->id.' FROM '.$r->id.' : '.$r->title.' TRACK: '.$file->file_name.'<br />';
+									
 		   				}
 		   			}
+		   			//update track_parent
+		   			$this->table->reset();
+		   			$this->table->load($r->id);
+		   			$this->table->updated = 1;
+		   			if(!$result = $this->table->updateDB()){
+		   				$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_PARENT_TRACK').' '.$this->table->getError(), 'error');
+		   				return false;
+		   			}
+
+
+		   			
 		   		}
 		   		$my_return[0] = 'tracks-continue';
 		   		return $my_return;

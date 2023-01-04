@@ -125,6 +125,7 @@ class TracksModel extends ProductsModel
 		}else{
 			$this->setState('filter.search', $search);
 		}
+
 		$this->setState('filter.alpha', $alpha);
 
 		$featured = $this->getUserStateFromRequest($this->context . '.filter.featured', 'filter_featured', '');
@@ -859,12 +860,14 @@ class TracksModel extends ProductsModel
                $query->where("art.title LIKE $alpha");
 		}
 		if (empty($alpha)){
+
 			// Filter by search in title
 			$search = $this->getState('filter.search');
 			if (!empty($search)) {		
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
 	            $query->where("a.title LIKE $search");
 			}
+			
 		}
 
 		$query->where(

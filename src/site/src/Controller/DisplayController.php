@@ -56,6 +56,13 @@ class DisplayController extends BaseController
 	var $input = null;
 
 	/**
+	 * Itemid
+	 *
+	 * @var object
+	 */
+	var $itemId = null;
+
+	/**
 	 * original_task
 	 *
 	 * @var string
@@ -136,6 +143,8 @@ class DisplayController extends BaseController
 
 
 		$this->input = Factory::getApplication()->input;
+
+		$this->itemId = $this->input->get('itemId')? $this->input->get('itemId') : '';
 
 		// Product frontpage Editor pagebreak proxying:
 		if ($this->input->get('view') === 'product' && $this->input->get('layout') === 'pagebreak')

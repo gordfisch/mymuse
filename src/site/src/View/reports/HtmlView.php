@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 jimport( 'joomla.application.component.view' );
 
 class myMuseViewReports extends JViewLegacy
@@ -104,7 +106,7 @@ class myMuseViewReports extends JViewLegacy
 		}
 		else
 		{
-			$this->params->def('page_heading', JText::_('MyMuse'));
+			$this->params->def('page_heading', Text::_('MyMuse'));
 		}
 	
 		$title = $this->params->get('page_title', '');
@@ -117,10 +119,10 @@ class myMuseViewReports extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		if (empty($title)) {
 			$title = $this->item->title;

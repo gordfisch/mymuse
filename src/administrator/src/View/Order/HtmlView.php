@@ -188,7 +188,7 @@ class HtmlView extends BaseHtmlView
 		if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create')) )
 		{
 			ToolbarHelper::apply('order.apply');
-			$toolbarButtons[] = ['save', 'ORDER.save'];
+			$toolbarButtons[] = ['save', 'order.save'];
 
 		}
 

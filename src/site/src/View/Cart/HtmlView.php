@@ -381,11 +381,11 @@ class HtmlView extends BaseHtmlView
 				$heading 	= Text::_('COM_MYMUSE_THANK_YOU');
 				
 				if($order->downloadable && $order->order_status == "C"){
-					$message  .= $order->downloadlink;
+					$message  .= ''; //$order->downloadlink;
 				}else{
 					$message   = Text::_('COM_MYMUSE_HERE_IS_YOUR_ORDER');
 				}
-			
+				$message   = Text::_('COM_MYMUSE_HERE_IS_YOUR_ORDER');
 				$order->show_checkout = 0;
 				$order->show_summary  = 1;
 				break;
@@ -1013,7 +1013,7 @@ class HtmlView extends BaseHtmlView
   		}
   		//PAYUNITY SEND THE THANK YOU URL
   		if($result['plugin'] == "payment_payunity"){
-  			echo JURI::base().JRoute::_("index.php?option=com_mymuse&task=thankyou&orderid=".$order->id);
+  			echo JURI::base().Route::_("index.php?option=com_mymuse&task=thankyou&orderid=".$order->id);
   			exit;
   		}
   		
@@ -1021,7 +1021,7 @@ class HtmlView extends BaseHtmlView
         if(isset($result['redirect']) && $result['redirect'] != ""){
         	$message = isset($result['error'])? preg_replace("/\n/", "<br />",$result['error']) : ''; 
         	$type = isset($result['error'])? 'error' : '';
-        	$app->redirect(JRoute::_($result['redirect'], false), $message, $type);
+        	$app->redirect(Route::_($result['redirect'], false), $message, $type);
         }
         
 		exit;

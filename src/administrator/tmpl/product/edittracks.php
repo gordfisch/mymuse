@@ -33,6 +33,7 @@ $lists = $this->lists;
 
 ?>
 <!-- product edittracks.php -->
+
 		<script type="text/javascript">
 		<!--
 
@@ -265,7 +266,7 @@ $lists = $this->lists;
                         	//$formats = $this->params->get('my_formats');
                         }
                         $my_formats = $this->params->get('my_formats');
-                 
+
 
                         for($i = 0; $i < count($my_formats); $i++){
                             $class = '';

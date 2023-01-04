@@ -1017,12 +1017,12 @@ class ProductModel extends ItemModel
      * @param object $product
      * @return mixed Array or false: array [product_price] [special_shoppergroup] [product_discount] [product_shoppergroup_discount]
      */
-	static function getPrice(&$product) {
+	static function getPrice(&$product, $var=0) {
 
 		$params 		= MyMuseHelper::getParams();
 		$shopper 		= Mymuse::getObject('Shopper','model')->getShopper();
 		if(is_array($product->price)){
-			return ($product->price); 
+			//return ($product->price); 
 		}
 		$db	= Factory::getDBO();
 		$shoppergroup_discount = 0;
@@ -1040,7 +1040,8 @@ class ProductModel extends ItemModel
 				$price_info["item"]=true;
 			}
 		}  
-		
+
+
 		
 		// Get the shopper group id for this shopper
 		$shoppergroup_id = @$shopper->shoppergroup->id;
@@ -1060,31 +1061,31 @@ class ProductModel extends ItemModel
 		$product_parent_id = 0;
 
 		$price_info ["product_price"] = $product->price;
-
 		
 		if (0 == $params->get ( 'my_price_by_product' )) {
 			// price by track
 			$price_info ["product_price"] = $product->price;
 			
 		} elseif (1 == $params->get ( 'my_price_by_product' )) {
-			//'price by product';
+
 			$id = $product->id;
 
 			if (isset($product->parentid)) {
 				$id = ($product->parentid > 0)? $product->parentid : $product->id;
 			}
+		
 			$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $id . "'";
 			$db->setQuery ( $query );
 			if (! $product->attribs = $db->loadResult ()) {
 				$price_info ["product_price"] = $product_price = $product->price;
 			}
 			
-
 			$registry = new Registry ();
 			$registry->loadString ( $product->attribs );
 			$product->attribs = $registry;
 
 			if (isset($product->product_physical) && $product->product_physical) {
+		
 				$key = 'product_price_physical';
 				$product->price = $product->attribs->get ( $key );
 				if($product->price){
@@ -1096,7 +1097,7 @@ class ProductModel extends ItemModel
 				}
 				
 			} elseif (isset($product->product_allfiles) && $product->product_allfiles) {
-			
+		
 				//$key = 'product_price_' . $product->ext . '_all';
 				//$product->price = $product->attribs->get ( $key );
 				//$price_info ["product_price"] = $product->price;
@@ -1127,7 +1128,8 @@ class ProductModel extends ItemModel
 				
 				return $price_info;
 				
-			} elseif(isset($product->digital) && is_countable($product->digital) && count($product->digital) ){
+			} elseif(isset($product->digital) 
+				&& is_countable($product->digital) && count($product->digital) ){
 
 				$formats = array();
 				$pformats = $params->get('my_formats', array());
@@ -1154,9 +1156,11 @@ class ProductModel extends ItemModel
 
 	
 				}
+				
 				return $price_info;
 
-			}elseif(isset($product->digital) && is_object($product->digital)){
+			}elseif(isset($product->digital) && is_object($product->digital) ){
+
 
 				$format = strtolower($product->digital->file_format);
 				$key = 'product_price_' . $format;
@@ -1542,7 +1546,7 @@ class ProductModel extends ItemModel
 	      $q .= " ORDER BY ordering,attribute_name \n";
 	      //$q .= " ORDER BY attribute_list ";
 	    } else {
-	      $this->error = JText::_("MYMUSE_ERROR_GET_ATTRIBUTE");
+	      $this->error = Text::_("MYMUSE_ERROR_GET_ATTRIBUTE");
 	      return false;
 	    }
 
