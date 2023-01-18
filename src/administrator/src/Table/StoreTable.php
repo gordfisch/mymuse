@@ -162,35 +162,35 @@ class StoreTable extends Table implements VersionableTableInterface
     	//joomla, full, jossocial, no_reg, full_guest
     	if($form['params']['my_registration'] !== $myparams->get('my_registration')){
     		if ($form ['params'] ['my_registration'] == 'joomla') {
-    			if (! $this->enablePlugin ( 'mymuse', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
-    				$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
+    			if (! $this->enablePlugin ( 'mymuseuser', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
+    				$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "mymuseuser" and "mymuseusernoreg"', 'notice' );
     				return false;
     			} else {
-    				$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "user_mymuse" and "user_mymusenoreg"', 'notice' );
+    				$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "mymuseuser" and "mymuseusernoreg"', 'notice' );
     			}
     		}
 			if ($form ['params'] ['my_registration'] == 'full_guest') {
-				if (! $this->enablePlugin ( 'mymuse', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
-					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
+				if (! $this->enablePlugin ( 'mymuseuser', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "mymuseuser" and "mymuseusernoreg"', 'notice' );
 					return false;
 				} else {
-					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "user_mymuse" and "user_mymusenoreg"', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "mymuseuser" and "mymuseusernoreg"', 'notice' );
 				}
 			}
 			if ($form ['params'] ['my_registration'] == 'full') {
-				if (! $this->enablePlugin ( 'mymuse', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
-					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
+				if (! $this->enablePlugin ( 'mymuseuser', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "mymuseuser" and "mymuseusernoreg"', 'notice' );
 					return false;
 				} else {
-					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "user_mymuse", ' . Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "user_mymusenoreg"', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "mymuseuser", ' . Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "mymuseusernoreg"', 'notice' );
 				}
 			}
 			if ($form ['params'] ['my_registration'] == 'no_reg') {
-				if (! $this->enablePlugin ( 'mymuse', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
-					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "user_mymuse" and "user_mymusenoreg"', 'notice' );
+				if (! $this->enablePlugin ( 'mymuseuser', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check "mymuseuser" and "mymuseusernoreg"', 'notice' );
 					return false;
 				} else {
-					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "user_mymusenoreg", ' . Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "user_mymuse"', 'notice' );
+					$app->enqueueMessage ( Text::_ ( 'COM_MYMUSE_ENABLED_PLUGIN' ) . ' "mymuseusernoreg", ' . Text::_ ( 'COM_MYMUSE_DISABLED_PLUGIN' ) . ' "mymuseuser"', 'notice' );
 				}
 			}
     	}
@@ -319,7 +319,7 @@ class StoreTable extends Table implements VersionableTableInterface
   
     	if($my_encode_filenames) // we want to encode them
     	{
-    		$app->enqueueMessage(JText::_("MYMUSE_ENCODING_FILENAMES_NO_LONGER_SUPPORTED"), 'error');
+    		$app->enqueueMessage(Text::_("MYMUSE_ENCODING_FILENAMES_NO_LONGER_SUPPORTED"), 'error');
     		return false;
     	}else{ // we want to change back to regular names
     		$query = "SELECT p.id, p.title, p.alias, p.title_alias, p.file_name
@@ -346,12 +346,12 @@ class StoreTable extends Table implements VersionableTableInterface
 			
     			if($new_file){
 					if (! File::copy ( "$old_file", "$new_file" )) {
-						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_FILE" ) . ": " . $old_file . " " . $new_file );
-						$app->enqueueMessage ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_FILE" ) . ": " . $old_file . " " . $new_file, 'error' );
+						$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MOVE_FILE" ) . ": " . $old_file . " " . $new_file );
+						$app->enqueueMessage ( Text::_ ( "MYMUSE_COULD_NOT_MOVE_FILE" ) . ": " . $old_file . " " . $new_file, 'error' );
 					}
 					//if (! JFile::delete ( "$old_file" )) {
-					//	$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_DELETE_FILE" ) . ": " . $old_file );
-					//	$app->enqueueMessage ( JText::_ ( "MYMUSE_COULD_NOT_DELETE_FILE" ) . ": " . $old_file, 'error' );
+					//	$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_DELETE_FILE" ) . ": " . $old_file );
+					//	$app->enqueueMessage ( Text::_ ( "MYMUSE_COULD_NOT_DELETE_FILE" ) . ": " . $old_file, 'error' );
 					//}
     			}
     		} 

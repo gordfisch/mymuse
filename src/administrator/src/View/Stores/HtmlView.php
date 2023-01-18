@@ -154,8 +154,8 @@ class HtmlView extends BaseHtmlView
 	protected function getSortFields()
 	{
 		return array(			
-				'a.state' => JText::_('JSTATUS'),
-				'a.id' => JText::_('JGRID_HEADING_ID'),
+				'a.state' => Text::_('JSTATUS'),
+				'a.id' => Text::_('JGRID_HEADING_ID'),
 		);
 	}
 }

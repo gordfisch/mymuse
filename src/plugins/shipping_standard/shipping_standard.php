@@ -12,15 +12,27 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin');
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\ParameterType;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Helper\RouteHelper;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
 
 /**
-* MyMuse Shipping Standard plugin
+* MyMuse  plgMymuseShipping_Standard plugin
 *
-* @package 		MyMuse
-* @subpackage	mymuse
+* @package      MyMuse
+* @subpackage   mymuse
 */
-class plgMymuseShipping_Standard extends JPlugin
+class  plgMymuseShipping_Standard extends CMSPlugin 
 {
 	
 	/**
@@ -39,8 +51,6 @@ class plgMymuseShipping_Standard extends JPlugin
 	 */
 	function __construct(&$subject, $config)  {
 		parent::__construct($subject, $config);
-		
-
 	}
 		
 	function plgMymuseShipping_Standard(&$subject, $config)  {
@@ -103,8 +113,8 @@ class plgMymuseShipping_Standard extends JPlugin
 					$additional = "ship_additional_" . $i;
 					
 					if($translate){
-						$result [$j]->ship_carrier_name =  JText::_($this->params->get ( $carrier ));
-						$result [$j]->ship_method_name = JText::_($this->params->get ( $method ));
+						$result [$j]->ship_carrier_name =  Text::_($this->params->get ( $carrier ));
+						$result [$j]->ship_method_name = Text::_($this->params->get ( $method ));
 					}else{
 						$result [$j]->ship_carrier_name =  $this->params->get ( $carrier );
 						$result [$j]->ship_method_name = $this->params->get ( $method );
@@ -142,10 +152,10 @@ class plgMymuseShipping_Standard extends JPlugin
         $additional = "ship_additional_".$shipmethodid;
         $result->ship_type          		= "Standard";
         if($translate){
-        	$result->ship_carrier_name          = JText::_($this->params->get($carrier));
-        	$result->ship_carrier_code 			= JText::_($this->params->get($carrier));
-        	$result->ship_method_name           = JText::_($this->params->get($method));
-        	$result->ship_method_code 			= JText::_($this->params->get($method));
+        	$result->ship_carrier_name          = Text::_($this->params->get($carrier));
+        	$result->ship_carrier_code 			= Text::_($this->params->get($carrier));
+        	$result->ship_method_name           = Text::_($this->params->get($method));
+        	$result->ship_method_code 			= Text::_($this->params->get($method));
         }else{
         	$result->ship_carrier_name          = $this->params->get($carrier);
         	$result->ship_carrier_code 			= $this->params->get($carrier);

@@ -25,7 +25,7 @@ $sortFields = $this->getSortFields3();
 $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
 if(isset($lists['isNew'])){
-	echo JText::_("MYMUSE_SAVE_THEN_ADD_ITEMS");
+	echo Text::_("MYMUSE_SAVE_THEN_ADD_ITEMS");
 }else{
 $ordering = ($listOrder == 'a.ordering');
 
@@ -54,7 +54,7 @@ Joomla.orderTable = function()
 
 <div id="items" class="row">
 
-	<h2><?php echo JText::_( 'COM_MYMUSE_ITEMS' ); ?></h2>
+	<h2><?php echo Text::_( 'COM_MYMUSE_ITEMS' ); ?></h2>
 	
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<input type="hidden" name="view" value="product" /> 
@@ -209,7 +209,7 @@ for ($i=0, $n=count( $this->items ); $i < $n; $i++){
     <?php 
 
     if(isset($lists['attribute_sku']) && is_array($lists['attribute_sku'])){ ?>
-    	<h2><?php echo JText::_('COM_MYMUSE_ITEM_ATTRIBUTES'); ?></h2>
+    	<h2><?php echo Text::_('COM_MYMUSE_ITEM_ATTRIBUTES'); ?></h2>
     	<table class="table table-striped" id="articleList">
 			<thead>
 				<tr>

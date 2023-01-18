@@ -10,7 +10,7 @@
  */
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * Script file of searchmymuse plugin
  */
@@ -24,7 +24,7 @@ class plgSearchSearchmymuseInstallerScript
      $db->setQuery("UPDATE #__extensions SET enabled=1 WHERE element='searchmymuse' AND type='plugin'");
      $db->execute();
      
-     echo '<p>'. JText::_('MYMUSE_PLUGIN_ENABLED') .'</p>';    
+     echo '<p>'. Text::_('MYMUSE_PLUGIN_ENABLED') .'</p>';    
   } 
 }
 ?>

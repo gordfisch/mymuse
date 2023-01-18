@@ -1051,7 +1051,7 @@ class ProductModel extends AdminModel
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					return false;
 				}
 			}
@@ -1187,7 +1187,7 @@ class ProductModel extends AdminModel
 	
 		if (empty($pks))
 		{
-			return JError::raiseWarning(500, JText::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'));
+			return JError::raiseWarning(500, Text::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'));
 		}
 	
 		// Update ordering values
@@ -1200,7 +1200,7 @@ class ProductModel extends AdminModel
 			{
 				// Prune items that you can't change.
 				unset($pks[$i]);
-				JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+				JLog::add(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
 			}
 			elseif ($table->ordering != $order[$i])
 			{

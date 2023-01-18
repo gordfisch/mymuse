@@ -25,10 +25,13 @@ elif  [[ $1 = "test" ]]; then
 	cd joomla-cms
 	echo " Going testing..."
 
-	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse
+	if  [[ $2 = "basic" ]]; then
+		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/01-basic
+	elif  [[ $2 = "noreg" ]]; then
+		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/02-noreg
+	elif  [[ $2 = "stock" ]]; then
+		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/03-stock
 
-	#if  [[ $2 = "reports" ]]; then
-	#	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/reports 
 	#elif  [[ $2 = "storage" ]]; then
 	#	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/storage
 	#elif  [[ $2 ]]; then
@@ -37,7 +40,7 @@ elif  [[ $1 = "test" ]]; then
 	#	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse
 		#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/reports
 		#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/storage
-	#fi
+	fi
 
 elif  [[ $1 = "all" ]]; then
 	./make_component.sh

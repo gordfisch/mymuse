@@ -12,15 +12,27 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin');
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\ParameterType;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Helper\RouteHelper;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
 
 /**
-* MyMuse Shipping Price plugin
+* MyMuse  plgMymuseShipping_Price plugin
 *
-* @package 		MyMuse
-* @subpackage	mymuse
+* @package      MyMuse
+* @subpackage   mymuse
 */
-class plgMymuseShipping_Price extends JPlugin
+class  plgMymuseShipping_Price extends CMSPlugin 
 {
 	
 	/**

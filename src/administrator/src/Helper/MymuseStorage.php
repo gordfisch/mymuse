@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Object as CMSObject;
+use Joomla\CMS\Language\Text;
 
 
 
@@ -147,9 +148,9 @@ class MymuseStorage
 		}
 		if(!File::copy(JPATH_ROOT.DIRECTORY_SEPARATOR."administrator".DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_mymuse".DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."index.html",
 				$dir.DIRECTORY_SEPARATOR."index.html")){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$dir);
+			$this->setError(Text::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$dir);
 		    $application = Factory::getApplication();
-			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$dir, 'error');
+			$application->enqueueMessage(Text::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$dir, 'error');
 			return false;
 		}
     	 
@@ -170,9 +171,9 @@ class MymuseStorage
     {
     	
 		if(!File::delete($file)){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$file);
+			$this->setError(Text::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$file);
 			$application = Factory::getApplication();
-			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$file , 'error');
+			$application->enqueueMessage(Text::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$file , 'error');
             return false;
 		}
     	
@@ -192,15 +193,15 @@ class MymuseStorage
     public function fileUpload($tmpName, $new_file)
     {
     	if(!file_exists($tmpName)){
-    		$this->setError(JText::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName);
+    		$this->setError(Text::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName);
     		return false;
     	}
     	$application = Factory::getApplication();
 
 		if(!File::upload($tmpName, $new_file)){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
+			$this->setError(Text::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
 			$application = Factory::getApplication();
-			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file , 'error');
+			$application->enqueueMessage(Text::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file , 'error');
 			return false;
 		}
     	
@@ -222,9 +223,9 @@ class MymuseStorage
     {
     	
 		if(!File::copy("$src", "$dest")){
-			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest);
+			$this->setError(Text::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest);
 			$application = Factory::getApplication();
-			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest , 'error');
+			$application->enqueueMessage(Text::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest , 'error');
 			return false;
 		}
 	
@@ -264,7 +265,7 @@ class MymuseStorage
             //Throw error message and stop script
             $this->setError("Could not create $dest");
             $application = Factory::getApplication();
-			$application->enqueueMessage(JText::_("Could not create $dest") , 'error');
+			$application->enqueueMessage(Text::_("Could not create $dest") , 'error');
             return false;
         }
         $files = Folder::files($src);

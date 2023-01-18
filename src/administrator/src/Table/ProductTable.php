@@ -740,7 +740,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 					$db->setQuery($query);
 
 					if(!$db->execute()){
-						$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
+						$this->setError(Text::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
 						return false;
 					}
 
@@ -764,7 +764,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 					$db->setQuery($query);
 
 					if(!$db->execute()){
-						$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCT_RECOMMEND_XREF').$db->getErrorMsg());
+						$this->setError(Text::_('MYMUSE_COULD_NOT_SAVE_PRODUCT_RECOMMEND_XREF').$db->getErrorMsg());
 						return false;
 					}
 
@@ -798,12 +798,12 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 					// create new dirs if needed
 					if (! $this->storage->fileExists ( $download_path )) {
 						if (! $this->storage->folderNew ( $download_path )) {
-							$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . $download_path );
+							$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . $download_path );
 							return false;
 						}
 						if ($this->storage->type == 'regular') {
 							if (! $this->storage->fileCopy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $download_path . DIRECTORY_SEPARATOR . "index.html" )) {
-								$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . $download_path );
+								$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . $download_path );
 							}
 						}
 					}
@@ -816,12 +816,12 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 
 					if (! $this->storage->fileExists ( $preview_path )) {
 						if (! $this->storage->folderNew ( $preview_path )) {
-							$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . ' ' . $preview_path );
+							$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . ' ' . $preview_path );
 							return false;
 						}
 						if ($this->storage->type == 'regular') {
 							if (! $this->storage->fileCopy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $preview_path . DIRECTORY_SEPARATOR . "index.html" )) {
-									$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . ' ' . $preview_path );
+									$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . ' ' . $preview_path );
 							}
 						}
 					}
@@ -863,7 +863,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 						$dest = $params->get ( 'my_download_dir' ) . DIRECTORY_SEPARATOR . $dest_artist_alias . DIRECTORY_SEPARATOR . $this->alias;
 
 						if (! $this->storage->folderMove ( $src, $dest )) {
-							$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
+							$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
 							return false;
 						}
 						$changed = 1;

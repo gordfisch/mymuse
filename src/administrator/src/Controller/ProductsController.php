@@ -203,7 +203,7 @@ class ProductsController extends AdminController
 
     	if (empty($cid))
     	{
-    		$message = JText::_($this->text_prefix . '_NO_ITEM_SELECTED');
+    		$message = Text::_($this->text_prefix . '_NO_ITEM_SELECTED');
     		$this->setRedirect(Route::_($redirectUrl, $message, 'error'));
     	}
     	else
@@ -237,7 +237,7 @@ class ProductsController extends AdminController
     			{
     				$ntext = $this->text_prefix . '_N_ITEMS_TRASHED';
     			}
-    			$this->setMessage(JText::plural($ntext, count($cid)));
+    			$this->setMessage(Text::plural($ntext, count($cid)));
     		}
     	}
     	

@@ -793,7 +793,7 @@ class CheckoutHelper
 		foreach($tax_rates as $rate){
 			$name = trim($rate->tax_name);
 			$name = preg_replace("/$regex/","_",$name);
-			if($order->$name > 0.00){
+			if(isset($order->$name) && $order->$name > 0.00){
 				$order->tax_array[$name] = $order->$name;
 				$order->tax_total += $order->$name;
 			}

@@ -22,7 +22,7 @@ HTMLHelper::_('script', 'com_contenthistory/admin-history-versions.js', ['versio
 
 ?>
 <h3>
-	<?php echo JText::_('COM_MYMUSE_TITLE_SHOPPERGROUP'); ?>
+	<?php echo Text::_('COM_MYMUSE_TITLE_SHOPPERGROUP'); ?>
 
 	<?php if($this->form->getValue('title') != ''){
 		echo " : ".$this->form->getValue('title');

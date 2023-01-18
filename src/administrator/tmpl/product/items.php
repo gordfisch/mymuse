@@ -1,10 +1,12 @@
 <?php
+use Joomla\CMS\Language\Text;
+
 		//ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS
 
-		$title = JText::_( 'MYMUSE_ITEMS' );
+		$title = Text::_( 'MYMUSE_ITEMS' );
 
 		if($lists['isNew']){
-			echo JText::_("MYMUSE_SAVE_THEN_ADD_ITEMS");
+			echo Text::_("MYMUSE_SAVE_THEN_ADD_ITEMS");
 		}else{
 ?>
 <!-- product items.php -->
@@ -33,7 +35,7 @@
 			// do field validation
 
 			if (form.title.value == ""){
-				alert( "<?php echo JText::_( 'MYMUSE_ITEM_MUST_HAVE_A TITLE', true ); ?>" );
+				alert( "<?php echo Text::_( 'MYMUSE_ITEM_MUST_HAVE_A TITLE', true ); ?>" );
 
 			} else {
 
@@ -149,23 +151,23 @@
 			<td class="button" id="toolbar-publish"><a href="#"
 			onclick="javascript: submitbutton4('listattribute')" class="toolbar">
 			<span class="icon-32-publish" title="List Attributes"> </span><?php 
-			echo JText::_('MYMUSE_LIST_ATTRIBUTES'); ?></a></td>
+			echo Text::_('MYMUSE_LIST_ATTRIBUTES'); ?></a></td>
 
 			<td class="button" id="toolbar-new"><a href="#"
 			onclick="javascript: submitbutton4('addattribute')" class="toolbar">
 			<span class="icon-32-new" title="Add Attributes"> </span><?php 
-			echo JText::_('MYMUSE_ADD_ATTRIBUTES'); ?>
+			echo Text::_('MYMUSE_ADD_ATTRIBUTES'); ?>
 			</a></td>
 			
 			<td class="button" id="toolbar-new"><a href="#"
 			onclick="javascript: submitbutton3('additem')" class="toolbar"> <span
 			class="icon-32-new" title="New Item"> </span><?php 
-			echo JText::_('MYMUSE_NEW_ITEM'); ?></a></td>
+			echo Text::_('MYMUSE_NEW_ITEM'); ?></a></td>
 
 			<td class="button" id="toolbar-delete"><a href="#"
 			onclick="javascript: submitbutton3('removeitem')" class="toolbar"> <span
 			class="icon-32-delete" title="Delete Item"> </span><?php 
-			echo JText::_('MYMUSE_DELETE_ITEM'); ?></a></td>
+			echo Text::_('MYMUSE_DELETE_ITEM'); ?></a></td>
 			
 			
 		</tr>
@@ -182,14 +184,14 @@
 			<thead>
 				<tr>
 					<th width="5">
-						<?php echo JText::_( 'Num' ); ?>
+						<?php echo Text::_( 'Num' ); ?>
 					</th>
 					<th width="5">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll3(<?php echo count( $lists['items'] ); ?>);" />
 					</th>
-					<th class="title"><?php echo JText::_('MYMUSE_TITLE'); ?></th>
-					<th class="title" width="50"><?php echo JText::_('MYMUSE_PRICE'); ?></th>
-					<th class="title" width="50"><?php echo JText::_('MYMUSE_DISCOUNT'); ?></th>
+					<th class="title"><?php echo Text::_('MYMUSE_TITLE'); ?></th>
+					<th class="title" width="50"><?php echo Text::_('MYMUSE_PRICE'); ?></th>
+					<th class="title" width="50"><?php echo Text::_('MYMUSE_DISCOUNT'); ?></th>
 		
 					<?php foreach($lists['attribute_sku'] as $a_sku){ ?>
 						<th><?php echo $a_sku->name; ?>
@@ -203,7 +205,7 @@
 
 					<?php echo MyMuseHelper::order3($lists['items']); ?>
 					</th>
-					<th width="1%" class="title"><?php echo JText::_('MYMUSE_ID'); ?>
+					<th width="1%" class="title"><?php echo Text::_('MYMUSE_ID'); ?>
 					</th>
 				</tr>
 			</thead>
@@ -231,33 +233,33 @@
 				
 				if ( $now->toUnix() <= $publish_up->toUnix() && $item->state == 1 ) {
 					$img = 'publish_y.png';
-					$alt = JText::_( 'Published' );
+					$alt = Text::_( 'Published' );
 				} else if ( ( $now->toUnix() <= $publish_down->toUnix() || $item->publish_down == $nullDate ) && $item->state == 1 ) {
 					$img = 'publish_g.png';
-					$alt = JText::_( 'Published' );
+					$alt = Text::_( 'Published' );
 				} else if ( $now->toUnix() > $publish_down->toUnix() && $item->state == 1 ) {
 					$img = 'publish_r.png';
-					$alt = JText::_( 'Expired' );
+					$alt = Text::_( 'Expired' );
 				} else if ( $item->state == 0 ) {
 					$img = 'publish_x.png';
-					$alt = JText::_( 'Unpublished' );
+					$alt = Text::_( 'Unpublished' );
 				} else if ( $item->state == -1 ) {
 					$img = 'disabled.png';
-					$alt = JText::_( 'Archived' );
+					$alt = Text::_( 'Archived' );
 				}
 				$times = '';
 				if (isset($item->publish_up)) {
 					if ($item->publish_up == $nullDate) {
-						$times .= JText::_( 'Start: Always' );
+						$times .= Text::_( 'Start: Always' );
 					} else {
-						$times .= JText::_( 'Start' ) .": ". $publish_up->format();
+						$times .= Text::_( 'Start' ) .": ". $publish_up->format();
 					}
 				}
 				if (isset($item->publish_down)) {
 					if ($item->publish_down == $nullDate) {
-						$times .= "<br />". JText::_( 'Finish: No Expiry' );
+						$times .= "<br />". Text::_( 'Finish: No Expiry' );
 					} else {
-						$times .= "<br />". JText::_( 'Finish' ) .": ". $publish_down->format();
+						$times .= "<br />". Text::_( 'Finish' ) .": ". $publish_down->format();
 					}
 				}
 				?>
@@ -281,7 +283,7 @@
 					if ( $times ) {
 						?>
 						<td align="center">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'MYMUSE_PUBLISH_PRODUCT' );?>::<?php echo $times; ?>"><a href="javascript:void(0);" onclick="return listItemTask3('cb<?php echo $i;?>','<?php echo $item->state ? 'unpublish' : 'publish' ?>')">
+							<span class="editlinktip hasTip" title="<?php echo Text::_( 'MYMUSE_PUBLISH_PRODUCT' );?>::<?php echo $times; ?>"><a href="javascript:void(0);" onclick="return listItemTask3('cb<?php echo $i;?>','<?php echo $item->state ? 'unpublish' : 'publish' ?>')">
 								<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></a></span>
 						</td>
 						<?php

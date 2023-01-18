@@ -104,7 +104,7 @@ if ($saveOrder && !empty($this->items))
 						$disabledLabel	  = '';
 
 						if (!$saveOrder) :
-							$disabledLabel    = JText::_('JORDERINGDISABLED');
+							$disabledLabel    = Text::_('JORDERINGDISABLED');
 							$disableClassName = 'inactive tip-top';
 						endif; ?>
 						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">

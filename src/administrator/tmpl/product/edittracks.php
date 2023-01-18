@@ -248,7 +248,7 @@ $lists = $this->lists;
                                 </th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_FILE_NAME_LABEL' ); ?>
                                 </th>
-                                <th class="title"><?php echo JText::_("COM_MYMUSE_FORMAT")?>
+                                <th class="title"><?php echo Text::_("COM_MYMUSE_FORMAT")?>
 								</th>
                                 <th class="title"><?php echo Text::_( 'COM_MYMUSE_FILE_LENGTH_LABEL' ); ?>
                                 </th>

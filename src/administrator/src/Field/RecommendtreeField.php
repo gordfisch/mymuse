@@ -22,6 +22,7 @@ use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * Form Field class for the Joomla Framework.
@@ -232,7 +233,7 @@ class RecommendtreeField extends ListField {
 			{
 				if ($options[$i]->level == 0)
 				{
-					$options[$i]->text = JText::_('JGLOBAL_ROOT_PARENT');
+					$options[$i]->text = Text::_('JGLOBAL_ROOT_PARENT');
 				}
 			}
 			if ($options[$i]->published == 1)
@@ -314,10 +315,10 @@ class RecommendtreeField extends ListField {
 			if ($row->parent_id == '1')
 			{
 				$parent = new stdClass;
-				$parent->text = JText::_('JGLOBAL_ROOT_PARENT');
+				$parent->text = Text::_('JGLOBAL_ROOT_PARENT');
 				array_unshift($options, $parent);
 			}
-			array_unshift($options, JHtml::_('select.option', '0', JText::_('JGLOBAL_ROOT')));
+			array_unshift($options, JHtml::_('select.option', '0', Text::_('JGLOBAL_ROOT')));
 		}
 
 		// Merge any additional options in the XML definition.

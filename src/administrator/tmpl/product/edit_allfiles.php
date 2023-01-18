@@ -33,7 +33,7 @@ JFilterOutput::objectHTMLSafe( $item );
 
 
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
-<h2><?php echo $item->parent->title; ?>: <?php echo JText::_("COM_MYMUSE_ALL_FILES"); ?></h2>
+<h2><?php echo $item->parent->title; ?>: <?php echo Text::_("COM_MYMUSE_ALL_FILES"); ?></h2>
 <div class="edittracks row">
 	<div class="col-6 col-lg-6">
 			<div class="control-group">

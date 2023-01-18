@@ -132,7 +132,7 @@ class CouponTable extends Table implements VersionableTableInterface
 		    $query = "SELECT code from #__mymuse_coupon WHERE code='".$this->code."'";
 		    $this->_db->setQuery($query);
 		    if($this->_db->loadResult()){
-		        $this->setError(JText::_('COM_MYMUSE_COUPON_CODE_MUST_BE_UNIQUE'));
+		        $this->setError(Text::_('COM_MYMUSE_COUPON_CODE_MUST_BE_UNIQUE'));
 		        return false;
 		    }
 		}

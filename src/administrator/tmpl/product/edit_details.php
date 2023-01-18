@@ -125,7 +125,7 @@ use Joomla\CMS\Language\Text;
 				</div>
 
 				<a href="index.php?option=com_mymuse&view=product&layout=edit&task=alertPreorders&id=<?php echo $this->item->id; ?>"><?php
-					echo JText::_('COM_MYMUSE_ALERT_CUSTOMERS'); ?></a>
+					echo Text::_('COM_MYMUSE_ALERT_CUSTOMERS'); ?></a>
 
 
 	

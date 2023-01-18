@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 $need_shipping = 0;
 $need_closure = 0;
@@ -39,9 +39,12 @@ foreach ($this->form->getFieldsets() as $fieldset)
 
 	<form id="guest-registration" action="<?php echo Route::_('index.php?option=com_mymuse&view=cart&layout=cart'); ?>" method="post" class="form-validate">
 	<input type="hidden" name="task" value="savenoreg">
-	<?php if($need_shipping):?>
-	<div style="float: left">
-	<?php endif?>
+
+
+
+<div class="blog-items columns-2">
+	<div>
+
 <?php foreach ($this->form->getFieldsets() as $fieldset): // Iterate through the form fieldsets and display each one.?>
 	<?php $fields = $this->form->getFieldset($fieldset->name);?>
 	
@@ -52,7 +55,7 @@ foreach ($this->form->getFieldsets() as $fieldset)
 	<?php endif; ?>
 	
 	<?php if($fieldset->name == "shipping"): ?>
-		</div><div style="float: left; margin-left: 20px;"><h4><?php echo Text::_('COM_MYMUSE_SHIPPING');?></h4>
+		</div><div><h4><?php echo Text::_('COM_MYMUSE_SHIPPING');?></h4>
 	<?php endif; ?>
 	
 	
@@ -91,16 +94,19 @@ foreach ($this->form->getFieldsets() as $fieldset)
 		</fieldset>
 	<?php endif;?>
 <?php endforeach;?>
-<?php if($need_shipping):?>
+</div>
 	</div>
-<?php endif?>
-		<div style="clear: both;">
-			<button type="submit" class="button"><?php echo Text::_('JSAVE');?></button>
-			&nbsp;
-			<a href="<?php echo Route::_('');?>" title="<?php echo Text::_('JCANCEL');?>" class="button"><?php echo Text::_('JCANCEL');?></a>
-			<input type="hidden" name="option" value="com_mymuse" />
-			<?php echo HTMLHelper::_('form.token');?>
-		</div>
+
+<div class="com-users-login__submit control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary"><?php echo Text::_('JSAVE');?></button>
+                </div>
+                <div class="controls">
+                	<a href="<?php echo Route::_('');?>" title="<?php echo Text::_('JCANCEL');?>" class="button"><?php echo Text::_('JCANCEL');?></a>
+                </div>
+            </div>
+		<input type="hidden" name="option" value="com_mymuse" />
+		<?php echo HTMLHelper::_('form.token');?>
 	</form>
 </div>
 

@@ -13,8 +13,7 @@
 	<files>
 		<filename plugin="mymusenoreg">mymusenoreg.php</filename>
 		<filename>index.html</filename>
-		<folder>profiles</folder>
-		<folder>fields</folder>
+		<folder>forms</folder>
 	</files>
 	<languages>
 		<language tag="en-GB">language/en-GB/plg_user_mymusenoreg.ini</language>

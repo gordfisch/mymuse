@@ -21,7 +21,7 @@ HTMLHelper::_('behavior.keepalive');
 
 ?>
 <h3>
-	<?php echo JText::_('COM_MYMUSE_TITLE_PRODUCTATTRIBUTE'); ?>
+	<?php echo Text::_('COM_MYMUSE_TITLE_PRODUCTATTRIBUTE'); ?>
 
 	<?php if($this->form->getValue('name') != ''){
 		echo " : ".$this->form->getValue('name');

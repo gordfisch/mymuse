@@ -177,13 +177,13 @@ class HtmlView extends BaseHtmlView
 	protected function getSortFields()
 	{
 		return array(			
-				'a.state' => JText::_('JSTATUS'),
-				'a.province' => JText::_('MYMUSE_TAX_PROVINCE'),
-				'a.country' => JText::_('MYMUSE_TAX_COUNTRY'),
-				'a.id' => JText::_('JGRID_HEADING_ID'),
-				'a.tax_rate' => JText::_('MYMUSE_RATE'),
-				'a.tax_name' => JText::_('MYMUSE_TITLE'),
-				'a.tax_applies_to' => JText::_('MYMUSE_TAX_APPLIES_TO_LABEL'),
+				'a.state' => Text::_('JSTATUS'),
+				'a.province' => Text::_('MYMUSE_TAX_PROVINCE'),
+				'a.country' => Text::_('MYMUSE_TAX_COUNTRY'),
+				'a.id' => Text::_('JGRID_HEADING_ID'),
+				'a.tax_rate' => Text::_('MYMUSE_RATE'),
+				'a.tax_name' => Text::_('MYMUSE_TITLE'),
+				'a.tax_applies_to' => Text::_('MYMUSE_TAX_APPLIES_TO_LABEL'),
 		);
 	}
 }

@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-
+use Joomla\CMS\Language\Text;
 
 if(isset($order->items) && count($order->items)){
 $i = 0;
@@ -10,16 +10,16 @@ $i = 0;
 <section>
   <ul class="mymuse-container mymuse-cart mini-cart">
     <li class="item-container cols-3">
-    	<div class="mytitle mymuse-cart-top "><?php echo JText::_('COM_MYMUSE_TITLE') ?></div>
-    	<div class="myquantity mymuse-cart-top "><?php echo JText::_('COM_MYMUSE_CART_QUANTITY') ?></div>
-    	<div class="mysubtotal mymuse-cart-top "><?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL') ?></div>
+    	<div class="mytitle mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_TITLE') ?></div>
+    	<div class="myquantity mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_CART_QUANTITY') ?></div>
+    	<div class="mysubtotal mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL') ?></div>
     </li>
 
 	<?php foreach($order->items as $item) { ?>
 	<li class="item-container cols-3">		    
-		<div class="mytitle mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_TITLE'); ?>"><?php echo $item->title; ?></div>
-		<div class="myquantity mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_CART_QUANTITY'); ?>"><?php echo $item->quantity; ?></div>
-		<div class="mysubtotal mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?>"><?php echo MymuseHelper::printMoney($item->product_item_subtotal); ?></div>
+		<div class="mytitle mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_TITLE'); ?>"><?php echo $item->title; ?></div>
+		<div class="myquantity mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_QUANTITY'); ?>"><?php echo $item->quantity; ?></div>
+		<div class="mysubtotal mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?>"><?php echo MymuseHelper::printMoney($item->product_item_subtotal); ?></div>
 
 	</li>
 	<?php } ?>	
@@ -29,8 +29,8 @@ $i = 0;
 		|| count($order->tax_array) > 0){ ?>
 	<!--  original subtotal -->
 			<li class="item-container cols-3">	
-		    	<div class="mysubtotal mycart-inner mymuse-mobile-hide"><b><?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?></b></div>
-		        <div class="myoriginalsubtotal mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_CART_SUBTOTAL'); ?>"><?php echo MymuseHelper::printMoney($order->subtotal_before_discount); ?></div>
+		    	<div class="mysubtotal mycart-inner mymuse-mobile-hide"><b><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?></b></div>
+		        <div class="myoriginalsubtotal mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?>"><?php echo MymuseHelper::printMoney($order->subtotal_before_discount); ?></div>
 		    </li>
 	<?php } ?>	
 	
@@ -39,8 +39,8 @@ $i = 0;
 		//for shopper group discount
 		?>
 	    <li class="item-container cols-3">	
-	    	<div class="myshoppergroupdiscount mycart-inner mymuse-mobile-hide" ><b><?php echo JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?></b></div>
-	        <div class="myshoppergroupdiscount mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>">(<?php echo MymuseHelper::printMoney($order->shopper_group_discount); ?>)</div>
+	    	<div class="myshoppergroupdiscount mycart-inner mymuse-mobile-hide" ><b><?php echo Text::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?></b></div>
+	        <div class="myshoppergroupdiscount mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>">(<?php echo MymuseHelper::printMoney($order->shopper_group_discount); ?>)</div>
 	    </li>
 	<?php } ?>
 
@@ -49,8 +49,8 @@ $i = 0;
 		//for regular discount
 		?>
 	    <li class="item-container cols-3">	
-	    	<div class="mydiscount mycart-inner mymuse-mobile-hide" ><b><?php echo JText::_('COM_MYMUSE_DISCOUNT'); ?></b></div>
-	        <div class="mydiscount mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_DISCOUNT'); ?>">- <?php echo MymuseHelper::printMoney($order->discount); ?></div>
+	    	<div class="mydiscount mycart-inner mymuse-mobile-hide" ><b><?php echo Text::_('COM_MYMUSE_DISCOUNT'); ?></b></div>
+	        <div class="mydiscount mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_DISCOUNT'); ?>">- <?php echo MymuseHelper::printMoney($order->discount); ?></div>
 	    </li>
 	<?php } ?>
 	
@@ -59,8 +59,8 @@ $i = 0;
 	<?php //COUPONS
 	if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
 	    <li class="item-container cols-3">	
-	    	<div class="mycoupon mycart-inner mymuse-mobile-hide" ><b><?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?></b> <?php echo $order->coupon->title ?></div>
-	        <div class="mycoupon mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_YOUR_COUPON'); ?>">-<?php echo MymuseHelper::printMoney($order->coupon->discount); ?> </div>
+	    	<div class="mycoupon mycart-inner mymuse-mobile-hide" ><b><?php echo Text::_('COM_MYMUSE_YOUR_COUPON'); ?></b> <?php echo $order->coupon->title ?></div>
+	        <div class="mycoupon mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_YOUR_COUPON'); ?>">-<?php echo MymuseHelper::printMoney($order->coupon->discount); ?> </div>
 
 	    </li>
 	<?php } ?>
@@ -68,8 +68,8 @@ $i = 0;
 	<?php // SHIPPING
 	if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
 	    <li class="item-container cols-3">	
-	    	<div  class="myshipping mycart-inner mymuse-mobile-hide"><b><?php echo JText::_('COM_MYMUSE_SHIPPING') ?></b></div>
-	    	<div class="myshipping mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_SHIPPING'); ?>"><?php echo MymuseHelper::printMoney($order->order_shipping->cost); ?>
+	    	<div  class="myshipping mycart-inner mymuse-mobile-hide"><b><?php echo Text::_('COM_MYMUSE_SHIPPING') ?></b></div>
+	    	<div class="myshipping mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_SHIPPING'); ?>"><?php echo MymuseHelper::printMoney($order->order_shipping->cost); ?>
 	    </li>
 
 	<?php } ?>
@@ -90,18 +90,18 @@ $i = 0;
 
 		
 	<li class="item-container cols-3">	
-		<div class="mytotal mycart-inner mymuse-mobile-hide "><b><?php echo JText::_('COM_MYMUSE_CART_TOTAL') ?></b></div>
+		<div class="mytotal mycart-inner mymuse-mobile-hide "><b><?php echo Text::_('COM_MYMUSE_CART_TOTAL') ?></b></div>
 		<div></div>
-		<div class="mytotal mycart-inner" data-name="<?php echo JText::_('COM_MYMUSE_CART_TOTAL'); ?>"><b><?php echo MymuseHelper::printMoney($order->order_total); ?></b></div>
+		<div class="mytotal mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_TOTAL'); ?>"><b><?php echo MymuseHelper::printMoney($order->order_total); ?></b></div>
 	</li>
 
 
   </ul>
 
-  <a href="index.php?option=com_mymuse&task=checkout"><?php echo JText::_('COM_MYMUSE_CHECKOUT') ?></a>
+  <a href="index.php?option=com_mymuse&task=checkout"><?php echo Text::_('COM_MYMUSE_CHECKOUT') ?></a>
 <section>
 <?php
 }else{ 
-	echo JText::_('COM_MYMUSE_YOUR_CART_IS_EMPTY');
+	echo Text::_('COM_MYMUSE_YOUR_CART_IS_EMPTY');
 }
 ?>

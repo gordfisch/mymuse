@@ -12,13 +12,27 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if(!defined('DIRECTORY_SEPARATOR')){
-	define('DIRECTORY_SEPARATOR',DIRECTORY_SEPARATOR);
-}
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\ParameterType;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Helper\RouteHelper;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
 
-require_once(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'route.php');
-
-class plgSearchSearchMymuse extends JPlugin
+/**
+* MyMuse PaymentPaypal plugin
+*
+* @package      MyMuse
+* @subpackage   mymuse
+*/
+class plgSearchSearchMymuse extends CMSPlugin 
 {
 
 	/**
@@ -99,7 +113,7 @@ class plgSearchSearchMymuse extends JPlugin
         if ($text == '') {
             return array();
         }
-        $section    = JText::_('Search - Products');
+        $section    = Text::_('Search - Products');
     
         $wheres = array();
         switch ($phrase) {
@@ -222,9 +236,9 @@ class plgSearchSearchMymuse extends JPlugin
                         $id = $item->id;
                     }
                     if($this->params->get('link_categories_only')){
-                    	$list[$key]->href = myMuseHelperRoute::getCategoryRoute($item->catid);
+                    	$list[$key]->href = RouteHelper::getCategoryRoute($item->catid);
                     }else{
-                    	$list[$key]->href = myMuseHelperRoute::getProductRoute( $id, $item->catid );
+                    	$list[$key]->href = RouteHelper::getProductRoute( $id, $item->catid );
                     }
                     
                 }
@@ -233,7 +247,7 @@ class plgSearchSearchMymuse extends JPlugin
             
         }
       
-        $section = JText::_("MYMUSE_CATEGORY");
+        $section = Text::_("MYMUSE_CATEGORY");
         //What about the categories
         $query = 'SELECT a.title, a.description AS text, "" AS created, "'.$section.'" as section, "2" AS browsernav, a.id AS catid,  '
         ." CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(':', a.id, a.alias) ELSE a.id END as slug "
@@ -251,7 +265,7 @@ class plgSearchSearchMymuse extends JPlugin
 		if(count($list2)){
 			foreach($list2 as $key => $item)
 			{
-				$list2[$key]->href = myMuseHelperRoute::getCategoryRoute($item->catid);
+				$list2[$key]->href = RouteHelper::getCategoryRoute($item->catid);
 			}
 			$rows[] = $list2;
 		}

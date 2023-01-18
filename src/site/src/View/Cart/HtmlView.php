@@ -157,7 +157,6 @@ class HtmlView extends BaseHtmlView
 		$task 			= $this->task;
 		$this->originaltask 	= $jinput->get('original_task', '', 'CMD');
 
-//MymuseHelper::print_pre($jinput);
 		if($task == "notify"){
 			$this->notify();
 			exit;
@@ -579,7 +578,7 @@ class HtmlView extends BaseHtmlView
 		parent::display('cart');
 		$this->cart_display = ob_get_contents();
 		ob_end_clean();
-		$this->cart_display = $this->cart_display;
+
 
 		//display coupon?
 		if($this->params->get("my_use_coupons") && (preg_match("/shipping|addtocart|updatecart|cartdelete|showcart|checkout/",$this->task) || $this->task == '') && !isset($this->order->coupon->id) && $this->user->get('id') > 0){

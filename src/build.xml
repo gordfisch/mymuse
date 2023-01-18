@@ -117,32 +117,32 @@
                             todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 
                 
 
-                <copy file="${src}/plugins/user_mymuse/language/en-GB/plg_user_mymuse.ini"
+                <copy file="${src}/plugins/user_mymuseuser/language/en-GB/plg_user_mymuseuser.ini"
                         todir="${joomladir}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/user_mymuse/language/en-GB/plg_user_mymuse.sys.ini"
+                <copy file="${src}/plugins/user_mymuseuser/language/en-GB/plg_user_mymuseuser.sys.ini"
                         todir="${joomladir}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/plg_user_mymusenoreg.ini"
                         todir="${joomladir}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/plg_user_mymusenoreg.sys.ini"
                         todir="${joomladir}/administrator/language/en-GB" />
 
-                <copy file="${src}/plugins/user_mymuse/mymuse.xml"
-                        todir="${joomladir}/plugins/user/mymuse" /> 
-                <copy file="${src}/plugins/user_mymuse/mymuse.php"
-                        todir="${joomladir}/plugins/user/mymuse" />
-                <copy file="${src}/plugins/user_mymuse/profiles/profile.xml"
-                        todir="${joomladir}/plugins/user/mymuse/profiles" />
-                <copy file="${src}/plugins/user_mymuse/fields/tos.php"
-                            todir="${joomladir}/plugins/user/mymuse/fields" /> 
+                <copy file="${src}/plugins/user_mymuseuser/mymuseuser.xml"
+                        todir="${joomladir}/plugins/user/mymuseuser" /> 
+                <copy file="${src}/plugins/user_mymuseuser/mymuseuser.php"
+                        todir="${joomladir}/plugins/user/mymuseuser" />
+                <copy file="${src}/plugins/user_mymuseuser/forms/profile.xml"
+                        todir="${joomladir}/plugins/user/mymuseuser/forms" />
+                <copy file="${src}/plugins/user_mymuseuser/src/Field/TosField.php"
+                            todir="${joomladir}/plugins/user/mymuseuser/src/Field/" /> 
                 
                 <copy file="${src}/plugins/user_mymusenoreg/mymusenoreg.xml"
                             todir="${joomladir}/plugins/user/mymusenoreg" /> 
                 <copy file="${src}/plugins/user_mymusenoreg/mymusenoreg.php"
                             todir="${joomladir}/plugins/user/mymusenoreg" />
-                 <copy file="${src}/plugins/user_mymusenoreg/profiles/profile.xml"
-                            todir="${joomladir}/plugins/user/mymusenoreg/profiles" />
-                <copy file="${src}/plugins/user_mymusenoreg/fields/tos.php"
-                        todir="${joomladir}/plugins/user/mymusenoreg/fields" /> 
+                 <copy file="${src}/plugins/user_mymusenoreg/forms/profile.xml"
+                            todir="${joomladir}/plugins/user/mymusenoreg/forms" />
+                <copy file="${src}/plugins/user_mymusenoreg/src/Field/TosField.php"
+                        todir="${joomladir}/plugins/user/mymusenoreg/src/Field/" /> 
 
                 <!--  modules -->
                 <copy todir="${joomladir}/modules/mod_mymuse_minicart">

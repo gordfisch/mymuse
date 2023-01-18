@@ -7,114 +7,154 @@
  * @author		Gordon Fisch
  * @author mail	info@joomlamymuse.com
  * @website		http://www.joomlamymuse.com
+ * 
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
-defined('JPATH_BASE') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageFactoryInterface;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Mail\MailTemplate;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\User\User;
 use Joomla\CMS\User\UserHelper;
-use Joomla\Utilities\ArrayHelper;
+use Joomla\Database\Exception\ExecutionFailureException;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
-
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
 /**
- * An example custom profile plugin.
+ * A profile plugin for no registration.
  *
  * @package		Joomla.Plugin
  * @subpackage	User.profile
  * @version		1.6
  */
-class plgUserMyMusenoreg extends CMSPlugin 
+
+class plgUserMymusenoreg extends CMSPlugin 
 {
-	/**
-	 * Load the language file on instantiation.
-	 *
-	 * @var    boolean
-	 * @since  3.1
-	 */
-	protected $autoloadLanguage = true;
+    /**
+     * @var    \Joomla\CMS\Application\CMSApplication
+     *
+     * @since  4.0.0
+     */
+    protected $app;
+
+    /**
+     * @var    \Joomla\Database\DatabaseDriver
+     *
+     * @since  4.0.0
+     */
+    protected $db;
+
+    /**
+     * Load the language file on instantiation.
+     *
+     * @var    boolean
+     *
+     * @since  3.1
+     */
+    protected $autoloadLanguage = true;
+
+    /**
+     * Date of birth.
+     *
+     * @var    string
+     *
+     * @since  3.1
+     */
+    private $date = '';
+
+
+    /**
+     * Constructor
+     *
+     * @param   object  $subject  The object to observe
+     * @param   array   $config   An array that holds the plugin configuration
+     */
+    public function __construct(& $subject, $config)
+    {
+    	parent::__construct($subject, $config);
+    	FormHelper::addFieldPath(__DIR__ . '/fields');
+    	$lang = Factory::getLanguage();
+    	$lang->load('plg_user_mymusenoreg', JPATH_ADMINISTRATOR);
+
+    	$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+    	$wa->useScript('jquery');
+    }
+
+    /**
+     * This method should handle any login logic and report back to the subject
+     *
+     * @param	array	$user		Holds the user data
+     * @param	array	$options	Array holding options (remember, autoregister, group)
+     *
+     * @return	boolean	True on success
+     * @since	1.5
+     */
+    public function onUserLogin($user, $options = array())
+    {
+
+    	$instance = $this->_getUser($user, $options);
+    	
+    	// Load the profile data from the database.
+    	$app = Factory::getApplication();
+    	$myparams = MymuseHelper::getParams();
+    	$profile_key = $myparams->get('my_profile_key', 'mymuse');
+    	$userId = $instance->id;
+    	$db = Factory::getDbo();
+    	$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
+    			' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
+    			' ORDER BY ordering';
+
+    	// Check for a database error.
+    	try
+    	{
+    		$db->setQuery( $query);
+    		$results = $db->loadRowList();
+    	}
+    	catch (RuntimeException $e)
+    	{
+    	    $this->_subject->setError($e->getMessage());
+    	    return false;
+    	}
+
+    	
+    	// Merge the profile data.
+    	$instance->profile = array();
+    	
+    	foreach ($results as $v)
+    	{
+    		$k = str_replace('mymuse.', '', $v[0]);
+    		$instance->profile[$k] = json_decode($v[1], true);
+    		if ($instance->profile[$k] === null)
+    		{
+    			$instance->profile[$k] = $v[1];
+    		}
+    		if($k == "region"){
+    			
+    			
+    			
+    		}
+    	}
+    	$session = Factory::getSession();
+    	$session->set('user', $instance);
+
+    
+    }
+
 	
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $subject  The object to observe
-	 * @param   array   $config   An array that holds the plugin configuration
-	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-		FormHelper::addFieldPath(dirname(__FILE__) . '/fields');
-	}
-	
-	/**
-	 * This method should handle any login logic and report back to the subject
-	 *
-	 * @param	array	$user		Holds the user data
-	 * @param	array	$options	Array holding options (remember, autoregister, group)
-	 *
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	public function onUserLogin($user, $options = array())
-	{
-
-		$instance = $this->_getUser($user, $options);
-		
-		// Load the profile data from the database.
-		$app = Factory::getApplication();
-		$myparams = MymuseHelper::getParams();
-		$profile_key = $myparams->get('my_profile_key', 'mymuse');
-		$userId = $instance->id;
-		$db = Factory::getDbo();
-		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
-				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
-				' ORDER BY ordering';
-
-		// Check for a database error.
-		try
-		{
-			$db->setQuery( $query);
-			$results = $db->loadRowList();
-		}
-		catch (RuntimeException $e)
-		{
-		    $this->_subject->setError($e->getMessage());
-		    return false;
-		}
-
-		
-		// Merge the profile data.
-		$instance->profile = array();
-		
-		foreach ($results as $v)
-		{
-			$k = str_replace('mymuse.', '', $v[0]);
-			$instance->profile[$k] = json_decode($v[1], true);
-			if ($instance->profile[$k] === null)
-			{
-				$instance->profile[$k] = $v[1];
-			}
-			if($k == "region"){
-				
-				
-				
-			}
-		}
-		$session = Factory::getSession();
-		$session->set('user', $instance);
-
-	
-	}
-
 	/**
 	 * @param	string	$context	The context for the data
 	 * @param	int		$data		The user id
@@ -125,6 +165,7 @@ class plgUserMyMusenoreg extends CMSPlugin
 	 */
 	function onContentPrepareData($context, $data)
 	{
+		
 		// Check we are manipulating a valid form.
 		if (!in_array($context, array('com_mymuse.noreg'))) {
 			return true;
@@ -212,6 +253,15 @@ class plgUserMyMusenoreg extends CMSPlugin
 
 		return true;
 	}
+	
+
+	/**
+	 * Returns an anchor tag generated from a given value
+	 *
+	 * @param   string  $value  URL to use
+	 *
+	 * @return  mixed|string
+	 */
 
 	public static function url($value)
 	{
@@ -231,6 +281,13 @@ class plgUserMyMusenoreg extends CMSPlugin
 		}
 	}
 
+	/**
+	 * Returns html markup showing a date picker
+	 *
+	 * @param   string  $value  valid date string
+	 *
+	 * @return  mixed
+	 */
 	public static function calendar($value)
 	{
 		if (empty($value)) {
@@ -240,6 +297,13 @@ class plgUserMyMusenoreg extends CMSPlugin
 		}
 	}
 
+	/**
+     * Return the translated strings yes or no depending on the value
+     *
+     * @param   boolean  $value  input value
+     *
+     * @return  string
+     */
 	public static function tos($value)
 	{
 		if ($value) {
@@ -259,6 +323,19 @@ class plgUserMyMusenoreg extends CMSPlugin
 	 */
 	function onContentPrepareForm($form, $data)
 	{
+		$name = $form->getName();
+
+		if (!in_array($name, ['com_mymuse.noreg'])) {
+            return true;
+        }
+
+        // Add the registration fields to the form.
+        FormHelper::addFieldPrefix('Joomla\\Plugin\\User\\Mymusenoreg\\Field');
+        FormHelper::addFormPath(__DIR__ . '/forms');
+
+        $form->loadFile('profile');
+
+
 		$params 		    = MymuseHelper::getParams();
 
 		$shipping_needed = 0;
@@ -295,9 +372,11 @@ class plgUserMyMusenoreg extends CMSPlugin
 		$country_states_done 	= 0;
 		$changeDynaList  		= 0;
 
+
 		// Add the registration fields to the form.
-		Form::addFormPath(dirname(__FILE__).'/profiles');
-		$form->loadFile('profile', false);
+		FormHelper::addFieldPrefix('Joomla\\Plugin\\User\\Mymuseuser\\Field');
+		Form::addFormPath(dirname(__FILE__).'/forms');
+		$form->loadFile('profile');
 
 		$fields = MymuseHelper::getNoRegFields();
 	
@@ -541,6 +620,14 @@ class plgUserMyMusenoreg extends CMSPlugin
 
 		return true;
 	}
+
+
+
+
+
+
+
+
 
 
 	

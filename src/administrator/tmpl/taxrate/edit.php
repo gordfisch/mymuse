@@ -22,7 +22,7 @@ HTMLHelper::_('script', 'com_contenthistory/admin-history-versions.js', ['versio
 $this->item->name = $this->item->tax_name;
 ?>
 <h3>
-	<?php echo JText::_('COM_MYMUSE_TAX_RATES'); ?>
+	<?php echo Text::_('COM_MYMUSE_TAX_RATES'); ?>
 
 	<?php if($this->form->getValue('tax_name') != ''){
 		echo " : ".$this->form->getValue('tax_name');

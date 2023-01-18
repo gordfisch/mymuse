@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Gord Fisch arboreta.ca
  */
-
+use Joomla\CMS\Language\Text;
 
 // No direct access
 defined('_JEXEC') or die;
@@ -111,7 +111,7 @@ class MymuseController extends JControllerLegacy
 		$user_email 	= $order->user->email;
 	
 		// SEND MAIL TO BUYER
-		$subject = Jtext::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
+		$subject = Text::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
 		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
 	
 		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
@@ -207,7 +207,7 @@ class MymuseController extends JControllerLegacy
 		$parent_id = $db->loadResult();
 	
 		if(!$parent_id){
-			$this->msg = JText::_("MYMUSE_CREATE_GENRES_CATEGORY");
+			$this->msg = Text::_("MYMUSE_CREATE_GENRES_CATEGORY");
 			$this->setRedirect( 'index.php?option=com_mymuse', $this->msg);
 			return false;
 		}
@@ -250,12 +250,12 @@ class MymuseController extends JControllerLegacy
 				$i = 0;
 				foreach($genres as $genre){
 					$i++;
-					echo "<li><strong>".JText::_("Creating genre: ")."$genre</strong><br />";
+					echo "<li><strong>".Text::_("Creating genre: ")."$genre</strong><br />";
 					$res = MyMuseUpdateHelper::makeCategory($genre, $parent_id);
 					if(!$res){
-						echo JText::_("Problem with creating category: $genre ");
+						echo Text::_("Problem with creating category: $genre ");
 					}else{
-						echo JText::_("Created Catalog Category '$genre'");
+						echo Text::_("Created Catalog Category '$genre'");
 						$catalog_cat_id = $db->insertid();
 					}
 					echo "<br />";

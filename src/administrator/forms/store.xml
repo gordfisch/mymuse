@@ -521,7 +521,7 @@
                 type="radio"
                 label="COM_MYMUSE_USE_COUPONS"
                 description="COM_MYMUSE_USE_COUPONS_DESC"
-                class="btn-group btn-group-yesno"
+             
                 default="0">
                 <option value="0">COM_MYMUSE_NO</option>
                 <option value="1">COM_MYMUSE_YES</option>>
@@ -553,7 +553,7 @@
                 label="COM_MYMUSE_DELAY_FADEOUT_LABEL"
                 description="COM_MYMUSE_DELAY_FADEOUT_DESC" 
                 class="inputbox"
-                default="4000"
+                default="2000"
                 size="4"
                 />
         <field

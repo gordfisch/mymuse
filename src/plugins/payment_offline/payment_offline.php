@@ -12,8 +12,17 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin');
-
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\ParameterType;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
 
 /**
 * MyMuse PaymentOffline plugin
@@ -21,7 +30,7 @@ jimport( 'joomla.plugin.plugin');
 * @package 		MyMuse
 * @subpackage	mymuse
 */
-class plgMymusePayment_Offline extends JPlugin
+class plgMymusePayment_Offline extends CMSPlugin 
 {
 	
 	/**
@@ -64,13 +73,13 @@ class plgMymusePayment_Offline extends JPlugin
 		<input type="hidden" name="Itemid" value="'.$Itemid.'">	
 		<input type="hidden" name="pp" value="payoffline">
 		<div id="payoffline_form" class="pull-left">
-		<button id="offline" class="btn btn-primary " type="submit" >'. JText::_('MYMUSE_I_WILL_PAY_OFFLINE').'</button>
+		<button id="offline" class="btn btn-primary " type="submit" >'. Text::_('MYMUSE_I_WILL_PAY_OFFLINE').'</button>
 
 		</div>
 		</form>
 		';
 		if ($this->params->get('paymentoffline_msg') != ""){
-			$string .= "<br />".JText::_($this->params->get('paymentoffline_msg'));
+			$string .= "<br />".Text::_($this->params->get('paymentoffline_msg'));
 		}
 		return $string;
 	

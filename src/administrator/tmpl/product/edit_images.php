@@ -1,8 +1,12 @@
+<?php
+use Joomla\CMS\Language\Text;
+
+?>
 <!-- product edit_images.php -->
 <div class="row">
 	<div class="col-12 col-lg-12">	
 		<fieldset class="adminform form-horizontal">
-			<legend><?php echo JText::_('COM_MYMUSE_IMAGES') ?></legend>
+			<legend><?php echo Text::_('COM_MYMUSE_IMAGES') ?></legend>
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('list_image'); ?>

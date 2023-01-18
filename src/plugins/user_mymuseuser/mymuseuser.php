@@ -7,20 +7,35 @@
  * @author		Gordon Fisch
  * @author mail	info@joomlamymuse.com
  * @website		http://www.joomlamymuse.com
+ * 
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
-defined('JPATH_BASE') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageFactoryInterface;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Mail\MailTemplate;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\User\User;
+use Joomla\CMS\User\UserHelper;
+use Joomla\Database\Exception\ExecutionFailureException;
+use Joomla\Database\ParameterType;
+use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
-class plgUserMymuse extends CMSPlugin 
+class plgUserMymuseuser extends CMSPlugin 
 {
 	/**
 	 * Load the language file on instantiation.
@@ -41,7 +56,10 @@ class plgUserMymuse extends CMSPlugin
 		parent::__construct($subject, $config);
 		FormHelper::addFieldPath(__DIR__ . '/fields');
 		$lang = Factory::getLanguage();
-		$lang->load('plg_user_mymuse', JPATH_ADMINISTRATOR);
+		$lang->load('plg_user_mymuseuser', JPATH_ADMINISTRATOR);
+
+		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+		$wa->useScript('jquery');
 	}
 	
 	/**
@@ -84,9 +102,6 @@ class plgUserMymuse extends CMSPlugin
 		    return false;
 		}
 				
-
-		
-		
 		// Merge the profile data.
 		$instance->profile = array();
 		
@@ -178,12 +193,12 @@ class plgUserMymuse extends CMSPlugin
 			}
 
 
-			if(isset($data->profile['region']) && !is_numeric($data->profile['region'])){
+			if(isset($data->profile->region) && !is_numeric($data->profile->region)){
 				//find the id number of the region
-				$query = "SELECT id FROM #__mymuse_state WHERE state_name='".$data->profile['region']."'";
+				$query = "SELECT id FROM #__mymuse_state WHERE state_name='".$data->profile->region."'";
 				$db->setQuery($query);
 				if($regid = $db->loadResult()){
-					$data->profile['region'] = $regid;
+					$data->profile->region = $regid;
 				}
 			}
 
@@ -247,26 +262,23 @@ class plgUserMymuse extends CMSPlugin
 	 */
 	function onContentPrepareForm($form, $data)
 	{
-		global $doneUserForm;
+
 		if (!($form instanceof Form))
 		{
 			$this->_subject->setError('JERROR_NOT_A_FORM');
 			return false;
 		}
-		if($doneUserForm){
-			return true;
-		}
-		$doneUserForm = 1;
-		// Check we are manipulating a valid form.
+
 		$name = $form->getName();
-		if (!in_array($name, array('com_admin.profile', 'com_users.user', 'com_users.profile', 'com_users.registration'))) {
-			return true;
-		}
+		if (!in_array($name, ['com_admin.profile', 'com_users.user', 'com_users.profile', 'com_users.registration'])) {
+            return true;
+        }
 		
 
 		// Add the registration fields to the form.
-		Form::addFormPath(dirname(__FILE__).'/profiles');
-		$form->loadFile('profile', false);
+		FormHelper::addFieldPrefix('Joomla\\Plugin\\User\\Mymuseuser\\Field');
+		Form::addFormPath(dirname(__FILE__).'/forms');
+		$form->loadFile('profile');
 
 		$fields = MymuseHelper::getRegFields();
 
@@ -354,8 +366,8 @@ class plgUserMymuse extends CMSPlugin
 
 		$document = Factory::getDocument();
 		$document->addScriptDeclaration($javascript);
-		$country_id = isset($data->profile['country'])? $data->profile['country'] : 0;
-		$region_id = isset($data->profile['region'])? $data->profile['region'] : 0;
+		$country_id = isset($data->profile->country)? $data->profile->country : 0;
+		$region_id = isset($data->profile->region)? $data->profile->region : 0;
 		
 		$js = "/**
 * Changes a dynamically generated list
@@ -605,7 +617,7 @@ class plgUserMymuse extends CMSPlugin
 		$country_list = implode('\', \'', $country_list);
 
 		$query = 'SELECT #__mymuse_state.id as code, state_name as title, #__mymuse_state.id as id, country_3_code, country_id' .
-				' FROM #__mymuse_state,#__mymuse_country' .
+				' FROM #__mymuse_state, #__mymuse_country' .
 				' WHERE country_id IN ( \''.$country_list.'\' )' .
 				' AND #__mymuse_state.country_id=#__mymuse_country.id' .
 				' ORDER BY country_id,state_name';

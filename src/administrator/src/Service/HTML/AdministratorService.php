@@ -101,4 +101,42 @@ class AdministratorService
 
         return $html;
     }
+
+    /**
+     * Show the featured/not-featured icon.
+     *
+     * @param   integer  $value      The featured value.
+     * @param   integer  $i          Id of the item.
+     * @param   boolean  $canChange  Whether the value can be changed or not.
+     *
+     * @return  string  The anchor tag to toggle featured/unfeatured mymuses.
+     *
+     * @since   1.6
+     */
+    public function featured($value, $i, $canChange = true)
+    {
+        // Array of image, task, title, action
+        $states = array(
+            0 => array('unfeatured', 'product.featured', 'COM_MYMUSE_UNFEATURED', 'JGLOBAL_ITEM_FEATURE'),
+            1 => array('featured', 'product.unfeatured', 'JFEATURED', 'JGLOBAL_ITEM_UNFEATURE'),
+        );
+        $state = ArrayHelper::getValue($states, (int) $value, $states[1]);
+        $icon = $state[0] === 'featured' ? 'star featured' : 'circle';
+        $onclick = 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')"';
+        $tooltipText = Text::_($state[3]);
+
+        if (!$canChange)
+        {
+            $onclick     = 'disabled';
+            $tooltipText = Text::_($state[2]);
+        }
+
+        $html = '<button type="submit" class="tbody-icon' . ($value == 1 ? ' active' : '') . '"'
+            . ' aria-labelledby="cb' . $i . '-desc" ' . $onclick . '>'
+            . '<span class="icon-' . $icon . '" aria-hidden="true"></span>'
+            . '</button>'
+            . '<div role="tooltip" id="cb' . $i . '-desc">' . $tooltipText . '</div>';
+
+        return $html;
+    }
 }

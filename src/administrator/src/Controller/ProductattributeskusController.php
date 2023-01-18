@@ -71,7 +71,7 @@ class ProductattributeskusController extends AdminController
 
 		ArrayHelper::toInteger($cid);
 		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'COM_MYMUSE_SELECT_AN_ATTRIBUTE_TO_DELETE' ) );
+			JError::raiseError(500, Text::_( 'COM_MYMUSE_SELECT_AN_ATTRIBUTE_TO_DELETE' ) );
 		}
 	
 		$model = $this->getModel();

@@ -117,7 +117,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         <?php endif; ?>
     <?php endif; ?>
 
-    <h3><?php echo JText::_("COM_MYMUSE_PRODUCTS"); ?></h3>
+    <h3><?php echo Text::_("COM_MYMUSE_PRODUCTS"); ?></h3>
 
     <?php if (!empty($this->lead_items)) : ?>
         <div class="com-mymuse-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">

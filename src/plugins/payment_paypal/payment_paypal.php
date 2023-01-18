@@ -9,20 +9,30 @@
  * @website		http://www.joomlamymuse.com
  */
 
-use Joomla\CMS\Plugin\PluginHelper;
-
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin');
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\ParameterType;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
+
 /**
-* MyMuse PaymnetPaypal plugin
+* MyMuse PaymentPaypal plugin
 *
 * @package 		MyMuse
 * @subpackage	mymuse
 */
-class plgMymusePayment_Paypal extends JPlugin
+class plgMymusePayment_Paypal extends CMSPlugin 
 {
 	/**
 	 * Load the language file on instantiation.
@@ -152,7 +162,7 @@ class plgMymusePayment_Paypal extends JPlugin
 			$order->order_subtotal = $order->pay_now;
 			$order->items[0]->product_item_price = sprintf("%.2f", $order->pay_now);
 			$order->items[0]->quantity = 1;
-			$order->items[0]->title = JText::_('MYMUSE_REGISTRATION_FEE');
+			$order->items[0]->title = Text::_('MYMUSE_REGISTRATION_FEE');
 			$order->tax_total = 0.00;
 		}
 		//$path = JURI::root(true);
@@ -266,7 +276,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		if($params->get('my_use_image', 0)){
 			$button_string = '<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png" alt="Buy now with PayPal" />';
 		}else{
-			$button_string = JText::_('MYMUSE_PAY_AT_PAYPAL');
+			$button_string = Text::_('MYMUSE_PAY_AT_PAYPAL');
 		}
 		$string .= '
 		<div id="paypal_form" class="pull-right">

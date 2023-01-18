@@ -105,12 +105,10 @@ class HtmlView extends BaseHtmlView
 		$return 		= $jinput->get('return','');
 		
 		// Get the view data.
-		$this->data		= $this->get('Data');
-		$this->form		= $this->get('Form');
 		$this->state	= $this->get('State');
 		$this->params	= $this->state->get('params');
 
-		//MyMuseHelper::print_pre($this->shopper); exit;
+
 		if(!$this->shopper->id && $this->user->get('id')){
 			// not a shopper but already user
 			// try to make first and last names
@@ -128,7 +126,6 @@ class HtmlView extends BaseHtmlView
 		$this->params = $params;
 		$this->return = $return;
 
-		
 
 		if($this->getLayout() == "thank_you"){
 			$st 		= $jinput->get('st', 0);
@@ -193,6 +190,9 @@ class HtmlView extends BaseHtmlView
 			$continue = 0;
 		}
 		$this->continue = $continue; 
+
+		$this->data		= $this->get('Data');
+		$this->form		= $this->get('Form');
 
 		parent::display($tpl);
 

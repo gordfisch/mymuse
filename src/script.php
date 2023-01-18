@@ -632,7 +632,8 @@ class Com_MymuseInstallerScript
                 element='payment_offline' OR
                 element='shipping_standard' OR
                 element='audio_amplitude' OR
-                element='searchmymuse' 
+                element='searchmymuse' OR
+                element='mymuseuser'
                 ";
             $this->db->setQuery($query);
             if(!$this->db->execute()){
@@ -1267,7 +1268,7 @@ END;
                $myFile = JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'mymuse.php';
                $tmp = "
 
-<h3><?php echo JText::_('COM_MYMUSE_YOU_MUST_UPDATE_JOOMLA'); ?></h3>
+<h3><?php echo Text::_('COM_MYMUSE_YOU_MUST_UPDATE_JOOMLA'); ?></h3>
 <?php
 return true;
 

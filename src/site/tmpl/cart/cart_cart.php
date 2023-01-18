@@ -9,14 +9,14 @@
  * @website		htp://www.joomlamymuse.com
  */
 // no direct access
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
-use \Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
-
-defined('_JEXEC') or die('Restricted access');
 
 $order		= $this->order;
 $order_item = $order->items;
@@ -29,7 +29,7 @@ $got_flash  = 0;
 $post_order = array('confirm','makepayment','thankyou','vieworder', 'notify');
 $notes_required = $params->get('my_notes_required',0);
 
-
+//MymuseHelper::print_pre($order);
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('formbehavior.chosen', 'select');

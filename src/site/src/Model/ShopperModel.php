@@ -149,12 +149,13 @@ class ShopperModel extends FormModel
         	
         	
         	// guest or regular user
-        	if($task == 'guestcheckout' || $guestcheckout){
+
+        	if($task == 'guestcheckout' || $guestcheckout || $params->get('my_registration') == "no_reg"){
 				$my_profile_key = 'mymusenoreg';
         	}else{
         		$my_profile_key = $params->get('my_profile_key','mymuse');
         	}
-  	
+
 			if($user->get('id') > 0)
 			{
 				
@@ -791,15 +792,24 @@ class ShopperModel extends FormModel
 			$this->data->groups = array();
 	
 			// Get the default new user group, Registered if not specified.
-			$system	= $params->get('new_usertype', 2);
+			$new_usertype = $params->get('new_usertype', 2);
 	
-			$this->data->groups[] = $system;
+			$this->data->groups[] = $new_usertype;
 	
 			// Unset the passwords.
 			unset($this->data->password1);
 			unset($this->data->password2);
 
-			$results = $app->triggerEvent('onContentPrepareData', array('com_mymuse.noreg', $this->data));
+			$myparams = MymuseHelper::getParams();
+			$my_registration = $myparams->get('my_registration', 'joomla'); //joomla, full or no_reg
+			$results = array();
+
+			if($my_registration == 'no_reg') {
+				$results = $app->triggerEvent('onContentPrepareData', array('com_mymuse.noreg', $this->data));
+			}elseif($my_registration == 'full'){
+				$results = $app->triggerEvent('onContentPrepareData', array('com_user.profile', $this->data));
+			}
+			
 	
 			// Check for errors encountered while preparing the data.
 			if (count($results) && in_array(false, $results, true)) {
@@ -825,7 +835,15 @@ class ShopperModel extends FormModel
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_mymuse.noreg', 'registration', array('control' => 'jform', 'load_data' => $loadData));
+		$params = MyMuseHelper::getParams();
+
+		if($params->get('my_registration') == "no_reg"){
+			$form = $this->loadForm('com_mymuse.noreg', 'registration', array('control' => 'jform', 'load_data' => $loadData));
+		}else{
+			$form = $this->loadForm('com_mymuse.registration', 'registration', array('control' => 'jform', 'load_data' => $loadData));
+		}
+
+		
 		if (empty($form)) {
 			return false;
 		}

@@ -50,9 +50,9 @@
 			<menu link="option=com_plugins&amp;view=plugins&amp;filter[folder]=user" view="plugins" 
 				img="class:themes" alt="Mymuse/PluginsUser">COM_MYMUSE_USER_PLUGINS</menu>
 			<menu link="option=com_fields&amp;view=fields&amp;context=com_mymuse.product" 
-				img="class:themes" alt="Mymuse/PluginsUser">JGLOBAL_FIELDS</menu>
+				img="class:themes" alt="Mymuse/Fields">JGLOBAL_FIELDS</menu>
 			<menu link="option=com_fields&amp;view=groups&amp;context=com_mymuse.product" 
-				img="class:themes" alt="Mymuse/PluginsUser">JGLOBAL_FIELD_GROUPS</menu>
+				img="class:themes" alt="Mymuse/Groups">JGLOBAL_FIELD_GROUPS</menu>
 		</submenu>
 		<files folder="administrator">
 			<filename>config.xml</filename>
@@ -107,7 +107,7 @@
 		<plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
 		<plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
 		<plugin name="shipping_usps" folder="plugins/shipping_usps">Shipping USPS</plugin>
-		<plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
+		<plugin name="mymuseuser" folder="plugins/user_mymuseuser">MyMuse User Profile</plugin>
 		<plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
 		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Login Plugin</plugin>
 

@@ -194,7 +194,7 @@ JFilterOutput::objectHTMLSafe( $row );
 			
 		<fieldset class="adminform form-horizontal">
 
-			<legend><?php echo JText::_('COM_MYMUSE_IMAGES') ?></legend>
+			<legend><?php echo Text::_('COM_MYMUSE_IMAGES') ?></legend>
 			<div class="pull-left span5">
 
 				<!-- div class="control-group">

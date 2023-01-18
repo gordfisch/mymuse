@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="plugin" group="user">
-	<name>plg_user_mymuse</name>
+	<name>plg_user_mymuseuser</name>
 	<author>Arboreta</author>
 	<creationDate>Sept 2022</creationDate>
 	<copyright>Copyright (C) 2023 Arboreta Internet Services. All rights reserved.</copyright>
@@ -11,14 +11,13 @@
 	<description>COM_MYMUSE_USER_PROFILE_DESC</description>
 
 	<files>
-		<filename plugin="mymuse">mymuse.php</filename>
+		<filename plugin="mymuseuser">mymuseuser.php</filename>
 		<filename>index.html</filename>
-		<folder>profiles</folder>
-		<folder>fields</folder>
+		<folder>forms</folder>
 	</files>
 	<languages>
-		<language tag="en-GB">language/en-GB/plg_user_mymuse.ini</language>
-		<language tag="en-GB">language/en-GB/plg_user_mymuse.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_mymuseuser.ini</language>
+		<language tag="en-GB">language/en-GB/plg_user_mymuseuser.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

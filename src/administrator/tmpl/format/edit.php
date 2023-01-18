@@ -21,7 +21,7 @@ HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('script', 'com_contenthistory/admin-history-versions.js', ['version' => 'auto', 'relative' => true]);
 ?>
 <h3>
-	<?php echo JText::_('COM_MYMUSE_FORMATS'); ?>
+	<?php echo Text::_('COM_MYMUSE_FORMATS'); ?>
 
 	<?php if($this->form->getValue('format_key') != ''){
 		echo " : ".$this->form->getValue('format_key');

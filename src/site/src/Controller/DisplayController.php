@@ -140,7 +140,7 @@ class DisplayController extends BaseController
 	 */
 	public function __construct($config = array(), MVCFactoryInterface $factory = null, $app = null, $input = null)
 	{
-
+		
 
 		$this->input = Factory::getApplication()->input;
 
@@ -366,6 +366,7 @@ class DisplayController extends BaseController
 					$action = "added";
 				}
 			}
+
 			$messageQueue = Factory::getApplication()->getMessageQueue();
 			if(count($messageQueue)){
 				foreach($messageQueue as $queue){
@@ -582,8 +583,9 @@ class DisplayController extends BaseController
         if(!$user->get('id') && $this->params->get('my_registration') == "no_reg"){
         	
         	$plugin = PluginHelper::getPlugin('user', 'mymusenoreg');
-        	
-        	if(!$plugin || !count($plugin)){
+
+
+        	if( !$plugin || !is_object($plugin) ){
        
         		//plugin is not on, try to login as buyer
         		if(!$this->MyMuseShopper->saveNoReg()){
@@ -606,7 +608,7 @@ class DisplayController extends BaseController
         		return true;
         	}
         }
-        //
+   
         //no_reg, logged in but no form yet
         if($user->get('id') && ($this->params->get('my_registration') == "no_reg") && !$this->shopper->perms){
         	//$msg = Text::_("COM_MYMUSE_PLEASE_COMPLETE_THE_FORM");

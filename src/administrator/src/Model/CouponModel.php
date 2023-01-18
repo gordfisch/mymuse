@@ -192,14 +192,14 @@ class CouponModel extends AdminModel
 
 		$item	= $this->getItem();
 		
-    	$currencies[] = HTMLHelper::_('select.option', '0', '- '.JText::_('COM_MYMUSE_SELECT_CURRENCY').' -');
+    	$currencies[] = HTMLHelper::_('select.option', '0', '- '.Text::_('COM_MYMUSE_SELECT_CURRENCY').' -');
     	$query = "SELECT id as value, CONCAT(symbol,' ',currency_name) as text from #__mymuse_currency ORDER BY currency_code ASC";
     	$this->_db->setQuery($query);
     	$currencies = array_merge($currencies, $this->_db->loadObjectList());
     	$lists['currency'] = HTMLHelper::_('select.genericlist',  $currencies, 'jform[currency_id]', 'class="inputbox" size="1" ', 'value', 'text', $item->currency_id);
     		
 
-    	$products[] = HTMLHelper::_('select.option', '0', '- '.JText::_('COM_MYMUSE_SELECT_PRODUCT').' -');
+    	$products[] = HTMLHelper::_('select.option', '0', '- '.Text::_('COM_MYMUSE_SELECT_PRODUCT').' -');
     	$query = "SELECT id as value, CONCAT(title,': ',product_sku) as text from #__mymuse_product
 			WHERE parentid='0' ORDER BY title ASC";
     	$this->_db->setQuery($query);

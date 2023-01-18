@@ -314,6 +314,7 @@ class CartHelper
       $fixed['extra'] = $this->cart['extra'];
     }
     $this->cart = $fixed;
+
     $this->buildOrder(1,1);
 
     return true; 
@@ -837,7 +838,7 @@ class CartHelper
       
       } //end of cart items
       $order->subtotal_before_discount = $order->order_subtotal;
-    
+  
 
       //RESERVATION FEES
       if(count($order->reservation_fees)){
@@ -1052,8 +1053,10 @@ class CartHelper
     }else{
       $shopper_group_id = $params->get("my_default_shopper_group_id");
     }
-
-    $row->price = ProductModel::getPrice($row);
+    if(!isset($row->price)){
+      $row->price = ProductModel::getPrice($row);
+    }
+    
 
     return $row;
 

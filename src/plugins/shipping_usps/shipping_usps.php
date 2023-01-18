@@ -29,7 +29,7 @@ if (!class_exists('MMShippingPlugin')) {
 /**
 * This is the Shipping class to call the USPS API for shipping costs
 */
-
+use Joomla\CMS\Language\Text;
 
 
 class plgMymuseShipping_usps extends MMShippingPlugin
@@ -891,15 +891,15 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 			$shpService = $usps_service_code;
 			
 			if(empty($dest_countryid)) {
-				if($usps_reporterrors) $app->enqueueMessage(JText::_('MYMUSESHIP_USPS_SHIP_COUNTRY_ID_EMPTY'), 'error');
+				if($usps_reporterrors) $app->enqueueMessage(Text::_('MYMUSESHIP_USPS_SHIP_COUNTRY_ID_EMPTY'), 'error');
 				return;
 			}
 			if(empty($source_zip)) {
-				if($usps_reporterrors) $app->enqueueMessage(JText::_('MYMUSESHIP_USPS_SHIP_SOURCE_ZIP_EMPTY'), 'error');
+				if($usps_reporterrors) $app->enqueueMessage(Text::_('MYMUSESHIP_USPS_SHIP_SOURCE_ZIP_EMPTY'), 'error');
 				return;
 			}
 			if(empty($dest_zip)) {
-				if($usps_reporterrors) $app->enqueueMessage(JText::_('MYMUSESHIP_USPS_SHIP_DEST_ZIP_EMPTY'), 'error');
+				if($usps_reporterrors) $app->enqueueMessage(Text::_('MYMUSESHIP_USPS_SHIP_DEST_ZIP_EMPTY'), 'error');
 				return;
 			}
 			
@@ -925,7 +925,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 					$c_weight = $c_weight + ($c_weight * $this->_getBoxPaddedAmount());  //2/12/2018 Pad the shipping weight to allow weight for shipping materials
 					$c_weight = number_format($c_weight, 3); //go to 3 decimals
 					if( $c_weight > 70.00 ) { //If one package is greater than USPS maximum then exit
-						if($usps_reporterrors) $app->enqueueMessage( JText::sprintf('MYMUSESHIP_USPS_SHIP_WEIGHT_GT70', $c_weight), 'error');
+						if($usps_reporterrors) $app->enqueueMessage( Text::sprintf('MYMUSESHIP_USPS_SHIP_WEIGHT_GT70', $c_weight), 'error');
 						return;
 					}							
 					//Determine weight in pounds and ounces (USPS service will round lbs up when needed)
@@ -957,7 +957,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 					$c_weight = $c_weight + ($c_weight * $this->_getBoxPaddedAmount());  //2/12/2018 Pad the shipping weight to allow weight for shipping materials
 					$c_weight = number_format($c_weight, 3); //go to 3 decimals
 					if( $c_weight > 70.00 ) { //If one package is greater than USPS maximum then exit
-						if($usps_reporterrors) $app->enqueueMessage( JText::sprintf('MYMUSESHIP_USPS_SHIP_WEIGHT_GT70', $c_weight), 'error');
+						if($usps_reporterrors) $app->enqueueMessage( Text::sprintf('MYMUSESHIP_USPS_SHIP_WEIGHT_GT70', $c_weight), 'error');
 						return;
 					}							
 					//Determine weight in pounds and ounces (USPS service will round lbs up when needed)

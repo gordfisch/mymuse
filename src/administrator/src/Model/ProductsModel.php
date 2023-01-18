@@ -409,7 +409,7 @@ class ProductsModel extends ListModel
 		ArrayHelper::toInteger($pks);
 
 		if (empty($pks)) {
-			$this->setError(JText::_('COM_MYMUSE_NO_ITEM_SELECTED'));
+			$this->setError(Text::_('COM_MYMUSE_NO_ITEM_SELECTED'));
 			return false;
 		}
 
@@ -501,7 +501,7 @@ class ProductsModel extends ListModel
 			{
 				// Prune items that you can't change.
 				unset($pks[$i]);
-				JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+				JLog::add(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
 				MyMuseHelper::logMessage("Not permitted\n");
 			}
 			elseif ($table->ordering != $order[$i])
