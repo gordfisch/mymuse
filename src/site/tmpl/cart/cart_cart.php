@@ -17,10 +17,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
+use Joomla\CMS\Uri\Uri;
 
 $order		= $this->order;
 $order_item = $order->items;
-$no_items 	= count($order_item = $order->items);
 $Itemid 	= @$this->Itemid;
 $user 		= $this->user;
 $params 	= $this->params;
@@ -29,10 +29,11 @@ $got_flash  = 0;
 $post_order = array('confirm','makepayment','thankyou','vieworder', 'notify');
 $notes_required = $params->get('my_notes_required',0);
 
-//MymuseHelper::print_pre($order);
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('formbehavior.chosen', 'select');
+
+
 
 $cols = 4;
 if($params->get("my_show_cart_preview") && $got_flash):
@@ -63,7 +64,7 @@ for ($i=0;$i<count($order->items); $i++) {
 ?>
 
 		<?php if($order->do_html){ ?>
-			<form action="<?php Route::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>" method="post" name="adminForm">
+			<form action="<?php Route::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>" method="post" name="adminForm" id="adminForm">
 		<?php } ?>
 
 		<!-- start of basket -->
@@ -146,7 +147,7 @@ for ($i=0;$i<count($order->items); $i++) {
 		        		}
 
 		        	?>
-		        		<span class="mymuse_msg"><?php echo $mymuse_msg ?></span>
+		        		<span class="mymuse_msg"><b><?php echo $mymuse_msg ?></b></span>
 		        <?php } ?>
 		        </div>
 
@@ -193,7 +194,7 @@ for ($i=0;$i<count($order->items); $i++) {
 		    
 		    <?php if($order->do_html){ ?>
 		        <div class="myaction mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_ACTION'); ?>">
-		        	<div><a href="<?php echo $order_item[$i]->delete_url; ?>"><span class="btn btn-danger" ><?php echo Text::_('COM_MYMUSE_DELETE'); ?></span></a> <a href="javascript:void(0)" onclick="adminForm.submit()">
+		        	<div><a href="<?php echo $order_item[$i]->delete_url; ?>"><span class="btn btn-danger" ><?php echo Text::_('COM_MYMUSE_DELETE'); ?></span></a> <a href="javascript:void(0)" onclick="document.getElementById('adminForm').submit()">
 				<span class="btn btn-info" ><?php echo Text::_('COM_MYMUSE_UPDATE'); ?></span></a></div></div>
 		    <?php } ?>
 

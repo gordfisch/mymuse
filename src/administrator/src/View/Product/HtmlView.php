@@ -23,6 +23,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Model\ProductModel;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Mymuse\Administrator\Controller\ProductController;
 
 /**
  * View to edit a store.
@@ -106,6 +107,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->task 	= $task 	= $this->input->get('task', 'edit');
 		$this->type 	= $type 	= $this->input->get('type', 'product');
+
 
 		if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 			$this->input->set('id',0);

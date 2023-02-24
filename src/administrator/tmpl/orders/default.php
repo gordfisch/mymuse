@@ -60,7 +60,7 @@ $saveOrder = $listOrder == 'a.ordering';
 					<?php echo HTMLHelper::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
 				</th>
 
-				<th scope="col">
+				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
 					<?php echo HTMLHelper::_('searchtools.sort', 'COM_MYMUSE_NAME', 'u.last_name', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="w-10 text-center d-none d-md-table-cell">
@@ -87,16 +87,16 @@ $saveOrder = $listOrder == 'a.ordering';
 				<td>
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
-				<td>
+				<td class="text-center">
 					<a href="index.php?option=com_mymuse&view=order&task=order.edit&id=<?php echo (int) $item->id; ?>"><?php echo (int) $item->id; ?></a>
 				</td>
-				<td>
+				<td class="text-center">
 					<?php echo $item->shopper; ?>
 				</td>
-				<td>
+				<td class="text-center">
 					<?php echo $item->created; ?>
 				</td>
-				 <td>
+				 <td class="text-center">
 					<?php echo $item->status_name; ?>
 					<?php if($item->backordered){
 						echo '<span class="alert alert-danger">Backordered item(s)</span>';
@@ -105,7 +105,7 @@ $saveOrder = $listOrder == 'a.ordering';
 						echo '<span class="alert alert-warning">Preordered item(s)</span>';
 					} ?>
 				</td>
-				<td >
+				<td class="text-center">
 					<?php if($item->order_subtotal < 0.00){
 						echo '-';
 					}else{

@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Component\Mymuse\Administrator\View\order;
+namespace Joomla\Component\Mymuse\Administrator\View\Order;
 
 \defined('_JEXEC') or die;
 

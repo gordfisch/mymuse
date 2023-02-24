@@ -63,7 +63,7 @@ class OrdershippingTable extends Table implements VersionableTableInterface
 	 */
 	public function store($updateNulls = true)
 	{
-		if (is_null($this->checked_out))
+		if (!isset($this->checked_out) || is_null($this->checked_out))
 		{
 			$this->checked_out = 0;
 		}

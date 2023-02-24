@@ -20,7 +20,8 @@ use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-
+use Joomla\Component\Mymuse\Administrator\Model\OrderModel;
+use Joomla\Component\Mymuse\Site\Model\StoreModel;
 /**
  * Ordercontroller class.
  *
@@ -57,13 +58,12 @@ class OrderController extends FormController
 			if(parent::save()){
 				if($old_status != $form['order_status'])
 				{
-					
+
 					//should we update stock here? 
 					if ($form['order_status'] == "C" && $params->get('my_use_stock') && 
-						(isset($form['update_on_confirm']) && $form['update_on_confirm'] == "on") ){
+						(isset($form['update_on_confirm']) && $form['update_on_confirm'] == "1") ){
 
 						$db = Factory::getDBO();
-						$MyMuseHelper = new MyMuseHelper;
 
 						$query = "SELECT oi.*, p.product_physical, p.title, p.product_in_stock as product_product_in_stock FROM #__mymuse_order_item as oi 
 						LEFT JOIN #__mymuse_product 
@@ -74,7 +74,7 @@ class OrderController extends FormController
 				
 						foreach($items as $item){
 							//see if we can update stock
-							if (!$MyMuseHelper->updateStock($item->product_id, $item->product_quantity)) {
+							if (!MymuseHelper::updateStock($item->product_id, $item->product_quantity)) {
 
 								$msg = $item->title.' '.Text::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
 								$msg .= Text::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$item->product_product_in_stock;
@@ -267,15 +267,65 @@ class OrderController extends FormController
 		$this->checkToken();
 
 		// Set the model
-		$model = $this->getModel('Taxrate', '', array());
+		$model = $this->getModel('Order', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(Route::_('index.php?option=com_mymuse&view=taxrate' . $this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::_('index.php?option=com_mymuse&view=orders' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}
 
 
+    /**
+     * alertPreorders: reset downloads and email customer for each order with a preorder for this product
+     *
+     * @access    public
+     */
+    function alertPreorders()
+    {   
+
+        $db = Factory::getDBO();
+        $input = Factory::getApplication()->input;
+        $id = $input->get( 'id','','INT' );
+        $app = Factory::getApplication();
+        
+        // find all product ids
+        $query = "SELECT id from #__mymuse_product WHERE parentid=$id";
+        
+        $db->setQuery($query);
+        $res = $db->loadObjectList();
+        $IN = array($id);
+        foreach($res as $prod) {
+            $IN[] = $prod->id;
+        }
+        
+        $IN = implode(",",$IN);
+        
+        $query = "SELECT order_id 
+        FROM #__mymuse_order_item as i
+        LEFT JOIN #__mymuse_order as o on o.id=i.order_id
+        WHERE i.product_id IN ($IN) 
+        AND i.product_in_stock='-1' 
+        AND o.order_status = 'C'
+        GROUP BY i.order_id";
+
+
+        $db->setQuery($query);
+        $orders = $db->loadObjectList();
+
+        foreach($orders as $order){
+            $input->set( 'id',$order->order_id );
+            if($this->resetDownloads()){
+                $app->enqueueMessage("Sent notice to order with id ".$order->order_id , 'message');
+            }else{
+                $app->enqueueMessage("Problem with order with id ".$order->order_id , 'warning');
+            }
+        }
+        
+        $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='.$id);
+        return true;
+        
+    }
 	/**
 	 * reset_downloads
 	 * method to rest the downloads for a customer, then mail them the download link display
@@ -287,24 +337,25 @@ class OrderController extends FormController
 		$params = MyMuseHelper::getParams();
 		$app 	= Factory::getApplication();
 		//reset
-		$model 	= $this->getModel('order');
+		$model = new OrderModel;
+
 		$input 	= Factory::getApplication()->input;
 		$id 	= $input->get( 'id','' );
 
 		if(!isset($id)){
-			$this->msg = JTex::_('MYMUSE_ORDER_ID_NOT_FOUND');
+			$this->msg = JTex::_('COM_MYMUSE_ORDER_ID_NOT_FOUND');
 			$app->enqueueMessage($this->msg, 'error');
 			$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id=' );
 			return false;
 		}
-	
+	/*
 		if(!$model->resetDownloads()){
 			$this->msg = $model->getError();
 			$app->enqueueMessage($this->msg, 'error');
 			$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='.$id);
 			return false;
 		}
-
+*/
 		//email customer
 		$date = date('Y-m-d h:i:s');
 		if($params->get('my_debug')){
@@ -312,13 +363,12 @@ class OrderController extends FormController
 			$debug .= "ORDER: ".$id. "\nSTATUS: C\n" ;
 			MyMuseHelper::logMessage( $debug  );
 		}
-	
-		$input->set( 'view', 'order' );
+
+
+		$input->set( 'task', 'mailcustomer');
 		$input->set( 'layout', 'order');
-		$input->set( 'task', 'mailcustomer'  );
 		
-		include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'mymuse.class.php' );
-		$MyMuseStore	=& Mymuse::getObject('store','model');
+		$MyMuseStore	= Mymuse::getObject('store','model');
 		$store			= $MyMuseStore->getStore();
 		$params 		= new Registry( $store->params );
 	
@@ -329,22 +379,19 @@ class OrderController extends FormController
 		$language->load($extension, $base_dir, 'en-GB', true);
 		$language->load($extension, $base_dir, null, true);
 	
-		//include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
-	
 		$this->order = $order = $model->getItem($id);
 
 		ob_start();
-		parent::display();
+		$this->display();
 		$message .= ob_get_contents();
 		ob_end_clean();
-		//$message  = $header.$message.$footer;
-	
+
 		$order = $model->getItem($id);
 	
 		$user_email 	= $order->user->email;
 	
 		// SEND MAIL TO BUYER
-		$subject = text::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
+		$subject = text::_('COM_MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
 		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
 	
 		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
@@ -362,8 +409,11 @@ class OrderController extends FormController
 		}
 		
 		//redirect to edit page
-		$this->msg = "Downloads Reset";
+		$this->msg = "Downloads Reset for Order with id $id";
 		$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='.$id, $this->msg);
 		return true;
+	
 	}
+
+
 }

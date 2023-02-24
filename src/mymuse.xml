@@ -43,7 +43,7 @@
 				img="class:component" alt="Mymuse/Coupons">COM_MYMUSE_COUPONS</menu>
 			<menu link="option=com_mymuse&amp;view=shoppergroups" view="shoppergroups" 
 				alt="Mymuse/Shoppergroups">COM_MYMUSE_SHOPPERGROUPS</menu>
-			<menu link="option=com_mymuse&amp;view=reportss" view="reports" 
+			<menu link="option=com_mymuse&amp;view=reports" view="reports" 
 				alt="Mymuse/Taxrates">COM_MYMUSE_REPORTS</menu>
 			<menu link="option=com_plugins&amp;view=plugins&amp;filter[folder]=mymuse" view="plugins" 
 				img="class:themes" alt="Mymuse/Plugins">COM_MYMUSE_PLUGINS</menu>	

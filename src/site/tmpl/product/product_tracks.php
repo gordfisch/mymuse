@@ -17,9 +17,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-global $store, $shopper, $cart;
-
-HtmlHelper::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $product    =& $this->item;
 $tracks     =& $this->item->tracks;

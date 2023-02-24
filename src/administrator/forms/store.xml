@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- joomla.form.field.radio.switcher -->
 <form>
     <fieldset>
         <field 
@@ -377,6 +378,7 @@
                     label="COM_MYMUSE_USE_SHIPPING_LABEL"
                     description="COM_MYMUSE_USE_SHIPPING_DESC"
                     class="btn-group btn-group-yesno"
+                  
                     default="0">
                     <option value="0">COM_MYMUSE_NO</option>
                     <option value="1">COM_MYMUSE_YES</option>
@@ -387,6 +389,7 @@
                     label="COM_MYMUSE_ADD_SHIPPING_AUTO_LABEL"
                     description="COM_MYMUSE_ADD_SHIPPING_AUTO_DESC"
                     class="btn-group btn-group-yesno"
+
                     default="0">
                     <option value="0">COM_MYMUSE_NO</option>
                     <option value="1">COM_MYMUSE_YES</option>
@@ -398,6 +401,7 @@
                     label="COM_MYMUSE_USE_STOCK_LABEL"
                     description="COM_MYMUSE_USE_STOCK_DESC"
                     class="btn-group btn-group-yesno"
+
                     default="0">
                     <option value="0">COM_MYMUSE_NO</option>
                     <option value="1">COM_MYMUSE_YES</option>
@@ -408,6 +412,7 @@
                     label="COM_MYMUSE_CHECK_STOCK_LABEL"
                     description="COM_MYMUSE_CHECK_STOCK_DESC"
                     class="btn-group btn-group-yesno"
+
                     default="0">
                     <option value="0">COM_MYMUSE_NO</option>
                     <option value="1">COM_MYMUSE_YES</option>
@@ -418,6 +423,7 @@
                     label="COM_MYMUSE_ADD_STOCK_ZERO_LABEL"
                     description="COM_MYMUSE_ADD_STOCK_ZERO_DESC"
                     class="btn-group btn-group-yesno"
+   
                     default="0">
                     <option value="0">COM_MYMUSE_NO</option>
                     <option value="1">COM_MYMUSE_YES</option>

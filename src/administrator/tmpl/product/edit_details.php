@@ -124,7 +124,7 @@ use Joomla\CMS\Language\Text;
 					</div>
 				</div>
 
-				<a href="index.php?option=com_mymuse&view=product&layout=edit&task=alertPreorders&id=<?php echo $this->item->id; ?>"><?php
+				<a href="index.php?option=com_mymuse&view=order&layout=order&task=order.alertPreorders&id=<?php echo $this->item->id; ?>"><?php
 					echo Text::_('COM_MYMUSE_ALERT_CUSTOMERS'); ?></a>
 
 

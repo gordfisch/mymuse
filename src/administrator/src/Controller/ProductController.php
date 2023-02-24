@@ -21,9 +21,13 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Versioning\VersionableControllerTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Input\Input;
+use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
+use Joomla\Component\Mymuse\Administrator\Controller\OrderController;
+use Joomla\Component\Mymuse\Site\Service\Mymuse;
+use Joomla\Component\Mymuse\Site\Model\StoreModel;
 
 /**
  * Product controller class.
@@ -759,5 +763,6 @@ class ProductController extends FormController
         return true;
 
     }
+
 
 }

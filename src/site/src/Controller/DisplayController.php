@@ -177,6 +177,7 @@ class DisplayController extends BaseController
 		$this->MyMuseShopper	= Mymuse::getObject('Shopper','model');
 		$this->shopper 			= $this->MyMuseShopper->getShopper();
 		$this->MyMuseStore		= Mymuse::getObject('Store', 'model');
+		$this->store 			= $this->MyMuseStore->getStore();
 		$this->MyMuseProduct	= Mymuse::getObject('Product', 'model');
 		$this->MyMuseCheckout	= Mymuse::getObject('Checkout');
 		$this->original_task    = $this->input->get('task');
@@ -756,7 +757,7 @@ class DisplayController extends BaseController
 		if($this->params->get('my_use_shipping') && $this->MyMuseCart->shipping_needed()){
 			$shipmethodid = $this->input->get('shipmethodid', 0);
 			if(!$shipmethodid){
-				$msg = Text::_('MYMUSE_SHIP_METHOD_ID_IS_NOT_VALID');
+				$msg = Text::_('COM_MYMUSE_SHIP_METHOD_ID_IS_NOT_VALID');
 				$this->setRedirect( Route::_('index.php?option=com_mymuse&task=shipping&Itemid='.$this->Itemid), $msg );
 				return false;
 			}else{

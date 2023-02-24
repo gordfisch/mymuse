@@ -16,14 +16,12 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 $shopper 	= $this->shopper;
 $order 		= $this->order;
 $params 	= $this->params;
+
 ?>
+<h2><?php echo Text::_('COM_MYMUSE_ORDER_SUMMARY') ?></h2>
      <ul class="mymuse-container">
  
         <!-- Begin Order Summary -->
-        <li class="mymuse-grid-1-2">
-            <div class="mymuse-cart-top"><b><?php echo Text::_('COM_MYMUSE_ORDER_SUMMARY') ?></b></div>
-            <div></div>
-        </li>
         <li class="mymuse-grid-1-2">
             <div class="mobile-hide"><?php echo Text::_('COM_MYMUSE_ORDER_NUMBER') ?>:</div>
             <div class="myordernumber"><?php echo sprintf("%08d", $order->id) ?></div>

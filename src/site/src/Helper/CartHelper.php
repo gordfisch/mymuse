@@ -171,12 +171,12 @@ class CartHelper
       
       // Check for negative quantity
       if ($quant < 0) {
-            $this->error = Text::_('MYMUSE_NEGATIVE_QUANTITY');
+            $this->error = Text::_('COM_MYMUSE_NEGATIVE_QUANTITY');
             return False;
       }
 
       if (!is_numeric($quant)) {
-            $this->error = Text::_('MYMUSE_INVALID_QUANTITY');
+            $this->error = Text::_('COM_MYMUSE_INVALID_QUANTITY');
             return False; 
       }
       $v = 0;
@@ -191,34 +191,40 @@ class CartHelper
       // Check to see if checking stock quantity
       $backordered = 0;
       if ($params->get('my_check_stock',0)) {
-        
+  
         if($res->product_physical){
 
-          if(isset($res->attribs['special_status'])  && 
-              ( $res->attribs['special_status'] == "COM_MYMUSE_COMING_SOON" || 
-                $res->attribs['special_status'] == "COM_MYMUSE_OUT_OF_STOCK" || 
-                $res->attribs['special_status'] == "COM_MYMUSE_NO_LONGER_AVAILABLE" 
+
+          if(isset($res->special_status)  && 
+              ( $res->special_status == "COM_MYMUSE_COMING_SOON" || 
+                $res->special_status == "COM_MYMUSE_OUT_OF_STOCK" || 
+                $res->special_status == "COM_MYMUSE_NO_LONGER_AVAILABLE" 
               )
             ){
-              $this->error = Text::_($res->attribs['special_status']);
+              $this->error = Text::_($res->special_status);
               return false;
           }
           
           //not enough stock or pre-order
-          if ( $quant > $res->product_in_stock ){
+          if ( $quant > $res->product_in_stock || $res->special_status == "COM_MYMUSE_PREORDER"){
             
-            
-            if($params->get('my_add_stock_zero',0)) {
+            if($res->special_status == "COM_MYMUSE_PREORDER"){
+                $backordered = 1;
+                $msg = $res->title;
+                $msg .= ' '. Text::_('COM_MYMUSE_BACKORDERED');
+                Factory::getApplication()->enqueueMessage($msg , 'notice');
+
+            }elseif($params->get('my_add_stock_zero',0)) {
                // $quantity[$val]  = $quant = 0;
                 $backordered = 1;
-                $msg = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-                $msg .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
-                $msg .= ' '. Text::_('MYMUSE_BACKORDERED');
+                $msg = $res->title.' '.Text::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+                $msg .= Text::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
+                $msg .= ' '. Text::_('COM_MYMUSE_BACKORDERED');
                 Factory::getApplication()->enqueueMessage($msg , 'notice');
 
             }else{
-                $this->error = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK')." ";
-                $this->error .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
+                $this->error = $res->title.' '.Text::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK')." ";
+                $this->error .= Text::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
                 return false;
             }
           }
@@ -230,13 +236,8 @@ class CartHelper
       // Tracks: MYMUSE_COMING_SOON, preorder, release date
       if($res->product_downloadable){
 
-          if(isset($res->attribs['special_status']) && 
-              ( $res->attribs['special_status'] == "COM_MYMUSE_COMING_SOON" || 
-                $res->attribs['special_status'] == "COM_MYMUSE_OUT_OF_STOCK" || 
-                $res->attribs['special_status'] == "COM_MYMUSE_NO_LONGER_AVAILABLE" 
-              )
-            ){
-              $this->error = Text::_($res->attribs['special_status']);
+          if(isset($res->special_status) && $res->special_status == "COM_MYMUSE_NO_LONGER_AVAILABLE" ){
+              $this->error = Text::_($res->special_status);
               return false;
             }
             $q = "SELECT 
@@ -252,10 +253,10 @@ class CartHelper
             $db->setQuery($q);
             $product_release_date = $db->loadResult();
     
-            if(isset($res->attribs['special_status']) && $res->attribs['special_status'] == "COM_MYMUSE_PREORDER" && 
+            if(isset($res->special_status) && $res->special_status == "COM_MYMUSE_PREORDER" && 
               ($product_release_date == 'future' || $product_release_date == '0') ){
               $backordered = 1;
-              $msg = Text::_('MYMUSE_PREORDERED').' ';
+              $msg = Text::_('COM_MYMUSE_PREORDERED').' ';
               Factory::getApplication()->enqueueMessage($msg);
             }
       }
@@ -348,7 +349,7 @@ class CartHelper
  
       $db  = Factory::getDBO();;
         if(!@$productid){
-            $this->error = Text::_('MYMUSE_CANT_UPDATE_CART');
+            $this->error = Text::_('COM_MYMUSE_CANT_UPDATE_CART');
             return false;
         }
 
@@ -375,12 +376,12 @@ class CartHelper
     
             // Check for negative quantity
             if ($quant < 0) {
-                $this->error = Text::_('MYMUSE_NEGATIVE_QUANTITY');
+                $this->error = Text::_('COM_MYMUSE_NEGATIVE_QUANTITY');
                 return False;
             }
     
             if (!preg_match("/^[0-9]*$/", $quant)) {
-                $this->error = Text::_('MYMUSE_INVALID QUANTITY');
+                $this->error = Text::_('COM_MYMUSE_INVALID QUANTITY');
                 return False;
             }
             $backordered = 0;
@@ -401,13 +402,13 @@ class CartHelper
               if ($quant > $product_in_stock) {
                     if($params->get('my_add_stock_zero',0)) {
                         //$quant = 0;
-                        $msg = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-                        $msg .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
+                        $msg = $res->title.' '.Text::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+                        $msg .= Text::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
                         Factory::getApplication()->enqueueMessage($msg , 'warning');
                         $backordered = 1;
                     }else{
-                        $this->error = $res->title.' '.Text::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
-                        $this->error .= Text::_('MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
+                        $this->error = $res->title.' '.Text::_('COM_MYMUSE_EXCEEDS_AVAILABLE_STOCK').' ';
+                        $this->error .= Text::_('COM_MYMUSE_AVAILABLE_STOCK')." ".$product_in_stock;
                         return False;
                     }
               }else{
@@ -715,7 +716,7 @@ class CartHelper
             if($j == $this->cart[$i]["variation"]){
               $order->items[$i]->variation_select .= 'SELECTED=SELECTED';
             } 
-            $ff = isset($jason[$j]->file_format)? Text::_('MYMUSE_'.strtoupper($jason[$j]->file_format)): $jason[$j]->file_ext;
+            $ff = isset($jason[$j]->file_format)? Text::_('COM_MYMUSE_'.strtoupper($jason[$j]->file_format)): $jason[$j]->file_ext;
             $order->items[$i]->variation_select .= '>'.$ff.'</option>'."\n";
           }
           $order->items[$i]->variation_select  .= "</select>";
@@ -767,8 +768,6 @@ class CartHelper
         $othercats = array_unique($othercats);
         $order->items[$i]->othercats = implode(", ",$othercats);
         
-        //echo "order->items[$i]->file_name = m".$order->items[$i]->file_name."<br />";
-        //echo "order->items[$i]->ext =".$order->items[$i]->ext."<br />";
         $order->items[$i]->product_id = $order->items[$i]->id;
         $order->items[$i]->order_item_total = 0.00;
         $order->items[$i]->not_in_total = 0;
@@ -874,7 +873,7 @@ class CartHelper
       }
       
       //DISCOUNTS FROM PLUGINS
-      PluginHelper::importPlugin('mymuse');
+      PluginHelper::importPlugin('COM_MYMUSE');
       $result = $app->triggerEvent('onAfterBuildOrder', array(&$order, &$this->cart));
       if(count($result)){
         foreach($result as $res){
@@ -900,7 +899,7 @@ class CartHelper
         $order->tax_array[$key] = $val;
 
       }
-      
+    
       $order->update_url = '<a class="links" href="" onClick="';
       $order->update_url .= "javascript:document.update.submit(); return false;";
       $order->update_url .= '">';
@@ -1033,6 +1032,13 @@ class CartHelper
       $this->error =  "Error: id $id could not be loaded. ".$model->getError();
       $this->delete($id);
       return false;
+    }
+
+    if($row->parentid > 0) {
+
+      $parent = $model->getItem($row->parentid);
+      $row->special_status = $parent->special_status;
+      $row->product_release_date = $parent->product_release_date;
     }
 
     if($variation){

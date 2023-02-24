@@ -392,8 +392,7 @@ class CheckoutHelper
 			// Store the item to the database
 			try {
 				$res = $order->items[$i]->store();
-				//MymuseHelper::print_pre($res);
-				//echo "stored"; exit;
+
 			} catch (Exception $e) {
 				$msg = $e->getMessage(); // Returns "Normally you would have other code...
 				Factory::getApplication()->enqueueMessage($msg, 'error');
@@ -554,6 +553,7 @@ class CheckoutHelper
 		$taxes = array();
 		
 		// No profile?
+
 		if(!isset($this->shopper->profile['country']) && !$params->get('my_add_taxes')){
 			return $taxes;
 		}
@@ -737,7 +737,7 @@ class CheckoutHelper
 		$taxes = array();
 		$query = "SELECT tax_rate FROM #__mymuse_tax_rate WHERE state = '1' 
 		AND country='".$country_3."'";
-		//echo $query;
+
 		$this->_db->setQuery($query);
 		$regex = TAX_REGEX;
 
@@ -793,6 +793,7 @@ class CheckoutHelper
 		foreach($tax_rates as $rate){
 			$name = trim($rate->tax_name);
 			$name = preg_replace("/$regex/","_",$name);
+	
 			if(isset($order->$name) && $order->$name > 0.00){
 				$order->tax_array[$name] = $order->$name;
 				$order->tax_total += $order->$name;
@@ -826,7 +827,7 @@ class CheckoutHelper
 					$order->items [$i]->ext = pathinfo ( $order->items [$i]->file_name, PATHINFO_EXTENSION );
 				}
 				$order->items [$i]->attribs = $order->items [$i]->product->attribs;
-		//MyMuseHelper::print_pre($order->items [$i]->product->digital);
+
 				if(isset($order->items[$i]->product->digital)){
 
 					if(isset($order->items [$i]->product->digital->file_length)){

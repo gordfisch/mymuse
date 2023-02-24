@@ -303,7 +303,7 @@ class MymuseHelper extends ContentHelper
 	 * @param $message
 	 * @return boolean
 	 */
-	static function logMessage($message){
+	public static function logMessage($message){
 		jimport('joomla.filesystem.file');
 
 		$date = date('Y-m-d h:i:s');
@@ -326,7 +326,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getStore($id=1)
+	public static function getStore($id=1)
 	{
 		$db = Factory::getDbo();
 		$query = "SELECT * from `#__mymuse_store` WHERE id='$id'";
@@ -346,7 +346,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function returnURL()
+	public static function returnURL()
 	{
 		$input 		= Factory::getApplication()->input;
 		$url 		= URI::base(true);
@@ -430,7 +430,7 @@ class MymuseHelper extends ContentHelper
  	 *
 	 * @since   5.0.0
  	 */
-	static function printMoney($amount){
+	public static function printMoney($amount){
 		$params = MyMuseHelper::getParams();
 
 		if(!is_numeric($amount)){
@@ -470,7 +470,7 @@ class MymuseHelper extends ContentHelper
  	 *
 	 * @since   5.0.0
  	 */
-	static function printMoneyPublic($price=array()){
+	public static function printMoneyPublic($price=array()){
 		$params = MyMuseHelper::getParams();
 		$string = '';
 		/**
@@ -539,7 +539,7 @@ class MymuseHelper extends ContentHelper
 	 * @since   5.0.0
 	 */
 	
-	static function getArtistAlias($id,$parent=0){
+	public static function getArtistAlias($id,$parent=0){
 		
 		$db	= Factory::getDbo();
 		if(!$parent){ //not the parent, find the parent
@@ -624,7 +624,7 @@ class MymuseHelper extends ContentHelper
 	 * @since   5.0.0
 	 */
 	
-	static function getAlbumAlias($id,$parent=0){
+	public static function getAlbumAlias($id,$parent=0){
 		
 		$db	= Factory::getDbo();
 		if(!$parent){ //not the parent, find the parent
@@ -653,7 +653,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getSiteUrl($id, $parent=0)
+	public static function getSiteUrl($id, $parent=0)
 	{
 		$params = self::$_params;
 
@@ -690,7 +690,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getSitePath($id, $parent=0)
+	public static function getSitePath($id, $parent=0)
 	{
 		$params = self::$_params;
 
@@ -721,7 +721,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getDownloadPath($id, $parent=0)
+	public static function getDownloadPath($id, $parent=0)
 	{
 		$params = self::$_params;
 
@@ -745,7 +745,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getExt($filename) { 
+	public static function getExt($filename) { 
 		$ext = pathinfo($filename, PATHINFO_EXTENSION);
 		return $ext; 
 	}
@@ -757,7 +757,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getStatusName($code){
+	public static function getStatusName($code){
 		
 		$db	= Factory::getDbo();
 		$q = "SELECT name FROM #__mymuse_order_status WHERE ";
@@ -775,7 +775,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getRegFields()
+	public static function getRegFields()
 	{
 		$fields = array(
 				'address1',
@@ -811,7 +811,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function getNoRegFields()
+	public static function getNoRegFields()
 	{
 		$fields = array(
 				'name',
@@ -855,7 +855,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	function updateStock($id, $quantity=0)
+	public static function updateStock($id, $quantity=0)
 	{
 		if(!$quantity){
 			return false;
@@ -869,15 +869,15 @@ class MymuseHelper extends ContentHelper
 		$db->setQuery($q);
 		$current_stock = $db->loadResult();
 		if($current_stock < $quantity){
-			$this->error = Text::_('MYMUSE_STOCK_LESS_THAN_QUANTITY');
+			//$this->error = Text::_('COM_MYMUSE_STOCK_LESS_THAN_QUANTITY');
 			return false;
 		}
 
 		$q = "UPDATE #__mymuse_product SET product_in_stock = product_in_stock - $quantity
 		WHERE id=$id";
 		$db->setQuery($q);
-		if(!$db->query()){
-			$this->error = $db->getErrorMsg();
+		if(!$db->execute()){
+			//$this->error = $db->getErrorMsg();
 			return false;
 		}
 		return true;
@@ -894,7 +894,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function convertWeightUnit ($value, $from, $to) {
+	public static function convertWeightUnit ($value, $from, $to) {
 
 		$from = strtoupper($from);
 		$to = strtoupper($to);
@@ -950,7 +950,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static function convertDimensionUnit ($value, $from, $to) {
+	public static function convertDimensionUnit ($value, $from, $to) {
 
 		$from = strtoupper($from);
 		$to = strtoupper($to);
@@ -1011,7 +1011,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static public function getCountryByID ($id, $fld = 'country_name') {
+	public static function getCountryByID ($id, $fld = 'country_name') {
 
 		if (empty($id)) {
 			return '';
@@ -1035,7 +1035,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static public function getCountryIDByName ($name) {
+	public static function getCountryIDByName ($name) {
 
 		if (empty($name)) {
 			return 0;
@@ -1066,7 +1066,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static public function getStateByID ($id, $fld = 'state_name') {
+	public static function getStateByID ($id, $fld = 'state_name') {
 
 		if (empty($id)) {
 			return '';
@@ -1087,7 +1087,7 @@ class MymuseHelper extends ContentHelper
 	 *
 	 * @since   5.0.0
 	 */
-	static public function getStateIDByName ($name) {
+	public static function getStateIDByName ($name) {
 
 		if (empty($name)) {
 			return 0;
@@ -1117,7 +1117,7 @@ class MymuseHelper extends ContentHelper
      *
 	 * @since   5.0.0
      */
-	static function ByteSize($bytes) 
+	public static function ByteSize($bytes) 
 	{
     	$size = (int) $bytes / 1024;
     	if($size < 1024)
@@ -1151,7 +1151,7 @@ class MymuseHelper extends ContentHelper
      *
 	 * @since   5.0.0
      */
-	static function getCouponDiscount(&$order){
+	public static function getCouponDiscount(&$order){
 
 		if(!isset($order->coupon->id)){
 			return ;
@@ -1205,7 +1205,7 @@ class MymuseHelper extends ContentHelper
 	 * @since   5.0.0
 	 */
 	
-	static function getJsonError()
+	public static function getJsonError()
 	{
 		$message = '';
 		if(function_exists('json_last_error')){

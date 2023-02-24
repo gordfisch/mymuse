@@ -75,6 +75,43 @@ class TaxrateTable extends Table implements VersionableTableInterface
 		{
 			$this->checked_out = 0;
 		}
+		$input  = Factory::getApplication()->input;
+		$form   = $input->get('jform', array(), 'ARRAY');
+		$db = Factory::getDBO();
+
+
+		$regex = TAX_REGEX;
+		$name = preg_replace("/$regex/","_",$form['tax_name']);
+		preg_match_all("/[^a-zA-Z_]/",$name,$m);
+
+		if (@$m[0]){
+			$this->setError(JText::_( 'MYMUSE_ERROR_SAVING_TAX_RATE' ).$m[0][0]);
+			return false;
+		}elseif($form["old_tax_name"] == ""){
+			$query = "ALTER TABLE `#__mymuse_order` ADD `$name` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'";
+			$db->setQuery($query);
+			if(!$db->execute()){
+				$this->setError("Error with saving tax : ".$db->getErrorMsg());
+				return false;
+			}
+		}
+		if($form["old_tax_name"] != '' && $form["old_tax_name"] != $form["tax_name"]){
+			$name = preg_replace("/$regex/","_",$form['old_tax_name']);
+			$query = "ALTER TABLE `#__mymuse_order` DROP `".$name."` ";
+			$db->setQuery($query);
+			if(!$db->execute()){
+				$this->setError("Error removing old tax : ".$db->getErrorMsg());
+				return false;
+			}
+			$name = preg_replace("/$regex/","_",$form['tax_name']);
+			$query = "ALTER TABLE `#__mymuse_order` ADD `$name` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'";
+			$db->setQuery($query);
+			if(!$db->execute()){
+				$this->setError("Error with saving tax : ".$db->getErrorMsg());
+				return false;
+			}
+		}
+		
 
 		return parent::store($updateNulls);
 	}

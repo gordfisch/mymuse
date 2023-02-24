@@ -212,24 +212,43 @@ class OrderModel extends AdminModel
 			$query = "SELECT * FROM #__mymuse_order_item WHERE order_id=".$item->id;
 			$db->setQuery( $query );
 			$item->items = $db->loadObjectList();
-			
+
 			for($i=0; $i<count($item->items); $i++){
+				$item_id = $item->items[$i]->id;
+				$item_stock = $item->items[$i]->product_in_stock;
+
 				$item->items[$i]->parent_name = '';
 				$item->items[$i]->category_name = '';
-				$query = "SELECT c.title, p.catid, p.parentid 
-						
+				$query = "SELECT p.*, c.title as category_name
 						FROM #__mymuse_product as p LEFT JOIN #__categories as c ON c.id=p.catid
 						WHERE p.id='".$item->items[$i]->product_id."'";
 				$db->setQuery( $query );
-				$res = $db->loadObject();
-				$item->items[$i]->category_name = $res->title;
-				$item->items[$i]->parentid = $res->parentid;
+				$res = $db->loadAssoc();
+				foreach($res as $key => $val){
+					$item->items[$i]->$key = $val;
+				}
+				//reset some keys
+				$item->items[$i]->id = $item_id;
+				$item->items[$i]->product_in_stock = $item_stock;
+
+
+				$item->items[$i]->quantity = $item->items[$i]->product_quantity;
+				$item->items[$i]->backordered = 0;
+
+				if($item->items[$i]->product_in_stock == "-1"){
+					$item->items[$i]->backordered = 1;
+				}
+				$item->items[$i]->product_item_subtotal = $item->items[$i]->product_quantity * $item->items[$i]->product_item_price;
+				//$item->items[$i]->category_name = $res->category_name;
+				//$item->items[$i]->parentid = $res->parentid;
+
 				if($item->items[$i]->parentid > 0){
 					$query = "SELECT title from #__mymuse_product
 							WHERE id = '".$item->items[$i]->parentid."'";
 					$db->setQuery( $query );
 					$item->items[$i]->parent_name = $db->loadResult();
 				}
+				
 			}
 		
 			$item->order_total = 0.00;
@@ -278,7 +297,7 @@ class OrderModel extends AdminModel
 				$name = trim($rate->tax_name);
 				//$regex = TAX_REG_EX;
 				$name = preg_replace("/['-\/\s\\\]/","_",$name);
-				if($item->$name > 0.00){
+				if(isset($item->$name) && $item->$name > 0.00){
 					$item->tax_array[$name] = $item->$name;
 					$item->tax_total += $item->tax_array[$name];
 				}
@@ -331,6 +350,7 @@ class OrderModel extends AdminModel
 				}
 			}
 		}
+		$item->status_name 	= MyMuseHelper::getStatusName($item->order_status );
 
 		return $item;
 	}
