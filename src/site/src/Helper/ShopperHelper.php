@@ -60,7 +60,7 @@ class ShopperHelper extends CMSObject
 	 */
 	function __construct( )
 	{
-		$this->user	= JFactory::getUser();
+		$this->user	= Factory::getUser();
 		$this->getShopper();
 	}
 	
@@ -79,16 +79,16 @@ class ShopperHelper extends CMSObject
         {
         	$params = MyMuseHelper::getParams();
         	$user	= $this->user;
-        	$jinput = JFactory::getApplication()->input;
+        	$jinput = Factory::getApplication()->input;
         	$task 	= $jinput->get('task');
-        	$db 	= JFactory::getDBO();
-        	$session = JFactory::getSession();
+        	$db 	= Factory::getDBO();
+        	$session = Factory::getSession();
         	$guestcheckout = $session->get('guestcheckout');
         	$MyMuseCart		= new CartHelper;
 			$cart = $MyMuseCart->cart;
 
         	$shipping_needed = 0;
-        	$app = JFactory::getApplication();
+        	$app = Factory::getApplication();
 
 
         	for ($i=0;$i<$cart["idx"];$i++) {
@@ -326,7 +326,7 @@ class ShopperHelper extends CMSObject
 		// Lets load the data if it doesn't already exist
         if ( $userid  )
         {
-			$user = JFactory::getUser($userid);
+			$user = Factory::getUser($userid);
 			$this->_shopper = $user;
 			$this->_shopper->user_id = $userid;
 			$this->_shopper->perms = 1;
@@ -334,7 +334,7 @@ class ShopperHelper extends CMSObject
 			// Load the profile data from the database.
 			$myparams = MyMuseHelper::getParams();
 			$profile_key = $myparams->get('my_profile_key', 'mymuse');
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			if($params->get('my_registration') == "full" && $profile_key != ''){
 				$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 						' WHERE user_id = '.(int) $userid." AND profile_key LIKE '$profile_key.%'" .
@@ -379,9 +379,9 @@ class ShopperHelper extends CMSObject
 	public function loadProfile(&$shopper, $options = array())
 	{
 	
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		$task 	= $jinput->get('task');
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		
 		if($shopper->username == 'buyer'){
 			$shopper->profile = $session->get('myprofile');
@@ -392,11 +392,11 @@ class ShopperHelper extends CMSObject
 		
 
 		// Load the profile data from the database.
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$myparams = MyMuseHelper::getParams();
 		$profile_key = $myparams->get('my_profile_key', 'mymuse');
 		$userId = $shopper->get('id');
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
@@ -453,17 +453,17 @@ class ShopperHelper extends CMSObject
 	function savenoreg()
 	{
 		// Initialise variables.
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params = MyMuseHelper::getParams();
 		$jinput = $app->input;
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 		$fields = MyMuseHelper::getNoRegFields();
 		$myparams = MyMuseHelper::getParams();
-		$application = JFactory::getApplication();
+		$application = Factory::getApplication();
 		// Get the user data.
 		$post = $jinput->get('jform', array(), 'ARRAY');
 
-		$post = JFactory::getApplication()->input->post->getArray();
+		$post = Factory::getApplication()->input->post->getArray();
 		$post = $post['jform'];
 
 		// Save the data in the session.
@@ -514,7 +514,7 @@ class ShopperHelper extends CMSObject
 		if($user->get('id')){
 			//return true;
 		}
-		$db	= JFactory::getDBO();
+		$db	= Factory::getDBO();
 		$query = "SELECT * FROM #__users WHERE username='buyer'";
 		$db->setQuery($query);
 		$guest = $db->loadObject();
@@ -579,15 +579,15 @@ class ShopperHelper extends CMSObject
 		}
 		
 		//put the cart back in
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set("cart",$currentCart);
 		$MyMuseCart->cart = $currentCart;
 		
-		$user	= JFactory::getUser('buyer');
+		$user	= Factory::getUser('buyer');
 		
 		//put values into session
 		if(isset($post['profile']['region']) && !isset($post['profile']['region_name']) ){
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 		
 			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['profile']['region']."'";
 			$db->setQuery($query);
@@ -597,7 +597,7 @@ class ShopperHelper extends CMSObject
 		}
 		
 		if(isset($post['profile']['shipping_region']) && !isset($post['profile']['shipping_region_name']) ){
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 		
 			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['profile']['shipping_region']."'";
 			$db->setQuery($query);
@@ -632,9 +632,9 @@ class ShopperHelper extends CMSObject
 	function getOrders()
 	{
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$user_id 	= $user->get('id');
-		$db			= JFactory::getDBO();
+		$db			= Factory::getDBO();
 		$query = "SELECT * from #__mymuse_order WHERE user_id=$user_id ORDER BY created DESC";
 		$db->setQuery($query);
 		$orders = $db->loadObjectList();
@@ -660,7 +660,7 @@ class ShopperHelper extends CMSObject
 		'email1' => 'guest@joomlamymuse.com',
 		'email2' => 'guest@joomlamymuse.com' 
  		);
- 		$config = JFactory::getConfig();
+ 		$config = Factory::getConfig();
  		$db		= $this->getDbo();
  		$params = JComponentHelper::getParams('com_users');
  		
@@ -706,16 +706,16 @@ class ShopperHelper extends CMSObject
 	*/
 	function make_no_register()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$params	= JComponentHelper::getParams('com_users');
 		$myparams = MyMuseHelper::getParams();
 
 		if($user->get('id')){
 			return true;
 		}
-		$db	= JFactory::getDBO();
+		$db	= Factory::getDBO();
 		$query = "SELECT * FROM #__users WHERE username='buyer'";
 		$db->setQuery($query);
 		$guest = $db->loadObject();
@@ -763,7 +763,7 @@ class ShopperHelper extends CMSObject
 		if ($this->data === null) {
 	
 			$this->data	= new stdClass();
-			$app	= JFactory::getApplication();
+			$app	= Factory::getApplication();
 			$params	= JComponentHelper::getParams('com_users');
 	
 			// Override the base user data with any data in the session.
@@ -860,7 +860,7 @@ class ShopperHelper extends CMSObject
 	protected function populateState()
 	{
 		// Get the application object.
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params	= $app->getParams('com_users');
 	
 		// Load the parameters.

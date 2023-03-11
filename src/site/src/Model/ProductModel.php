@@ -96,7 +96,7 @@ class ProductModel extends ItemModel
 	 *
 	 * @return  object|boolean  Menu item data object on success, boolean false
 	 */
-	public function getItem($pk = null)
+	public function getItem($pk = null, $variation=0)
 	{
 		$user = Factory::getUser();
 		$params = MymuseHelper::getParams();
@@ -258,14 +258,16 @@ class ProductModel extends ItemModel
 
 				if (empty($data))
 				{
-					throw new \Exception(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
+					//throw new \Exception($pk.Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
+					$app->enqueueMessage(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND').' '.$pk);
 					return;
 				}
 
 				// Check for published state if filter set.
 				if ((is_numeric($published) || is_numeric($archived)) && ($data->state != $published && $data->state != $archived))
 				{
-					throw new \Exception(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
+					//throw new \Exception(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND'), 404);
+					$app->enqueueMessage(Text::_('COM_MYMUSE_PRODUCT_NOT_FOUND').' '.$pk);
 					return;
 				}
 
@@ -276,7 +278,7 @@ class ProductModel extends ItemModel
 					$data->attribs = $registry;
 				}
 				
-				if(isset($data->physical)){
+				if(isset($data->physical) && $data->physical){
 					$registry = new Registry;
 					$registry->loadString($data->physical);
 					$data->physical = $registry;
@@ -338,9 +340,26 @@ class ProductModel extends ItemModel
 					}
 				}
 
-				$data->price = $this->getPrice($data);
+				$data->price = $this->getPrice($data, $variation);
 				if($data->params->get('my_add_taxes')){
 					$data->price["product_price"] = MyMuseCheckout::addTax($data->price["product_price"]);
+				}
+
+				if($data->parentid > 0 and $data->product_downloadable == 1){
+					$query = "SELECT special_status, product_release_date from #__mymuse_product 
+					WHERE id =".$data->parentid;
+					$db->setQuery($query);
+					$res = $db->loadObject();
+					$data->special_status = $res->special_status;
+					$data->product_release_date = $res->product_release_date;
+
+				}
+
+				if($data->product_downloadable == 1 && $variation){
+					$query = "SELECT digital from #__mymuse_product WHERE id=$variation";
+					$db->setQuery($query);
+					$data->digital = json_decode($db->loadResult());
+					$data->digital->file_id = $variation;
 				}
 
 				$this->_item[$pk] = $data;
@@ -365,7 +384,12 @@ class ProductModel extends ItemModel
 
 
 				/* get tracks for this product */
-				$this->_item[$pk]->tracks = $this->getTracks($pk);
+				if($this->_item[$pk]->parentid == 0){
+					$this->_item[$pk]->tracks = $this->getTracks($pk);
+				}
+
+
+				
 
 				/* get physical items for this product */
 				$this->_item[$pk]->items = $this->getPhysicalItems($pk);			
@@ -1015,9 +1039,10 @@ class ProductModel extends ItemModel
      * getPrice
      * 
      * @param object $product
+     * @param integet $var
      * @return mixed Array or false: array [product_price] [special_shoppergroup] [product_discount] [product_shoppergroup_discount]
      */
-	static function getPrice(&$product, $var=0) {
+	static function getPrice(&$product, $variation=0) {
 
 		$params 		= MyMuseHelper::getParams();
 		$shopper 		= Mymuse::getObject('Shopper','model')->getShopper();
@@ -1041,8 +1066,6 @@ class ProductModel extends ItemModel
 			}
 		}  
 
-
-		
 		// Get the shopper group id for this shopper
 		$shoppergroup_id = @$shopper->shoppergroup->id;
 		if($shoppergroup_id == ""){
@@ -1061,6 +1084,8 @@ class ProductModel extends ItemModel
 		$product_parent_id = 0;
 
 		$price_info ["product_price"] = $product->price;
+
+
 		
 		if (0 == $params->get ( 'my_price_by_product' )) {
 			// price by track
@@ -1084,6 +1109,18 @@ class ProductModel extends ItemModel
 			$registry->loadString ( $product->attribs );
 			$product->attribs = $registry;
 
+			if($variation){
+				$query = "SELECT digital FROM #__mymuse_product WHERE id='" . $variation . "'";
+				$db->setQuery ( $query );
+				if (! $product->digital = $db->loadResult ()) {
+					$price_info ["product_price"] = $product_price = $product->price;
+				}
+				
+				$product->digital = json_decode($product->digital);
+				$product->digital->file_id = $variation;
+
+			}
+
 			if (isset($product->product_physical) && $product->product_physical) {
 		
 				$key = 'product_price_physical';
@@ -1106,7 +1143,16 @@ class ProductModel extends ItemModel
 				foreach($pformats as $i => $f){
 					$formats[$f->ordering] = strtolower($f->format_key);
 				}
-		
+				if(isset($product->digital->file_format)){
+					$formats = array();
+					$formats[0] = $product->digital->file_format;
+				}
+
+				if(isset($product->digital) && is_object($product->digital) ){
+
+
+				}
+
 				foreach($formats as $format) {
 						
 					$key = 'product_price_' . $format . '_all';
@@ -1125,11 +1171,17 @@ class ProductModel extends ItemModel
 					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shoppergroup_discount/100) - $discount;
 					$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );
 				}
+				if(isset($product->digital->file_format)){
+					$price_info = $price_info [$format];
+				}
 				
+				//$price_info = $price_info [$format];
+
 				return $price_info;
 				
-			} elseif(isset($product->digital) 
+			} elseif(isset($product->digital) && is_array($product->digital)
 				&& is_countable($product->digital) && count($product->digital) ){
+	
 
 				$formats = array();
 				$pformats = $params->get('my_formats', array());
@@ -1156,7 +1208,7 @@ class ProductModel extends ItemModel
 
 	
 				}
-				
+
 				return $price_info;
 
 			}elseif(isset($product->digital) && is_object($product->digital) ){
@@ -1178,7 +1230,7 @@ class ProductModel extends ItemModel
 				
 				$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shoppergroup_discount/100) - $discount;
 				$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );	
-				$price_info ["product_price"] = $price_info [$format];
+				$price_info = $price_info [$format];
 
 				return $price_info;
 

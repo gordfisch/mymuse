@@ -44,11 +44,10 @@ include_once(JPATH_SITE.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."co
 	padding: 20px;
 }
 </style>
-<div class="store email-header" style="display: grid;
-  grid-template-columns: 1fr 4fr;">
+<div class="store email-header">
 	<div class="logo" style="padding: 20px;"><a href="<?php echo Uri::root(); ?>"><img align="left" src="<?php echo Uri::root().$params->get('store_thumb_image'); ?>" border="0"></a>
 	</div>
-	<div style="padding: 20px;">
+	<div>
 		<?php echo $store->title; ?><br />
 		<?php echo $params->get('address_1').' '.$params->get('address_2'); ?><br />
 		<?php echo $params->get('city').', '.$params->get('state'); ?><br />

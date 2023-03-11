@@ -22,7 +22,7 @@ $params 	= $this->params;
 
 		
 <section>
-    <ul class="mymuse-container mymuse-cart">
+    <ul class="mymuse-container mymuse-list">
     <li class="list-orders item-container">
 	
 		<div class="myorderid mymuse_cart_top "><?php echo Text::_('COM_MYMUSE_ORDER_ID'); ?></div>

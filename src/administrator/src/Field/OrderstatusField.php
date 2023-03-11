@@ -68,7 +68,7 @@ class OrderstatusField extends SqlField
 
 		
 		//$html[] = '<select id="filter_order_status" name="filter_order_status" class="inputbox">';
-		$html[] = '<select name="'.$this->name.'" '.trim($attr).'>';
+		$html[] = '<select id="jform_'.$this->name.'" name="'.$this->name.'" '.trim($attr).'>';
 		$filter_order_status = Factory::getApplication()->input->get('filter_order_status','0');
 		// do the SQL
 		$db = Factory::getDbo();

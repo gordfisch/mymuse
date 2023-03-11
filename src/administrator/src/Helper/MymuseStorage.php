@@ -102,14 +102,16 @@ class MymuseStorage
         $params = MyMuseHelper::getParams();
         $_my_download_dir_format = $params->get('my_download_dir_format');
         $_my_formats = $params->get('my_formats');
+    
         if($_my_download_dir_format){
             //by format
             $files = array();
             foreach($_my_formats as $format){
-                if(!Folder::exists( $dir.DIRECTORY_SEPARATOR.$format )){
-                    Folder::create( $dir.DIRECTORY_SEPARATOR.$format );
+
+                if(!Folder::exists( $dir.DIRECTORY_SEPARATOR.$format->format_value )){
+                    Folder::create( $dir.DIRECTORY_SEPARATOR.$format->format_value );
                 }
-                $arr = Folder::files( $dir.DIRECTORY_SEPARATOR.$format );
+                $arr = Folder::files( $dir.DIRECTORY_SEPARATOR.$format->format_value );
                 if(is_array($arr)){
                     $files = array_merge($files,$arr);
                 }

@@ -87,10 +87,10 @@ $rows =& $this->downloads;
 		
 		<?php echo HTMLHelper::_( 'form.token' ); ?>
 		</form>
-		
-		
-<?php if(count( $rows )){ ?>
+		<br />
 		<h2><?php echo Text::_('COM_MYMUSE_DOWNLOADS_REPORT'); ?></h2>
+
+		
 		<table id="articleList" class="table table-striped">
 	
 		<thead>
@@ -114,12 +114,25 @@ $rows =& $this->downloads;
 					<?php echo Text::_('COM_MYMUSE_PRODUCT_ID'); ?>
 				</th>
 				<th scope="col" class="w-1 ">
+					<?php echo Text::_('COM_MYMUSE_TITLE_PRODUCT'); ?>
+				</th>
+				<th scope="col" class="w-1 ">
+					<?php echo Text::_('COM_MYMUSE_TRACK_ID'); ?>
+				</th>
+				<th scope="col" class="w-1 ">
+					<?php echo Text::_('COM_MYMUSE_FORMAT_ID'); ?>
+				</th>
+				<th scope="col" class="w-1 ">
+					<?php echo Text::_('COM_MYMUSE_TITLE_TRACK'); ?>
+				</th>
+				<th scope="col" class="w-1 ">
 					<?php echo Text::_('COM_MYMUSE_UPLOADER_FILENAME'); ?>
 				</th>
 			</tr>
 		</thead>
 
 		<tbody>
+			<?php if(count( $rows )){ ?>
 		<?php
 		$k = 0;
 		$total = 0.00;
@@ -141,8 +154,21 @@ $rows =& $this->downloads;
 					<?php echo $row->date; ?>
 				</td>
 				<td>
-					<a href="index.php?option=com_mymuse&task=product.editfile&type=file&id=<?php echo $row->track_parent; ?>&parentid=<?php echo $row->parent; ?>"><?php echo $row->product_id; ?></a> 
+					<a href="index.php?option=com_mymuse&view=product&layout=edit&id=<?php echo $row->parentid; ?>"><?php echo $row->parentid; ?></a> 
 				</td>
+				<td>
+					<a href="index.php?option=com_mymuse&view=product&layout=edit&id=<?php echo $row->parentid; ?>"><?php echo $row->parent; ?></a> 
+				</td>
+				<td>
+					<a href="index.php?option=com_mymuse&task=product.editfile&type=file&id=<?php echo $row->track_parentid; ?>&parentid=<?php echo $row->parentid; ?>"><?php echo $row->track_parentid; ?></a> 
+				</td>
+				<td>
+					<a href="index.php?option=com_mymuse&task=product.editfile&type=file&id=<?php echo $row->track_parentid; ?>&parentid=<?php echo $row->parentid; ?>"><?php echo $row->product_id ?></a>
+				</td>
+				<td>
+					<a href="index.php?option=com_mymuse&task=product.editfile&type=file&id=<?php echo $row->track_parentid; ?>&parentid=<?php echo $row->parentid; ?>"><?php echo $row->track_parent; ?></a> 
+				</td>
+				
 				<td>
 					<?php echo $row->product_filename; ?>
 				</td>
@@ -154,7 +180,10 @@ $rows =& $this->downloads;
 			<?php
 		}
 		?>
+		<?php }else{ 
+	echo Text::_('COM_MYMUSE_NOTHING_TO_REPORT');
+} ?>
 		</tbody>
 		</table>
-<?php } ?>
+
 </div>

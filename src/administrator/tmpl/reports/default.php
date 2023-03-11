@@ -236,13 +236,13 @@ $rows =& $this->items_summary;
 				<td>
 					<?php echo $row->cat_name; ?>
 				</td>
-				<td class="text-right">
+				<td id="quantity<?php echo $k; ?>" class="text-right">
 					<?php echo $row->quantity; ?>
 				</td>
-				<td class="text-right">
+				<td id="price<?php echo $k; ?>" class="text-right">
 					<?php echo $row->price; ?>
 				</td>
-				<td class="text-right">
+				<td id="total<?php echo $k; ?>" class="text-right">
 					<?php echo MyMuseHelper::printMoney($row->total); ?>
 				</td>
 

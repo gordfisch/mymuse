@@ -6,7 +6,8 @@ use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Layout\FileLayout;
 
 $product = $this->item;
-//MymuseHelper::print_pre($this->all_tracks);
+
+
 if( ($this->params->get('info_block_show'))) : ?>
 	<div class="product-details">
 
@@ -190,30 +191,21 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 
 		    <?php if(isset($this->all_tracks->flash) && isset($this->all_tracks->digital[0])) : ?>
-		    <li class="product-detail-item product-purchase mymuse-grid-1-2">
+		    <li class="product-detail-item product-purchase ">
 		    
 			    <div class="key full-release">
 			    	<div class="product-preview-play"><?php echo $this->all_tracks->flash; ?></div>
 			    	<?php echo Text::_('COM_MYMUSE_BUY_FULL_RELEASE'); ?>
 			    </div>
-			    <div class="value">
+			    <?php 
+			    $full_cols = 2;
+			    if(isset($this->all_tracks->variation_select)) : 
+			    	$full_cols = 3;
+			    endif; 
+			    ?>
+			    <div class="value my-grid columns-<?php echo $full_cols ?>">
 			       <?php if($this->all_tracks) : ?>
 	        
-	                        <a class="trackpicker" href="javascript:void(0)" class="box_<?php echo $this->all_tracks->id; ?>" 
-	                        	id="box_<?php echo $this->all_tracks->id; ?>"
-	                        	data-id="<?php echo $this->all_tracks->id; ?>"
-	                        	data-variation="<?php echo $this->all_tracks->digital[0]->file_id; ?>"
-
-	                        	> <img id="img_<?php echo $this->all_tracks->id; ?>"
-		                    	src="<?php
-			                    if(isset($this->products) && in_array($this->all_tracks->id, $this->products)) :
-			                        echo Route::_("components/com_mymuse/assets/images/minus-button-30.png");
-			                    else :
-			                        echo Route::_("components/com_mymuse/assets/images/plus-button-30.png");
-			                    endif;
-			                    ?>"></a>
-
-
 	                    <?php
 	                    if("1" == $this->params->get('my_price_by_product')) :
 	                      $first = 1;
@@ -245,12 +237,24 @@ if( ($this->params->get('info_block_show'))) : ?>
 	                    $this->all_tracks->shown = 1;
 	                    ?>
 	                    
-	                    <span class="format"> <?php 
-	                    if(isset($this->all_tracks->variation_select)) :
-	                        echo $this->all_tracks->variation_select;
-	                    endif;
-	                    ?>
-	                    </span>
+	                    <?php if(isset($this->all_tracks->variation_select)) : ?>
+	                    	<span class="format"> <?php echo $this->all_tracks->variation_select; ?></span> 
+	                    <?php endif ?>
+	                    
+
+	                    <div><a class="trackpicker" href="javascript:void(0)" class="box_<?php echo $this->all_tracks->id; ?>" 
+	                        	id="box_<?php echo $this->all_tracks->id; ?>"
+	                        	data-id="<?php echo $this->all_tracks->id; ?>"
+	                        	data-variation="<?php echo $this->all_tracks->digital[0]->file_id; ?>"
+
+	                        	> <img id="img_<?php echo $this->all_tracks->id; ?>"
+		                    	src="<?php
+			                    if(isset($this->products) && in_array($this->all_tracks->id, $this->products)) :
+			                        echo Route::_("components/com_mymuse/assets/images/minus-button-30.png");
+			                    else :
+			                        echo Route::_("components/com_mymuse/assets/images/plus-button-30.png");
+			                    endif;
+			                    ?>"></a></div>
 	                    
 	                <?php endif; ?>
 	            </div>

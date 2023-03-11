@@ -679,10 +679,61 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 				$query = "SELECT * FROM #__mymuse_product WHERE track_parentid='".$this->id."'";
 				$db->setQuery($query);
 				$child_tracks = $db->loadObjectList();
+
+
+
 				$time = isset($this->file_time)? $this->file_time : '';
 				$this->track_parentid = $this->id;
 				$tag = Text::_('COM_MYMUSE_ALL_FILES_TAG');
-				
+
+				for($p = 0; $p < count($params->get('my_formats')); $p++){
+					foreach($child_tracks as $child){
+						$current_digital = json_decode($child->digital);
+						if(strtolower($params->get('my_formats')[$p]->format_value) == $current_digital->file_format){
+							//update the format entry
+							$this->id = $child->id;
+							$current_digital = json_decode($child->digital);
+
+							$format = $current_digital->file_format;
+							$file_name = ApplicationHelper::stringURLSafe($this->alias.$tag).'.'. $format;
+							$current_digital->file_time = $time;
+							$current_digital->file_name = $file_name;
+							//echo MyMuseHelper::print_pre($current_digital); exit;
+
+							$this->digital = json_encode($current_digital) ;
+							$this->product_sku = $form['product_sku'].':'.$current_digital->file_format;
+							$this->check();
+							//echo MyMuseHelper::print_pre($this->digital);exit;
+							if(!$result = parent::store(false)){
+								$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->getError(), 'error');
+								return false;
+							}
+						}else{
+							//create a new format entry
+							$this->id = '';
+							$tag = Text::_('COM_MYMUSE_ALL_FILES_TAG');
+							$file_name = ApplicationHelper::stringURLSafe($this->alias.$tag).'.'.strtolower($params->get('my_formats')[$p]->format_value);
+							$current_files = array(
+								'file_name' => $file_name,
+								'file_length' => '',
+								'file_ext' => strtolower($params->get('my_formats')[$p]->format_value),
+								'file_downloads'=> '0',
+								'file_time' => $time,
+								'file_format' => strtolower($params->get('my_formats')[$p]->format_key)
+							);
+							$this->digital= json_encode($current_files);
+							$this->product_sku = $form['product_sku'].':'.$params->get('my_formats')[$p]->format_key;
+							$this->check();
+							
+							if(!$result = parent::store(false)){
+								$app->enqueueMessage(Text::_('COM_MYMUSE_COULD_NOT_SAVE_CHILD_TRACK').' '.$this->getError(), 'error');
+								return false;
+							}
+						}
+
+					}
+				}
+				/*
 				foreach($child_tracks as $child){
 					
 					$this->id = $child->id;
@@ -704,6 +755,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 					}
 
 				}
+				*/
 				$this->id = $this->track_parentid;
 				$res = $app->triggerEvent('onMyMuseAfterSave', array('com_mymuse.product', &$this, false, $isNew));
 				if(isset($res[0])){

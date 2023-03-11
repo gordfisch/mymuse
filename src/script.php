@@ -928,7 +928,7 @@ END;
             <?php
             /* DEFAULT DOWNLOAD DIRECTORY */
             $name = Text::_ ( "COM_MYMUSE_MAKE_DOWNLOAD_DIR" );
-            $download_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseDownloaDIRECTORY_SEPARATOR";
+            $download_dir = JPATH_ROOT . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "A_MyMuseDownloads";
             if (! file_exists ( $download_dir )) {
                 if (! JFolder::create ( $download_dir )) {
                     $alt = Text::_ ( "COM_MYMUSE_FAILED" );

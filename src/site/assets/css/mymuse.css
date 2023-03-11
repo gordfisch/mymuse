@@ -436,6 +436,9 @@ ul.mymuse-container, .product-recommends.mymuse-container {
   ul.mymuse-cart.mymuse-cart > li:last-of-type {
     border-top:  1px solid #333;
   }
+  ul.mymuse-list > li:first-of-type {
+    border-bottom:  1px solid #333;
+  }
   
 
 }

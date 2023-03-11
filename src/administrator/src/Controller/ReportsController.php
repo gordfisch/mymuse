@@ -58,6 +58,7 @@ class ReportsController extends AdminController
 	 */
 	function downloads()
 	{
+		
 		parent::display();
 	}
 	

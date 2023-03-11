@@ -365,9 +365,11 @@ class ProductModel extends AdminModel
 	{
 		if(!$this->_item){
 			$input = Factory::getApplication()->input;
+			$id = $input->get('id','');
+
 			$task = $input->get('task','');
 			$parentid = $input->get('parentid',NULL);
-			$id = $input->get('id','');
+			
 
 			if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 				$pk = 0;
@@ -815,6 +817,7 @@ class ProductModel extends AdminModel
     public function getFileLists()
     {
 
+    	$application = Factory::getApplication();
     	$input 	= Factory::getApplication()->input;
     	$task 	= $input->get('task');
     	$id 		= $input->get('id');
@@ -836,8 +839,8 @@ class ProductModel extends AdminModel
 
 			$site_url = MyMuseHelper::getSiteUrl($parentid,1);
 			$site_path = MyMuseHelper::getSitePath($parentid,1);
-			$download_path = MyMuseHelper::getdownloadPath($parentid,1);
-			$application = Factory::getApplication();
+			$download_path = rtrim(MyMuseHelper::getdownloadPath($parentid,1),"/");
+			
 
 			//get previews
 			$files = array();
@@ -846,13 +849,17 @@ class ProductModel extends AdminModel
 			foreach ( $files as $file ) {
 					$previews[] = HTMLHelper::_('select.option',  $file );
 			}
-	        $this->_item->file_preview  = isset($this->_item->file_preview) ? $this->_item->file_preview : '';
-			$lists['previews'] = HTMLHelper::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
+			if(isset($this->_item)){
+				    $this->_item->file_preview  = isset($this->_item->file_preview) ? $this->_item->file_preview : '';
+						$lists['previews'] = HTMLHelper::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
+			}
+	    
 
 			
 			
 			// get the download tracks lists
 			$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
+
 			$files = MymuseStorage::listFilesDownloads($directory);
 
 			$myfiles = array();
@@ -914,7 +921,7 @@ class ProductModel extends AdminModel
 	            //by format
 	            $lists['download_dir'] = '';
 	            foreach($this->_params->get('my_formats') as $format){
-	            	$lists['download_dir'] .= $download_path.DIRECTORY_SEPARATOR.$format."<br />";
+	            	$lists['download_dir'] .= $download_path.DIRECTORY_SEPARATOR.$format->format_value."<br />";
 	            }
 	        }else{
 	        	$lists['download_dir'] = $download_path;
@@ -1181,13 +1188,14 @@ class ProductModel extends AdminModel
 	public function saveorder($pks = null, $order = null)
 	{
 	
-		MyMuseHelper::logMessage("here in model product\n");
+		//MyMuseHelper::logMessage("here in model product\n");
 		$table = $this->getTable('product','MymuseTable');
 		$conditions = array();
+		$app = Factory::getApplication();
 	
 		if (empty($pks))
 		{
-			return JError::raiseWarning(500, Text::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'));
+			$app->enqueueMessage(Text::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'), 'error');
 		}
 	
 		// Update ordering values
@@ -1216,7 +1224,7 @@ class ProductModel extends AdminModel
 				// Remember to reorder within position and client_id
 				$condition = $this->getReorderConditions($table);
 				$found = false;
-				MyMuseHelper::logMessage("$condition\n");
+				//MyMuseHelper::logMessage("$condition\n");
 	
 				foreach ($conditions as $cond)
 				{
@@ -1296,7 +1304,6 @@ class ProductModel extends AdminModel
 			}
 		}
 
-//MymuseHelper::print_pre($data); exit;
 
 
 		if (parent::save($data)){
@@ -1477,6 +1484,24 @@ class ProductModel extends AdminModel
 		   	}
 		  }
 	   	return true;
+
+
+   }
+
+
+   function getChildTracks($cid) 
+   {
+   	$db = Factory::getDBO();
+   	$res = array();
+   	foreach($cid as $id){
+   		$query = "SELECT id from #__mymuse_product WHERE track_parentid=$id";
+   		$db->setQuery($query);
+   		$children = $db->loadObjectList();
+   		foreach($children as $key => $child){
+   			$res[] = $child->id;
+   		}
+   	}
+   	return $res;
 
 
    }

@@ -540,20 +540,31 @@ class ProductController extends FormController
     function removeitem()
     {
         $cid = $this->input->get( 'cid', array(), 'ARRAY' );
-       
+
         ArrayHelper::toInteger($cid);
         if (count( $cid ) < 1) {
             Error::raiseError(500, Text::_( 'COM_MYMUSE_SELECT_AN_ITEM_TO_DELETE' ) );
         }
         $parentid = $this->input->get( 'parentid', '' );
-        $type     = $this->input->get( 'type', '' );
+        $subtype     = $this->input->get( 'subtype', '' );
         $layout   = $this->input->get( 'layout', '' );
         $model    = $this->getModel('product');
 
-        if(!$model->delete($cid)) {
-            echo "<script> alert('Error: ".$model->getError(true)."'); window.history.go(-1); </script>
-            ";
+        if($subtype == 'file'){
+            //delete the children
+            $children = $model->getChildTracks($cid);
+
+            if(!$model->delete($children)) {
+                $this->app->enqueueMessage($model->getError(), 'error');
+                return false;
             }
+        }
+
+        if(!$model->delete($cid)) {
+            $this->app->enqueueMessage($model->getError(), 'error');
+                return false;
+        }
+
         $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_DELETED' ), 'notice');
         $url = 'index.php?option=com_mymuse&view=product&task=edit&id='.$parentid;
         if($layout){

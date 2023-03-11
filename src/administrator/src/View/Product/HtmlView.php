@@ -94,15 +94,18 @@ class HtmlView extends BaseHtmlView
 	{
 
 		$this->input = Factory::getApplication()->input;
+		$this->params 	= MyMuseHelper::getParams();
 		/** @var MymuseModel $model */
 		$model       	= $this->getModel();
+		$this->item  = $model->getItem();
+
+
 		$this->form  	= $model->getForm();
-		$this->item  	= $model->getItem();
 		$this->state 	= $model->getState();
 		$this->lists 	= $model->getLists();
 		$filelists 		= $model->getFileLists();
         $this->lists 	= array_merge($this->lists,$filelists);
-		$this->params 	= MyMuseHelper::getParams();
+		
 
 
 		$this->task 	= $task 	= $this->input->get('task', 'edit');

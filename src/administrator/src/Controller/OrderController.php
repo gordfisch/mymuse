@@ -348,14 +348,14 @@ class OrderController extends FormController
 			$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id=' );
 			return false;
 		}
-	/*
+
 		if(!$model->resetDownloads()){
 			$this->msg = $model->getError();
 			$app->enqueueMessage($this->msg, 'error');
 			$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='.$id);
 			return false;
 		}
-*/
+
 		//email customer
 		$date = date('Y-m-d h:i:s');
 		if($params->get('my_debug')){

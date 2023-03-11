@@ -148,7 +148,7 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 
-		$this->_db 		= Factory::getDBO();
+
 		$params 		= MyMuseHelper::getParams();
 		$app 			= Factory::getApplication();
 		$jinput 		= $app->input;
@@ -261,7 +261,7 @@ class HtmlView extends BaseHtmlView
 
 			$this->makeMail($result);
 			return true;
-		}
+		} // end of MakeMail
 		
 		if($task == "coupon"){
 			parent::display("coupon");
@@ -405,7 +405,7 @@ class HtmlView extends BaseHtmlView
 			default:
 				if($this->cart['idx'] > 0){
 					$this->order = $order 		= $this->MyMuseCart ->buildOrder( $edit );
-					//MymuseHelper::print_pre($order->items[0]->price); exit;	
+				
 					$order->show_checkout = 1;
 					//$footer = $this->MyMuseCart ->getRecommended();
 				}
@@ -698,11 +698,11 @@ class HtmlView extends BaseHtmlView
 				$session = Factory::getSession();
 				$session->set("order_number",$order->order_number);
 				
-				PluginHelper::importPlugin('COM_MYMUSE');
-			
+				PluginHelper::importPlugin('mymuse');
+		
 				$results = $app->triggerEvent('onBeforeMyMusePayment', 
 				array($this->shopper, $this->store, $this->order, $params, $this->Itemid) );
-			
+
 				$this->results = $results;
 				
 				ob_start();

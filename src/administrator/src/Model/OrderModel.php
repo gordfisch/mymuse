@@ -477,8 +477,10 @@ class OrderModel extends AdminModel
     	end_date='$enddate',
     	product_in_stock = 0
     	WHERE order_id=$id
+    	AND file_name != ''
     	";
     	$db->setQuery($query);
+    	
     	if(!$db->execute()){
     		$this->setError(Text::_('COM_MYMUSE_COULD_NOT_UPDATE_ORDER_ITEMS'));
     		return false;

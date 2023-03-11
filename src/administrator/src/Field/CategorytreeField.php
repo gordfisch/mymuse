@@ -125,7 +125,7 @@ class CategorytreeField extends ListField
 		// Create a regular list.
 		else {
 			
-			$html[] = '<select name="'.$this->name.'" '.trim($attr).'>';
+			$html[] = '<select id="jform_'.$this->name.'"  name="'.$this->name.'" '.trim($attr).'>';
 			$html[] = '<option value=""> - '.Text::_('COM_MYMUSE_SELECT_CATEGORY').' - </option>';
 			foreach($options as $opt) {
 				$disabled = '';

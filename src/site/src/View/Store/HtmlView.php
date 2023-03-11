@@ -23,8 +23,10 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
@@ -260,11 +262,18 @@ class HtmlView extends BaseHtmlView
 			$query = "SELECT * FROM #__mymuse_product WHERE id = '".$item_id."'";
 			$db->setQuery($query);
 			$product = $db->loadObject();
-			
+
+			if(isset($product->parentid)){
+				$query = "SELECT * FROM #__mymuse_product WHERE id = '".$product->parentid."'";
+				$db->setQuery($query);
+				$product->parent = $db->loadObject();
+			}
+
+			$digital = json_decode($product->digital);
+
 			$download_path = MyMuseHelper::getDownloadPath($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
 			if(!$realname){
-				$digital = json_decode($product->digital);
 				$realname = $digital->file_name;
 			}
 
@@ -282,19 +291,28 @@ class HtmlView extends BaseHtmlView
             }
 
             $object =& Mymuse::getObject('Httpdownload','helper');
-        	// is it an allfiles and zip is on?
 
+        	// is it an allfiles and zip is on?
         	if($product->product_allfiles && $params->get('my_use_zip',0)){
                 // Get current directory
 
-        		$query = "SELECT id,file_name, parentid from #__mymuse_product WHERE parentid='".$product->parentid."'
-				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
+        		$ext = $digital->file_ext;
+        		$files = array();
+
+        		//$this->MyMuseProduct	= Mymuse::getObject('Product', 'model');
+        		//$tracks = $this->MyMuseProduct->getTracks($product->id);
+        		//MyMuseHelper::print_pre($tracks); exit;
+
+        		$query = "SELECT id, digital from #__mymuse_product 
+        		WHERE parentid='".$product->parentid."'
+				AND product_downloadable='1' 
+				AND product_allfiles !='1' 
+				AND track_parentid > 0
+				ORDER BY ordering ";
 
         		$db->setQuery($query);
         		$prods = $db->loadObjectList();
-        		$parts = explode('-',$product->realname );
-        		$ext = array_pop($parts);
-        		$files = array();
+
         		$path = MyMuseHelper::getDownloadPath($product->parentid, 1);
                 if(1 == $params->get('my_download_dir_format')){
                     $path .= $ext.DS;
@@ -307,29 +325,21 @@ class HtmlView extends BaseHtmlView
                         }
                     }
                 }
-        		
+	
     			foreach($prods as $prod){
-    				
+    				$jason = json_decode($prod->digital);
 
-    				$jason = json_decode($prod->file_name);
-    				if(is_array($jason)){
-    					foreach($jason as $j){
-                            //include all files except excluded 
-    						if(!in_array($j->file_ext, $exclude) ){
-    							$files[] = $j->file_name;
-    						}
-    					}
-    				}else{
-    						$files[] = $j->file_name;
-    				}
-    				
+                    //include all files except excluded 
+					if(!in_array($jason->file_ext, $exclude) ){
+						$files[] = $jason->file_name;
+					}
     			}
                 chdir($path);
-        		$zip  =& Mymuse::getObject('Createzip','helper');
-                $parent_title = JApplication::stringURLSafe($order_item->product->parent->title);
+        		$zip  =& Mymuse::getObject('CreateZip','helper');
+                $parent_title = ApplicationHelper::stringURLSafe($product->parent->title);
                 $destination = $path.$parent_title.'-'.$filename.".zip";
-                $overwrite =  true;
-                if(!$res = $zip->create_zip($files,$destination,$overwrite)){
+                $overwrite =  false;
+                if(!$res = $zip->create_zip($path, $files, $destination, $overwrite)){
                     $msg = "Could not Create Zip. Please contact the webmaster.";
                     Factory::getApplication()->enqueueMessage($msg, 'warning');
                     return false;

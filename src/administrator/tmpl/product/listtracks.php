@@ -112,7 +112,9 @@ $this->vote 		= false;
 						<tr>
 
 							<td class="w-1 text-center">
+								<?php if (count($this->tracks) > 0) : ?>
 								<?php echo HtmlHelper::_('grid.checkall'); ?>
+							<?php endif; ?>
 							</td>
 							<th scope="col" class="w-1 text-center d-none d-md-table-cell">
 								<?php echo HtmlHelper::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'fas fa-sort'); ?>

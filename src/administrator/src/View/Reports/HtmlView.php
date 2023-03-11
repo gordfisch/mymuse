@@ -55,6 +55,7 @@ class HtmlView extends BaseHtmlView
 		if($task == 'downloads'){
 
 			$this->downloads = $this->get('Downloads');
+
 			parent::display('downloads');
 			return true;
 		}

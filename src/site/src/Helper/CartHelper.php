@@ -729,6 +729,16 @@ class CartHelper
             $jason[$this->cart[$i]["variation"]]->file_format : '';
 
 
+        }elseif(is_object($jason)){
+
+
+          $order->items[$i]->file_name = isset($jason->file_name)?
+            $jason->file_name : '';
+          $order->items[$i]->ext = isset($jason->file_ext)?
+            $jason->file_ext : '';
+          $order->items[$i]->format = isset($jason->file_format)?
+            $jason->file_format : '';
+
         }else{
           $order->items[$i]->ext = '';
         }
@@ -934,7 +944,7 @@ class CartHelper
       //licence and notes
       $order->licence = isset($this->cart["licence"])? $this->cart["licence"] : '';
       $order->notes = isset($this->cart["notes"])? $this->cart["notes"] : '';
-      
+     
       $this->order = $order;
       return $order;
   }
@@ -1024,33 +1034,14 @@ class CartHelper
       $this->error = Text::_("COM_MYMUSE_NO_PRODUCT_ID");
       return false;
     }
-  
+
     $db = Factory::getDBO();
     $model= new ProductModel();
 
-    if(!$row = $model->getItem($id)){
+    if(!$row = $model->getItem($id, $variation)){
       $this->error =  "Error: id $id could not be loaded. ".$model->getError();
       $this->delete($id);
       return false;
-    }
-
-    if($row->parentid > 0) {
-
-      $parent = $model->getItem($row->parentid);
-      $row->special_status = $parent->special_status;
-      $row->product_release_date = $parent->product_release_date;
-    }
-
-    if($variation){
-      $var = $model->getItem($variation);
-      if($var->digital){
-
-        $row->digital = json_decode($var->digital);
-        $row->digital->file_id = $variation;
-        $row->format = strtolower($row->digital->file_format);
-        $row->variation = $variation;
-        $row->product_sku = $var->product_sku;
-      }
     }
 
 

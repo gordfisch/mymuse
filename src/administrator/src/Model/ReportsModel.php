@@ -321,7 +321,7 @@ class ReportsModel extends ListModel
     	if ($orderCol && $orderDirn) {
     		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
-    //echo($query->__toString()); exit;
+        //echo($query->__toString()); exit;
     	return $query;
     }
 
@@ -365,12 +365,17 @@ class ReportsModel extends ListModel
     	
     	$orderItems = $this->getItems();
     	$orderids = "";
+        $seen = array();
     	if(is_array($orderItems ) && count($orderItems )){
 
     		$orderids = "(";
     		foreach($orderItems as $item){
-    			$orderids .= '<a href="index.php?option=com_mymuse&view=order&layout=edit&id='.$item->order_id;
-    			$orderids .= '">'.$item->order_id."</a>, ";
+                if(!in_array($item->order_id, $seen)){
+                    $orderids .= '<a href="index.php?option=com_mymuse&view=order&layout=edit&id='.$item->order_id;
+                    $orderids .= '">'.$item->order_id."</a>, ";
+                    $seen[] = $item->order_id;
+                }
+    			
     		}
     		$orderids = preg_replace("/,$/","",$orderids);
     		$orderids .= ")";
@@ -415,7 +420,7 @@ class ReportsModel extends ListModel
 		$query .= ' FROM #__mymuse_order AS c'
         . $where;
 
-//echo "2. Order Summary: $query <br /><br />"; exit;
+
         $this->_db->setQuery( $query );
         $res = $this->_db->loadObject();
         $res->tax_array = $tax_array;
@@ -455,7 +460,7 @@ class ReportsModel extends ListModel
   		$catid	= $this->getState('filter.catid');
         $show_format = $this->getState('filter.show_format');
   		$where = $this->_buildContentWhere();
-  	//echo "show format = ".$show_format; exit;
+
   		$orders = $this->getItems();
   		$order_ids = '';
   		if(is_array($orders ) && count($orders)){
@@ -618,11 +623,13 @@ class ReportsModel extends ListModel
     	// Create a new query object.
     	$db		= $this->getDbo();
     	$query	= $db->getQuery(true);
-    	
+   	
     	// Select the required fields from the table.
-    	$query->select('d.*, p.parentid as parent, p.track_parentid as track_parent');
+    	$query->select('d.*, p.parentid as parentid, parent.title as parent, p.track_parentid as track_parentid, track_parent.title as track_parent');
     	$query->from('`#__mymuse_downloads` AS d');
         $query->join('LEFT',  '`#__mymuse_product` as p on p.id=d.product_id');
+        $query->join('LEFT',  '`#__mymuse_product` as parent on parent.id=p.parentid');
+        $query->join('LEFT',  '`#__mymuse_product` as track_parent on track_parent.id=p.track_parentid');
 
     	//filter by date
     	$start_date = $this->getState('filter.start_date');
@@ -666,7 +673,6 @@ class ReportsModel extends ListModel
     	$query = $this->getDownloadsQuery();
     	$db->setQuery($query);
     	$res   = $db->loadObjectList();
-  		
     	return $res;
     }
     /**
@@ -695,9 +701,9 @@ class ReportsModel extends ListModel
     	// Filter by order_status
     	$order_status = $this->getState('filter.order_status');
     	if (is_string($order_status) && $order_status != '0') {
-    		$query->where('a.order_status = "'.$order_status.'"');
+    		$query->where('o.order_status = "'.$order_status.'"');
     	} else if ($order_status === '') {
-    		//$query->where('(a.order_status IN (SELECT code from #__mymuse_order_status))');
+    		//$query->where('(o.order_status IN (SELECT code from #__mymuse_order_status))');
     	}
     
     	//filter by date

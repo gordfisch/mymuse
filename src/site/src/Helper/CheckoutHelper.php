@@ -163,8 +163,8 @@ class CheckoutHelper
 			}else{
 				$this->cart[$i]['product'] = $this->MyMuseCart->getProduct($this->cart[$i]["product_id"]);
 			}
-	
-			
+
+
 			$ext = '';
 
 			if(is_object($this->cart[$i]['product']->digital) && $this->cart[$i]['product']->digital->file_name){
@@ -364,7 +364,7 @@ class CheckoutHelper
 			$order->items[$i]->created = $date->toSql();
 			$order->items[$i]->modified = $date->toSql();
 
-			if( 1 == $params->get('my_downloads_enable') && ( !isset($this->cart[$i]["product_physical"]) || !$this->cart[$i]["product_physical"] ) ) {
+			if( 1 == $params->get('my_downloads_enable') &&  isset($this->cart[$i]['product']->file_name) ) {
 				$order->items[$i]->file_name = stripslashes($this->cart[$i]['product']->file_name);
 				if($params->get('my_download_expire') == "-"){
 					$enddate = "0";
@@ -373,7 +373,7 @@ class CheckoutHelper
 				}
 				$order->items[$i]->end_date = $enddate;
 				$order->items[$i]->downloads = 0;
-				if($this->cart[$i]['product']->file_name != ''){
+				if(isset($this->cart[$i]['product']->file_name) && $this->cart[$i]['product']->file_name != ''){
 					$downloadable++;
 				}
 			}
