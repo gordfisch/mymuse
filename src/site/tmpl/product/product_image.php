@@ -1,5 +1,5 @@
 <?php if( ($this->params->get('product_show_product_image') && $this->item->detail_image)) :?>
-	<div class="product-image">
+	<div class="product-image <?php echo $this->itemClass; ?>">
 		<img src="<?php echo JURI::Root().$this->item->detail_image;?>"
 			alt="<?php echo $this->item->title;?>"
 			title="<?php echo $this->item->title;?>" 

@@ -99,15 +99,6 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         </div>
     <?php endif; ?>
 
-    <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
-        <div class="com-mymuse-category-blog__children cat-children">
-    
-            <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
-                <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
-            <?php endif; ?>
-            <?php echo $this->loadTemplate('children'); ?> </div>
-    <?php endif; ?>
-
     <?php if (empty($this->lead_items) && empty($this->link_items) && empty($this->intro_items)) : ?>
         <?php if ($this->params->get('show_no_articles', 1)) : ?>
             <div class="alert alert-info">
@@ -140,10 +131,11 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         <?php if ((int) $this->params->get('num_columns') > 1) : ?>
             <?php $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-'; ?>
             <?php $blogClass .= (int) $this->params->get('num_columns'); ?>
+            <?php $blogItemClass = "uk-width-1-".(int) $this->params->get('num_columns')."@m"; ?>
         <?php endif; ?>
-        <div class="com-mymuse-category-blog__items blog-items <?php echo $blogClass; ?>">
+        <div class="com-mymuse-category-blog__items blog-items <?php echo $blogClass; ?> uk-grid">
         <?php foreach ($this->intro_items as $key => &$item) : ?>
-            <div class="com-mymuse-category-blog__item blog-item"
+            <div class="com-mymuse-category-blog__item blog-item <?php echo $blogItemClass; ?>"
                 itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
                     <?php
                     $this->item = & $item;
@@ -160,6 +152,14 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         </div>
     <?php endif; ?>
 
+    <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
+        <div class="com-mymuse-category-blog__children cat-children">
+    
+            <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
+                <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
+            <?php endif; ?>
+            <?php echo $this->loadTemplate('children'); ?> </div>
+    <?php endif; ?>
     
     <?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
         <div class="com-mymuse-category-blog__navigation w-100">

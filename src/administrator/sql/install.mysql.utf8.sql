@@ -25,7 +25,7 @@ SET sql_mode = '';
 -- Table structure for table `#__mymuse_country`
 --
 
-CREATE TABLE `#__mymuse_country` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_country` (
   `id` int NOT NULL,
   `bloc` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
   `plugin` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -291,7 +291,7 @@ INSERT INTO `#__mymuse_country` (`id`, `bloc`, `plugin`, `country_name`, `countr
 -- Table structure for table `#__mymuse_coupon`
 --
 
-CREATE TABLE `#__mymuse_coupon` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_coupon` (
   `id` int NOT NULL,
   `title` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `state` tinyint NOT NULL DEFAULT '0',
@@ -323,7 +323,7 @@ CREATE TABLE `#__mymuse_coupon` (
 -- Table structure for table `#__mymuse_currency`
 --
 
-CREATE TABLE `#__mymuse_currency` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_currency` (
   `id` int NOT NULL,
   `currency_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `currency_code` char(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -362,7 +362,7 @@ INSERT INTO `#__mymuse_currency` (`id`, `currency_name`, `currency_code`, `symbo
 -- Table structure for table `#__mymuse_downloads`
 --
 
-CREATE TABLE `#__mymuse_downloads` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_downloads` (
   `id` int NOT NULL,
   `user_id` int NOT NULL DEFAULT '1',
   `user_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -379,7 +379,7 @@ CREATE TABLE `#__mymuse_downloads` (
 -- Table structure for table `#__mymuse_format`
 --
 
-CREATE TABLE `#__mymuse_format` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_format` (
   `id` int NOT NULL,
   `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -400,7 +400,7 @@ INSERT INTO `#__mymuse_format` (`id`, `format_key`, `format_value`, `ordering`) 
 -- Table structure for table `#__mymuse_order`
 --
 
-CREATE TABLE `#__mymuse_order` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_order` (
   `id` int NOT NULL,
   `user_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `store_id` int NOT NULL DEFAULT '0',
@@ -420,7 +420,7 @@ CREATE TABLE `#__mymuse_order` (
   `reservation_fee` float(10,2) NOT NULL DEFAULT '0.00',
   `non_res_total` float(10,2) NOT NULL DEFAULT '0.00',
   `pay_now` float(10,2) NOT NULL DEFAULT '0.00',
-  `extra` text COLLATE utf8mb4_unicode_ci,
+  `extra` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `created` datetime NOT NULL,
   `created_by_alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `modified` datetime NOT NULL,
@@ -436,7 +436,7 @@ CREATE TABLE `#__mymuse_order` (
 -- Table structure for table `#__mymuse_order_item`
 --
 
-CREATE TABLE `#__mymuse_order_item` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_order_item` (
   `id` int NOT NULL,
   `order_id` int DEFAULT NULL,
   `product_id` int DEFAULT NULL,
@@ -459,7 +459,7 @@ CREATE TABLE `#__mymuse_order_item` (
 -- Table structure for table `#__mymuse_order_payment`
 --
 
-CREATE TABLE `#__mymuse_order_payment` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_order_payment` (
   `id` int NOT NULL,
   `order_id` int NOT NULL,
   `currency` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -483,7 +483,7 @@ CREATE TABLE `#__mymuse_order_payment` (
 -- Table structure for table `#__mymuse_order_shipping`
 --
 
-CREATE TABLE `#__mymuse_order_shipping` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_order_shipping` (
   `id` int NOT NULL,
   `order_id` int NOT NULL,
   `ship_type` varchar(255) DEFAULT NULL,
@@ -509,7 +509,7 @@ CREATE TABLE `#__mymuse_order_shipping` (
 -- Table structure for table `#__mymuse_order_status`
 --
 
-CREATE TABLE `#__mymuse_order_status` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_order_status` (
   `id` int NOT NULL,
   `code` char(1) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -533,7 +533,7 @@ INSERT INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) VALUES
 -- Table structure for table `#__mymuse_product`
 --
 
-CREATE TABLE `#__mymuse_product` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `id` int UNSIGNED NOT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -591,7 +591,7 @@ CREATE TABLE `#__mymuse_product` (
 -- Table structure for table `#__mymuse_product_attribute`
 --
 
-CREATE TABLE `#__mymuse_product_attribute` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_attribute` (
   `id` int NOT NULL,
   `product_id` int NOT NULL DEFAULT '0',
   `product_attribute_sku_id` int NOT NULL DEFAULT '0',
@@ -605,7 +605,7 @@ CREATE TABLE `#__mymuse_product_attribute` (
 -- Table structure for table `#__mymuse_product_attribute_sku`
 --
 
-CREATE TABLE `#__mymuse_product_attribute_sku` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_attribute_sku` (
   `id` int NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `product_parent_id` int NOT NULL DEFAULT '0',
@@ -620,7 +620,7 @@ CREATE TABLE `#__mymuse_product_attribute_sku` (
 -- Table structure for table `#__mymuse_product_category_xref`
 --
 
-CREATE TABLE `#__mymuse_product_category_xref` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_category_xref` (
   `catid` int NOT NULL DEFAULT '0',
   `product_id` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -631,7 +631,7 @@ CREATE TABLE `#__mymuse_product_category_xref` (
 -- Table structure for table `#__mymuse_product_rating`
 --
 
-CREATE TABLE `#__mymuse_product_rating` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_rating` (
   `product_id` int NOT NULL DEFAULT '0',
   `rating_sum` int UNSIGNED NOT NULL DEFAULT '0',
   `rating_count` int UNSIGNED NOT NULL DEFAULT '0',
@@ -644,7 +644,7 @@ CREATE TABLE `#__mymuse_product_rating` (
 -- Table structure for table `#__mymuse_product_recommend_xref`
 --
 
-CREATE TABLE `#__mymuse_product_recommend_xref` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
   `product_id` int NOT NULL DEFAULT '0',
   `recommend_id` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -655,7 +655,7 @@ CREATE TABLE `#__mymuse_product_recommend_xref` (
 -- Table structure for table `#__mymuse_shopper_group`
 --
 
-CREATE TABLE `#__mymuse_shopper_group` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_shopper_group` (
   `id` int NOT NULL,
   `usergroups_id` int NOT NULL DEFAULT '2',
   `shopper_group_description` text COLLATE utf8mb4_unicode_ci,
@@ -678,7 +678,7 @@ INSERT INTO `#__mymuse_shopper_group` (`id`, `usergroups_id`, `shopper_group_des
 -- Table structure for table `#__mymuse_state`
 --
 
-CREATE TABLE `#__mymuse_state` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_state` (
   `id` int NOT NULL,
   `country_id` int NOT NULL DEFAULT '1',
   `state_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1183,7 +1183,7 @@ INSERT INTO `#__mymuse_state` (`id`, `country_id`, `state_name`, `state_3_code`,
 -- Table structure for table `#__mymuse_store`
 --
 
-CREATE TABLE `#__mymuse_store` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
   `id` int NOT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -1214,7 +1214,7 @@ INSERT INTO `#__mymuse_store` (`id`, `title`, `alias`, `description`, `published
 -- Table structure for table `#__mymuse_tax_rate`
 --
 
-CREATE TABLE `#__mymuse_tax_rate` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_tax_rate` (
   `id` int NOT NULL,
   `published` tinyint(1) DEFAULT '0',
   `province` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

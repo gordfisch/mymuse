@@ -9,7 +9,7 @@ $product = $this->item;
 
 
 if( ($this->params->get('info_block_show'))) : ?>
-	<div class="product-details">
+	<div class="product-details <?php echo $this->itemClass; ?>">
 
 		<?php if( $this->params->get("info_block_show_title",0) ) : ?>
 			<h3 class="product-details-title"><?php echo Text::_('COM_MYMUSE_PRODUCT_DETAILS'); ?></h3>

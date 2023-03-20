@@ -53,10 +53,17 @@ if( $this->params->get('product_show_product_image') && $this->item->detail_imag
 if( $this->params->get('info_block_show')) {
 	$cols++;
 }
+$this->itemClass = "uk-width-1-".$cols."@m";
 ?>
 
+
+
+
+
+
+
 <section id="product-details">
-<div class="product-top blog-items columns-<?php echo $cols; ?>">
+<div class="product-top blog-items columns-<?php echo $cols; ?> uk-grid">
 
 	<?php echo $this->loadTemplate('image'); ?>
 

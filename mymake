@@ -27,27 +27,14 @@ elif  [[ $1 = "test" ]]; then
 
 	if  [[ $2 = "basic" ]]; then
 		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/01-basic
-	elif  [[ $2 = "noreg" ]]; then
-		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/02-noreg
-	elif  [[ $2 = "stock" ]]; then
-		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/03-stock
-
-	#elif  [[ $2 = "storage" ]]; then
-	#	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/storage
-	#elif  [[ $2 ]]; then
-	#	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/$2
-	#else
-	#	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse
-		#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/reports
-		#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/storage
+	else
+		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/01-basic
 	fi
 
 elif  [[ $1 = "all" ]]; then
 	./make_component.sh
 	cd joomla-cms
-	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse
-	#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/reports
-	#libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/storage
+	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/01-basic
 else
 	echo "What no options? webdriver, phing, phing watch, component or test [sub-test] or test reports"
 	echo "sub-tests: AdminLoginCest, MyMuseBasicCest, MyMuseEeStockCest, MyMuseGgShippingCest, "

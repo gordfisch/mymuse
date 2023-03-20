@@ -69,13 +69,7 @@ class OrderTable extends Table implements VersionableTableInterface
 			$this->checked_out = 0;
 		}
 
-		try
-		{
-			parent::store($updateNulls);
-		}
-		catch (\Exception $e)
-		{
-			$this->setError($e->getMessage());
+		if(!parent::store($updateNulls)) {
 
 			return false;
 		}

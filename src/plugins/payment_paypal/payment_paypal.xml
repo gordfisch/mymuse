@@ -75,7 +75,6 @@
         <field name="email_msg" 
         type="editor" 
         filter="raw" 
-        width="200px"
         rows="35" 
         cols="35" 
         default="" 

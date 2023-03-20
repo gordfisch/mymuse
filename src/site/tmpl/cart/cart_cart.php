@@ -121,22 +121,19 @@ for ($i=0;$i<count($order->items); $i++) {
 		  // LOOP THRU order_items
 		  for ($i=0;$i<count($order_item); $i++) { ?>
 		  	<li class="item-container cols-<?php echo $cols; ?>">
-			    
 		        <div class="mytitle mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_TITLE'); ?>">
 		        <?php if(isset($order_item[$i]->artist->title) && $params->get('my_show_category_name')){ ?>
 		        	 <?php echo $order_item[$i]->artist->title; ?> : 
 		        <?php } ?>
 		        
-		        <?php if(isset($order_item[$i]->product->parent->title)){ ?>
-		        	 <?php echo $order_item[$i]->product->parent->title; ?> :
+		        <?php if(isset($order_item[$i]->parent_title)){ ?>
+		        	 <?php echo $order_item[$i]->parent_title; ?> :
 		        <?php } ?>
 
 		        <?php echo $order_item[$i]->title; ?>
-		        
-		        <?php if(isset($order_item[$i]->format) && $order_item[$i]->format != ''){ ?>
-		        	 : <?php echo $order_item[$i]->format; ?> 
-		        <?php } elseif(isset($order_item[$i]->ext) && $order_item[$i]->ext != ''){ ?>
-		        	 : <?php echo $order_item[$i]->ext ?> 
+
+		        <?php if(isset($order_item[$i]->file_name)){ ?>
+		        	 <br /><?php echo $order_item[$i]->file_name; ?> 
 		        <?php } ?>
 
 		        <?php if($order->items[$i]->backordered || $order_item[$i]->product_in_stock == -1){ 
@@ -290,7 +287,7 @@ for ($i=0;$i<count($order->items); $i++) {
 			    	$key = preg_replace("/_/"," ", $key);
 			    	?>
 			        <li class="item-container summary cols-<?php echo $cols; ?>">
-			        	<div class="cart mymuse-mobile-hide" ><?php echo $key; ?></div>
+			        	<div class="cart mymuse-mobile-hide" ><?php echo Text::_('COM_MYMUSE_TAX'); ?> <?php echo $key; ?></div>
 			        	<?php for($i = 3; $i <= $cols; $i++){
 			        		?><div></div>
 			        	<?php } ?>

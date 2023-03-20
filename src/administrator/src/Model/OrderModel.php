@@ -217,7 +217,7 @@ class OrderModel extends AdminModel
 				$item_id = $item->items[$i]->id;
 				$item_stock = $item->items[$i]->product_in_stock;
 
-				$item->items[$i]->parent_name = '';
+				$item->items[$i]->parent_title = '';
 				$item->items[$i]->category_name = '';
 				$query = "SELECT p.*, c.title as category_name
 						FROM #__mymuse_product as p LEFT JOIN #__categories as c ON c.id=p.catid
@@ -246,7 +246,7 @@ class OrderModel extends AdminModel
 					$query = "SELECT title from #__mymuse_product
 							WHERE id = '".$item->items[$i]->parentid."'";
 					$db->setQuery( $query );
-					$item->items[$i]->parent_name = $db->loadResult();
+					$item->items[$i]->parent_title = $db->loadResult();
 				}
 				
 			}

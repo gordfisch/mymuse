@@ -13,24 +13,24 @@ stdClass Object
     [state] => 1
     [price] => Array
         (
-            [product_price] => 3
-            [product_original_price] => 3
+            [product_price] => 2
+            [product_original_price] => 2
             [product_shoppergroup_discount] => 0
             [product_shoppergroup_discount_amount] => 0
             [product_discount] => 0.00
         )
 
     [product_discount] => 0.00
-    [catid] => 449
-    [artistid] => 448
-    [created] => 2023-03-18 17:13:15
+    [catid] => 443
+    [artistid] => 442
+    [created] => 2023-03-11 16:03:45
     [created_by] => 373
     [created_by_alias] => joomlatest
-    [modified] => 2023-03-18 17:13:15
+    [modified] => 2023-03-11 16:03:45
     [modified_by] => 373
     [checked_out] => 
     [checked_out_time] => 
-    [publish_up] => 2023-03-18 17:13:15
+    [publish_up] => 2023-03-11 16:03:45
     [publish_down] => 
     [list_image] => 
     [detail_image] => 
@@ -55,14 +55,14 @@ stdClass Object
     [physical] => 
     [digital] => stdClass Object
         (
-            [file_name] => are-you-my-sister.wav
-            [file_length] => 38514732
-            [file_ext] => wav
+            [file_name] => are-you-my-sister.mp3
+            [file_length] => 3494653
+            [file_ext] => mp3
             [file_downloads] => 0
             [file_time] => 3:38
             [file_type] => audio
-            [file_format] => WAV
-            [file_id] => 21
+            [file_format] => MP3
+            [file_id] => 20
         )
 
     [version] => 1
@@ -86,7 +86,7 @@ stdClass Object
     [product_allfiles] => 0
     [product_release_date] => 2018-11-28
     [file_preview] => are-you-my-sister-preview.mp3
-    [special_status] => 0
+    [special_status] => COM_MYMUSE_PREORDER
     [product_in_stock] => 1
     [recording] => Joomla\Registry\Registry Object
         (
@@ -115,10 +115,7 @@ stdClass Object
     [artist_title] => Iron Brew
     [artist_alias] => iron-brew
     [artist_access] => 1
-    [params] => Joomla\Registry\Registry Object
-        (
-           ...
-        )
+
 
     [othercats] => 
     [attribute_sku] => Array
@@ -131,9 +128,9 @@ stdClass Object
 
     [category] => stdClass Object
         (
-            [id] => 449
-            [asset_id] => 1141
-            [parent_id] => 447
+            [id] => 443
+            [asset_id] => 1114
+            [parent_id] => 441
             [lft] => 21
             [rgt] => 22
             [level] => 3
@@ -152,20 +149,20 @@ stdClass Object
             [metakey] => 
             [metadata] => {"author":"","robots":""}
             [created_user_id] => 373
-            [created_time] => 2023-03-18 17:05:37
+            [created_time] => 2023-03-11 15:56:00
             [modified_user_id] => 373
-            [modified_time] => 2023-03-18 17:05:38
+            [modified_time] => 2023-03-11 15:56:01
             [hits] => 0
             [language] => *
             [version] => 1
-            [link] => index.php?option=com_mymuse&view=category&id=449
+            [link] => index.php?option=com_mymuse&view=category&id=443
         )
 
     [artist] => stdClass Object
         (
-            [id] => 448
-            [asset_id] => 1140
-            [parent_id] => 446
+            [id] => 442
+            [asset_id] => 1113
+            [parent_id] => 440
             [lft] => 15
             [rgt] => 16
             [level] => 3
@@ -184,27 +181,27 @@ stdClass Object
             [metakey] => 
             [metadata] => {"author":"","robots":""}
             [created_user_id] => 373
-            [created_time] => 2023-03-18 17:05:35
+            [created_time] => 2023-03-11 15:55:58
             [modified_user_id] => 373
-            [modified_time] => 2023-03-18 17:05:35
+            [modified_time] => 2023-03-11 15:55:58
             [hits] => 0
             [language] => *
             [version] => 1
             [parent_title] => Artists
-            [link] => index.php?option=com_mymuse&view=category&id=448
+            [link] => index.php?option=com_mymuse&view=category&id=442
         )
 
-    [file_name] => are-you-my-sister.wav
-    [ext] => wav
-    [format] => WAV
+    [file_name] => are-you-my-sister.mp3
+    [ext] => mp3
+    [format] => MP3
     [backordered] => 0
     [product_id] => 19
     [order_item_total] => 0
     [not_in_total] => 0
     [quantity] => 1
-    [product_item_price] => 3
-    [product_item_subtotal] => 3
-    [delete_url] => /mymuseJ4/joomla-cms/index.php/my-cart/cartdelete?product_id=19
-    [url] => index.php?option=com_mymuse&view=product&id=1&catid=448
-    [cat_url] => index.php?option=com_mymuse&view=category&id=448
+    [product_item_price] => 2
+    [product_item_subtotal] => 2
+    [delete_url] => /mymuseJ4/joomla-cms/index.php/single/cartdelete?product_id=19
+    [url] => index.php?option=com_mymuse&view=product&id=1&catid=442
+    [cat_url] => index.php?option=com_mymuse&view=category&id=442
     [flash] => 

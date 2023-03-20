@@ -305,7 +305,7 @@
 			name="show_featured"
 			type="list"
 			label="JGLOBAL_SHOW_FEATURED_ARTICLES_LABEL"
-			validate="options"
+			
 			useglobal="true"
 			class="form-select-color-state"
 			parentclass="stack span-1"

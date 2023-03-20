@@ -1,20 +1,24 @@
 stdClass Object
 (
-    [id] => 19
-    [asset_id] => 1122
-    [parentid] => 1
+    [id] => 14
+    [asset_id] => 142
+    [parentid] => 9
     [track_parentid] => 0
-    [title] => Are You My Sister Song
-    [product_sku] => IronBrew01-Track1
-    [alias] => are-you-my-sister-song
+    [title] => My Hoodies-Black-M
+    [product_sku] => my-hoodies-9-Black-M
+    [alias] => my-hoodies-black-m
     [title_alias] => 
     [introtext] => 
+The Best hoodies to be had.
+
+
     [fulltext] => 
     [state] => 1
     [price] => Array
         (
-            [product_price] => 3
-            [product_original_price] => 3
+            [item] => 
+            [product_price] => 25
+            [product_original_price] => 25
             [product_shoppergroup_discount] => 0
             [product_shoppergroup_discount_amount] => 0
             [product_discount] => 0.00
@@ -23,75 +27,82 @@ stdClass Object
     [product_discount] => 0.00
     [catid] => 449
     [artistid] => 448
-    [created] => 2023-03-18 17:13:15
+    [created] => 2023-03-18 17:06:39
     [created_by] => 373
     [created_by_alias] => joomlatest
-    [modified] => 2023-03-18 17:13:15
+    [modified] => 2023-03-18 17:06:41
     [modified_by] => 373
     [checked_out] => 
     [checked_out_time] => 
-    [publish_up] => 2023-03-18 17:13:15
+    [publish_up] => 2023-03-18 17:06:39
     [publish_down] => 
-    [list_image] => 
-    [detail_image] => 
-    [product_images] => 
+    [list_image] => images/mymuse/merchandise/my-hoodies/my-hoodies-black.png
+    [detail_image] => images/mymuse/merchandise/my-hoodies/my-hoodies-black.png
+    [product_images] => mymuse/merchandise/my-hoodies
     [attribs] => Joomla\Registry\Registry Object
         (
             [data:protected] => stdClass Object
                 (
                     [media_rls] => 
                     [media_link] => 
-                    [product_price_physical] => 20.00
-                    [product_price_mp3] => 2.00
-                    [product_price_mp3_all] => 10.00
-                    [product_price_wav] => 3.00
-                    [product_price_wav_all] => 15.00
                 )
 
             [initialized:protected] => 1
             [separator] => .
         )
 
-    [physical] => 
-    [digital] => stdClass Object
+    [physical] => Joomla\Registry\Registry Object
         (
-            [file_name] => are-you-my-sister.wav
-            [file_length] => 38514732
-            [file_ext] => wav
-            [file_downloads] => 0
-            [file_time] => 3:38
-            [file_type] => audio
-            [file_format] => WAV
-            [file_id] => 21
+            [data:protected] => stdClass Object
+                (
+                    [product_weight] => 3
+                    [product_weight_uom] => LBS
+                    [product_length] => 12.5
+                    [product_width] => 12.5
+                    [product_height] => .5
+                    [product_lwh_uom] => IN
+                )
+
+            [initialized:protected] => 1
+            [separator] => .
         )
 
-    [version] => 1
-    [ordering] => 13
+    [digital] => 
+    [version] => 2
+    [ordering] => 8
     [metakey] => 
     [metadesc] => 
     [metadata] => Joomla\Registry\Registry Object
         (
             [data:protected] => stdClass Object
                 (
+                    [robots] => 
+                    [author] => 
+                    [rights] => 
                 )
 
-            [initialized:protected] => 
+            [initialized:protected] => 1
             [separator] => .
         )
 
     [access] => 1
     [hits] => 0
-    [product_physical] => 0
-    [product_downloadable] => 1
+    [product_physical] => 1
+    [product_downloadable] => 0
     [product_allfiles] => 0
-    [product_release_date] => 2018-11-28
-    [file_preview] => are-you-my-sister-preview.mp3
+    [product_release_date] => 2018-12-28
+    [file_preview] => 
     [special_status] => 0
-    [product_in_stock] => 1
+    [product_in_stock] => 5
     [recording] => Joomla\Registry\Registry Object
         (
             [data:protected] => stdClass Object
                 (
+                    [product_full_time] => 
+                    [product_studio] => 
+                    [product_publisher] => 
+                    [product_producer] => 
+                    [product_country] => 
                 )
 
             [initialized:protected] => 1
@@ -106,9 +117,9 @@ stdClass Object
     [category_access] => 1
     [category_language] => *
     [author] => Gord Tester
-    [parent_title] => Are You My Sister
-    [parent_id] => 1
-    [parent_alias] => are-you-my-sister
+    [parent_title] => My Hoodies
+    [parent_id] => 9
+    [parent_alias] => my-hoodies
     [parent_language] => *
     [rating] => 
     [rating_count] => 
@@ -117,7 +128,7 @@ stdClass Object
     [artist_access] => 1
     [params] => Joomla\Registry\Registry Object
         (
-           ...
+            ...
         )
 
     [othercats] => 
@@ -194,17 +205,15 @@ stdClass Object
             [link] => index.php?option=com_mymuse&view=category&id=448
         )
 
-    [file_name] => are-you-my-sister.wav
-    [ext] => wav
-    [format] => WAV
+    [ext] => 
     [backordered] => 0
-    [product_id] => 19
+    [product_id] => 14
     [order_item_total] => 0
     [not_in_total] => 0
     [quantity] => 1
-    [product_item_price] => 3
-    [product_item_subtotal] => 3
-    [delete_url] => /mymuseJ4/joomla-cms/index.php/my-cart/cartdelete?product_id=19
-    [url] => index.php?option=com_mymuse&view=product&id=1&catid=448
+    [product_item_price] => 25
+    [product_item_subtotal] => 25
+    [delete_url] => /mymuseJ4/joomla-cms/index.php/component/mymuse/cartdelete?product_id=14&Itemid=
+    [url] => index.php?option=com_mymuse&view=product&id=9&catid=448
     [cat_url] => index.php?option=com_mymuse&view=category&id=448
     [flash] => 

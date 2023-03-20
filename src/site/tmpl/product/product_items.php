@@ -38,7 +38,7 @@ endif;
 
 	@media (min-width: 768px) {
   		.items-container {
-      		grid-template-columns: 5fr<?php echo str_repeat(' 1fr',$cols); ?>;
+      		grid-template-columns: 2fr<?php echo str_repeat(' 1fr',$cols); ?>;
       	}
   	}
 	</style>

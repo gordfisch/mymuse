@@ -139,8 +139,8 @@ class Com_MymuseInstallerScript
         {
             try
             {
-                $minJoomla = '3.8.0';
-                $minPHP = '5.4.0';
+                $minJoomla = '3.10.0';
+                $minPHP = '7.4.0';
 
                 $jversion = new JVersion();
                 if (!$jversion->isCompatible($this->minimumJoomlaVersion))
@@ -199,7 +199,7 @@ class Com_MymuseInstallerScript
 
         }
         
-
+//echo "convert = ".$this->convertTo4." old version = ".$this->old_version; exit;
         if($this->convertTo4 == 1){
 
             echo "<h3>Convert to Mymuse 5 for Joomla 4</h3>";
@@ -305,6 +305,7 @@ class Com_MymuseInstallerScript
 
         }
 
+ 
         return true;
     }
     /**
@@ -404,6 +405,56 @@ class Com_MymuseInstallerScript
     public function update($parent): bool
     {
         /*echo Text::_('COM_MYMUSE_INSTALLERSCRIPT_UPDATE');*/
+
+        $query = "SHOW COLUMNS FROM #__mymuse_format LIKE 'id'";
+        $this->db->setQuery($query);
+        try 
+        {
+            $this->db->loadObject();
+        }
+        catch (\Exception $e)
+        {
+            $query = "
+                CREATE TABLE `#__mymuse_format` (
+                  `id` int NOT NULL,
+                  `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                  `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                  `ordering` int NOT NULL DEFAULT '0'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+            $this->db->setQuery($query);
+            try
+            {
+                $this->db->execute();
+            }
+            catch (\Exception $e)
+            {
+                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                return false;
+            }
+
+            $query = "INSERT INTO `#__mymuse_format` (`id`, `format_key`, `format_value`, `ordering`) VALUES
+                (1, 'MP3', 'mp3', 1),
+                (2, 'WAV', 'wav', 2);
+                ";
+            $this->db->setQuery($query);
+            try
+            {
+                $this->db->execute();
+            }
+            catch (\Exception $e)
+            {
+                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                return false;
+            }
+
+
+
+            $this->convert_actions [] = array (
+                'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
+                'message' => Text::_ ( "COM_MYMUSE_ADD_FORMAT_TABLE"),
+                'status' => 1
+            );
+        }
         return true;
     }
 
@@ -504,7 +555,7 @@ class Com_MymuseInstallerScript
                 "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL;",
 
                 "ALTER TABLE `#__mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
-                "ALTER TABLE `#__mymuse_order` ALTER `extra` DROP DEFAULT;",
+                "ALTER TABLE `#__mymuse_order` ALTER `extra` SET DEFAULT '';",
                 "ALTER TABLE `#__mymuse_order` ALTER `licence` SET DEFAULT '';",
                 "ALTER TABLE `#__mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL;",
@@ -521,6 +572,23 @@ class Com_MymuseInstallerScript
                 "ALTER TABLE `#__mymuse_order_item`  MODIFY  `modified` datetime NOT NULL;",
                 "ALTER TABLE `#__mymuse_order_item` MODIFY `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_order_item` MODIFY `end_date` int DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `checked_out_time` datetime DEFAULT NULL;",
+
+
+                "ALTER TABLE `#__mymuse_order_shipping` DROP  `ordering`;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `created` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_carrier_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_carrier_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_method_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_method_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
+                "UPDATE `#__mymuse_order_shipping` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_order_shipping` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `extra` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''",
+
+
+
             );
 
             foreach($queries as $query){
@@ -544,41 +612,7 @@ class Com_MymuseInstallerScript
                 );
             }
 
-            $query = "SHOW COLUMNS FROM #__mymuse_format LIKE 'id'";
-            $this->db->setQuery($query);
-            if(!$col = $this->db->loadObject()){
-                $query = "
-                    CREATE TABLE `#__mymuse_format` (
-                      `id` int NOT NULL,
-                      `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                      `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                      `ordering` int NOT NULL DEFAULT '0'
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-                    --
-                    -- Dumping data for table `#_mymuse_format`
-                    --
 
-                    INSERT INTO `#__mymuse_format` (`id`, `format_key`, `format_value`, `ordering`) VALUES
-                    (1, 'MP3', 'mp3', 1),
-                    (2, 'WAV', 'wav', 2);
-                    ";
-                $this->db->setQuery($query);
-                try
-                {
-                    $this->db->execute();
-                }
-                catch (\Exception $e)
-                {
-                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-                    return false;
-                }
-                $this->convert_actions [] = array (
-                    'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
-                    'message' => Text::_ ( "COM_MYMUSE_ADD_FORMAT_TABLE"),
-                    'status' => 1
-                );
-
-            }
 
             /* update store params */
             $query = "SELECT * from `#__mymuse_store` WHERE id='1'";

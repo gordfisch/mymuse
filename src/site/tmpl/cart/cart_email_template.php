@@ -61,7 +61,7 @@ foreach($order->items as $item){
  	}
 } 
 
-$link = ROUTE::_($order->downloadlink);
+$link = Route::_($order->downloadlink);
 
 
 $download_header .= '
@@ -136,7 +136,8 @@ if($downloads && $order->order_status == "C"){
         </tr>
         <tr>
             <td><?php echo Text::_('COM_MYMUSE_ORDER_TOTAL') ?>:</td>
-            <td><?php echo MyMuseHelper::printMoney($order->order_total)." ".$order->order_currency ?></td>
+            <td><?php echo MyMuseHelper::printMoney($order->order_total)." ".
+            $order->order_currency ?></td>
         </tr>
     <?php if($order->reservation_fee > 0){ ?>
         <tr>
@@ -211,31 +212,31 @@ if($downloads && $order->order_status == "C"){
 				<?php }?>
                 
                 
-                <?php if($shopper->postal_code){?>
+                <?php if(isset($shopper->postal_code)){?>
                 <tr>
                 <td><?php echo Text::_('COM_MYMUSE_ZIP') ?>:</td>
                 <td><?php echo $shopper->postal_code ?></td>
                 </tr>
                 <?php }?>
-                <?php if($shopper->country){?>
+                <?php if(isset($shopper->country)){?>
                 <tr>
                 <td><?php echo Text::_('COM_MYMUSE_COUNTRY') ?>:</td>
                 <td><?php echo $shopper->country ?></td>
                 </tr>
                 <?php }?>
-                <?php if($shopper->phone ){?>
+                <?php if(isset($shopper->phone )){?>
                 <tr>
                 <td><?php echo Text::_('COM_MYMUSE_PHONE') ?>:</td>
                 <td><?php echo $shopper->phone ?></td>
                 </tr>
                 <?php }?>
-                <?php if($shopper->mobile){?>
+                <?php if(isset($shopper->mobile)){?>
                 <tr>
                 <td><?php echo Text::_('COM_MYMUSE_MOBILE') ?>:</td>
                 <td><?php echo $shopper->mobile ?></td>
                 </tr>
                 <?php }?>
-                <?php if($shopper->fax){?>
+                <?php if(isset($shopper->fax)){?>
                 <tr>
                 <td><?php echo Text::_('COM_MYMUSE_FAX') ?>:</td>
                 <td><?php echo $shopper->fax ?></td>
@@ -253,6 +254,7 @@ if($downloads && $order->order_status == "C"){
 
         
         <?php 
+
         if($params->get('my_use_shipping') 
         		&& $order->order_shipping > 0
         		&& isset($shopper->profile['shipping_first_name'])
@@ -321,6 +323,7 @@ if($downloads && $order->order_status == "C"){
 			</tr>
 		
 		<?php
+		
 		  // LOOP THRU order_items
 		  for ($i=0;$i<count($order->items);$i++) { 
 		      if ($i % 2){
@@ -340,8 +343,8 @@ if($downloads && $order->order_status == "C"){
 		        if($order_item[$i]->product->artist->title != ''){
 		        	echo $order_item[$i]->product->artist->title." : ";
 		        }
-		        if($order_item[$i]->parent_title != ''){
-		        	echo $order_item[$i]->parent_title." : ";
+		        if($order_item[$i]->product->parent_title != ''){
+		        	echo $order_item[$i]->product->parent_title." : ";
 		        }
 		        ?>
 		        

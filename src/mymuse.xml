@@ -84,11 +84,11 @@
 	</uninstall>
 
 	<files folder="site">
-		<filename>log.txt</filename>
 		<folder>assets</folder>
+		<folder>forms</folder>
 		<folder>src</folder>
 		<folder>tmpl</folder>
-
+		<filename>log.txt</filename>
 	</files>
 
 	<languages folder="site/language">

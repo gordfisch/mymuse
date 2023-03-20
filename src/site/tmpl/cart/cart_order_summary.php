@@ -36,21 +36,21 @@ $params 	= $this->params;
         </li>
         <li class="mymuse-grid-1-2">
             <div class="mobile-hide"><?php echo Text::_('COM_MYMUSE_ORDER_TOTAL') ?>:</div>
-            <div class="mysummarytotal"><?php echo MyMuseHelper::printMoney($order->order_total)." ".$order->order_currency['currency_code'] ?></div>
+            <div class="mysummarytotal"><?php echo MyMuseHelper::printMoney($order->order_total)." ".$order->order_currency ?></div>
         </li>
     <?php if($order->reservation_fee > 0){ ?>
         <li class="mymuse-grid-1-2">
             <div class="mobile-hide"><?php echo Text::_('COM_MYMUSE_RESERVATION_FEE') ?>:</div>
-            <div class="myreservationfee"><?php echo MyMuseHelper::printMoney($order->reservation_fee)." ".$order->order_currency['currency_code'] ?></div>
+            <div class="myreservationfee"><?php echo MyMuseHelper::printMoney($order->reservation_fee)." ".$order->order_currency ?></div>
         </li>
     <?php if($order->non_res_total > 0){ ?>
     	<li class="mymuse-grid-1-2">
         	<div class="mobile-hide"><?php echo Text::_('COM_MYMUSE_OTHER_CHARGES') ?>:</div>
-        	<div class="myothercharges"><?php echo MyMuseHelper::printMoney($order->non_res_total)." ".$order->order_currency['currency_code'] ?></div>
+        	<div class="myothercharges"><?php echo MyMuseHelper::printMoney($order->non_res_total)." ".$order->order_currency ?></div>
     	</li>
     	<li class="mymuse-grid-1-2">
             <div class="mobile-hide"><?php echo Text::_('COM_MYMUSE_PAID') ?>:</div>
-            <div class="mypaid"><?php echo MyMuseHelper::printMoney($order->pay_now)." ".$order->order_currency['currency_code'] ?></div>
+            <div class="mypaid"><?php echo MyMuseHelper::printMoney($order->pay_now)." ".$order->order_currency ?></div>
         </li>
     	<?php } ?>
     <?php } ?>

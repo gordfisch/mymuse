@@ -30,6 +30,7 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
+use Joomla\Component\Mymuse\Site\Helper\QueryHelper;
 use Joomla\Component\Mymuse\Site\Model\StoreModel;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
@@ -693,7 +694,7 @@ class HtmlView extends BaseHtmlView
 		if ($order == 0 && $this->columns > 1)
 		{
 			// call order down helper
-			$this->intro_items = ProductHelperQuery::orderDownColumns($this->intro_items, $this->columns);
+			$this->intro_items = QueryHelper::orderDownColumns($this->intro_items, $this->columns);
 		}
 
 		// The remainder are the links.

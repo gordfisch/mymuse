@@ -19,6 +19,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
@@ -80,7 +81,7 @@ class  plgMymuseShipping_Standard extends CMSPlugin
         $j = 0;
         $user_country = '';
         //see if we have a shipping address
-        if(isset($shopper->profile['shipping_country'])){
+        if(isset($shopper->profile['shipping_country']) && $shopper->profile['shipping_country'] != ''){
         	$user_country = $shopper->profile['shipping_country'];
         }elseif(isset($shopper->profile['country'])){
         	$user_country = $shopper->profile['country'];
@@ -105,7 +106,7 @@ class  plgMymuseShipping_Standard extends CMSPlugin
             	}
            
             	if($good){
-                	$result[$j] 	= new JObject;
+                	$result[$j] 	= new CMSObject;
 					$result [$j]->id = $i;
 					$carrier = "ship_carrier_" . $i;
 					$method = "ship_method_" . $i;

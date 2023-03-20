@@ -183,7 +183,7 @@ class ProductModel extends ItemModel
 							$db->quoteName('u.name', 'author'),
 							$db->quoteName('parent.title', 'parent_title'),
 							$db->quoteName('parent.id', 'parent_id'),
-							$db->quoteName('parent.path', 'parent_route'),
+							//$db->quoteName('parent.path', 'parent_route'),
 							$db->quoteName('parent.alias', 'parent_alias'),
 							$db->quoteName('parent.language', 'parent_language'),
 							'ROUND(' . $db->quoteName('v.rating_sum') . ' / ' . $db->quoteName('v.rating_count') . ', 1) AS '
@@ -198,7 +198,7 @@ class ProductModel extends ItemModel
 						$db->quoteName('c.id') . ' = ' . $db->quoteName('a.catid')
 					)
 					->join('LEFT', $db->quoteName('#__users', 'u'), $db->quoteName('u.id') . ' = ' . $db->quoteName('a.created_by'))
-					->join('LEFT', $db->quoteName('#__categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('c.parent_id'))
+					->join('LEFT', $db->quoteName('#__mymuse_product', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('a.parentid'))
 					->join('LEFT', $db->quoteName('#__content_rating', 'v'), $db->quoteName('a.id') . ' = ' . $db->quoteName('v.content_id'))
 					->select('art.title AS artist_title, art.alias AS artist_alias, art.access AS artist_access')
 					->join('LEFT', '#__categories AS art on art.id = a.artistid')

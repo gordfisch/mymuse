@@ -1,20 +1,20 @@
 stdClass Object
 (
-    [id] => 19
-    [asset_id] => 1122
+    [id] => 25
+    [asset_id] => 1128
     [parentid] => 1
     [track_parentid] => 0
-    [title] => Are You My Sister Song
-    [product_sku] => IronBrew01-Track1
-    [alias] => are-you-my-sister-song
+    [title] => Sister All Tracks
+    [product_sku] => AYMS-all
+    [alias] => sister-all-tracks
     [title_alias] => 
     [introtext] => 
     [fulltext] => 
     [state] => 1
     [price] => Array
         (
-            [product_price] => 3
-            [product_original_price] => 3
+            [product_price] => 10
+            [product_original_price] => 10
             [product_shoppergroup_discount] => 0
             [product_shoppergroup_discount_amount] => 0
             [product_discount] => 0.00
@@ -23,14 +23,14 @@ stdClass Object
     [product_discount] => 0.00
     [catid] => 449
     [artistid] => 448
-    [created] => 2023-03-18 17:13:15
+    [created] => 2023-03-18 17:13:21
     [created_by] => 373
     [created_by_alias] => joomlatest
-    [modified] => 2023-03-18 17:13:15
+    [modified] => 2023-03-18 17:13:21
     [modified_by] => 373
     [checked_out] => 
     [checked_out_time] => 
-    [publish_up] => 2023-03-18 17:13:15
+    [publish_up] => 2023-03-18 17:13:21
     [publish_down] => 
     [list_image] => 
     [detail_image] => 
@@ -55,18 +55,17 @@ stdClass Object
     [physical] => 
     [digital] => stdClass Object
         (
-            [file_name] => are-you-my-sister.wav
-            [file_length] => 38514732
-            [file_ext] => wav
+            [file_name] => sister-all-tracks-full-release.mp3
+            [file_length] => 
+            [file_ext] => mp3
             [file_downloads] => 0
-            [file_time] => 3:38
-            [file_type] => audio
-            [file_format] => WAV
-            [file_id] => 21
+            [file_time] => 
+            [file_format] => mp3
+            [file_id] => 26
         )
 
     [version] => 1
-    [ordering] => 13
+    [ordering] => 19
     [metakey] => 
     [metadesc] => 
     [metadata] => Joomla\Registry\Registry Object
@@ -83,9 +82,9 @@ stdClass Object
     [hits] => 0
     [product_physical] => 0
     [product_downloadable] => 1
-    [product_allfiles] => 0
+    [product_allfiles] => 1
     [product_release_date] => 2018-11-28
-    [file_preview] => are-you-my-sister-preview.mp3
+    [file_preview] => 
     [special_status] => 0
     [product_in_stock] => 1
     [recording] => Joomla\Registry\Registry Object
@@ -117,7 +116,7 @@ stdClass Object
     [artist_access] => 1
     [params] => Joomla\Registry\Registry Object
         (
-           ...
+            ...
         )
 
     [othercats] => 
@@ -194,17 +193,18 @@ stdClass Object
             [link] => index.php?option=com_mymuse&view=category&id=448
         )
 
-    [file_name] => are-you-my-sister.wav
-    [ext] => wav
-    [format] => WAV
+    [file_name] => sister-all-tracks-full-release.mp3
+    [ext] => mp3
+    [format] => mp3
     [backordered] => 0
-    [product_id] => 19
+    [product_id] => 25
     [order_item_total] => 0
     [not_in_total] => 0
     [quantity] => 1
-    [product_item_price] => 3
-    [product_item_subtotal] => 3
-    [delete_url] => /mymuseJ4/joomla-cms/index.php/my-cart/cartdelete?product_id=19
+    [product_item_price] => 10
+    [product_item_subtotal] => 10
+    [delete_url] => /mymuseJ4/joomla-cms/index.php/single/cartdelete?product_id=25
     [url] => index.php?option=com_mymuse&view=product&id=1&catid=448
     [cat_url] => index.php?option=com_mymuse&view=category&id=448
     [flash] => 
+)

@@ -229,9 +229,9 @@ class HtmlView extends BaseHtmlView
 			}
 
 			if(is_array($order->order_currency)){
-				$order->currency_code = $order->order_currency['currency_code'];
+				$order->order_currency = $order->order_currency['currency_code'];
 			}else{
-				$order->currency_code = $order->order_currency;
+				$order->order_currency = $order->order_currency;
 			}
 
 			$result = Array
@@ -252,7 +252,7 @@ class HtmlView extends BaseHtmlView
 					'user_email' => $order->user->profile['email'],
 					'userid' => $order->user_id,
 					'amountin' => $order->order_total,
-					'currency' => $order->currency_code,
+					'currency' => $order->order_currency,
 					'rate' => '',
 					'fees' => '',
 					'transaction_id' => '',
@@ -519,7 +519,7 @@ class HtmlView extends BaseHtmlView
 				
 		$this->order = $order;
 		$this->currency = $this->store->currency;
-		
+
 		//START CAPTURING THE DISPLAY PARTS
 		
 		//download page if necessary
@@ -1103,7 +1103,8 @@ class HtmlView extends BaseHtmlView
 
 		$order->user->discount = $order->user->shopper_group->discount;
 		$order->user->shopper_group_name = $order->user->shopper_group->shopper_group_name;
-		
+
+
 		$this->user = $shopper = $order->user;
 		
 		if(2 == $params->get('my_price_by_product',0)){
@@ -1131,7 +1132,7 @@ class HtmlView extends BaseHtmlView
 		if($order->notes && ($params->get('my_registration') == "no_reg" || $this->user->username == "buyer") ){
 
 			$debug = "makeMail: Order Notes = ".print_r($order->notes,true)."\n";
-			MyMuseHelper::logMessage( $debug  );
+			//MyMuseHelper::logMessage( $debug  );
 			//$accparams = new Registry( $order->notes);
 			$registry = new Registry;
 			$notes_params = $registry->loadString($order->notes);
@@ -1149,8 +1150,25 @@ class HtmlView extends BaseHtmlView
 			$shopper->postal_code 	= isset($order->notes['postal_code'])? $order->notes['postal_code'] : '';
 			$shopper->country       = isset($order->notes['country'])? $order->notes['country'] : '';
 			$shopper->region_name   = isset($order->notes['region_name'])? $order->notes['region_name'] : '';
+		}else{
+			
+			$shopper->name          = isset($this->user->profile['name'])? $this->user->profile['name'] : '';
+			$shopper->email         = isset($this->user->profile['email'])? $this->user->profile['email'] : '';
+			$shopper->first_name    = isset($this->user->profile['first_name'])? $this->user->profile['first_name'] : '';
+			$shopper->last_name     = isset($this->user->profile['last_name'])? $this->user->profile['last_name'] : '';
+			$shopper->address1 		= isset($this->user->profile['address1'])? $this->user->profile['address1'] : '';
+			$shopper->address2 		= isset($this->user->profile['address2'])? $this->user->profile['address2'] : '';
+			$shopper->city 			= isset($this->user->profile['city'])? $this->user->profile['city'] : '';
+			$shopper->postal_code 	= isset($this->user->profile['postal_code'])? $this->user->profile['postal_code'] : '';
+			$shopper->country       = isset($this->user->profile['country'])? $this->user->profile['country'] : '';
+			$shopper->region_name   = isset($this->user->profile['region_name'])?$this->user->profile['region_name'] : '';
+			if(!$shopper->first_name){
+				@list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
+			}
+			
+
 		}
-		 
+
 		$user_email 	= $this->user->email;
 		$task = $jinput->get('task','');
 
@@ -1158,14 +1176,14 @@ class HtmlView extends BaseHtmlView
 		$this->task = $task;
 		$this->shopper = $shopper;
 
-		$this->order = $order;
+		$this->item = $order;
 		$this->currency = $currency;
 		$this->heading = $heading;
 		$this->message = $message;
 		
 		$subject =  $this->store->title." - ".Text::_('COM_MYMUSE_ORDER_CONFIRMATION');
 		
-		
+
 		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
 		$download_header = '';
 		 
@@ -1198,41 +1216,46 @@ class HtmlView extends BaseHtmlView
 		}
 		
 		//include_once( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
-		 
+		/*
+		if(is_array($order->order_currency)){
+			$order->order_currency = $order->order_currency['currency_code'];
+		}else{
+			$order->order_currency = $order->order_currency;
+		}
+		*/
+		if(isset($order->order_shipping) && isset($order->order_shipping->cost)){
+			$order->order_shipping = $order->order_shipping->cost;
+		}
+		
 		
 		$contents  = '';
 		$do_not_display_children = 1;
 		$this->do_not_display_children = $do_not_display_children;
-		
+/*		
 		ob_start();
 		parent::display('email_header');
 		$header = ob_get_contents();
 		ob_end_clean();
 
-
-		
-		ob_start();
 		parent::display('checkout_header');
 		parent::display('order_summary');
 		parent::display('shopper_info');
 		parent::display('cart');
 		parent::display('email_footer');
-		$contents .= ob_get_contents();
+*/
+
+		
+		ob_start();
+		parent::display('email_template');
+		$message .= ob_get_contents();
 		ob_end_clean();
 
-		//make sure the payment status is Completed
-		if($order->order_status == "C"){
-			$message = $header . $order->downloadlink . $contents;
-		}else{
-			$message = $header . $contents;
-		}
-		 
 		if($params->get('my_debug')){
 			//$debug = "makeMail: Email message: $message \n\n";
 			//MyMuseHelper::logMessage( $debug  );
 		}
 		
-		
+		//MyMuseHelper::print_pre($message);
 		// email client $user_email, and cc store owner $mailfrom
 		// get mailer object
 		$mailer = Factory::getMailer();

@@ -337,6 +337,9 @@ class CheckoutHelper
 			return false;
 		}
 
+		$order->id = $this->_db->insertid();  //$order->getState($this->context . '.id');
+
+
 		// LOOP OVER CART ITEMS TO STORE TO DB
 		$order->idx = 0;
 		for($i = 0; $i < $this->cart["idx"]; $i++) {
@@ -399,9 +402,6 @@ class CheckoutHelper
 				return false;
 
 			}
-
-
-
 
 			// more fields for printing
 			$order->items[$i]->product_sku = $this->cart[$i]['product']->product_sku;
@@ -474,7 +474,7 @@ class CheckoutHelper
 
 
 			if (!$order_shipping->store()) {
-				Factory::getApplication()->enqueueMessage(500, $this->_db->stderr() );
+				Factory::getApplication()->enqueueMessage(500, $order_shipping->getError() );
 
 				return false;
 			}
@@ -771,12 +771,14 @@ class CheckoutHelper
 		$this->_db->setQuery($query);
 		$order = $this->_db->loadObject();
 		$order->user = $this->shopper;
-		
+
+		/*
 		if(is_array($order->order_currency)){
 			$order->currency_code = $order->order_currency['currency_code'];
 		}else{
 			$order->currency_code = $order->order_currency;
 		}
+		*/
 
 		
 		$order->shopper_group_name = @$this->shopper->shopper_group_name;
@@ -911,19 +913,19 @@ class CheckoutHelper
 		//add more to the order object for printing
 		$order->idx = count($order->items);
 		$order->status_name = MyMuseHelper::getStatusName($order->order_status );
-/*
+
 		if($order->order_subtotal > (@$order->coupon->discount + @$order->discount)){
 			$order->subtotal_before_discount = $order->order_subtotal  + @$order->coupon->discount + @$order->discount;
 		}else{
 			$order->subtotal_before_discount = $order->order_subtotal;
 		}
-*/
+
 		$order->order_total = $order->order_subtotal + $order->order_shipping->cost + $order->tax_total;
 		if($order->order_total < 0){
 			$order->order_total = 0.00;
 		}
 
-		$order->order_currency = MyMuseHelper::getCurrency($this->store->currency);
+		//$order->order_currency = MyMuseHelper::getCurrency($this->store->currency);
 		
 		if($params->get("my_show_sku",0) >0){
 			$order->colspan=4;
