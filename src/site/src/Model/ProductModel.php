@@ -355,6 +355,10 @@ class ProductModel extends ItemModel
 
 				}
 
+				if($data->parentid > 0 and $data->product_physical == 1){
+					$data->attributes = $this->getAttributes($data->id);
+				}
+
 				if($data->product_downloadable == 1 && $variation){
 					$query = "SELECT digital from #__mymuse_product WHERE id=$variation";
 					$db->setQuery($query);
@@ -996,7 +1000,7 @@ class ProductModel extends ItemModel
 		
 		//attributes
 		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE 
-		product_parent_id='.$this->_item[$pk]->id.'
+		product_parent_id = '.$this->_item[$pk]->id.'
 		ORDER BY ordering';
 		$db->setQuery($query);
 		$this->_item[$pk]->attribute_sku = $db->loadObjectList();

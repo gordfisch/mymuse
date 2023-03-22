@@ -859,16 +859,20 @@ class CheckoutHelper
 				
 				$order->items [$i]->url = RouteHelper::getProductRoute ( $pid, $catid );
 				$order->items [$i]->cat_url = RouteHelper::getCategoryRoute ( $catid );
-				$query = "SELECT * FROM #__categories WHERE id='" . $catid . "'";
-				$this->_db->setQuery ( $query );
-				$cat = $this->_db->loadObject ();
-				
-				$order->items [$i]->category_name = $cat->title;
+
+				//bring some items to top level
+				$order->items [$i]->category 		= $order->items [$i]->product->category;
+				$order->items [$i]->artist 			= $order->items [$i]->product->artist;
+				$order->items [$i]->parent_title 	= $order->items [$i]->product->parent_title;
+				$order->items [$i]->category_name 	= $order->items [$i]->category->title;
+				$order->items [$i]->attributes 		= isset($order->items [$i]->product->attributes)? $order->items [$i]->product->attributes : '';
+
 				if ($params->get ( 'my_downloads_enable' ) == "1") {
 					if ($order->items [$i]->file_name != '') {
 						$downloadable ++;
 					}
 				}
+
 			}
 		}
 
@@ -935,7 +939,7 @@ class CheckoutHelper
 		$order->colspan2 = 1;
 		$order->do_html = 0;
 		$order->downloadable = $downloadable;
-
+		//MymuseHelper::print_pre($order->items[0]); exit;
 		return $order;
 
 	}

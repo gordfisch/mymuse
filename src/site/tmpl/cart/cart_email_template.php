@@ -336,28 +336,30 @@ if($downloads && $order->order_status == "C"){
 		
 		    <tr class="<?php echo $class ?>">
 		        <td align="left">
-		        <?php 
-		        if($order_item[$i]->category_name != ''){
-		        	//echo $order_item[$i]->category_name." : ";
-		        }
-		        if($order_item[$i]->product->artist->title != ''){
-		        	echo $order_item[$i]->product->artist->title." : ";
-		        }
-		        if($order_item[$i]->product->parent_title != ''){
-		        	echo $order_item[$i]->product->parent_title." : ";
-		        }
-		        ?>
+		       
+		        <?php if(isset($order_item[$i]->artist->title) && $params->get('my_show_category_name')): ?>
+		        	 <?php echo $order_item[$i]->artist->title; ?> 
+		        <?php endif; ?>
 		        
-		        <?php echo $order_item[$i]->product_name; ?>
-		        
-		        <?php if(isset($order_item[$i]->file_name)){ ?>
+		        <?php if(isset($order_item[$i]->parent_title)): ?>
+		        	 <?php echo $order_item[$i]->parent_title; ?> :
+		        <?php endif; ?>
+
+		        <?php echo $order_item[$i]->title; ?>
+
+		        <?php if(isset($order_item[$i]->file_name) && $order_item[$i]->file_name != ''): ?>
 		        	 <br /><?php echo $order_item[$i]->file_name; ?> 
-		        <?php } ?>
+		        <?php endif; ?>
 
-		        <?php if($order_item[$i]->product_in_stock == -1) { 
+		        <?php if(isset($order_item[$i]->attributes) && is_array($order_item[$i]->attributes)): 
+		        	foreach($order_item[$i]->attributes as $attrib): ?>
+		        	 <br /><?php echo $attrib->attribute_name; ?>: <?php echo $attrib->attribute_value; ?> 
+		        	<?php endforeach; 
+		    		endif; ?>
 
+		        <?php if($order_item[$i]->product_in_stock == -1) : 
 		        	echo '<span class="preorder">'.Text::_('COM_MYMUSE_PRODUCT_PREORDER_LABEL').'</span>';
-		        }
+		        endif;
 		        ?>
 
 

@@ -847,6 +847,7 @@ class CartHelper
       
       } //end of cart items
       $order->subtotal_before_discount = $order->order_subtotal;
+      //MymuseHelper::print_pre($order->items[0]);
   
 
       //RESERVATION FEES

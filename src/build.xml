@@ -3,7 +3,8 @@
 <project name="MyMuseJ4" basedir="." default="copy_to_mymuseJ4_in_joomla">
         <property name="myversion" value="4.2" override="true" />
 
-
+<!-- /var/www/html/mymuseJ4/joomla-cms -->
+<!-- /var/www/html/avonlea/brucegandymusic -->
         <property name="joomladir" value="/var/www/html/mymuseJ4/joomla-cms" override="true" />
         <property name="testadmincomp"
                 value="/var/www/html/mymuseJ4/joomla-cms/administrator/components/com_mymuse"

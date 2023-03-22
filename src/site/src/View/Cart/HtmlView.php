@@ -1255,7 +1255,7 @@ class HtmlView extends BaseHtmlView
 			//MyMuseHelper::logMessage( $debug  );
 		}
 		
-		//MyMuseHelper::print_pre($message);
+		//MyMuseHelper::print_pre($message); exit;
 		// email client $user_email, and cc store owner $mailfrom
 		// get mailer object
 		$mailer = Factory::getMailer();

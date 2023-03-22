@@ -321,6 +321,7 @@ if($downloads && $order->order_status == "C"){
 			</tr>
 		
 		<?php
+		//MymuseHelper::print_pre($order->items[0]);
 		  // LOOP THRU order_items
 		  for ($i=0;$i<count($order->items);$i++) { 
 		      if ($i % 2){
@@ -333,23 +334,26 @@ if($downloads && $order->order_status == "C"){
 		
 		    <tr class="<?php echo $class ?>">
 		        <td align="left">
-		        <?php 
-		        if($order_item[$i]->category_name != ''){
-		        	//echo $order_item[$i]->category_name." : ";
-		        }
-		        if($order_item[$i]->product->artist->title != ''){
-		        	echo $order_item[$i]->product->artist->title." : ";
-		        }
-		        if($order_item[$i]->parent_title != ''){
-		        	echo $order_item[$i]->parent_title." : ";
-		        }
-		        ?>
-		        
-		        <?php echo $order_item[$i]->product_name; ?>
-		        
-		        <?php if(isset($order_item[$i]->file_name)){ ?>
-		        	 <br /><?php echo $order_item[$i]->file_name; ?> 
+
+		        <?php if(isset($order_item[$i]->artist_title) && $params->get('my_show_category_name')){ ?>
+		        	 <?php echo $order_item[$i]->artist_title; ?> : 
 		        <?php } ?>
+		        
+		        <?php if(isset($order_item[$i]->parent_title)){ ?>
+		        	 <?php echo $order_item[$i]->parent_title; ?> :
+		        <?php } ?>
+
+		        <?php echo $order_item[$i]->title; ?>
+
+		        <?php if(isset($order_item[$i]->file_name) && $order_item[$i]->file_name != ''): ?>
+		        	 <br /><?php echo $order_item[$i]->file_name; ?> 
+		        <?php endif; ?>
+
+		        <?php if(isset($order_item[$i]->attributes) && is_array($order_item[$i]->attributes)): 
+		        	foreach($order_item[$i]->attributes as $attrib): ?>
+		        	 <br /><?php echo $attrib->attribute_name; ?>: <?php echo $attrib->attribute_value; ?> 
+		        	<?php endforeach; 
+		    		endif; ?>
 
 		        <?php if($order_item[$i]->product_in_stock == -1) { 
 

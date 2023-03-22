@@ -22,6 +22,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
+use Joomla\Component\Mymuse\Site\Model\ProductModel;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
@@ -154,6 +155,10 @@ class OrderModel extends AdminModel
 		$this->setState('order.id',$input->get('id'));
 		$db = FActory::getDBO();
 		
+		
+		$app 	= Factory::getApplication();
+		$input 	= $app->input;
+		
 		if ($item = parent::getItem($pk)) {
 			
 			// get user details
@@ -212,6 +217,7 @@ class OrderModel extends AdminModel
 			$query = "SELECT * FROM #__mymuse_order_item WHERE order_id=".$item->id;
 			$db->setQuery( $query );
 			$item->items = $db->loadObjectList();
+			$product_model = new ProductModel;
 
 			for($i=0; $i<count($item->items); $i++){
 				$item_id = $item->items[$i]->id;
@@ -219,14 +225,20 @@ class OrderModel extends AdminModel
 
 				$item->items[$i]->parent_title = '';
 				$item->items[$i]->category_name = '';
-				$query = "SELECT p.*, c.title as category_name
-						FROM #__mymuse_product as p LEFT JOIN #__categories as c ON c.id=p.catid
+				$query = "SELECT p.*, c.title as artist_title
+						FROM #__mymuse_product as p 
+						LEFT JOIN #__categories as c ON c.id=p.artistid
 						WHERE p.id='".$item->items[$i]->product_id."'";
 				$db->setQuery( $query );
 				$res = $db->loadAssoc();
 				foreach($res as $key => $val){
 					$item->items[$i]->$key = $val;
 				}
+
+				if($item->items[$i]->parentid > 0 and $item->items[$i]->product_physical == 1){
+					$item->items[$i]->attributes = $product_model->getAttributes($item->items[$i]->id,$item->items[$i]->parentid);
+				}
+
 				//reset some keys
 				$item->items[$i]->id = $item_id;
 				$item->items[$i]->product_in_stock = $item_stock;

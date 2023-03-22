@@ -155,7 +155,7 @@ class OrderController extends FormController
 			$this->display();
 			$message= ob_get_contents();
 			ob_end_clean();
-MymuseHelper::print_pre($message); exit;
+//MymuseHelper::print_pre($message); exit;
 			//if using no_reg
 			if($params->get('my_registration') == "no_reg"){
 				$registry = new Registry;
