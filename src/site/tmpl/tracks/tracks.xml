@@ -181,10 +181,8 @@
 				label="JGLOBAL_ORDERING_DATE_LABEL"
 				parentclass="stack span-1-inline"
 			>
-				<option value="released">COM_MYMUSE_DATE_PRODUCT_RELEASE_DATE</option>
 				<option value="created">JGLOBAL_CREATED</option>
 				<option value="modified">JGLOBAL_MODIFIED</option>
-				<option value="published">JPUBLISHED</option>
 			</field>
 
 

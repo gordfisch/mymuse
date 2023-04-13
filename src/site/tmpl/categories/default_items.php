@@ -67,7 +67,7 @@ alt="<?php echo htmlspecialchars($item_params->get('image')); ?>" border="0" /><
 		<?php if ($this->params->get('show_subcat_desc_cat') == 1) :?>
 		<?php if ($item->description && $item->description != '') : ?>
 		<?php if ($this->params->get('subcat_desc_cat_truncate')) : 
-			$item->description = JHtmlString::truncate($item->description,$this->params->get('subcat_desc_cat_truncate'));
+			$item->description = HtmlHelper::_('string.truncate', ($item->description), $this->params->get('subcat_desc_cat_truncate'));
 		 	$item->description = str_replace("...",'',$item->description);
 		 	$item->description = preg_replace("~</p>$~",' ...</p>',$item->description);
 		

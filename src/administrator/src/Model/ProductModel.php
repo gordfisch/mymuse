@@ -1343,7 +1343,7 @@ class ProductModel extends AdminModel
 	   	$db->setQuery($query);
 	   	$all_formats = $db->loadObjectList();
 	   	foreach($all_formats as $f){
-	   		$formats[$f->format_value] = $f->id;
+	   		$formats[$f->format_value] = $f->format_value;
 	   	}
 
 	   	if($type == "physical"){
@@ -1447,6 +1447,7 @@ class ProductModel extends AdminModel
 		   						if($file->file_ext == "pdf"){
 		   							$file->file_type = "other";
 		   						}
+		   						$file->file_time = $r->file_time;
 
 									$this->table->reset();
 									$this->table->load($r->id);

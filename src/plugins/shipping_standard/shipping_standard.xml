@@ -2,8 +2,8 @@
 <extension version="3.0" type="plugin" group="mymuse">
 	<name>plg_mymuse_shipping_standard</name>
 	<author>Arboreta</author>
-	<creationDate>January 2019</creationDate>
-	<copyright>Copyright (C) 2019 Arboreta Internet Services. All rights reserved.</copyright>
+	<creationDate>Mar 2023</creationDate>
+	<copyright>Copyright (C) 2023 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
@@ -246,6 +246,222 @@
 			/>
 			
 			</fieldset>
+
+			<fieldset name="SHIPPER5">
+					
+				<field name="ship_5_active" type="radio" default="0" 
+				label="MYMUSE_SHIPACTIVE_5_LABEL" 
+				description="MYMUSE_SHIPACTIVE_5_DESC"
+				class="btn-group btn-group-yesno">
+			 			<option value="0">JNO</option>
+			 			<option value="1">JYES</option>
+			 	</field>
+			 	
+				<field name="ship_carrier_5" type="text" size="35" default="Shipper" 
+				label="MYMUSE_SHIPCARRIER_5_LABEL" 
+				description="MYMUSE_SHIPCARRIER_5_DESC"
+				/>
+				
+				<field name="ship_method_5" type="text" size="35" default="Ground" 
+				label="MYMUSE_SHIPMETHOD_5_LABEL" 
+				description="MYMUSE_SHIPMETHOD_5_DESC"
+				/>
+				
+				<field name="ship_handling_5" type="text" size="20" default="5.00" 
+				label="MYMUSE_SHIPHANDLING_5_LABEL" 
+				description="MYMUSE_SHIPHANDLING_5_DESC"
+				/>
+				
+				<field name="ship_additional_5" type="text" size="20" default="1.00" 
+				label="MYMUSE_SHIPADDITI0NAL_5_LABEL" 
+				description="MYMUSE_SHIPADDITI0NAL_5_DESC"
+				/>
+				<field name="ship_all_countries_5" type="radio" default="1" 
+				label="MYMUSE_SHIPALLCOUNTRIES_5_LABEL" 
+				description="MYMUSE_SHIPALLCOUNTRIES_5_DESC"
+				class="btn-group btn-group-yesno">
+			 			<option value="0">JNO</option>
+			 			<option value="1">JYES</option>
+			 	</field>
+				<field
+						name="ship_countries_5"
+						type="sql"
+						description="MYMUSE_SHIPCOUNTRY_5_DESC"
+						default=""
+						multiple="true" 
+						size="8"
+						key_field="ship_countries_5"
+						value_field="value"
+						label="MYMUSE_SHIPCOUNTRY_5_LABEL"
+						message="MYMUSE_SHIPCOUNTRY_5_MESSAGE"
+						query="SELECT  '' as ship_countries_5 ,' none' as value UNION 
+						SELECT country_3_code as ship_countries_5, country_name as value FROM #__mymuse_country 
+						ORDER by value"
+					/>
+				
+				</fieldset>
+
+				<fieldset name="SHIPPER6">
+						
+					<field name="ship_6_active" type="radio" default="0" 
+					label="MYMUSE_SHIPACTIVE_6_LABEL" 
+					description="MYMUSE_SHIPACTIVE_6_DESC"
+					class="btn-group btn-group-yesno">
+				 			<option value="0">JNO</option>
+				 			<option value="1">JYES</option>
+				 	</field>
+				 	
+					<field name="ship_carrier_6" type="text" size="35" default="Shipper" 
+					label="MYMUSE_SHIPCARRIER_6_LABEL" 
+					description="MYMUSE_SHIPCARRIER_6_DESC"
+					/>
+					
+					<field name="ship_method_6" type="text" size="35" default="Ground" 
+					label="MYMUSE_SHIPMETHOD_6_LABEL" 
+					description="MYMUSE_SHIPMETHOD_6_DESC"
+					/>
+					
+					<field name="ship_handling_6" type="text" size="20" default="5.00" 
+					label="MYMUSE_SHIPHANDLING_6_LABEL" 
+					description="MYMUSE_SHIPHANDLING_6_DESC"
+					/>
+					
+					<field name="ship_additional_6" type="text" size="20" default="1.00" 
+					label="MYMUSE_SHIPADDITI0NAL_6_LABEL" 
+					description="MYMUSE_SHIPADDITI0NAL_6_DESC"
+					/>
+					<field name="ship_all_countries_6" type="radio" default="0" 
+					label="MYMUSE_SHIPALLCOUNTRIES_6_LABEL" 
+					description="MYMUSE_SHIPALLCOUNTRIES_6_DESC"
+					class="btn-group btn-group-yesno">
+				 			<option value="0">JNO</option>
+				 			<option value="1">JYES</option>
+				 	</field>
+					<field
+							name="ship_countries_6"
+							type="sql"
+							description="MYMUSE_SHIPCOUNTRY_6_DESC"
+							default=""
+							multiple="true" 
+							size="8"
+							key_field="ship_countries_6"
+							value_field="value"
+							label="MYMUSE_SHIPCOUNTRY_6_LABEL"
+							message="MYMUSE_SHIPCOUNTRY_6_MESSAGE"
+							query="SELECT  '' as ship_countries_6 ,' none' as value UNION 
+							SELECT country_3_code as ship_countries_6, country_name as value FROM #__mymuse_country 
+							ORDER by value"
+						/>
+					
+					</fieldset>
+
+					<fieldset name="SHIPPER7">
+							
+						<field name="ship_7_active" type="radio" default="0" 
+						label="MYMUSE_SHIPACTIVE_7_LABEL" 
+						description="MYMUSE_SHIPACTIVE_7_DESC"
+						class="btn-group btn-group-yesno">
+					 			<option value="0">JNO</option>
+					 			<option value="1">JYES</option>
+					 	</field>
+					 	
+						<field name="ship_carrier_7" type="text" size="35" default="Shipper" 
+						label="MYMUSE_SHIPCARRIER_7_LABEL" 
+						description="MYMUSE_SHIPCARRIER_7_DESC"
+						/>
+						
+						<field name="ship_method_7" type="text" size="35" default="Ground" 
+						label="MYMUSE_SHIPMETHOD_7_LABEL" 
+						description="MYMUSE_SHIPMETHOD_7_DESC"
+						/>
+						
+						<field name="ship_handling_7" type="text" size="20" default="5.00" 
+						label="MYMUSE_SHIPHANDLING_7_LABEL" 
+						description="MYMUSE_SHIPHANDLING_7_DESC"
+						/>
+						
+						<field name="ship_additional_7" type="text" size="20" default="1.00" 
+						label="MYMUSE_SHIPADDITI0NAL_7_LABEL" 
+						description="MYMUSE_SHIPADDITI0NAL_7_DESC"
+						/>
+						<field name="ship_all_countries_7" type="radio" default="1" 
+						label="MYMUSE_SHIPALLCOUNTRIES_7_LABEL" 
+						description="MYMUSE_SHIPALLCOUNTRIES_7_DESC"
+						class="btn-group btn-group-yesno">
+					 			<option value="0">JNO</option>
+					 			<option value="1">JYES</option>
+					 	</field>
+						<field
+								name="ship_countries_7"
+								type="sql"
+								description="MYMUSE_SHIPCOUNTRY_7_DESC"
+								default=""
+								multiple="true" 
+								size="8"
+								key_field="ship_countries_7"
+								value_field="value"
+								label="MYMUSE_SHIPCOUNTRY_7_LABEL"
+								message="MYMUSE_SHIPCOUNTRY_7_MESSAGE"
+								query="SELECT  '' as ship_countries_7 ,' none' as value UNION 
+								SELECT country_3_code as ship_countries_7, country_name as value FROM #__mymuse_country 
+								ORDER by value"
+							/>
+						
+						</fieldset>
+
+					<fieldset name="SHIPPER8">
+							
+						<field name="ship_8_active" type="radio" default="0" 
+						label="MYMUSE_SHIPACTIVE_8_LABEL" 
+						description="MYMUSE_SHIPACTIVE_8_DESC"
+						class="btn-group btn-group-yesno">
+					 			<option value="0">JNO</option>
+					 			<option value="1">JYES</option>
+					 	</field>
+					 	
+						<field name="ship_carrier_8" type="text" size="35" default="Shipper" 
+						label="MYMUSE_SHIPCARRIER_8_LABEL" 
+						description="MYMUSE_SHIPCARRIER_8_DESC"
+						/>
+						
+						<field name="ship_method_8" type="text" size="35" default="Ground" 
+						label="MYMUSE_SHIPMETHOD_8_LABEL" 
+						description="MYMUSE_SHIPMETHOD_8_DESC"
+						/>
+						
+						<field name="ship_handling_8" type="text" size="20" default="5.00" 
+						label="MYMUSE_SHIPHANDLING_8_LABEL" 
+						description="MYMUSE_SHIPHANDLING_8_DESC"
+						/>
+						
+						<field name="ship_additional_8" type="text" size="20" default="1.00" 
+						label="MYMUSE_SHIPADDITI0NAL_8_LABEL" 
+						description="MYMUSE_SHIPADDITI0NAL_8_DESC"
+						/>
+						<field name="ship_all_countries_8" type="radio" default="1" 
+						label="MYMUSE_SHIPALLCOUNTRIES_8_LABEL" 
+						description="MYMUSE_SHIPALLCOUNTRIES_8_DESC"
+						class="btn-group btn-group-yesno">
+					 			<option value="0">JNO</option>
+					 			<option value="1">JYES</option>
+					 	</field>
+						<field
+								name="ship_countries_8"
+								type="sql"
+								description="MYMUSE_SHIPCOUNTRY_8_DESC"
+								default=""
+								multiple="true" 
+								size="8"
+								key_field="ship_countries_8"
+								value_field="value"
+								label="MYMUSE_SHIPCOUNTRY_8_LABEL"
+								message="MYMUSE_SHIPCOUNTRY_8_MESSAGE"
+								query="SELECT  '' as ship_countries_8 ,' none' as value UNION 
+								SELECT country_3_code as ship_countries_8, country_name as value FROM #__mymuse_country 
+								ORDER by value"
+							/>
+						
+						</fieldset>
 		</fields>
 	</config>
 <updateservers>

@@ -20,7 +20,7 @@ use Joomla\Component\Mymuse\Site\View\Categories\HtmlView as CatsView;
 $lang   = Factory::getLanguage();
 $user   = Factory::getUser();
 $groups = $user->getAuthorisedViewLevels();
-
+$cols   = $this->params->get('subcat_columns', '');
 $blogClass = $this->params->get('blog_class', '');
 if ((int) $this->params->get('subcat_columns') > 1) :
     $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-';
@@ -30,7 +30,7 @@ endif;
 
 
 <?php if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) : ?>
-    <div class="com-mymuse-category-blog__items blog-items <?php echo $blogClass; ?>">
+    <div class="com-mymuse-category-blog__items blog-items <?php echo $blogClass; ?>  uk-grid">
 
     <?php foreach ($this->children[$this->category->id] as $id => $child) : ?>
         <?php // Check whether category access level allows access to subcategories. 
@@ -38,8 +38,10 @@ endif;
 
         ?>
         <?php if (in_array($child->access, $groups)) : ?>
-            <?php if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) : ?>
-            <div class="com-content-category-blog__child">
+            <?php if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) : 
+
+            ?>
+            <div class="com-content-category-blog__child uk-width-1-<?php echo $cols; ?>@m uk-margin">
                 <?php if ($lang->isRtl()) : ?>
                 <h3 class="page-header item-title">
                     <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
@@ -87,7 +89,7 @@ endif;
                 <?php if ($this->params->get('show_subcat_desc') == 1) : ?>
                     <?php if ($child->description) : ?>
                         <?php if ($this->params->get('subcat_desc_truncate')) : 
-                            $child->description = JHtmlString::truncate($child->description,$this->params->get('subcat_desc_truncate'));
+                            $child->description = HtmlHelper::_('string.truncate', ($child->description), $this->params->get('subcat_desc_truncate'));
                             $child->description = str_replace("...",'',$child->description);
                             $child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
                         

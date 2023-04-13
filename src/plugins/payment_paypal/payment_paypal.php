@@ -25,6 +25,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Categories\CategoryNode;
+use Joomla\Component\Mymuse\Administrator\Table\OrderTable;
 
 /**
 * MyMuse PaymentPaypal plugin
@@ -84,8 +85,8 @@ class plgMymusePayment_Paypal extends CMSPlugin
 	function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
 
-		$mainframe 	= JFactory::getApplication();
-		$db			= JFactory::getDBO();
+		$app 		= Factory::getApplication();
+		$db			= Factory::getDBO();
 		if(isset($shopper->profile['country'])){
 			// Paypal wants the country_2_code
 			$query = "SELECT country_2_code from #__mymuse_country WHERE country_3_code='".$shopper->profile['country']."'";
@@ -294,11 +295,12 @@ class plgMymusePayment_Paypal extends CMSPlugin
 	 * catch the IPN post from PayPal, return required responses, update orders and do mailouts
 	 * 
 	 */
-	function onMyMuseNotify($params)
+	function onMyMuseNotify($params, $itemId)
 	{
-		$mainframe 	= JFactory::getApplication();
 
-		$db	= JFactory::getDBO();
+		$app 	= Factory::getApplication();
+
+		$db	= Factory::getDBO();
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nPayPal notify PLUGIN\n";
 
@@ -322,12 +324,12 @@ class plgMymusePayment_Paypal extends CMSPlugin
 			$debug .= "Was not PayPal. \n";
 			$debug .= "-------END-------";
 			if($params->get('my_debug')){
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   			}
   			return $result;
 		}else{
 			if($params->get('my_debug')){
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   			}
 		}
 		$result['myorder'] = 1;
@@ -335,7 +337,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 		// respond to PayPal
         header("HTTP/1.1 200 OK");
         
-		JPluginHelper::importPlugin('mymuse');
+		PluginHelper::importPlugin('mymuse');
 		
 		$c = explode('&',$_POST['custom']);
 		foreach($c as $pair){
@@ -395,7 +397,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
             $debug .= "2. Status: FAILED TO OPEN SOCKET\n $errstr ($errno)\n\n";
             $debug .= "-------END-------";
         	if($params->get('my_debug')){
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   			}
   			$result['error'] = $debug;
   			return $result;
@@ -416,7 +418,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
         	$debug .= $res."\n\n";
         	$result['message_received'] = 1;
         	if($params->get('my_debug')){
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         		$debug = '';
   			}
   					
@@ -431,25 +433,27 @@ class plgMymusePayment_Paypal extends CMSPlugin
             		$debug = "$date  4. order VERIFIED at PayPal\n\n";
             	}
             	$result['order_verified'] = 1;
+            	//$result['payment_status'] = "Completed";
             	
         		if($params->get('my_debug')){
-        			MyMuseHelper::logMessage( $debug  );
+        			MymuseHelper::logMessage( $debug. print_r($result,true)  );
   				}
   				
-  				//$result['payment_status'] = "Completed";
+  				
             	
             	
   				// SAVE ORDER AFTER
-            	if($params->get('my_saveorder') == "after"){
+  				/*
+            	if($params->get('my_saveorder','') == "after"){
             		//must capture the order here
 
-            		$MyMuseCart		=& MyMuse::getObject('cart','helpers');
-					$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-					$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
+            		$MyMuseCart		=& Mymuse::getObject('Cart','helper');
+					$MyMuseCheckout =& Mymuse::getObject('checkout','helper');
+					$MyMuseShopper 	=& Mymuse::getObject('Shopper','model');
             		$debug = "4.0.0 We have a post:".print_r($_POST,true)."\n\n";
             		$debug .= "We have custom:".print_r($custom,true)."\n\n";
             		if($params->get('my_debug')){
-        				MyMuseHelper::logMessage( $debug  );
+        				MymuseHelper::logMessage( $debug  );
   					}
 					
             		if($params->get('my_registration') == "no_reg"){
@@ -470,7 +474,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 						$debug .= "\n $q \nEmails were \npayer ".$_POST['payer_email']." user ".$result['user_email']."\n";
 						$debug .= "-------END-------";
 						if($params->get('my_debug')){
-        					MyMuseHelper::logMessage( $debug  );
+        					MymuseHelper::logMessage( $debug  );
   						}
   						$result['error'] = $debug;
   						return $result;
@@ -499,36 +503,35 @@ class plgMymusePayment_Paypal extends CMSPlugin
   					if (isset($custom['order_shipping_id'])){
   						$cart_order = $MyMuseCart->buildOrder( 0 );
   						$cart['ship_method_id'] = $custom['order_shipping_id'];
-  						$dispatcher	= JDispatcher::getInstance();
-  						$res = $dispatcher->trigger('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
+  						$res = $app->triggerEvent('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
   						$MyMuseCart->cart['shipping'] = $res[0];
   					}
   					
   					//save the cart in the session
   					$MyMuseCart->cart = $cart;
-  					$session = JFactory::getSession();
+  					$session = Factory::getSession();
   					$session->set("cart",$MyMuseCart->cart);
             		
             		
             		if($params->get('my_debug')){
             			$debug = "4.0.2 We have created a cart: $q  ".print_r($MyMuseCart->cart,true)."\n\n";
-        				MyMuseHelper::logMessage( $debug  );
+        				MymuseHelper::logMessage( $debug  );
         				$debug = '';
   					}
   					
             		// Shopper
-            		$user = JFactory::getUser($user_id);
+            		$user = Factory::getUser($user_id);
             		$shopper = $MyMuseShopper->getShopperByUser($user_id);
             		if($params->get('my_registration') == "no_reg"){
           				$shopper->profile = $custom;
           				foreach($custom as $field => $val){
           					$debug = "Assign $val to $field";
           					if($params->get('my_debug')){
-          						MyMuseHelper::logMessage( $debug  );
+          						MymuseHelper::logMessage( $debug  );
           					}
           					if(!$shopper->set($field,$val)){
           						$debug = $shopper->getError();
-          						MyMuseHelper::logMessage( $debug  );
+          						MymuseHelper::logMessage( $debug  );
           					}
           				}
           				if(isset($custom['first_name']) || isset($custom['last_name']) ){
@@ -539,7 +542,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
             		$session->set("user",$shopper);
             		$debug = "4.0.1 We have created a shopper in the session: $user_id  ".print_r($shopper,true)."\n\n";
             		if($params->get('my_debug')){
-            			MyMuseHelper::logMessage( $debug  );
+            			MymuseHelper::logMessage( $debug  );
             		}
   					
             		//let's save the order at checkout
@@ -548,7 +551,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
             			$debug = "4.0.3 !!!!Could not save order after: ".$msg."\n\n";
         				$debug .= "-------END-------";
         				if($params->get('my_debug')){
-        					MyMuseHelper::logMessage( $debug  );
+        					MymuseHelper::logMessage( $debug  );
   						}
   						$result['error'] = $debug;
   						return $result;
@@ -556,11 +559,12 @@ class plgMymusePayment_Paypal extends CMSPlugin
             		$result['order_number'] = $order->order_number;
             		$debug = "4.0.4 Order saved:  ".$order->order_number."\n\n";
             		if($params->get('my_debug')){
-        				MyMuseHelper::logMessage( $debug  );
+        				MymuseHelper::logMessage( $debug  );
   					}
             		
             		
             	}
+            	*/
 
         		// Get the Order Details from the database
         		
@@ -568,13 +572,17 @@ class plgMymusePayment_Paypal extends CMSPlugin
                     WHERE `order_number`='".$result['order_number']."'";
         		$date = date('Y-m-d h:i:s');
         		$debug = "$date  4.1 $query \n\n";
+        		if($params->get('my_debug')){
+        				MymuseHelper::logMessage( $debug  );
+  					}
+  				$debug = '';
         		
         		$db->setQuery($query);
         		if(!$this_order = $db->loadObject()){
         			$debug .= "5. !!!!Error no order object: ".$db->_errorMsg."\n\n";
         			$debug .= "-------END-------";
         			if($params->get('my_debug')){
-        				MyMuseHelper::logMessage( $debug  );
+        				MymuseHelper::logMessage( $debug  );
   					}
   					$result['error'] = $debug;
   					return $result;
@@ -584,8 +592,26 @@ class plgMymusePayment_Paypal extends CMSPlugin
         			$result['order_id'] 	= $this_order->id;
         			$result['order_number'] = $this_order->order_number;
         			if (preg_match ("/Completed/", $result['payment_status'])) {
-        				$MyMuseHelper = new MyMuseHelper();
-                		$MyMuseHelper->orderStatusUpdate($result['order_id'] , "C");
+        				$status 	= 'C';
+        				$id 		= $this_order->id;
+        				$datenow 	= Factory::getDate();
+        				$order 		= new OrderTable($db);
+        				$order->load( $this_order->id );
+        				$order->order_status = $status;
+        				$order->modified = $datenow->toSql();
+        				if (!$order->store()) {
+        					$debug = "!!ERROR Order Status Update Failed!! id = $id status = $status";
+        					if($params->get('my_debug')){
+        		        			MymuseHelper::logMessage( $debug );
+        		        	}
+        		        	$result['error'] = $debug;
+        					return $result;
+        				}
+        				if($params->get('my_debug')){
+        		        		MymuseHelper::logMessage( "**orderStatusUpdate id = $id status = $status");
+        		        }
+
+
                 		$date = date('Y-m-d h:i:s');
                 		$debug .= "$date 5. order COMPLETED at PayPal, update in DB\n\n";
                 		$result['order_completed'] = 1;
@@ -598,16 +624,17 @@ class plgMymusePayment_Paypal extends CMSPlugin
         			}
         		}
         		if($params->get('my_debug')){
-        			MyMuseHelper::logMessage( $debug  );
+        			MymuseHelper::logMessage( $debug  );
         		}
 
         	}else{
+        		$debug = '';
         		//not verified
         		$date = date('Y-m-d h:i:s');
         		$debug .= "$date 4. Not VERIFIED at PayPal\n\n";
         		$debug .= "-------END PLUGIN-------";
         		if($params->get('my_debug')){
-        			MyMuseHelper::logMessage( $debug  );
+        			MymuseHelper::logMessage( $debug  );
   				}
   				$result['error'] = $debug;
   				return $result;
@@ -617,7 +644,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
         $debug .= "$date Finished talking to PayPal \n\n";
 		$debug .= "-------END PLUGIN-------";
   		if($params->get('my_debug')){
-        	MyMuseHelper::logMessage( $debug  );
+        	MymuseHelper::logMessage( $debug  );
   		}
   		$this->order_id = $result['order_id'];
         return $result;
@@ -628,7 +655,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 	{
 		$email_msg = '';
 		$good = 1;
-		$input 		= JFactory::getApplication()->input;
+		$input 		= Factory::getApplication()->input;
 		$id 		= $input->get('id',0);
 		if($id){
 			$this->order_id = $id;
@@ -637,7 +664,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 		if($ids){
 			$good = 0;
 			$product_ids = explode(',', $ids);
-			$db			= JFactory::getDBO();
+			$db			= Factory::getDBO();
 			$query = "SELECT * FROM `#__mymuse_order_item`
                     WHERE `order_id`='".$this->order_id."'";
         	$date = date('Y-m-d h:i:s');
@@ -664,7 +691,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 		}
 		if($this->params->get('my_debug')){
 				$debug .= "onAfterMyMusePayment Email Message = $email_msg \n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   		}
 
 		return $email_msg;

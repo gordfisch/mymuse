@@ -19,6 +19,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\Component\Mymuse\Administrator\Table\OrderTable;
 
 
 define('TAX_REGEX',"[\'-\/\s\\\]");
@@ -1235,6 +1236,37 @@ class MymuseHelper extends ContentHelper
 			}
 		}
 		return $message;
+	}
+
+	/**
+	 * 
+	 * @param integer $id order id
+	 * @param string $status the new status
+	 * @return boolean
+	 */
+	public function orderStatusUpdate($id, $status="P")
+	{
+
+
+		$datenow 	= Factory::getDate();
+		$params		= $self::getParams();
+		$db			= Factory::getDBO();
+		$order 		= new OrderTable($db);
+		$order->load( $id );
+		$order->order_status = $status;
+		$order->modified = $datenow->toSql();
+		if (!$order->store()) {
+			if($params->get('my_debug')){
+        			$self::logMessage( "!!ERROR Order Status Update Failed!! id = $id status = $status");
+        	}
+			//JError::raiseError( 500, $db->stderr() );
+			return false;
+		}
+		if($params->get('my_debug')){
+        		$self::logMessage( "**orderStatusUpdate id = $id status = $status");
+        }
+		
+		return true;
 	}
 
 }

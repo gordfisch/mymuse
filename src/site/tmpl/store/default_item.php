@@ -15,15 +15,18 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 
 // Create a shortcut for params.
 $params 	= &$this->item->params;
 $canEdit	= $this->item->params->get('access-edit');
 $lang 		= Factory::getLanguage();
-$link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, '');
+$link 		= RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, '');
 
 ?>
 
@@ -34,7 +37,7 @@ $link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, 
 
 	<div class="list-image">
 		<?php if ($params->get('link_intro_image') && $params->get('access-view')) : ?>
-			<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, 'product')); ?>"
+			<a href="<?php echo Route::_($link); ?>"
 			><img src="<?php echo $this->item->list_image; ?>" 
 			alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 			/></a>
@@ -47,18 +50,17 @@ $link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, 
 
 
 <?php if ($params->get('category_product_show_title')) : ?>
-	<div class="feature-title">
-	<h3>
-		<?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
-			<a href="<?php echo Route::_($link); ?>">
-			<?php echo $this->escape($this->item->title); ?></a>
-		<?php else : ?>
-			<?php echo $this->escape($this->item->title); ?>
-		<?php endif; ?>
-	</h3>
-	</div>
+<div class="feature-title">
+        <h3>
+            <?php if ($params->get('category_link_titles') && $params->get('access-view')) : ?>
+                <a href="<?php echo Route::_($link); ?>">
+                <?php echo $this->escape($this->item->title); ?></a>
+            <?php else : ?>
+                <?php echo $this->escape($this->item->title); ?>
+            <?php endif; ?>
+        </h3>
+    </div>
 <?php endif; ?>
-
 
 
 

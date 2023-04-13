@@ -2,8 +2,8 @@
 <extension version="3.1"  type="plugin" group="mymuse">
 	<name>plg_mymuse_audio_amplitude</name>
 	<author>Arboreta</author>
-	<creationDate>Dec 2021</creationDate>
-	<copyright>Copyright (C) 2021 Arboreta Internet Services. All rights reserved.</copyright>
+	<creationDate>Mar 2023</creationDate>
+	<copyright>Copyright (C) 2023 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
@@ -34,9 +34,6 @@
 				label="COM_MYMUSE_SELECT_CATEGORIES" 
 				multiple="true"
 				description="" />
-			
-			
-
 			<field 
 				name="playlist_path" 
 				type="text" 

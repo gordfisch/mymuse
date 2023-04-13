@@ -16,7 +16,7 @@ echo $SUBVER
 echo -n "JVER = "
 echo $JVER
 
-version=5.0.6-$JVER-$SUBVER-beta
+version=5.0.8-$JVER-$SUBVER
 
 cd src
 rm ../releases/com_mymuse-$version.zip

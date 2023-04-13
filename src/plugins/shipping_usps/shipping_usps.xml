@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="3.0" type="plugin" group="mymuse">
     <name>plg_mymuse_shipping_usps</name>
-    <creationDate>January 2019</creationDate>
+    <creationDate>January 2023</creationDate>
     <author>Gord Fisch</author>
     <authorUrl>http://www.joomlamymuse.com</authorUrl>
-    <copyright>Copyright (C) 2019 Arboreta Internet Services</copyright>
+    <copyright>Copyright (C) 2023 Arboreta Internet Services</copyright>
     <license>license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html</license>
     <version>4.0.0</version>
     <description>

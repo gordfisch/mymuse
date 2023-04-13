@@ -258,7 +258,8 @@ class DisplayController extends BaseController
 			'variation' => 'ARRAY',
 			'Itemid' => 'INT',
 			'view' => 'STRING',
-			'layout' => 'STRING');
+			'layout' => 'STRING',
+			'order_date' => 'STRING');
 
 
 		$task  = $this->input->get('task');

@@ -720,6 +720,7 @@ class ProductController extends FormController
         $my_limit   = $params->get('my_update_limit', 200);
         $limit      = $input->get('limit',$my_limit);
         $type       = $input->get('type','physical');
+        $db                         = Factory::getDBO();
         $this->storage = new MymuseStorage();
 
 
@@ -740,6 +741,50 @@ class ProductController extends FormController
                 }else{
                     echo Text::_('COM_MYMUSE_COULD_NOT_DELETE_FILE').' : '. $v3File;
                 }
+
+               
+                $queries = array(
+                    "ALTER TABLE `#__mymuse_product` DROP `product_full_time`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_country`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_producer`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_studio`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_publisher`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_length`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_time`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_name`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_downloads`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_contents`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_type`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_preview_2`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_preview_3`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `file_preview_4`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_weight`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_weight_uom`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_length`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_width`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_height`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `product_lwh_uom`;",
+                    "ALTER TABLE `#__mymuse_product` DROP `xreference`;",
+                    );
+                foreach($queries as $query){
+                    $db->setQuery($query);
+                    try
+                    {
+                        $db->execute();
+                       
+                    }
+                    catch (\Exception $e)
+                    {
+                        $query = $e->getMessage(). ' '.$query;
+                        Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                        continue;
+    
+                    }
+                    echo "<br />".$query;
+                    
+                }
+ 
+
                 
               
                 return true;

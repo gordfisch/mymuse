@@ -302,8 +302,8 @@ if($print){
 		    if($this->item->items[$i]->category_name != '' && $this->params->get('COM_MYMUSE_show_category')){
 		    	$string .= $this->item->items[$i]->category_name .' : ';
 		    }
-		    if($this->item->items[$i]->parent_name != ''){
-		    	$string .= $this->item->items[$i]->parent_name .' : ';
+		    if(isset($this->item->items[$i]->parent_title) && $this->item->items[$i]->parent_title != ''){
+		    	$string .= $this->item->items[$i]->parent_title .' : ';
 		    }
 		        
 

@@ -398,64 +398,104 @@ class ProductsModel extends ListModel
 		$cat_query = '';
 		$baselevel = 1;
 		$categoryId = $this->getState('filter.category_id');
+		$artistId = $this->getState('filter.artist_id');
+		$cat_query_left_right = '';
+		$art_query_left_right = '';
+
+		if (is_numeric($artistId)) {
+
+			$cat_tbl = Table::getInstance('Category', 'JTable');
+			$cat_tbl->load($cartistId);
+			$rgt = $cat_tbl->rgt;
+			$lft = $cat_tbl->lft;
+			$baselevel = (int) $cat_tbl->level;
+			$art_query_left_right =  ' OR ( art.lft >= '.(int) $lft.' AND art.rgt <= '.(int) $rgt.' )';
+		}
 
 		if (is_numeric($categoryId)) {
+
 			$cat_tbl = Table::getInstance('Category', 'JTable');
 			$cat_tbl->load($categoryId);
 			$rgt = $cat_tbl->rgt;
 			$lft = $cat_tbl->lft;
 			$baselevel = (int) $cat_tbl->level;
-			//$cat_query =  'c.lft >= '.(int) $lft.' AND c.rgt <= '.(int) $rgt;
-			$query->where('((c.lft >= '.(int) $lft.' AND c.rgt <= '.(int) $rgt.') OR (art.lft >= '.(int) $lft.' AND art.rgt <= '.(int) $rgt.') )' );
-			//$query->where('c.rgt <= '.(int) $rgt);
+			$cat_query_left_right =  ' OR ( c.lft >= '.(int) $lft.' AND c.rgt <= '.(int) $rgt.' )';
+
+			// Add subcategory check
+            $includeSubcategories = $this->getState('filter.subcategories', false);
+            $type = $this->getState('filter.category_id.include', true) ? ' = ' : ' <> ';
+            $subcats = array($categoryId);
+
+            if ($includeSubcategories) {
+                $categoryId = (int) $categoryId;
+                $levels     = (int) $this->getState('filter.max_category_levels', 1);
+
+                // Create a subquery for the subcategory list
+                $subQuery = $db->getQuery(true)
+                    ->select($db->quoteName('sub.id'))
+                    ->from($db->quoteName('#__categories', 'sub'))
+                    ->join(
+                        'INNER',
+                        $db->quoteName('#__categories', 'this'),
+                        $db->quoteName('sub.lft') . ' > ' . $db->quoteName('this.lft')
+                            . ' AND ' . $db->quoteName('sub.rgt') . ' < ' . $db->quoteName('this.rgt')
+                    )
+                    ->where($db->quoteName('this.id') . ' = '.$categoryId);
+
+                if ($levels >= 0) {
+                    $subQuery->where($db->quoteName('sub.level') . ' <= ' . $db->quoteName('this.level') . ' + $levels');
+         
+                }
+
+               // echo $db->replacePrefix(($subQuery->__toString())); 
+                $db->setQuery($subQuery);
+                $res = $db->loadColumn();
+                
+                foreach($res as $r){
+                	$subcats[] = $r;
+                }
+
+
+                //$query->bind(':categoryId', $categoryId, ParameterType::INTEGER);
+            }
+
+            //add other xref check
+
+            $prodsIN = array();
+            $prod_query = '';
+
+            $catIN = $subcats;
+            ArrayHelper::toInteger($catIN);
+            $catIN = implode(',', $catIN);
+            $q = "SELECT product_id from #__mymuse_product_category_xref
+			WHERE catid IN (".$catIN.")";
+			//echo $q."<br />";
+			$db->setQuery($q);
+			$prods = $db->loadObjectList();
+
+			if(count($prods)){
+				foreach($prods as $p){
+					$prodsIN[] = $p->product_id;
+				}
+
+				ArrayHelper::toInteger($prodsIN);
+				$prodsIN = implode(',', $prodsIN);
+
+				$prod_query = "OR (a.id IN ($prodsIN))";
+			}
+			$categoryId = $subcats; 
+
 		}
-		elseif (is_array($categoryId)) {
+		
+		if (is_array($categoryId)) {
 			ArrayHelper::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
-			//$cat_query =  'a.catid IN ('.$categoryId.')';
-			$query->where('a.catid IN ('.$categoryId.') OR a.artistid IN ('.$categoryId.')');
+			$query->where('( a.catid IN ('.$categoryId.') OR a.artistid IN ('.$categoryId.') '.$prod_query. ' '.$cat_query_left_right.' '.$art_query_left_right.')' );
 		}
 
-/*
-		// Filter by a single or group of artists.
-		$artist_query = '';
-		$baselevel = 1;
-		$artistId = $this->getState('filter.artist_id');
-
-		if (is_numeric($artistId)) {
-			echo " numeric";
-			$art_tbl = Table::getInstance('Category', 'JTable');
-			$art_tbl->load($artistId);
-			$rgt = $art_tbl->rgt;
-			$lft = $art_tbl->lft;
-			$baselevel = (int) $art_tbl->level;
-			$artist_query =  'art.lft >= '.(int) $lft.' AND art.rgt <= '.(int) $rgt;
-			//$query->where('art.lft >= '.(int) $lft);
-			//$query->where('art.rgt <= '.(int) $rgt);
-		}
-		elseif (is_array($artistId)) {
-			echo " array";
-			ArrayHelper::toInteger($artistId);
-			$artistId = implode(',', $artistId);
-			$artist_query = 'a.artistid IN ('.$artistId.')';
-			//$query->where('a.artistid IN ('.$artistId.')');
-		}
-
-
-		//put art and cat queries together
-		if($cat_query && $artist_query){
-			$query->where($cat_query.' OR '.$artist_query);
-		}
-		elseif($cat_query){
-			$query->where($cat_query);
-		}
-		elseif($artist_query){
-			$query->where($artist_query);
-		}
-*/
-
+		
 		// add sales figures
-
+/*
 		$query->select('s.sales');
 
 		$query->join('LEFT', "(SELECT sum(quantity) as sales, x.product_id FROM 
@@ -464,7 +504,7 @@ class ProductsModel extends ListModel
 		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
 		GROUP BY i.product_id ) 
 		as x GROUP BY x.all_id, x.product_id) as s ON s.product_id = a.id");
-
+*/
 
 		// Join over the users for the author and modified_by names.
 		$query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author");
@@ -472,7 +512,7 @@ class ProductsModel extends ListModel
 
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
 
-		$query->where('a.state = 1');
+	
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');
@@ -486,7 +526,7 @@ class ProductsModel extends ListModel
 		    $query->order($db->escape($orderCol));
 		}
 
-      	//echo $db->replacePrefix(($query->__toString())); exit;
+ 		//echo $db->replacePrefix(($query->__toString())); //exit;
 		return $query;
 	}
 

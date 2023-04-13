@@ -50,6 +50,14 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     protected $language;
 
     /**
+     * test
+     *
+     * @var    text
+     * @since  4.4
+     */
+    protected $text = '';
+
+    /**
      * Load the language file on instantiation.
      *
      * @var    boolean
@@ -256,8 +264,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
  
         $params         = MyMuseHelper::getParams();
         if(!$mycategories  = $this->params->get('mycategories', array())){
-            $text  = "Please set your categories in the Plugin Audio Amplitude";
-            return $text;
+            $this->text  = "Please set your categories in the Plugin Audio Amplitude";
+            return $this->text;
         }
 
 
@@ -275,7 +283,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
 
 
-        $text       = '';
+        $this->text = '';
         $db         = Factory::getDBO();
         $top_cat    = $mycategories[0];
         $query      = "SELECT id, alias from #__categories WHERE parent_id=$top_cat";
@@ -296,10 +304,10 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $all                    = array();
         $all['songs'][]         = $first;
         $allcats                = array();
-        
+        $this->text .= "Making list for <br />";
         foreach($res as $r){
             $filename = $r->alias.".js";
-            $text .= "Making list for $filename <br />";
+            $this->text .= "$filename, ";
             $arr = array();
             $arr['songs'][] = $first;
             //see if they have children
@@ -316,7 +324,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             }
 
             $track_query = $this->_getQuery($catin);
-            //echo $track_query; exit;
+  
             $db->setQuery($track_query);
     
             if($tracks = $db->loadObjectList()){
@@ -357,12 +365,12 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                     fclose($fh);
                 }
             }else{
-                $text .= "No tracks for $filename <br />";
+                $this->text .= "No tracks for $filename <br />";
             }
         }
         if(count($allcats) == 0){
-            $text  = "Please check your categories in the Plugin Audio Amplitude";
-            return $text;
+            $this->text  = "Please check your categories in the Plugin Audio Amplitude";
+            return $this->text;
         }
         
         $this->allcats = $allcats;
@@ -383,7 +391,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 $all['songs'][] = $track;
             }
         }
-        $text .= "Making list for catalog.js <br />";
+        $this->text .= "Making list for catalog.js <br />";
         $jstring = "Amplitude.init(".json_encode($all).");";
        // $jstring = preg_replace("~,~",",\n",$jstring);
         $jstring = preg_replace("~\[~","[\n",$jstring);
@@ -415,7 +423,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 $all['songs'][] = $track;
             }
         }
-        $text .= "Making list for homepage.js <br />";
+        $this->text .= "Making list for homepage.js <br />";
         $jstring = "Amplitude.init(".json_encode($all).");";
        // $jstring = preg_replace("~,~",",\n",$jstring);
         $jstring = preg_replace("~\[~","[\n",$jstring);
@@ -427,19 +435,20 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             fwrite($fh,$jstring);
             fclose($fh);
         } 
-        return $text;
+        return $this->text;
         
     }
     
     function _getQuery($catin)
     {
-
+        $db = Factory::getDBO();
         $root_uri = Uri::root();
         $root_uri = rtrim($root_uri,'/');
 
         $preview_path   = $root_uri.$this->params->get('preview_path', '/media/com_mymuse/previews/');
         $catin          = implode(",",$catin);
 
+        $search = 'parent.ordering DESC';
 
         $track_query = "SELECT p.id, p.track_parentid, p.title as name, parent.title as album,
             a.title as artist,
@@ -457,7 +466,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             AND p.state > 0 AND parent.state > 0
             AND p.track_parentid = 0
             AND p.file_preview != ''
-            ORDER BY parent.product_release_date DESC, parent.created DESC, p.product_sku"; 
+            ORDER BY  $search , p.ordering "; 
+
+        //$this->text .=  'track query '.$db->replacePrefix((string) $track_query)." <br /><br />"; 
 
         return $track_query;
     }
@@ -473,7 +484,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $db->setQuery("SELECT params FROM `#__modules` WHERE `params` LIKE '%\"homepage\":\"1\"%' ");
 
         $product_ids  = '';
-        $search = 'p.created';
+        
         $homepage  = 0;
         $my_artistid = 0;
 
@@ -488,19 +499,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
         }
 
-
-
-        if($search == 'p.product_made_date'){
-            $search = 'parent.product_made_date DESC';
-        }elseif($search == 'order'){
-            $search = 'p.ordering ASC';
-        }elseif($search == 'rorder'){
-            $search = 'p.ordering DESC';
-        }elseif($search == 'p.hits'){
-            $search = 'parent.hits DESC';
-        }else{
-            $search .= ' DESC';
-        }
+        $search = 'parent.ordering DESC';
 
         if($my_artistid){
             //get children
@@ -570,12 +569,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             AND p.state > 0 AND parent.state > 0
             AND p.track_parentid = 0
             AND p.product_physical=0
-            ORDER BY ".$search.", p.product_sku"; 
+            ORDER BY ".$search.", p.ordering "; 
 
-
-
-
-        //echo 'home query '.$db->replacePrefix((string) $track_query)." \n\n"; exit;
+        //$this->text .=  'home query '.$db->replacePrefix((string) $track_query)." <br />"; 
         return $track_query;
     }
 }

@@ -5,7 +5,7 @@ Amplitude.init({
 "artist":"PLAYER",
 "album":"READY",
 "url":"\/media\/com_mymuse\/previews\/00_-_silence.mp3",
-"cover_art_url":"\/media\/com_mymuse\/mymuse-180x180.png"
+"cover_art_url":"\/media\/com_mymuse\/images\/mymuse-180x180.png"
 }
 ]
 });

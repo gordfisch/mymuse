@@ -343,7 +343,7 @@ if($downloads && $order->order_status == "C"){
 		        	 <?php echo $order_item[$i]->parent_title; ?> :
 		        <?php } ?>
 
-		        <?php echo $order_item[$i]->title; ?>
+		        <?php echo $order_item[$i]->product_name; ?>
 
 		        <?php if(isset($order_item[$i]->file_name) && $order_item[$i]->file_name != ''): ?>
 		        	 <br /><?php echo $order_item[$i]->file_name; ?> 

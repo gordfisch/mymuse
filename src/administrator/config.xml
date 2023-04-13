@@ -396,7 +396,7 @@
 				layout="joomla.form.field.radio.switcher"
 				label="COM_MYMUSE_SHOW_PLAYER_LABEL" 
 				description="COM_MYMUSE_SHOW_PLAYER_DESC"
-				default="1"
+				default="0"
 			>
 	 			<option value="0">JHIDE</option>
 	 			<option value="1">JSHOW</option>
@@ -417,7 +417,7 @@
 			type="list"
 			label="COM_MYMUSE_TRACK_ORDER_LABEL"
 			description="COM_MYMUSE_TRACK_ORDER_DESC"
-			default="rdate"
+			default="order"
 		>
 			<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
 			<option value="date">JGLOBAL_OLDEST_FIRST</option>
@@ -435,10 +435,8 @@
 			label="JGLOBAL_ORDERING_DATE_LABEL"
 			default="released"
 		>
-		 	<option value="released">COM_MYMUSE_DATE_PRODUCT_RELEASE_DATE</option>
 			<option value="created">JGLOBAL_CREATED</option>
 			<option value="modified">JGLOBAL_MODIFIED</option>
-			<option value="published">JPUBLISHED</option>
 		</field>
 			
 
@@ -716,7 +714,7 @@
 			type="list"
 			description="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
 			label="COM_MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
-			default="1"
+			default="3"
 			>
 			
 			<option value="1">J1</option>
@@ -862,7 +860,7 @@
 		<field 
 			name="num_columns"
 			type="text"
-			default="2"
+			default="3"
 			label="COM_MYMUSE_NUM_COLUMNS_LABEL"
 			description="COM_MYMUSE_NUM_COLUMNS_DESC">
 		</field>

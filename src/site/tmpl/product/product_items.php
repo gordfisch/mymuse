@@ -45,7 +45,7 @@ endif;
 		<h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3>
 
 
-  <section>
+  <div class="product-items">
     <ul class="mymuse-container">
     <li class="items-container">
         <div class="mymuse_cart_top mytitle"  ><?php echo Text::_('COM_MYMUSE_NAME'); ?></div>
@@ -90,7 +90,7 @@ endif;
       				</li>
       		<?php  endforeach; ?>
 	</ul>
-</section>
+</div>
 <?php } ?>
 
 <?php 
@@ -219,9 +219,9 @@ function updateProductImage(id, image)
 $js .= "</script>\n";
 echo $js;
 ?>
-<div class="mymuse">
+
 <h3><?php echo Text::_('COM_MYMUSE_ITEMS'); ?></h3> 
-    <div class="product-items">
+<div class="product-items">
     <ul class="product-content">
         <li class="product-content-item-actions">
             <div class="value">

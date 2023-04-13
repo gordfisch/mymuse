@@ -29,7 +29,7 @@ $user       = JFactory::getUser();
 if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_tracks', 1)) :
 ?>
 
-<div class="product-tracks">
+<div class="tracks">
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
     <h3><?php echo Text::_('COM_MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
@@ -111,39 +111,39 @@ endif;
 <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="trackForm" id="trackForm" class="">
 
 <div class=" list-products mymuse-cart ">
-<section class="tracks">
+
     <ul class="mymuse-container">
       <li class="my-grid item-container cols-<?php echo $cols; ?>">
         <div class="mymuse-header name"><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
 
         <?php  if($this->params->get('product_show_artist', 0)) :?>
           <div class="mymuse-header artist">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_GENRE', 'category_name', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_GENRE'); ?></div>
         <?php endif; ?>
         
         <?php  if($this->params->get('product_show_filetime', 0)) :?>
           <div class="mymuse-header time">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_TIME', 'file_time', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_TIME'); ?></div>
         <?php endif; ?>
         
         <?php  if($this->params->get('product_show_filesize', 0)) :?>
           <div class="mymuse-header filesize">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_FILE_SIZE', 'file_length', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_FILE_SIZE'); ?></div>
         <?php endif; ?>
         
         <?php if($this->params->get('product_show_sales', 0)) : ?>
           <div class="mymuse-header sales">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_SALES', 'sales', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_SALES'); ?></div>
         <?php endif; ?>
         
         <?php if($this->params->get('product_show_downloads', 0)) : ?>
           <div class="mymuse-header downloads">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NUMBER_DOWNLOADS', 'file_downloads', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_NUMBER_DOWNLOADS'); ?></div>
         <?php endif; ?>
         
         <?php  if($this->params->get('product_show_cost_column', 1)) :?>
           <div class="mymuse-header price">
-          <?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_CART_PRICE', 'price', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
+          <?php echo Text::_('COM_MYMUSE_CART_PRICE'); ?></div>
         <?php endif; ?>
           
           <?php if(count($this->formats) > 1) :?>
@@ -206,7 +206,7 @@ endif;
     <?php  if($this->params->get('product_show_filesize', 0)) :?>
       <div class="mycart-inner filesize" data-name="<?php echo Text::_('COM_MYMUSE_FILE_SIZE'); ?>">
       <?php 
-                if(!$track->product_allfiles && $track->file_length > 0) :
+                if(!$track->product_allfiles && isset($track->file_length) && $track->file_length > 0) :
                   $first = 1;
                   foreach($track->digital as $file){
                     $this_format = isset($file->file_format)? strtolower($file->file_format): $file->file_ext;
@@ -373,7 +373,7 @@ endif;
     <?php endif; ?>
 
     <?php echo $this->pagination->getPagesLinks(); ?>
-  </div>
+ 
   <?php endif; ?>
 
 <?php  endif; ?>

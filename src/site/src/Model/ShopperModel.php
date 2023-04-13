@@ -725,8 +725,8 @@ class ShopperModel extends FormModel
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$user = Factory::getUser();
-		$params	= JComponentHelper::getParams('com_users');
-		$myparams = MyMuseHelper::getParams();
+		$params	= ComponentHelper::getParams('com_users');
+		$myparams = MymuseHelper::getParams();
 
 		if($user->get('id')){
 			return true;
@@ -750,19 +750,12 @@ class ShopperModel extends FormModel
 		$credentials = array();
 		$credentials['username'] = 'buyer';
 		$credentials['password'] = $myparams->get('my_noreg_password');
-		$options = array();
+		$options = array(); 
 		;
 
 		//preform the login action
-		$error = $app->login($credentials, $options);
-		
-		if(!JError::isError($error)){
-			return true;
-		}else{
-			$this->setError(Text::_($error->code));
-			return false;
-		}
-		
+		return  $app->login($credentials, $options);
+
 	}
 	
 	/**

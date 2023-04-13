@@ -174,7 +174,7 @@ class QueryHelper
 	 */
 	public static function orderbyProduct($orderby, $orderDate = 'created')
 	{
-		$queryDate = self::getQueryDate($orderDate);
+		$queryDate = self::getProductDate($orderDate);
 
 		switch ($orderby)
 		{
@@ -262,6 +262,9 @@ class QueryHelper
 			case 'unpublished' :
 				$queryDate = ' CASE WHEN a.publish_down IS NULL THEN a.created ELSE a.publish_down END ';
 				break;
+			case 'product_release_date' :
+				$queryDate = ' CASE WHEN a.product_release_date IS NULL THEN a.created ELSE a.product_release_date END ';
+				break;
 			case 'created' :
 			default :
 				$queryDate = ' a.created ';
@@ -271,6 +274,45 @@ class QueryHelper
 		return $queryDate;
 	}
 
+	/**
+	 * Translate an order code to a field for primary product ordering.
+	 *
+	 * @param   string             $orderDate  The ordering code.
+	 * @param   DatabaseInterface  $db         The database
+	 *
+	 * @return  string  The SQL field(s) to order by.
+	 *
+	 * @since   1.6
+	 */
+	public static function getProductDate($orderDate, DatabaseInterface $db = null)
+	{
+		$db = $db ?: Factory::getDbo();
+
+		switch ($orderDate)
+		{
+			case 'modified' :
+				$queryDate = ' CASE WHEN p.modified IS NULL THEN p.created ELSE p.modified END';
+				break;
+
+			// Use created if publish_up is not set
+			case 'published' :
+				$queryDate = ' CASE WHEN p.publish_up IS NULL THEN p.created ELSE p.publish_up END ';
+				break;
+
+			case 'unpublished' :
+				$queryDate = ' CASE WHEN p.publish_down IS NULL THEN p.created ELSE p.publish_down END ';
+				break;
+			case 'product_release_date' :
+				$queryDate = ' CASE WHEN p.product_release_date IS NULL THEN p.created ELSE p.product_release_date END ';
+				break;
+			case 'created' :
+			default :
+				$queryDate = ' p.created ';
+				break;
+		}
+
+		return $queryDate;
+	}
 	/**
 	 * Get join information for the voting query.
 	 *

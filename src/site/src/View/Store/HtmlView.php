@@ -316,7 +316,7 @@ class HtmlView extends BaseHtmlView
 
         		$path = MyMuseHelper::getDownloadPath($product->parentid, 1);
                 if(1 == $params->get('my_download_dir_format')){
-                    $path .= $ext.DS;
+                    $path .= $ext.DIRECTORY_SEPARATOR;
                 }
         		$exclude = array();
                 if(count($params->get('my_formats')) > 1){
@@ -385,7 +385,7 @@ class HtmlView extends BaseHtmlView
     		$download_path = MyMuseHelper::getDownloadPath($order_item->product_id, 0);
             if(1 == $params->get('my_download_dir_format')){
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                $download_path .= $ext.DS;
+                $download_path .= $ext.DIRECTORY_SEPARATOR;
             }
 
     		$full_filename = $download_path.$filename;
@@ -548,14 +548,14 @@ class HtmlView extends BaseHtmlView
     		$download_dir = MyMuseHelper::getDownloadPath($product->parentid, 1);
     		if(1 == $params->get('my_download_dir_format')){
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                $download_path .= $ext.DS;
+                $download_path .= $ext.DIRECTORY_SEPARATOR;
             }
     		
     		$full_filename = $download_dir.$filename;
     		$full_filename1 = $full_filename;
     		if(!file_exists($full_filename)){
     			//try with the root
-    			$full_filename = JPATH_ROOT.DS.$download_dir.$filename;
+    			$full_filename = JPATH_ROOT.DIRECTORY_SEPARATOR.$download_dir.$filename;
     		}
     		if(!file_exists($full_filename)){
     			$message = Text::_('COM_MYMUSE_NO_FILE_FOUND')." ";

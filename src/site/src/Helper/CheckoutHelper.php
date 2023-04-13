@@ -506,7 +506,7 @@ class CheckoutHelper
 		// or if payment offline is enabled
 		jimport( 'joomla.plugin.helper' );
 		 
-		if(!$params->get('my_shop_test') && !$params->get('my_debug')){
+		if(!$params->get('my_shop_test')){
 			$this->MyMuseCart->reset();
 		}
 

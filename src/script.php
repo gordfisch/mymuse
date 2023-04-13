@@ -155,7 +155,7 @@ class Com_MymuseInstallerScript
             }
             catch (Exception $e)
             {
-                JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                JFactory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
                 return false;
             }
         }
@@ -210,6 +210,8 @@ class Com_MymuseInstallerScript
             $super = $parent->getParent();
 
             /* remove plugins */
+            
+/*
             $query = "SELECT * FROM `#__extensions` WHERE 
             (
                 `name` LIKE '%installer_mymuse%' 
@@ -218,9 +220,21 @@ class Com_MymuseInstallerScript
                 OR `name` LIKE '%plg_mymuse_shoppergroup_view%' 
                 OR `name` LIKE '%PLG_MYMUSE_AUDIO_JPLAYER%' 
                 OR `name` LIKE '%Installer - MyMuse%'
-            ) 
+                OR `name` LIKE '%plg_mymuse_shipping_usps%'
+                OR `name` LIKE '%plg_mymuse_vote%'
+                OR `name` LIKE '%plg_user_mymuse%'
+            )
+            AND `type` = 'plugin'"; 
+*/
 
+            $query = "SELECT * FROM `#__extensions` WHERE 
+            (
+                `name` LIKE '%mymuse%' OR `name` LIKE 'plg_user_redirectonlogin'
+            )
             AND `type` = 'plugin'";
+
+
+
             $this->db->setQuery($query);
             if($res = $this->db->loadObjectList())
             {
@@ -291,9 +305,9 @@ class Com_MymuseInstallerScript
             }
             catch (\Exception $e)
             {
-                $query = $e->getMessage();
+                $query = $e->getMessage(). ' '.$query;
                 $status = false;
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
                 return false;
             }
             $this->convert_actions [] = array (
@@ -301,7 +315,135 @@ class Com_MymuseInstallerScript
                         'message' => "",
                         'status' => $status
                     );
-         
+            echo "<h3>CONVERT TO JOOMLA 4</h3>";
+            //update DB
+            $queries = array(
+                "ALTER TABLE `#__mymuse_product` DROP `urls`;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `asset_id`;",
+                "ALTER TABLE `#__mymuse_product` ADD `track_parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `parentid`;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `catid` int NOT NULL AFTER `track_parentid`;",
+
+                "ALTER TABLE `#__mymuse_product` MODIFY `artistid` int NOT NULL AFTER `catid`;",
+                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `artistid`;",
+                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `physical`;",
+                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(1024) COLLATE utf8mb4_unicode_ci AFTER `digital`;",
+
+                "ALTER TABLE `#__mymuse_product` CHANGE `product_made_date` `product_release_date` date DEFAULT NULL;",
+
+                "UPDATE `#__mymuse_product` SET `product_release_date` = NULL WHERE `product_release_date`='0000-00-00'",
+
+                "ALTER TABLE `#__mymuse_product` ADD`updated` char(1) NOT NULL default '0';",
+                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                "ALTER TABLE `#__mymuse_product` MODIFY `metakey` text COLLATE utf8mb4_unicode_ci;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `metadesc` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.';",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `created` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `modified` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `publish_up` datetime DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY  `publish_down` datetime DEFAULT NULL; ", 
+                "ALTER TABLE `#__mymuse_product` MODIFY `introtext` mediumtext COLLATE utf8mb4_unicode_ci;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `fulltext` mediumtext COLLATE utf8mb4_unicode_ci;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `product_discount` decimal(10,2) DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `list_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `detail_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+
+                
+                "ALTER TABLE `#__mymuse_product` ADD `special_status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `alias`;",
+
+                "CREATE INDEX `idx_catid` ON `#__mymuse_product` (`catid`);",
+                "CREATE INDEX `idx_artistid` ON `#__mymuse_product` (`artistid`);",
+
+                "UPDATE `#__mymuse_product` SET `publish_down` = NULL WHERE `publish_down` = '0000-00-00 00:00:00'",
+                "UPDATE `#__mymuse_product` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_product` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                
+
+                "ALTER TABLE `#__mymuse_shopper_group`  ADD `usergroups_id` int NOT NULL DEFAULT '2';",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_coupon` CHANGE `params` `params` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` DROP DEFAULT;",
+                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` SET DEFAULT '0';",
+                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order` CHANGE `extra` `extra` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order` CHANGE `licence` `licence` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+                            
+                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_tax_rate` CHANGE `state` `published` tinyint(1) DEFAULT '0';",
+                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out_time` datetime DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_order_item` ADD `variation_id` int default NULL;",
+                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `created` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `modified` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_item` MODIFY `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_item` MODIFY `end_date` int DEFAULT NULL;",
+
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `checked_out_time` datetime DEFAULT NULL;",
+
+
+                "ALTER TABLE `#__mymuse_order_shipping` DROP  `ordering`;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `created` datetime NOT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_carrier_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_carrier_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_method_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
+                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_method_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
+                "UPDATE `#__mymuse_order_shipping` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_order_shipping` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_shopper_group` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_shopper_group` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_coupon` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_coupon` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_order` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_order` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_store` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_store` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+                "UPDATE `#__mymuse_tax_rate` SET `checked_out` = NULL WHERE `checked_out` = '0'",
+                "UPDATE `#__mymuse_tax_rate` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+
+
+            );
+
+            foreach($queries as $query){
+                $this->db->setQuery($query);
+                try
+                {
+                    $this->db->execute();
+                    $status = 1;
+                }
+                catch (\Exception $e)
+                {
+                    $query = $e->getMessage(). ' '.$query;
+                    Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                    $status = 0;
+                    //return false;
+                }
+                $this->convert_actions [] = array (
+                    'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
+                    'message' => $query,
+                    'status' => $status
+                );
+            }
 
         }
 
@@ -428,7 +570,7 @@ class Com_MymuseInstallerScript
             }
             catch (\Exception $e)
             {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
                 return false;
             }
 
@@ -443,7 +585,7 @@ class Com_MymuseInstallerScript
             }
             catch (\Exception $e)
             {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
                 return false;
             }
 
@@ -486,131 +628,7 @@ class Com_MymuseInstallerScript
 
 
         if($this->convertTo4){
-            echo "<h3>CONVERT TO JOOMLA 4</h3>";
-            //update DB
-            $queries = array(
-                "ALTER TABLE `#__mymuse_product` DROP `urls`;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `asset_id`;",
-                "ALTER TABLE `#__mymuse_product` ADD `track_parentid` int UNSIGNED NOT NULL DEFAULT '0' AFTER `parentid`;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `catid` int NOT NULL AFTER `track_parentid`;",
 
-                "ALTER TABLE `#__mymuse_product` MODIFY `artistid` int NOT NULL AFTER `catid`;",
-                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `artistid`;",
-                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `physical`;",
-                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(1024) COLLATE utf8mb4_unicode_ci AFTER `digital`;",
-                "ALTER TABLE `#__mymuse_product` RENAME COLUMN `product_made_date` TO `product_release_date`;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `product_release_date` date DEFAULT NULL;",
-                "UPDATE `#__mymuse_product` SET `product_release_date` = NULL WHERE `product_release_date`='0000-00-00'",
-
-                "ALTER TABLE `#__mymuse_product` ADD`updated` char(1) NOT NULL default '0';",
-                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
-                "ALTER TABLE `#__mymuse_product` MODIFY `metakey` text COLLATE utf8mb4_unicode_ci;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `metadesc` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
-                "ALTER TABLE `#__mymuse_product` MODIFY `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.';",
-                "ALTER TABLE `#__mymuse_product` MODIFY  `created` datetime NOT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY  `modified` datetime NOT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY  `publish_up` datetime DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY  `publish_down` datetime DEFAULT NULL; ", 
-                "ALTER TABLE `#__mymuse_product` MODIFY `introtext` mediumtext COLLATE utf8mb4_unicode_ci;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `fulltext` mediumtext COLLATE utf8mb4_unicode_ci;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `product_discount` decimal(10,2) DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `list_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `detail_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
-
-                
-                "ALTER TABLE `#__mymuse_product` ADD `special_status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `alias`;",
-
-                "CREATE INDEX `idx_catid` ON `#__mymuse_product` (`catid`);",
-                "CREATE INDEX `idx_artistid` ON `#__mymuse_product` (`artistid`);",
-
-                "UPDATE `#__mymuse_product` SET `publish_down` = NULL WHERE `publish_down` = '0000-00-00 00:00:00'",
-                "UPDATE `#__mymuse_product` SET `checked_out` = NULL WHERE `checked_out` = '0'",
-                "UPDATE `#__mymuse_product` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-
-                "UPDATE `#__mymuse_shopper_group` SET `checked_out` = NULL WHERE `checked_out` = '0'",
-                "UPDATE `#__mymuse_shopper_group` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-
-                "UPDATE `#__mymuse_coupon` SET `checked_out` = NULL WHERE `checked_out` = '0'",
-                "UPDATE `#__mymuse_coupon` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-
-                "UPDATE `#__mymuse_order` SET `checked_out` = NULL WHERE `checked_out` = '0'",
-                "UPDATE `#__mymuse_order` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-
-                "UPDATE `#__mymuse_store` SET `checked_out` = NULL WHERE `checked_out` = '0'",
-                "UPDATE `#__mymuse_store` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-
-                "UPDATE `#__mymuse_tax_rate` SET `checked_out` = NULL WHERE `checked_out` = '0'",
-                "UPDATE `#__mymuse_tax_rate` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-
-                "ALTER TABLE `#__mymuse_shopper_group`  ADD `usergroups_id` int NOT NULL DEFAULT '2';",
-                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_coupon` CHANGE `params` `params` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` DROP DEFAULT;",
-                "ALTER TABLE `#__mymuse_coupon` ALTER `coupon_uses` SET DEFAULT '0';",
-                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_coupon` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
-                "ALTER TABLE `#__mymuse_order` ALTER `extra` SET DEFAULT '';",
-                "ALTER TABLE `#__mymuse_order` ALTER `licence` SET DEFAULT '';",
-                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-                            
-                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_store` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_tax_rate` RENAME COLUMN `state` TO `published`;",
-                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_tax_rate` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_order_item` ADD `variation_id` int default NULL;",
-                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `created` datetime NOT NULL;",
-                "ALTER TABLE `#__mymuse_order_item`  MODIFY  `modified` datetime NOT NULL;",
-                "ALTER TABLE `#__mymuse_order_item` MODIFY `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order_item` MODIFY `end_date` int DEFAULT NULL;",
-
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `checked_out_time` datetime DEFAULT NULL;",
-
-
-                "ALTER TABLE `#__mymuse_order_shipping` DROP  `ordering`;",
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `created` datetime NOT NULL;",
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_carrier_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_carrier_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_method_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `ship_method_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';",
-                "UPDATE `#__mymuse_order_shipping` SET `checked_out` = NULL WHERE `checked_out` = '0'",
-                "UPDATE `#__mymuse_order_shipping` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-                "ALTER TABLE `#__mymuse_order_shipping` MODIFY  `extra` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''",
-
-
-
-            );
-
-            foreach($queries as $query){
-                $this->db->setQuery($query);
-                try
-                {
-                    $this->db->execute();
-                    $status = 1;
-                }
-                catch (\Exception $e)
-                {
-                    $query = $e->getMessage();
-                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-                    $status = 0;
-                    //return false;
-                }
-                $this->convert_actions [] = array (
-                    'name' => Text::_ ( "COM_MYMUSE_UPDATE_DB_J4" ),
-                    'message' => $query,
-                    'status' => $status
-                );
-            }
 
 
 
@@ -650,7 +668,7 @@ class Com_MymuseInstallerScript
             }
             catch (\Exception $e)
             {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
                 return false;
             }
             $this->convert_actions [] = array (
@@ -717,7 +735,7 @@ END;
                 }
                 catch (\Exception $e)
                 {
-                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                    Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
 
                     $status = false;
                 }
@@ -760,7 +778,7 @@ END;
                 }
                 catch (\Exception $e)
                 {
-                    Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                    Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
 
                     $status = false;
                 }
@@ -785,7 +803,7 @@ END;
             $query->where($this->db->quoteName('name') . ' = ' . $this->db->quote('mymuse'));
             */
             $query = "UPDATE #__extensions SET params = ".$this->db->quote($defaults). "
-            WHERE name = mymuse";
+            WHERE name = 'mymuse'";
 
 
             $this->db->setQuery($query);
@@ -795,7 +813,7 @@ END;
             }
             catch (\Exception $e)
             {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
 
                 return false;
             }

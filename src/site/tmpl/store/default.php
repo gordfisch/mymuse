@@ -12,11 +12,39 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
+$app = Factory::getApplication();
 
+
+$uri 		= Uri::getInstance(); 
+$cat_uri 	= $uri->toString();
+
+
+$description = ($this->store->description != '')? $this->store->description : $this->store->title;
+$document    = Factory::getDocument();
+$document->setMetaData( 'og:site_name',nl2br($this->escape($this->store->title))  );
+$document->setMetaData( 'og:type', 'article');
+$document->setMetaData( 'og:url', $cat_uri);
+$document->setMetaData( 'og:title', $this->escape($this->store->title));
+$document->setMetaData( 'og:description', strip_tags($description));
+$document->setMetaData( 'og:image', URI::Root().$this->params->get('store_thumb_image'));
+
+$document->setMetaData( 'twitter:title', $this->escape($this->store->title));
+$document->setMetaData( 'twitter:card', 'summary_large_image');
+$document->setMetaData( 'twitter:site', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:url', $cat_uri);
+$document->setMetaData( 'twitter:description', strip_tags($description));
+$document->setMetaData( 'twitter:image', URI::Root().$this->params->get('store_thumb_image'));
 ?>
 <?php echo $this->store->event->beforeDisplayHeader; ?>
 
@@ -66,10 +94,11 @@ if (!empty($this->lead_items) || !empty($this->intro_items) || !empty($this->lin
 		<?php if ((int) $this->params->get('num_columns') > 1) : ?>
 			<?php $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-'; ?>
 			<?php $blogClass .= (int) $this->params->get('num_columns'); ?>
+			<?php $blogItemClass = "uk-width-1-".(int) $this->params->get('num_columns')."@m"; ?>
 		<?php endif; ?>
-		<div class="com-content-category-blog__items blog-items <?php echo $blogClass; ?>">
+		<div class="com-content-category-blog__items blog-items <?php echo $blogClass; ?> uk-grid">
 		<?php foreach ($this->intro_items as $key => &$item) : ?>
-			<div class="com-content-category-blog__item blog-item"
+			<div class="com-content-category-blog__item blog-item <?php echo $blogItemClass; ?>"
 				itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
 					<?php
 					$this->item = & $item;

@@ -24,6 +24,7 @@ $category = $this->category;
 $uri = JUri::getInstance(); 
 $cat_uri = $uri->toString();
 $description = ($this->category->description != '')? $this->category->description : $this->category->title;
+$description = HtmlHelper::_('string.truncate', ($description), 200);
 $document   = Factory::getDocument();
 $document->setMetaData( 'og:site_name',nl2br($this->escape($this->store->title))  );
 $document->setMetaData( 'og:type', 'article');
@@ -82,6 +83,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
     <?php if ($beforeDisplayContent || $afterDisplayContent || $this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
         <div class="category-desc clearfix">
+
             <?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
                 <?php echo LayoutHelper::render(
                     'joomla.html.image',
@@ -91,13 +93,31 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
                     ]
                 ); ?>
             <?php endif; ?>
+
             <?php echo $beforeDisplayContent; ?>
+
             <?php if ($this->params->get('show_description') && $this->category->description) : ?>
                 <?php echo HTMLHelper::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
             <?php endif; ?>
+            
             <?php echo $afterDisplayContent; ?>
         </div>
     <?php endif; ?>
+
+
+
+    <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
+        <div class="com-mymuse-category-blog__children cat-children">
+    
+            <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
+                <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
+            <?php endif; ?>
+            <?php echo $this->loadTemplate('children'); ?> </div>
+    <?php endif; ?>
+
+
+
+
 
     <?php if (empty($this->lead_items) && empty($this->link_items) && empty($this->intro_items)) : ?>
         <?php if ($this->params->get('show_no_articles', 1)) : ?>
@@ -108,7 +128,9 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         <?php endif; ?>
     <?php endif; ?>
 
-    <h3><?php echo Text::_("COM_MYMUSE_PRODUCTS"); ?></h3>
+     <?php if (!empty($this->lead_items) || !empty($this->link_items) || !empty($this->intro_items)) : ?>
+        <h2><?php echo Text::_("COM_MYMUSE_PRODUCTS"); ?></h2>
+    <?php endif; ?>
 
     <?php if (!empty($this->lead_items)) : ?>
         <div class="com-mymuse-category-blog__items blog-items items-leading <?php echo $this->params->get('blog_class_leading'); ?>">
@@ -127,7 +149,9 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
     if (!empty($this->intro_items)) : ?>
 
-        <?php $blogClass = $this->params->get('blog_class', ''); ?>
+        <?php 
+
+        $blogClass = $this->params->get('blog_class', ''); ?>
         <?php if ((int) $this->params->get('num_columns') > 1) : ?>
             <?php $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-'; ?>
             <?php $blogClass .= (int) $this->params->get('num_columns'); ?>
@@ -152,14 +176,7 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         </div>
     <?php endif; ?>
 
-    <?php if ($this->maxLevel != 0 && !empty($this->children[$this->category->id])) : ?>
-        <div class="com-mymuse-category-blog__children cat-children">
-    
-            <?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
-                <h3> <?php echo Text::_('JGLOBAL_SUBCATEGORIES'); ?> </h3>
-            <?php endif; ?>
-            <?php echo $this->loadTemplate('children'); ?> </div>
-    <?php endif; ?>
+
     
     <?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
         <div class="com-mymuse-category-blog__navigation w-100">

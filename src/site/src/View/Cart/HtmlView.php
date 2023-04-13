@@ -149,10 +149,10 @@ class HtmlView extends BaseHtmlView
 	{
 
 
-		$params 		= MyMuseHelper::getParams();
+		$params 		= MymuseHelper::getParams();
 		$app 			= Factory::getApplication();
 		$jinput 		= $app->input;
-		$this->Itemid 	= $jinput->get("Itemid",'');
+		$this->Itemid 	= $params->get('top_menu_item',$jinput->get("Itemid",''));
 		$this->task 	= $jinput->get('task', '', 'CMD');
 		$task 			= $this->task;
 		$this->originaltask 	= $jinput->get('original_task', '', 'CMD');
@@ -177,7 +177,7 @@ class HtmlView extends BaseHtmlView
 			
 			//if we are using no_reg
 			if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
-				$fields = MyMuseHelper::getNoRegFields();
+				$fields = MymuseHelper::getNoRegFields();
 				$registry = new Registry;
 				$registry->loadString($order->notes);
 				foreach($fields as $field){
@@ -426,13 +426,13 @@ class HtmlView extends BaseHtmlView
 				if(count($order->items) && $params->get('product_player_type') == "single"){
 					
 				$j = 0;
-				//MyMuseHelper::print_pre($order->items[0]);
+				//MymuseHelper::print_pre($order->items[0]);
 				foreach($order->items as $i => $track) {
 					if(!isset($track->parentid) || $track->parentid == 0){
 						continue;
 					}
-					$site_url = MyMuseHelper::getSiteUrl($track->id,'0');
-					$site_path = MyMuseHelper::getSitePath($track->id,'0');
+					$site_url = MymuseHelper::getSiteUrl($track->id,'0');
+					$site_path = MymuseHelper::getSitePath($track->id,'0');
 					$flash = '';
 					if(isset($track->file_preview) && $track->file_preview){
 						$track->path = $site_url.$track->file_preview;
@@ -740,45 +740,46 @@ class HtmlView extends BaseHtmlView
 	function notify()
 	{
 		ini_set('log_errors', 1);
-		ini_set('error_log', JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'php_error' );
+		ini_set('error_log', JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'php_error' );
 		
 		
 		$app = Factory::getApplication();
 		$jinput = $app->input;
-		$params = MyMuseHelper::getParams();
+		$params = MymuseHelper::getParams();
+		PluginHelper::importPlugin('mymuse');
 		
 
 		$date = date('Y-m-d h:i:s');
         if($params->get('my_debug')){
             $debug = "CART VIEW NOTIFY FUNCTION\n";
-            MyMuseHelper::logMessage( $debug  );
+            MymuseHelper::logMessage( $debug  );
         }
 		$result = array();
 	
 		// see if any plugins wants to deal with notification
-		// plugin should run MyMuseHelper::orderStatusUpdate
+		// plugin should run MymuseHelper::orderStatusUpdate
      	$results 		= $app->triggerEvent('onMyMuseNotify', array($params, $this->Itemid) );
      	foreach($results as $r){
             if($params->get('my_debug')){
      			$debug = " Notify: Result from Plugin\n" . print_r( $r, true ). "\n\n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   			}
      		if($r['myorder']){
      			$result = $r;
      		}
      	}
- 	
+
      	if(!count($result)){
      		
      		if($params->get('my_debug')){
      			$debug = "Notify: Did not get a result!\n";
      			$debug .= "-------END-------\n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   			}
   			exit;
      	}
 
-        $this->store = $this->MyMuseStore->_store;
+  
         $this->store_params = new Registry;
         $this->store_params->loadString($this->store->params);
   		
@@ -802,7 +803,7 @@ class HtmlView extends BaseHtmlView
 
         if($params->get('my_debug')){
         	$debug = "Notify: Making response emails \n";
-        	MyMuseHelper::logMessage( $debug  );
+        	MymuseHelper::logMessage( $debug  );
         }
         
         //special for pesapal
@@ -821,12 +822,12 @@ class HtmlView extends BaseHtmlView
         if($result['order_completed'] == "ALREADY_COMPLETED"){
   			if($params->get('my_debug')){
   				$debug = "Notify: ".$result['plugin'].": Order was already completed: ".$result['payment_status']." \n\n";
-  				MyMuseHelper::logMessage( $debug  );
+  				MymuseHelper::logMessage( $debug  );
   			}
         }elseif(!$result['message_sent'] || !$result['message_received']){
         	if($params->get('my_debug')){
         		$debug = "Notify: ".$result['plugin'].": Fatal Error\n\n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         	}
         	
         	$subject = $result['plugin'].": Notify Fatal Error";
@@ -847,7 +848,7 @@ class HtmlView extends BaseHtmlView
         }elseif(!$result['order_verified']){
         	if($params->get('my_debug')){
         		$debug = "Notify: ".$result['plugin'].": Order was not VERIFIED \n\n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         	}
         	$subject = $result['plugin'].": Order was not VERIFIED";
             $message = "Hello,
@@ -866,7 +867,7 @@ class HtmlView extends BaseHtmlView
         }elseif(!$result['order_found']){
         	if($params->get('my_debug')){
         		$debug = "Notify: ".$result['plugin'].": Order was not found \n\n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         	}
         	$subject = $result['plugin'].": Order was not found";
             $message = "Hello,
@@ -886,7 +887,7 @@ class HtmlView extends BaseHtmlView
         	
         	if($params->get('my_debug')){
         		$debug = "Notify: ".$result['plugin'].": Order was not completed: ".$result['payment_status']." \n\n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         	}
         	$subject = $result['plugin'].": Order was not completed: ".$result['payment_status'];
             $message = "Hello,
@@ -906,12 +907,12 @@ class HtmlView extends BaseHtmlView
 
         	if($params->get('my_debug')){
         		$debug = "Notify: All is good \n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         	}
  
         	if(!$this->makeMail($result)){
         		$debug = "Notify: makeMail failed \n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         		
         	}
             
@@ -928,14 +929,14 @@ class HtmlView extends BaseHtmlView
         	$payment['transaction_status'] 	= $result['transaction_status'];
         	$payment['description'] 		= $result['description'];
         	 
-        	$MyMuseHelper = new MyMuseHelper;
-        	if(!$MyMuseHelper->logPayment($payment)){
-        		$debug = "Notify: !!Log Payment Error: ".$MyMuseHelper->getError()."\n\n";
-        		MyMuseHelper::logMessage( $debug  );
+        	$MymuseHelper = new MymuseHelper;
+        	if(!$MymuseHelper->logPayment($payment)){
+        		$debug = "Notify: !!Log Payment Error: ".$MymuseHelper->getError()."\n\n";
+        		MymuseHelper::logMessage( $debug  );
         	}
         	if($params->get('my_debug')){
         		$debug = "Notify: Payment logged\n";
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
         	}
         	
 
@@ -991,7 +992,7 @@ class HtmlView extends BaseHtmlView
         				!($order->items[$i]->attribs['special_status'] == "pre_order") &&
         				!($order->items[$i]->attribs['special_status'] == "coming_soon")
         			){
-        				if (!$MyMuseHelper->updateStock($order->items[$i]->product->id, $order->items[$i]->quantity)) {
+        				if (!$MymuseHelper->updateStock($order->items[$i]->product->id, $order->items[$i]->quantity)) {
         					$this->_db= Factory::getDBO();
         					$debug .= "$date Could not update stock\n".$this->_db->getErrorMsg()."\n";
         				}
@@ -1008,7 +1009,7 @@ class HtmlView extends BaseHtmlView
 
   		if($params->get('my_debug')){
             $debug .= "-------END NOTIFY FUNCTION-------";
-        	MyMuseHelper::logMessage( $debug  );
+        	MymuseHelper::logMessage( $debug  );
   		}
   		//PAYUNITY SEND THE THANK YOU URL
   		if($result['plugin'] == "payment_payunity"){
@@ -1034,7 +1035,7 @@ class HtmlView extends BaseHtmlView
         $this->store_params->loadString($this->store->params);
         $date = date('Y-m-d h:i:s');
      	
-     	$params 		= MyMuseHelper::getParams();
+     	$params 		= MymuseHelper::getParams();
      	$app 			= Factory::getApplication();
 		$jinput 		= $app->input;
 
@@ -1043,7 +1044,7 @@ class HtmlView extends BaseHtmlView
 			
 		//if we are using no_reg
 		if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
-			$fields = MyMuseHelper::getNoRegFields();
+			$fields = MymuseHelper::getNoRegFields();
 			$registry = new Registry;
 			$registry->loadString($order->notes);
 			foreach($fields as $field){
@@ -1122,7 +1123,7 @@ class HtmlView extends BaseHtmlView
 		if(is_object($order) && $params->get('my_debug')){
 			$debug = "makeMail: Order = ".$order->id."\n";
 			//$debug .= "makeMail user = ".print_r($this->user,true)."\n";
-			MyMuseHelper::logMessage( $debug  );
+			MymuseHelper::logMessage( $debug  );
 		}
 		
 		$currency 		= $order->order_currency;
@@ -1132,7 +1133,7 @@ class HtmlView extends BaseHtmlView
 		if($order->notes && ($params->get('my_registration') == "no_reg" || $this->user->username == "buyer") ){
 
 			$debug = "makeMail: Order Notes = ".print_r($order->notes,true)."\n";
-			//MyMuseHelper::logMessage( $debug  );
+			//MymuseHelper::logMessage( $debug  );
 			//$accparams = new Registry( $order->notes);
 			$registry = new Registry;
 			$notes_params = $registry->loadString($order->notes);
@@ -1189,7 +1190,7 @@ class HtmlView extends BaseHtmlView
 		 
 		if($params->get('my_debug')){
 			$debug = "makeMail: Downloadable = ".$order->downloadable."\n";
-			MyMuseHelper::logMessage( $debug  );
+			MymuseHelper::logMessage( $debug  );
 		}
 		 
 		//see if there is a message
@@ -1212,10 +1213,10 @@ class HtmlView extends BaseHtmlView
 		
 		if($params->get('my_debug')){
 			$debug = "makeMail: Extra Email message: $my_email_msg \n\n";
-			MyMuseHelper::logMessage( $debug  );
+			MymuseHelper::logMessage( $debug  );
 		}
 		
-		//include_once( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
+		//include_once( JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_mymuse'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'mail_html_header.php' );
 		/*
 		if(is_array($order->order_currency)){
 			$order->order_currency = $order->order_currency['currency_code'];
@@ -1252,10 +1253,10 @@ class HtmlView extends BaseHtmlView
 
 		if($params->get('my_debug')){
 			//$debug = "makeMail: Email message: $message \n\n";
-			//MyMuseHelper::logMessage( $debug  );
+			//MymuseHelper::logMessage( $debug  );
 		}
 		
-		//MyMuseHelper::print_pre($message); exit;
+		//MymuseHelper::print_pre($message); exit;
 		// email client $user_email, and cc store owner $mailfrom
 		// get mailer object
 		$mailer = Factory::getMailer();
@@ -1303,7 +1304,7 @@ class HtmlView extends BaseHtmlView
 			$debug = "makeMail: Mail sent to $user_email";
 		}
 		if($params->get('my_debug')){
-			MyMuseHelper::logMessage( $debug  );
+			MymuseHelper::logMessage( $debug  );
 		}
 		return true;	
 	}

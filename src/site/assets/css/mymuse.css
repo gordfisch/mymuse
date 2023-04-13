@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
-/* MORE */
+/* MYMUSE CSS */
+
 .mymuse section {
     padding-bottom: 2em;
 }
@@ -203,21 +204,6 @@ span.discount {
     text-decoration: line-through;
     color: red;
 }
-    
-/* to hide the player, uncomment this commented section 
-#product_player {
-  top: -1000px;
-  position: absolute;
-  z-index:2000000;
-
-}
-#jp-title-div  {
-  top: -1000px;
-  position: absolute;
-  z-index:2000000;
-}
-*/
-/* end of hide player */
 
 /* Minicart on page */
 #parent {

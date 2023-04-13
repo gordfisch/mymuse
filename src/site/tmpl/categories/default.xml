@@ -278,7 +278,7 @@
 		<field
 			name="show_featured"
 			type="list"
-			label="JGLOBAL_SHOW_FEATURED_ARTICLES_LABEL"
+			label="COM_MYMUSE_FEATURED"
 			validate="options"
 			useglobal="true"
 			class="form-select-color-state"
@@ -1180,10 +1180,8 @@
 				label="JGLOBAL_ORDERING_DATE_LABEL"
 				parentclass="stack span-1-inline"
 			>
-				<option value="released">COM_MYMUSE_DATE_PRODUCT_RELEASE_DATE</option>
 				<option value="created">JGLOBAL_CREATED</option>
 				<option value="modified">JGLOBAL_MODIFIED</option>
-				<option value="published">JPUBLISHED</option>
 			</field>
 	 		
 	

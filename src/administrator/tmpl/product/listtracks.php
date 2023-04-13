@@ -169,7 +169,9 @@ $this->vote 		= false;
 						</tr>
 					</thead>
 
-				<?php if (count($this->tracks) > 0) : ?>
+				<?php 
+
+				if (count($this->tracks) > 0) : ?>
 					<tbody <?php if ($saveOrder) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
 					<?php
 					$k = 0;

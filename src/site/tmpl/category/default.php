@@ -27,6 +27,7 @@ $cat_uri = $uri->toString();
 
 $document 	= JFactory::getDocument();
 $description = ($this->category->description != '')? $this->category->description : $this->category->title;
+$description = HtmlHelper::_('string.truncate', ($description), 200);
 $document->setMetaData( 'og:site_name',$this->escape($this->store->title));
 $document->setMetaData( 'og:type', 'article');
 $document->setMetaData( 'og:url', $cat_uri);

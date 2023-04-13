@@ -57,12 +57,12 @@ $groups = $user->getAuthorisedViewLevels();
                 <?php endif; ?>
                 <?php if ($this->params->get('show_subcat_desc') == 1) : ?>
                     <?php if ($child->description) : ?>
-                    	<?php if ($this->params->get('subcat_desc_truncate')) : 
-                    		$child->description = JHtmlString::truncate($child->description,$this->params->get('subcat_desc_truncate'));
-                    	 	$child->description = str_replace("...",'',$child->description);
-                    	 	$child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
-                    	
-                    	endif; ?>
+                        <?php if ($this->params->get('subcat_desc_truncate')) : 
+                            HtmlHelper::_('string.truncate', ($child->description), $this->params->get('subcat_desc_truncate'))
+                            $child->description = str_replace("...",'',$child->description);
+                            $child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
+                        
+                        endif; ?>
                         <div class="category-desc">
                             <?php echo HTMLHelper::_('content.prepare', $child->description, '', 'com_content.category'); ?>
                         </div>

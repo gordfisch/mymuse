@@ -74,17 +74,25 @@ $this->itemClass = "uk-width-1-".$cols."@m";
 </section>
 
 
+<?php if( $product->product_physical) : ?>
 <section id="product-physical">
 	<?php echo $this->loadTemplate('physical'); ?>
 </section>
+<?php endif; ?>
 
 
+<?php if(count($product->items)) :  ?>
 <section id="product-items">
 	<?php echo $this->loadTemplate('items'); ?>
 </section>
+<?php endif; ?>
 
-<?php echo $this->loadTemplate('tracks'); ?>
-
+<?php
+ if(is_countable($product->tracks) && count($product->tracks) && $this->params->get('product_show_tracks', 1)) : ?>
+ <section id="product-tracks">
+	<?php echo $this->loadTemplate('tracks'); ?>
+</section>
+<?php endif; ?>
 
 <?php 
 if( $this->params->get('split_text') ): ?>

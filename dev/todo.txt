@@ -1,0 +1,35 @@
+jform_attribs_product_price_physical
+
+Require a Release Date
+
+
+Add second format in store
+Change Store Options to Price by Product
+
+
+	public $user = 'brucegan_joomla';
+	public $password = 'gm1n0r7';
+	public $db = 'brucegan_joomla';
+	
+	
+	ALTER TABLE `j25_mymuse_order_shipping` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;
+                ALTER TABLE `j25_mymuse_order_shipping` MODIFY  `checked_out_time` datetime DEFAULT NULL;
+                ALTER TABLE `j25_mymuse_order_shipping` MODIFY  `created` datetime NOT NULL;
+                ALTER TABLE `j25_mymuse_order_shipping` MODIFY  `ship_carrier_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;
+                ALTER TABLE `j25_mymuse_order_shipping` MODIFY  `ship_carrier_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;
+                ALTER TABLE `j25_mymuse_order_shipping` MODIFY  `ship_method_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;
+                ALTER TABLE `j25_mymuse_order_shipping` MODIFY  `ship_method_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
+                
+ALTER TABLE `j25_mymuse_order` ADD `created_by_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
+ALTER TABLE `j25_mymuse_order` ALTER `extra` SET DEFAULT '';
+ALTER TABLE `j25_mymuse_order` ALTER `licence` SET DEFAULT '';
+ALTER TABLE `j25_mymuse_order` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;
+ALTER TABLE `j25_mymuse_order` MODIFY `checked_out_time` datetime DEFAULT NULL;
+UPDATE `j25_mymuse_order` SET `checked_out` = NULL WHERE `checked_out` = '0';
+UPDATE `j25_mymuse_order` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00';
+
+
+
+ALTER TABLE `j25_mymuse_order` MODIFY  `modified` datetime NOT NULL;
+ALTER TABLE `j25_mymuse_order` MODIFY  `created` datetime NOT NULL;
+ALTER TABLE `j25_mymuse_order` MODIFY `extra` text COLLATE utf8mb4_unicode_ci DEFAULT NULL;

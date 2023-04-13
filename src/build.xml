@@ -5,9 +5,10 @@
 
 <!-- /var/www/html/mymuseJ4/joomla-cms -->
 <!-- /var/www/html/avonlea/brucegandymusic -->
-        <property name="joomladir" value="/var/www/html/mymuseJ4/joomla-cms" override="true" />
+<!-- /var/www/html/singsong/live -->
+        <property name="joomladir" value="/var/www/html/singsong/lives" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymuseJ4/joomla-cms/administrator/components/com_mymuse"
+                value="/var/www/html/singsong/live/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
 
@@ -79,11 +80,12 @@
                         todir="${joomladir}/administrator/language/en-GB" /> 
                 <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.sys.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
+                -->
 
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.sys.ini"
-                        todir="${joomladir}/administrator/language/en-GB" / --> 
+                        todir="${joomladir}/administrator/language/en-GB" /> 
 
                         
                 <!-- plugins -->
@@ -144,6 +146,11 @@
                             todir="${joomladir}/plugins/user/mymusenoreg/forms" />
                 <copy file="${src}/plugins/user_mymusenoreg/src/Field/TosField.php"
                         todir="${joomladir}/plugins/user/mymusenoreg/src/Field/" /> 
+
+                <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.xml"
+                            todir="${joomladir}/plugins/user/redirectonlogin" />
+                <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.php"
+                            todir="${joomladir}/plugins/user/redirectonlogin" />
 
                 <!--  modules -->
                 <copy todir="${joomladir}/modules/mod_mymuse_minicart">

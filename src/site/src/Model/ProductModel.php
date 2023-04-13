@@ -25,6 +25,7 @@ use Joomla\Utilities\IpHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\ShopperHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Helper\QueryHelper;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
 
 
@@ -45,7 +46,8 @@ class ProductModel extends ItemModel
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * Note. Calling getState in this method will result in recursion.
+	 * Note. Calling Trac
+	 State in this method will result in recursion.
 	 *
 	 * @since   1.6
 	 *
@@ -451,7 +453,6 @@ class ProductModel extends ItemModel
 		{
 			$this->_item = array();
 			$this->_item[$pk] = new CMSObject;
-
 		}
 
 
@@ -460,15 +461,28 @@ class ProductModel extends ItemModel
 		$db = $this->getDbo();
 		$alpha 		= $this->getState('list.alpha','');
 		$searchword = $this->getState('list.searchword','');
-		$listDirn	= $this->getState('list.direction', 'ASC');
-		$ordering 	= $this->getState('list.ordering', 'a.title');
+		
+		
+
+		$jinput = Factory::getApplication ()->input;
 		$after_sort = '';
 
-		if($ordering == 'file_length'){
-			//save it for after
-			$ordering = 'a.title';
-			$after_sort = 'file_length';
+		if($jinput->get('filter_order') != ''){
+			$ordering 	= $this->getState('list.ordering', 'p.ordering');
+			$ordering	.= ' '.$this->getState('list.direction', 'ASC');
+			if(preg_match("/file_length|file_time|file_downloads/",$ordering)){
+				//save it for after
+				$after_sort = $ordering;
+				$ordering = 'p.ordering';
+			}
+		}else{
+			$active       = $app->getMenu()->getActive();
+			$mparams = $active->getParams();
+			$orderby_track = $mparams->get('orderby_track', 'alpha');
+			$order_track_date = $mparams->get('order_track_date','');
+			$ordering = QueryHelper::orderbyProduct($orderby_track, $order_track_date);
 		}
+
 		if(preg_match("/ASC|DESC/", strtoupper($ordering))){
 			$listDirn = '';
 		}
@@ -483,74 +497,70 @@ class ProductModel extends ItemModel
 			$this->getState(
 				'item.select',
 				[
-					$db->quoteName('a.id'),
-					$db->quoteName('a.asset_id'),
-					$db->quoteName('a.parentid'),
-					$db->quoteName('a.track_parentid'),
-					$db->quoteName('a.title'),
-					$db->quoteName('a.product_sku'),
-					$db->quoteName('a.alias'),
-					$db->quoteName('a.title_alias'),
-					$db->quoteName('a.introtext'),
-					$db->quoteName('a.fulltext'),
-					$db->quoteName('a.state'),
-					$db->quoteName('a.price'),
-					$db->quoteName('a.product_discount'),
-					$db->quoteName('a.catid'),
-					$db->quoteName('a.artistid'),
-					$db->quoteName('a.created'),
-					$db->quoteName('a.created_by'),
-					$db->quoteName('a.created_by_alias'),
-					$db->quoteName('a.modified'),
-					$db->quoteName('a.modified_by'),
-					$db->quoteName('a.checked_out'),
-					$db->quoteName('a.checked_out_time'),
-					$db->quoteName('a.publish_up'),
-					$db->quoteName('a.publish_down'),
-					$db->quoteName('a.list_image'),
-					$db->quoteName('a.detail_image'),
-					$db->quoteName('a.attribs'),
-					$db->quoteName('a.physical'),
-					$db->quoteName('a.digital'),
-					$db->quoteName('a.version'),
-					$db->quoteName('a.ordering'),
-					$db->quoteName('a.metakey'),
-					$db->quoteName('a.metadesc'),
-					$db->quoteName('a.metadata'),
-					$db->quoteName('a.access'),
-					$db->quoteName('a.hits'),
-					$db->quoteName('a.product_physical'),
-					$db->quoteName('a.product_downloadable'),
-					$db->quoteName('a.product_allfiles'),
-					$db->quoteName('a.product_release_date'),
-					$db->quoteName('a.file_preview'),
-					$db->quoteName('a.special_status'),
-					$db->quoteName('a.product_in_stock'),
-					$db->quoteName('a.recording'),
-					$db->quoteName('a.featured'),
-					$db->quoteName('a.language'),
+					$db->quoteName('p.id'),
+					$db->quoteName('p.asset_id'),
+					$db->quoteName('p.parentid'),
+					$db->quoteName('p.track_parentid'),
+					$db->quoteName('p.title'),
+					$db->quoteName('p.product_sku'),
+					$db->quoteName('p.alias'),
+					$db->quoteName('p.title_alias'),
+					$db->quoteName('p.introtext'),
+					$db->quoteName('p.fulltext'),
+					$db->quoteName('p.state'),
+					$db->quoteName('p.price'),
+					$db->quoteName('p.product_discount'),
+					$db->quoteName('p.catid'),
+					$db->quoteName('p.artistid'),
+					$db->quoteName('p.created'),
+					$db->quoteName('p.created_by'),
+					$db->quoteName('p.created_by_alias'),
+					$db->quoteName('p.modified'),
+					$db->quoteName('p.modified_by'),
+					$db->quoteName('p.checked_out'),
+					$db->quoteName('p.checked_out_time'),
+					$db->quoteName('p.publish_up'),
+					$db->quoteName('p.publish_down'),
+					$db->quoteName('p.list_image'),
+					$db->quoteName('p.detail_image'),
+					$db->quoteName('p.attribs'),
+					$db->quoteName('p.physical'),
+					$db->quoteName('p.digital'),
+					$db->quoteName('p.version'),
+					$db->quoteName('p.ordering'),
+					$db->quoteName('p.metakey'),
+					$db->quoteName('p.metadesc'),
+					$db->quoteName('p.metadata'),
+					$db->quoteName('p.access'),
+					$db->quoteName('p.hits'),
+					$db->quoteName('p.product_physical'),
+					$db->quoteName('p.product_downloadable'),
+					$db->quoteName('p.product_allfiles'),
+					$db->quoteName('p.product_release_date'),
+					$db->quoteName('p.file_preview'),
+					$db->quoteName('p.special_status'),
+					$db->quoteName('p.product_in_stock'),
+					$db->quoteName('p.recording'),
+					$db->quoteName('p.featured'),
+					$db->quoteName('p.language'),
 				]
 			)
-		)->from($db->quoteName('#__mymuse_product', 'a'));
+		)->from($db->quoteName('#__mymuse_product', 'p'));
 
 
 		$track_query->where(
 			[
 
-				$db->quoteName('a.parentid') . ' = ' . $pk,
-				$db->quoteName('a.product_downloadable') . ' = 1',
-				$db->quoteName('a.state') . ' = 1',
-				$db->quoteName('a.track_parentid') . ' = 0',
+				$db->quoteName('p.parentid') . ' = ' . $pk,
+				$db->quoteName('p.product_downloadable') . ' = 1',
+				$db->quoteName('p.state') . ' = 1',
+				$db->quoteName('p.track_parentid') . ' = 0',
 			]
 		);
-		//ORDERING
-		$orderCol  = $app->getUserStateFromRequest('list.filter_order', 'filter_order', 'a.title', 'string');
-		$orderDirn = $app->getUserStateFromRequest('list.filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
-		if($orderCol == 'file_length' ){
-			//save if for now
-		}else{
-			$track_query->order($db->escape($orderCol.' '.$orderDirn));
-		}
+
+
+		$track_query->order($db->escape($ordering));
+
 		
 
 		//echo $track_query->__toString(); exit;
@@ -641,10 +651,10 @@ class ProductModel extends ItemModel
 		$parent_tracks = array();
 		$t = 0;
 
-
 		if(count($tracks)){
 
 			$root = JPATH_ROOT.DIRECTORY_SEPARATOR;
+			$file_downloads = 0;
 			foreach ($tracks as $i => $track) {
 
 
@@ -661,8 +671,8 @@ class ProductModel extends ItemModel
 				if(isset($track->digital[0]->file_time)){
 					$track->file_time = $track->digital[0]->file_time;
 				}
-				if(isset($track->digital[0]->file_downloads)){
-					$track->file_downloads = $track->digital[0]->file_downloads;
+				if(isset($track->digital[0]->file_downloads) && $track->digital[0]->file_downloads != ''){
+					$file_downloads += $track->digital[0]->file_downloads;
 				}
 				
 				if(!isset($track->sales) || $track->sales == ''){
@@ -717,6 +727,12 @@ class ProductModel extends ItemModel
 				//$parent_tracks[] = $track;
 				
 			} // each track
+
+			$track->digital[0]->file_downloads = $file_downloads;
+
+
+
+
 			//$tracks = $parent_tracks;
 			$params->set('product_player_type', "single");
 			//$params->set('product_player_type', "single");
@@ -785,7 +801,7 @@ class ProductModel extends ItemModel
 					}
 	
 					$track->flash = $flash;
-				
+				//MymuseHelper::print_pre($track); exit;
 				}//end for each preview track 
 			} // if count previews for 'each'
 
@@ -1271,8 +1287,8 @@ class ProductModel extends ItemModel
 		} elseif (2 == $params->get ( 'my_price_by_product' ) && 1 != $product->product_physical) {
 			// price by licence
 			
-			$session = JFactory::getSession ();
-			$jinput = JFactory::getApplication ()->input;
+			$session = Factory::getSession ();
+			$jinput = Factory::getApplication ()->input;
 			$my_licence = $jinput->get ( 'my_licence', $session->get ( "my_licence", 0 ) );
 			if (! $session->get ( "cart", 0 )) {
 				self::$cart = array ();
@@ -1281,7 +1297,7 @@ class ProductModel extends ItemModel
 				self::$cart = $session->get ( "cart" );
 			}
 			
-			$session = JFactory::getSession ();
+			$session = Factory::getSession ();
 			$my_licence = $jinput->get ( 'my_licence', $session->get ( "my_licence", 0 ) );
 			
 			$price_info ["product_price"] = $params->get ( 'my_license_' . $my_licence . '_price' );
@@ -1627,6 +1643,7 @@ class ProductModel extends ItemModel
 	      }
 	      return ($a > $b) ? -1 : 1;
 	  }
+	  //file_time|file_downloads
 
 	/**
 	    * getRecommended

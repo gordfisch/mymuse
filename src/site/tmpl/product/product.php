@@ -76,6 +76,7 @@ if($artist){
 $uri 			= Uri::getInstance(); 
 $prod_uri 		= $uri->toString();
 $description 	= ($product->introtext != '')? $product->introtext : $product->title;
+$description 	= HtmlHelper::_('string.truncate', ($description), 200);
 $document 		= Factory::getDocument();
 $document->setMetaData( 'og:site_name',$this->escape($this->store->title));
 $document->setMetaData( 'og:type', 'article');

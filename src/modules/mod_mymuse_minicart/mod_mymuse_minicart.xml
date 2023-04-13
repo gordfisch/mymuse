@@ -2,8 +2,8 @@
 <extension version="3.0" type="module" client="site">
 	<name>MOD_MYMUSE_MINICART</name>
 	<author>Arboreta</author>
-	<creationDate>June 2012</creationDate>
-	<copyright>Copyright (C) 2012 Arboreta Internet Services. All rights reserved.</copyright>
+	<creationDate>Mar 2023</creationDate>
+	<copyright>Copyright (C) 2023 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>

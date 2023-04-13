@@ -150,7 +150,11 @@ class OrderModel extends AdminModel
 	 */
 	public function getItem($pk = null)
 	{
+
 		$input = Factory::getApplication()->input;
+		if(!$pk){
+			$pk = $input->get('id');
+		}
 		$params = MyMuseHelper::getParams();
 		$this->setState('order.id',$input->get('id'));
 		$db = FActory::getDBO();
@@ -158,7 +162,7 @@ class OrderModel extends AdminModel
 		
 		$app 	= Factory::getApplication();
 		$input 	= $app->input;
-		
+
 		if ($item = parent::getItem($pk)) {
 			
 			// get user details
@@ -225,16 +229,30 @@ class OrderModel extends AdminModel
 
 				$item->items[$i]->parent_title = '';
 				$item->items[$i]->category_name = '';
-				$query = "SELECT p.*, c.title as artist_title
-						FROM #__mymuse_product as p 
-						LEFT JOIN #__categories as c ON c.id=p.artistid
-						WHERE p.id='".$item->items[$i]->product_id."'";
+				$item->items[$i]->artist_name = '';
+
+				$query = "SELECT p.title, p.parentid, p.product_physical, 
+					p.product_downloadable, p.product_allfiles,
+
+					c.title as category_title, a.title as artist_title
+					FROM #__mymuse_product as p 
+					LEFT JOIN #__categories as c ON c.id=p.catid
+					LEFT JOIN #__categories as a ON c.id=p.artistid
+					WHERE p.id='".$item->items[$i]->product_id."'";
+						
 				$db->setQuery( $query );
 				$res = $db->loadAssoc();
 				foreach($res as $key => $val){
 					$item->items[$i]->$key = $val;
 				}
 
+				if($item->items[$i]->parentid > 0){
+					$query = "SELECT title from #__mymuse_product
+							WHERE id = '".$item->items[$i]->parentid."'";
+					$db->setQuery( $query );
+					$item->items[$i]->parent_title = $db->loadResult();
+				}
+				
 				if($item->items[$i]->parentid > 0 and $item->items[$i]->product_physical == 1){
 					$item->items[$i]->attributes = $product_model->getAttributes($item->items[$i]->id,$item->items[$i]->parentid);
 				}
@@ -254,15 +272,10 @@ class OrderModel extends AdminModel
 				//$item->items[$i]->category_name = $res->category_name;
 				//$item->items[$i]->parentid = $res->parentid;
 
-				if($item->items[$i]->parentid > 0){
-					$query = "SELECT title from #__mymuse_product
-							WHERE id = '".$item->items[$i]->parentid."'";
-					$db->setQuery( $query );
-					$item->items[$i]->parent_title = $db->loadResult();
-				}
+				
 				
 			}
-		
+
 			$item->order_total = 0.00;
 			$downloadable = 0;
 

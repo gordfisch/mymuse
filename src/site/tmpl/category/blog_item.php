@@ -35,7 +35,7 @@ $currentDate   = Factory::getDate()->format('Y-m-d H:i:s');
 $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED || $this->item->publish_up > $currentDate)
     || ($this->item->publish_down < $currentDate && $this->item->publish_down !== null);
 
-$link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, '');
+$link = RouteHelper::getProductRoute($this->item->id, $this->category, $this->item->language, '');
 ?>
 
 <div class="item-content">
@@ -57,7 +57,7 @@ $link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, 
 
     <div class="feature-title">
         <h3>
-            <?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
+            <?php if ($params->get('category_link_titles') && $params->get('access-view')) : ?>
                 <a href="<?php echo Route::_($link); ?>">
                 <?php echo $this->escape($this->item->title); ?></a>
             <?php else : ?>
@@ -66,9 +66,6 @@ $link = RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, 
         </h3>
     </div>
     
-    <?php if ($canEdit) : ?>
-        <?php echo LayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item)); ?>
-    <?php endif; ?>
 
     <?php // @todo Not that elegant would be nice to group the params ?>
     <?php $useDefList = ($params->get('show_modify_date') || $params->get('show_publish_date') || $params->get('show_create_date')

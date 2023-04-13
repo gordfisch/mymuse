@@ -11,6 +11,7 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 defined('JPATH_BASE') or die;
 
@@ -38,6 +39,18 @@ class plgUserRedirectonlogin extends CMSPlugin
 	 */
 	protected $db;
 
+    /**
+     * Constructor
+     *
+     * @param   object  $subject  The object to observe
+     * @param   array   $config   An array that holds the plugin configuration
+     */
+    public function __construct(& $subject, $config)
+    {
+        parent::__construct($subject, $config);
+        $this->app = Factory::getApplication();
+
+    }
 
 	/**
 	 * This method should handle any login logic and report back to the subject
@@ -52,14 +65,14 @@ class plgUserRedirectonlogin extends CMSPlugin
 	public function onUserLogin($user, $options = [])
 	{
 
-		$app = Factory::getApplication();
+		
 		$session = Factory::getSession();
 		$cart = $session->get('cart');
 		$user = Factory::getUser();
 
 		if($cart && $cart['idx'] > 0 && $user->username != ''){
 			$return = Route::_("index.php?option=com_mymuse&view=cart&task=showcart");
-			$app->setUserState('users.login.form.return', $return);
+			$this->app->setUserState('users.login.form.return', $return);
 		}
 		return true;
 	}
@@ -86,16 +99,15 @@ class plgUserRedirectonlogin extends CMSPlugin
 
         $this->disableMfaOnSilentLogin($options);
 
-        $app = Factory::getApplication();
         $session = Factory::getSession();
         $cart = $session->get('cart');
         $user = $options['user'];
 
         if($cart && $cart['idx'] > 0 && $user->username != ''){
         	$return = Route::_("index.php?option=com_mymuse&view=cart&task=showcart");
-        	$app->setUserState('users.login.form.return', $return);
+        	$this->app->setUserState('users.login.form.return', $return);
         }
-        return true;
+
     }
 
     /**

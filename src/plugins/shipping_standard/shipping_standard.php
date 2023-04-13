@@ -86,7 +86,7 @@ class  plgMymuseShipping_Standard extends CMSPlugin
         }elseif(isset($shopper->profile['country'])){
         	$user_country = $shopper->profile['country'];
         }
-		for($i=1;$i<5;$i++){
+		for($i=1;$i<9;$i++){
 
             $param = "ship_".$i."_active";
             if($this->params->get($param)){
