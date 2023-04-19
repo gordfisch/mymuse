@@ -511,6 +511,8 @@ class CartHelper
     function reset() { 
       $this->cart = array();
       $this->cart["idx"]=0;
+      $session = Factory::getSession();
+      $session->set("cart",$this->cart);
       return True;
     }
     

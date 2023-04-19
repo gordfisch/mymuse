@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="mymuse">
+	<name>plg_mymuse_payment_stripe</name>
+	<author>Arboreta</author>
+	<creationDate>Sept 2020</creationDate>
+	<copyright>Copyright (C) 2020 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>4.0.0</version>
+	<description>MYMUSE_BUILD_STRIPE_PAYMENT_FORM</description>
+	
+	<files>
+		<filename plugin="payment_stripeideal">payment_stripeideal.php</filename>
+		<filename plugin="payment_stripeideal">composer.json</filename>
+		<filename plugin="payment_stripeideal">composer.lock</filename>
+		<folder>vendor</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_stripeideal.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_stripeideal.sys.ini</language>
+	</languages>
+
+	<config>
+	<fields  name="params">
+		<fieldset name="basic">
+
+        <field name="my_stripe_public_key" 
+        	type="text" 
+        	size="55" default="" 
+        	label="MYMUSE_STRIPE_IDEAL_PUBLIC_LABEL" 
+        	description="MYMUSE_STRIPE_IDEAL_PUBLIC_DESC"
+        />
+        <field name="my_stripe_private_key" 
+        	type="text" 
+        	size="55" 
+        	default="" 
+        	label="MYMUSE_STRIPE_IDEAL_SECRET_LABEL" 
+        	description="MYMUSE_STRIPE_IDEAL_SECRET_DESC"
+        />
+        <field 
+          name="my_stripe_payment" 
+          type="list"
+          label="MYMUSE_STRIPE_IDEAL_PAYMENT_LABEL" 
+          description="MYMUSE_STRIPE_IDEAL_PAYMENT_DESC"
+          default="both"
+          >
+          <option value="both">MYMUSE_STRIPE_IDEAL_PAYMENT_BOTH_LABEL</option>
+          <option value="card">MYMUSE_STRIPE_IDEAL_PAYMENT_CARD_LABEL</option>
+          <option value="ideal">MYMUSE_STRIPE_IDEAL_PAYMENT_IDEAL_LABEL</option>
+        </field>
+        
+	</fieldset>
+	</fields>
+	</config>
+	
+	
+	
+<updateservers>
+
+</updateservers>
+</extension>
