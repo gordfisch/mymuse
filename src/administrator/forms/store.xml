@@ -530,7 +530,7 @@
              
                 default="0">
                 <option value="0">COM_MYMUSE_NO</option>
-                <option value="1">COM_MYMUSE_YES</option>>
+                <option value="1">COM_MYMUSE_YES</option>
         </field>
         <field
                 name="my_use_alias"
@@ -540,7 +540,7 @@
                 class="btn-group btn-group-yesno"
                 default="0">
                 <option value="0">COM_MYMUSE_NO</option>
-                <option value="1">COM_MYMUSE_YES</option>>
+                <option value="1">COM_MYMUSE_YES</option>
         </field>
         
         <field
@@ -551,6 +551,17 @@
                 class="inputbox"
                 required="false">
                 <option value="">NO SELECTION</option>
+        </field>
+
+        <field
+                name="my_product_link"
+                type="list"
+                label="COM_MYMUSE_PRODUCT_LINK_LABEL"
+                description="COM_MYMUSE_PRODUCT_LINK_DESC"
+                default="artistid">
+                <option value="artistid">COM_MYMUSE_ARTISTID</option>
+                <option value="catid">COM_MYMUSE_CATID</option>
+                
         </field>
         
         <field 
@@ -572,16 +583,7 @@
                 <option value="0">COM_MYMUSE_NO</option>
                 <option value="1">COM_MYMUSE_YES</option>>
         </field>
-        <field
-                name="my_show_cart_player"
-                type="radio"
-                label="COM_MYMUSE_SHOW_CART_PLAYER_LABEL"
-                description="COM_MYMUSE_SHOW_CART_PLAYER_DESC"
-                class="btn-group btn-group-yesno"
-                default="0">
-                <option value="0">COM_MYMUSE_NO</option>
-                <option value="1">COM_MYMUSE_YES</option>>
-        </field>
+
     </fieldset>
     <fieldset name="store2" label="COM_MYMUSE_STORE_OPTIONS2_LABEL">
         <field

@@ -280,11 +280,12 @@ class HtmlView extends BaseHtmlView
 
 			$product->realname = $filename = $realname;
 						
-        		
+  		
         	
             //is it s3 redirect? plugin should return a redirect URL
-            if($params->get('storage', 'regular') != 'regular'){
+            if($params->get('storage', 'regular') == 'amazon'){
                 $URL = $GLOBALS['mymuseStorage']->getSignedUrl($download_path.$filename);
+                //echo $URL; exit;
                 $this->_logDownload($shopper, $product, $order_item);
                 $app->redirect($URL);
                 exit;

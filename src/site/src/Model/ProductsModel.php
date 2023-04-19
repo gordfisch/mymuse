@@ -28,6 +28,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 
+
 /**
  * This models supports retrieving lists of products.
  *
@@ -405,7 +406,7 @@ class ProductsModel extends ListModel
 		if (is_numeric($artistId)) {
 
 			$cat_tbl = Table::getInstance('Category', 'JTable');
-			$cat_tbl->load($cartistId);
+			$cat_tbl->load($artistId);
 			$rgt = $cat_tbl->rgt;
 			$lft = $cat_tbl->lft;
 			$baselevel = (int) $cat_tbl->level;

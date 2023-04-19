@@ -21,9 +21,10 @@ use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
 // Create a shortcut for params.
 $params 	= &$this->item->params;
+$catlink    = $params->get('my_product_link', 'catid');
 $canEdit	= $this->item->params->get('access-edit');
 $lang 		= Factory::getLanguage();
-$link 		= RouteHelper::getProductRoute($this->item->id, 0, $this->item->language, '');
+$link 		= RouteHelper::getProductRoute($this->item->id, $this->item->$catlink, $this->item->language, '');
 ?>
 
 <?php if ($this->item->state == 0) : ?>
@@ -34,7 +35,7 @@ $link 		= RouteHelper::getProductRoute($this->item->id, 0, $this->item->language
 	<div class="left">
 	<?php if ($params->get('store_show_product_image') && $this->item->list_image): ?>
 		<div class="list_image">
-			<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, 'product')); ?>"
+			<a href="<?php echo Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->$catlink, $this->item->language, 'product')); ?>"
 			><img src="<?php echo $this->item->list_image; ?>" 
 			alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 			<?php if ($params->get('store_product_image_height', 0)) : ?>
@@ -73,13 +74,13 @@ $link 		= RouteHelper::getProductRoute($this->item->id, 0, $this->item->language
 		<?php 
 		if ($params->get('store_show_readmore') && $this->item->readmore) :
 			if ($params->get('access-view')) :
-				$link = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->catid));
+				$link = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->$catlink));
 			else :
 				$menu = Factory::getApplication()->getMenu();
 				$active = $menu->getActive();
 				$itemId = $active->id;
 				$link1 = Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
-				$returnURL = Route::_(MyMuseHelperRoute::getProductRoute($this->item->slug, $this->item->catid));
+				$returnURL = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->$catlink);
 				$link = new URI($link1);
 				$link->setVar('return', base64_encode($returnURL));
 			endif;

@@ -162,7 +162,7 @@ class HtmlView extends BaseHtmlView
 			$toolbar->preferences('com_mymuse');
 		}
 
-		$toolbar->help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-new-edit?tmpl=component');
+		$toolbar->help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/taxrates-list?tmpl=component');
 		$toolbar->StandardButton('add','COM_MYMUSE_ADD_EURO_TAXES','taxrates.addEuroTax');
 
 	}

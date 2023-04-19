@@ -108,7 +108,6 @@ class HtmlView extends BaseHtmlView
 			throw new GenericDataException(implode("\n", $errors), 500);
 		}
 
-
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')
 		{
@@ -119,6 +118,10 @@ class HtmlView extends BaseHtmlView
 			{
 				unset($this->activeFilters['language']);
 				$this->filterForm->removeField('language', 'filter');
+			}
+			if($this->getLayout() == "check"){
+				$this->products = $this->get('Check');
+				$tpl = 'check';
 			}
 		}
 		else

@@ -81,9 +81,12 @@ class HtmlView extends CategoryView
 		$this->pagination->hideEmptyLimitstart = true;
 		$this->store	= StoreModel::getStore();
 
+		$store_params = new Registry($this->store->params);
+		$params     = $this->params;
+		$params->merge( $store_params);
 		// Prepare the data
 		// Get the metrics for the structural page layout.
-		$params     = $this->params;
+
 
 		$numLeading = $params->def('num_leading_products', 0);
 		$numIntro   = $params->def('num_intro_products', 100);

@@ -20,9 +20,13 @@ use Joomla\Database\ParameterType;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Categories\CategoryNode;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
 * MyMuse Audio Amplitude plugin
@@ -72,12 +76,24 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     
     public $catalogs = array ();
     public $_playlist = null;
+    public $storage = null;
+    public $mparams = null;
+    public $my_preview_dir = '';
     
 
     function __construct(&$subject, $config)  {
 
         parent::__construct($subject, $config);
-
+        $this->mparams  = MyMuseHelper::getParams();
+        PluginHelper::importPlugin('mymuse');
+        $res = Factory::getApplication()->triggerEvent('onMymuseGetStorage', array('com_mymuse'));
+        if(isset($res[0]) && is_object($res[0])){
+            $this->storage = $res[0];
+            $this->my_preview_dir = '';
+        }else{
+            $this->storage = new MymuseStorage();
+            $this->my_preview_dir = $this->mparams->get('my_preview_dir', '/media/com_mymuse/previews/');
+        }
     }
 
     public function onGetPlaylist($load_js = true){
@@ -94,8 +110,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     public function getPlaylist($load_js = true){
         if(!$this->_playlist){
 
-            $params         = MyMuseHelper::getParams();
-            $db = Factory::getDBO();
+   
+            $db      = Factory::getDBO();
             $mycategories           = $this->params->get('mycategories', array());
 
             foreach($mycategories as $key => $val){
@@ -116,9 +132,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 }
             }
             //MymuseHelper::print_pre($this->catalogs);
-            $preview_path   = $params->get('my_preview_dir', '/media/com_mymuse/previews/');
+            $preview_path   = $this->mparams->get('my_preview_dir', '/media/com_mymuse/previews/');
             $playlist_path  = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
-            $site_url       = URI::root();
+            $site_url       = rtrim( Uri::root(), '/');
             $document       = Factory::getDocument();
             $app            = Factory::getApplication();
             $menu           = $app->getMenu();
@@ -144,7 +160,6 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 $filename = "catalog.js";
             }
 
-        //echo "Using playlist: ".$filename. " view = ".$jinput->get('view'). " id = ".$jinput->get('id');
             $path = JPATH_ROOT . $playlist_path . $filename;
             $js_path = $site_url . $playlist_path . $filename;
             if (! file_exists ( $path )) {
@@ -191,12 +206,17 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $arr            = $this->getPlaylist();
         $this->indexes  = $arr[0];
         $this->playlist = $arr[1];
+
         $document       = Factory::getDocument();
         $match          = 0;
-        $site_url       = rtrim( JURI::root(), '/');
-        $params         = MyMuseHelper::getParams();
-        $preview_path   = $params->get('my_preview_dir', '/media/com_mymuse/previews/');
-        $preview_path   = '/'.trim($preview_path, '/').'/';
+        $site_url       = $this->storage->getSiteUrl();
+
+        $preview_path   = $this->my_preview_dir;
+        if($preview_path){
+            $preview_path               = '/'.trim($preview_path, '/').'/';
+        }else{
+            $preview_path               = '/';
+        }
 
         if($type == 'singleplayer' || $type == 'single'){
             $id = 1;
@@ -211,7 +231,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         //SINGLE PLAYER MAKE PLAY BUTTONS//
         if($type=='single'){
             //get index
-            $one_dir = $params->get('my_previews_in_one_dir',1);
+            $one_dir = $this->mparams->get('my_previews_in_one_dir',1);
             if(!$one_dir){
                 $artist_alias = MymuseHelper::getArtistAlias($track->id);
                 $album_alias = MymuseHelper::getAlbumAlias($track->id);
@@ -219,7 +239,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             }else{
                 $preview = $site_url.$preview_path.$track->file_preview;
             }
+            
             if(isset($this->indexes[$preview])){
+
                 $index = $this->indexes[$preview];
             }else{
                 $index = '0';
@@ -260,9 +282,6 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     function onMyMuseAfterSave()
     {
 
-        jimport('joomla.filesystem.file');
- 
-        $params         = MyMuseHelper::getParams();
         if(!$mycategories  = $this->params->get('mycategories', array())){
             $this->text  = "Please set your categories in the Plugin Audio Amplitude";
             return $this->text;
@@ -276,10 +295,15 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $playlist_path              = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
         //$preview_path             = $this->params->get('preview_path', '/media/com_mymuse/previews/');
         
-        $preview_path               = $params->get('my_preview_dir', '/media/com_mymuse/previews/');
-        $preview_path               = '/'.trim($preview_path, '/').'/';
+        $preview_path               = $this->my_preview_dir;
+        if($preview_path){
+            $preview_path               = '/'.trim($preview_path, '/').'/';
+        }else{
+            $preview_path               = '/';
+        }
+        
 
-        $onedir = $params->get('my_previews_in_one_dir',0);
+        $onedir = $this->mparams->get('my_previews_in_one_dir',0);
 
 
 
@@ -291,15 +315,15 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
         $db->setQuery($query);
         $res        = $db->loadObjectList();
-        $root_uri = URI::root();
-        $root_uri = rtrim($root_uri,'/');
+        $local_uri = rtrim(Uri::root(),'/');
+        $root_uri = $this->storage->getSiteUrl();
         
         $first                  = new \StdClass;
         $first->name            = " ";
         $first->artist          = "PLAYER";
         $first->album           = "READY";
-        $first->url             = $root_uri.$first_album_preview_path;
-        $first->cover_art_url   = $root_uri.$first_album_art_path;
+        $first->url             = $local_uri.$first_album_preview_path;
+        $first->cover_art_url   = $local_uri.$first_album_art_path;
 
         $all                    = array();
         $all['songs'][]         = $first;
@@ -326,7 +350,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             $track_query = $this->_getQuery($catin);
   
             $db->setQuery($track_query);
-    
+  
             if($tracks = $db->loadObjectList()){
                 $i = 0;
                 foreach ($tracks as $track){
@@ -391,7 +415,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 $all['songs'][] = $track;
             }
         }
-        $this->text .= "Making list for catalog.js <br />";
+        $this->text .= "<br />Making list for catalog.js <br />";
         $jstring = "Amplitude.init(".json_encode($all).");";
        // $jstring = preg_replace("~,~",",\n",$jstring);
         $jstring = preg_replace("~\[~","[\n",$jstring);
@@ -423,7 +447,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 $all['songs'][] = $track;
             }
         }
-        $this->text .= "Making list for homepage.js <br />";
+        $this->text .= "<br />Making list for homepage.js <br />";
         $jstring = "Amplitude.init(".json_encode($all).");";
        // $jstring = preg_replace("~,~",",\n",$jstring);
         $jstring = preg_replace("~\[~","[\n",$jstring);
@@ -489,9 +513,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $my_artistid = 0;
 
 
-        if($params_string = $db->loadResult()){
+        if($this->mparams_string = $db->loadResult()){
             $moduleParams = new JRegistry();
-            $moduleParams->loadString($params_string);
+            $moduleParams->loadString($this->mparams_string);
             $product_ids    = $moduleParams->get('product_ids','');
             $homepage       = $moduleParams->get('homepage',0);
             $search         = $moduleParams->get('type_search');

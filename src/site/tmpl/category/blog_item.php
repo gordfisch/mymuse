@@ -25,6 +25,7 @@ use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 
 // Create a shortcut for params.
 $params = $this->item->params;
+
 $canEdit = $this->item->params->get('access-edit');
 $info    = $params->get('info_block_position', 0);
 
@@ -35,7 +36,8 @@ $currentDate   = Factory::getDate()->format('Y-m-d H:i:s');
 $isUnpublished = ($this->item->state == ContentComponent::CONDITION_UNPUBLISHED || $this->item->publish_up > $currentDate)
     || ($this->item->publish_down < $currentDate && $this->item->publish_down !== null);
 
-$link = RouteHelper::getProductRoute($this->item->id, $this->category, $this->item->language, '');
+$cat = $this->params->get('my_product_link', 'catid');
+$link = RouteHelper::getProductRoute($this->item->id, $this->item->$cat, $this->item->language, '');
 ?>
 
 <div class="item-content">

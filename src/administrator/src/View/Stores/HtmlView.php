@@ -141,7 +141,7 @@ class HtmlView extends BaseHtmlView
 			$toolbar->preferences('com_mymuse');
 		}
 
-		$toolbar->help('JHELP_USERS_USER_MANAGER');
+		ToolbarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/store-edit?tmpl=component');
 	}
 
 	/**

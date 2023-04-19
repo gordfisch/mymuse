@@ -33,6 +33,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
@@ -308,7 +309,7 @@ class HtmlView extends BaseHtmlView
 
 			while (($menu->query['option'] != 'com_mymuse' || $menu->query['view'] == 'article' || $id != $category->id) && $category->id > 1)
 			{
-				$path[] = array('title' => $category->title, 'link' => MyMuseHelperRoute::getCategoryRoute($category->id));
+				$path[] = array('title' => $category->title, 'link' => RouteHelper::getCategoryRoute($category->id));
 				$category = $category->getParent();
 			}
 

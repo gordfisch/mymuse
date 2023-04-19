@@ -16,13 +16,13 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
-
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
 $product    =& $this->item;
 $tracks     =& $this->item->tracks;
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
-
+$catlink    = $this->params->get('my_product_link', 'catid');
 $user       = JFactory::getUser();
 //echo '$listDirn ='.$listDirn. ' $listOrder = '.$listOrder;
 
@@ -110,10 +110,10 @@ endif;
 <!-- TRACKS -->
 <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="trackForm" id="trackForm" class="">
 
-<div class=" list-products mymuse-cart ">
+<div class="mymuse-cart ">
 
-    <ul class="mymuse-container">
-      <li class="my-grid item-container cols-<?php echo $cols; ?>">
+    <ul class="mymuse-container list-products">
+      <li class="my-grid item-container cols-<?php echo $cols; ?> header">
         <div class="mymuse-header name"><?php echo HtmlHelper::_('grid.sort', 'COM_MYMUSE_NAME', 'title', $listDirn, $listOrder, null, 'asc', '', 'trackForm'); ?></div>
 
         <?php  if($this->params->get('product_show_artist', 0)) :?>
@@ -161,7 +161,9 @@ endif;
 
 <?php
   $groups = $user->getAuthorisedViewLevels();
+
   foreach($tracks as $track) : 
+
   
     if($track->product_allfiles == 1 && $this->all_tracks->shown) :
       continue;
@@ -170,7 +172,7 @@ endif;
     if(in_array($track->access, $groups)) :
 ?>
 
-      <li class="my-grid item-container cols-<?php echo $cols; ?>">
+      <li class="my-grid item-container cols-<?php echo $cols; ?> ">
       <div class="mycart-inner title" data-name="<?php echo Text::_('COM_MYMUSE_TITLE'); ?>"><?php if($track->detail_image && $track->detail_image != '') :
                 echo '<span class="track-img"><img src="'.$track->detail_image.'"></span>';
               endif; 
@@ -188,12 +190,12 @@ endif;
     <?php  if($this->params->get('product_show_artist', 0)) :?>
       <div class="mycart-inner artist" data-name="<?php echo Text::_('COM_MYMUSE_GENRE'); ?>"><a
             href="<?php 
-            echo Route::_(MyMuseHelperRoute::getCategoryRoute($track->catid, true));?>">
+            echo Route::_(RouteHelper::getCategoryRoute($track->catid, true));?>">
             <?php if(!empty($track->category_name )) { echo $track->category_name; } ?></a>
             <?php foreach((array)$track->othercats as $id=>$name): ?>
                 <br /> <a
             href="<?php
-                echo Route::_(MyMuseHelperRoute::getCategoryRoute($id, true));?>">
+                echo Route::_(RouteHelper::getCategoryRoute($id, true));?>">
                 <?php echo $name ?></a>
             <?php endforeach; ?></div>
     <?php endif; ?>
@@ -281,7 +283,7 @@ endif;
                     $active = $menu->getActive();
                     $itemId = $active->id;
                     $link = new JUri(Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
-                    $link->setVar('return', base64_encode(Route::_(myMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language))));
+                    $link->setVar('return', base64_encode(Route::_(RouteHelper::getProductRoute($this->item->id, $this->item->$catlink, $this->item->language))));
                   else :
                     if(is_array($track->free_download_link)) :
                       $first = 1;

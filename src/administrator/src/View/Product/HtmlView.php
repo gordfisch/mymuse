@@ -434,7 +434,8 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolbarHelper::divider();
-		ToolbarHelper::help('JHELP_COMPONENTS_MYMUSE_PRODUCT_EDIT');
+		ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/product-new-edit?tmpl=component');
+		
 	}
 
 	/**

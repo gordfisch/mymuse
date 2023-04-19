@@ -1,6 +1,7 @@
 @CHARSET "UTF-8";
 /* MYMUSE CSS */
 
+
 .mymuse section {
     padding-bottom: 2em;
 }
@@ -408,7 +409,7 @@ ul.mymuse-container, .product-recommends.mymuse-container {
         padding: 0;
   }
   ul.mymuse-container li {
-    padding: 0.4em 0;
+    padding: 0.4em;
   }
   ul.mymuse-cart > li:first-of-type, 
   ul.list-products > li:first-of-type {
@@ -425,6 +426,12 @@ ul.mymuse-container, .product-recommends.mymuse-container {
   ul.mymuse-list > li:first-of-type {
     border-bottom:  1px solid #333;
   }
+
+  
+  ul.list-products > li:nth-child(even) {background: #fff}
+  ul.list-products > li:nth-child(odd) {background: #eee}
+  ul.list-products > li.header { background: none; }
+
   
 
 }

@@ -182,7 +182,10 @@ if ($this->params->get('list_show_sales', 0)) {
 
 <?php else : ?>
 	
-<?php foreach ($this->items as $i => $product) : ?>
+<?php 
+$catlink = $params->get('my_product_link', 'catid');
+
+foreach ($this->items as $i => $product) : ?>
 
 
 	 <li class=" item-container cols-<?php echo $inner_cols; ?>">
@@ -190,7 +193,7 @@ if ($this->params->get('list_show_sales', 0)) {
 	 	<?php if($this->params->get('category_show_product_image')) :?>
 		<div class="mycart-inner list-image " data-name="<?php echo Text::_('COM_MYMUSE_IMAGE'); ?>">
 			<?php if($this->params->get('link_intro_image')) :?>
-				<a href="<?php echo Route::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
+				<a href="<?php echo Route::_(RouteHelper::getProductRoute($product->id, $product->$catlink)); ?>">
 				<img src="<?php echo $product->list_image; ?>"
 				alt="<?php echo htmlspecialchars($product->list_image); ?>" />
 				</a>
@@ -207,8 +210,7 @@ if ($this->params->get('list_show_sales', 0)) {
 		<div class="mycart-inner list-title " data-name="<?php echo Text::_('JGLOBAL_TITLE'); ?>">
 
 			<?php if($this->params->get('category_link_titles')) :?>
-			<a href="<?php 
-				echo Route::_(RouteHelper::getProductRoute($product->id, $this->category->id)); ?>">
+			<a href="<?php echo Route::_(RouteHelper::getProductRoute($product->id, $product->$catlink)); ?>">
 				<?php echo $this->escape($product->title); ?>
 				</a>
 			<?php else: ?>
@@ -229,14 +231,15 @@ if ($this->params->get('list_show_sales', 0)) {
 		
 
 			<?php if ($this->params->get('category_show_readmore') && $product->readmore) :
+			
 				if ($product->access) :
-					$link = Route::_(RouteHelper::getProductRoute($product->slug, $product->catid));
+					$link = Route::_(RouteHelper::getProductRoute($product->slug, $product->$catlink));
 				else :
 					$menu = Factory::getApplication()->getMenu();
 					$active = $menu->getActive();
 					$itemId = $active->id;
 					$link1 = Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
-					$returnURL = Route::_(RouteHelper::getProductRoute($product->slug, $product->catid));
+					$returnURL = Route::_(RouteHelper::getProductRoute($product->slug, $product->$catlink));
 					$link = new JURI($link1);
 					$link->setVar('return', base64_encode($returnURL));
 				endif;

@@ -23,7 +23,7 @@ use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
 
 /**
  * Methods supporting a list of product records.
@@ -32,6 +32,14 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
  */
 class ProductsModel extends ListModel
 {
+
+	/**
+	 * @var		object
+     * @since  4.0
+	 */
+	protected $storage = null;
+
+
 	/**
 	 * Constructor.
 	 *
@@ -72,6 +80,7 @@ class ProductsModel extends ListModel
 			}
 
 		}
+		$this->storage 		= $GLOBALS['mymuseStorage'];
 
         parent::__construct($config);
 
@@ -136,7 +145,7 @@ class ProductsModel extends ListModel
 		// Adjust the context to support modal layouts.
 		if ($layout = $app->input->get('layout'))
 		{
-			//$this->context .= '.' . $layout;
+			$this->context .= '.' . $layout;
 		}
 
 		// Adjust the context to support forced languages.
@@ -165,6 +174,9 @@ class ProductsModel extends ListModel
 
         $parentid = $this->getUserStateFromRequest($this->context . '.filter.parentid', 'filter_parentid');
         $this->setState('filter.parentid', $parentid);
+
+        $allfiles = $this->getUserStateFromRequest($this->context . '.filter.allfiles', 'filter_allfiles');
+        $this->setState('filter.allfiles', $allfiles);
 
         $trackparentid = $this->getUserStateFromRequest($this->context . '.filter.trackparentid', 'filter_trackparentid');
         $this->setState('filter.trackparentid', $trackparentid);
@@ -260,6 +272,15 @@ class ProductsModel extends ListModel
 			if($featured == "-1"){ $featured = 0;}
 			$query->where("a.featured = '" . $featured."'");
 		}
+
+		// Filter by allfiles.
+		$allfiles = $this->getState('filter.allfiles');
+			if (is_numeric($allfiles)) {
+				$query->where('a.product_allfiles = '.(int) $allfiles);
+			} else if ($allfiles === '') {
+				$query->where('(a.product_allfiles IN (0, 1))');
+			}
+		
 
 		// Filter by parentid. Default is parentid = 0
 		if ( $parentid = $this->getState('filter.parentid', 'default') ) {
@@ -368,7 +389,7 @@ class ProductsModel extends ListModel
 		    $query->order($db->escape($orderCol.' '.$orderDirn));
 		}
 
-        //echo($query->__toString()); exit;
+        //echo($query->__toString().'<br />'); 
 		return $query;
 	}
 
@@ -544,4 +565,109 @@ class ProductsModel extends ListModel
 	
 		return true;
 	}
+
+	/**
+	 * check_products
+	 *
+	 *
+	 *  @return object
+	 */
+	
+	function getCheck()
+	{
+
+		$params = MymuseHelper::getParams();
+		$products = $this->getItems();
+		$missing = array();
+
+		foreach ($products as $product){
+			$model = ListModel::getInstance('Products', 'MyMuse', array('ignore_request' => true));
+			$model->setState('filter.downloadable', 1);
+			$model->setState('filter.allfiles', 0);
+			$model->setState('filter.parentid', $product->id);
+			$product->items = $model->getItems();
+
+			foreach($product->items as $item){
+				
+				$filenames = array();
+				$previews = array();
+				$path = MyMuseHelper::getDownloadPath($product->id,1);
+				$preview_path = MyMuseHelper::getSitePath($product->id,1);
+				
+				if($item->file_preview != ''){
+					$previews[] = $item->file_preview;
+				}
+
+				foreach($previews as $p){
+					$full_path = $preview_path.$p;
+					if($this->storage->fileExists($full_path)){
+						$item->preview[$p]['class'] = "alert alert-success";
+						$item->preview[$p]['result'] = Text::_('COM_MYMUSE_FOUND');
+					}else{
+						$item->preview[$p]['class'] = "alert alert-danger";
+						$item->preview[$p]['result'] = Text::_('COM_MYMUSE_NOT_FOUND');
+						$missing[] = $full_path;
+					}
+
+				}
+				//get formats
+				$fmodel = ListModel::getInstance('Products', 'MyMuse', array('ignore_request' => true));
+				$fmodel->setState('filter.downloadable', 1);
+				$fmodel->setState('filter.allfiles', 0);
+				$fmodel->setState('filter.parentid', $product->id);
+				$fmodel->setState('filter.trackparentid', $item->id);
+				$product->formats = $fmodel->getItems();
+
+				foreach($product->formats as $pformat){
+					$jason = json_decode($pformat->digital);
+					if(is_array($jason)){
+						foreach($jason as $j){
+							$filenames[] = $j->file_name;
+						}
+					}elseif(isset($jason->file_name)){
+						$filenames[] = $jason->file_name;
+					}
+					
+
+
+					if($params->get('my_download_dir_format')){
+						foreach($params->get('my_formats') as $format){
+							foreach($filenames as $f){
+								
+								$full_path = $path.$format.DS.$f;
+								//echo $full_path."<br/>";
+								if($this->storage->fileExists($full_path)){
+									$item->download[$f]['class'] = "alert alert-success";
+									$item->download[$f]['result'] = Text::_('MYMUSE_FOUND');
+								}else{
+									$item->download[$f]['class'] = "alert alert-danger";
+									$item->download[$f]['result'] = Text::_('MYMUSE_NOT_FOUND');
+									$missing[] = $full_path;
+								}
+							}
+						}
+					}else{
+						foreach($filenames as $f){
+							$full_path = $path.$f;
+
+							if($this->storage->fileExists($full_path)){
+								$item->download[$f]['class'] = "alert alert-success";
+								$item->download[$f]['result'] = Text::_('MYMUSE_FOUND');
+							}else{
+								$item->download[$f]['class'] = "alert alert-danger";
+								$item->download[$f]['result'] = Text::_('MYMUSE_NOT_FOUND');
+								$missing[] = $full_path;
+							}
+						}
+					}
+				}
+				}
+
+				
+		}
+		$products['missing'] = $missing;
+		return $products;
+	
+	}
+
 }

@@ -24,9 +24,10 @@ use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 
 // Create a shortcut for params.
 $params 	= &$this->item->params;
+$catlink    = $params->get('my_product_link', 'catid');
 $canEdit	= $this->item->params->get('access-edit');
 $lang 		= Factory::getLanguage();
-$link 		= RouteHelper::getProductRoute($this->item->id, $this->item->catid, $this->item->language, '');
+$link 		= RouteHelper::getProductRoute($this->item->id, $this->item->$catlink, $this->item->language, '');
 
 ?>
 
@@ -81,13 +82,13 @@ $link 		= RouteHelper::getProductRoute($this->item->id, $this->item->catid, $thi
 
 if ($params->get('category_show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :
-		$link = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->catid));
+		$link = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->$catlink));
 	else :
 		$menu = Factory::getApplication()->getMenu();
 		$active = $menu->getActive();
 		$itemId = $active->id;
 		$link1 = Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
-		$returnURL = Route::_(MyMuseHelperRoute::getProductRoute($this->item->slug, $this->item->catid));
+		$returnURL = Route::_(RouteHelper::getProductRoute($this->item->slug, $this->item->$catlink));
 		$link = new URI($link1);
 		$link->setVar('return', base64_encode($returnURL));
 	endif;

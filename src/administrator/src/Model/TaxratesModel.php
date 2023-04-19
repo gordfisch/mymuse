@@ -238,4 +238,30 @@ class TaxratesModel extends ListModel
 			$db->setQuery($query);
 			$db->execute();
 		}
+
+
+		/**
+		 * Method override to check-in a record or an array of record
+		 *
+		 * @param   mixed  $pks  The ID of the primary key or an array of IDs
+		 *
+		 * @return  integer|boolean  Boolean false if there is an error, otherwise the count of records checked in.
+		 *
+		 * @since   1.6
+		 *
+		 */
+
+		public function checkin($pks = array()) {
+		    $table = $this->getTable('Taxrate');
+		    if(is_string($pks)) {
+		    	$arr[] = $pks;
+		    	$pks = $arr;
+		    }
+		
+		    foreach($pks as $pk){
+		        $table->checkin($pk);
+		    }
+		    return true;
+
+		}
 }

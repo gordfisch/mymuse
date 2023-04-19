@@ -39,7 +39,7 @@ $products = array();
 for ($i=0;$i<$this->cart["idx"];$i++) {
     $products[] = $this->cart[$i]['product_id'];
 }
-
+$catlink = $this->params->get('my_product_link', 'catid');
 $js = '';
 foreach($this->items as $track){
 
@@ -423,7 +423,7 @@ $url = $uri->toString();
                         <div class="mycart-inner artist" data-name="<?php echo Text::_('COM_MYMUSE_ALBUM'); ?>">
                             <?php
                             	if($params->get('category_product_link_titles')){
-                            		$link = myMuseHelperRoute::getProductRoute($track->parentid,$track->artistid);
+                            		$link = myMuseHelperRoute::getProductRoute($track->parentid,$track->$catlink);
                             		echo '<a href="'.$link.'">';
                             	}		
                             	echo $track->product_title;
@@ -466,7 +466,7 @@ $url = $uri->toString();
         						$active = $menu->getActive();
         						$itemId = $active->id;
         						$link = new JUri(Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
-        						$link->setVar('return', base64_encode(Route::_(myMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language))));
+        						$link->setVar('return', base64_encode(Route::_(myMuseHelperRoute::getProductRoute($this->item->id, $this->item->$catlink, $this->item->language))));
         					else :
         						$link = $track->free_download_link;
         					endif;

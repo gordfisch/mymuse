@@ -4,6 +4,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $product = $this->item;
 
@@ -277,7 +278,7 @@ if( ($this->params->get('info_block_show'))) : ?>
 				<div><a href="#readmore" class="readon"><?php echo Text::_("COM_MYMUSE_READ_MORE"); ?>
 		        <?php 
 		        if ($this->params->get('show_readmore_title', 0) != 0) :
-		            echo JHtml::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
+		            echo HTMLHelper::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
 		        endif;
 		        ?></a></div>
 			 <?php endif; ?>

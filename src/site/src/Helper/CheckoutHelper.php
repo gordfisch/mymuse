@@ -415,20 +415,19 @@ class CheckoutHelper
 			$order->items[$i]->product_item_subtotal = sprintf("%.2f", $order->items[$i]->product_item_price * $order->items[$i]->product_quantity);
 			 
 			// Build URLs
-			if(isset($this->cart[$i]['catid']) && $this->cart[$i]['catid'] != ''){
-				$query = "SELECT * FROM #__categories WHERE id='".$this->cart[$i]['catid']."'";
-				$this->_db->setQuery($query);
-				if($cat = $this->_db->loadObject()){
-					$order->items[$i]->category_name = $cat->title;
-				}
+	
+			$catlink = $params->get('my_product_link', 'catid');
+			if(isset($this->cart[$i]['product']->$catlink) && $this->cart[$i]['product']->$catlink != ''){
+
+				$order->items[$i]->category_name = ($catlink == "artistid")? $this->cart[$i]['product']->artist_title : $this->cart[$i]['product']->category_title;
 				if ($parentid){
 					$pid = $parentid;
 				}else{
 					$pid = $order->items[$i]->product_id;
 				}
-					
-				$order->items[$i]->url = RouteHelper::getProductRoute($pid, $this->cart[$i]['catid']);
-				$order->items[$i]->cat_url = RouteHelper::getCategoryRoute($this->cart[$i]['catid']);
+			
+				$order->items[$i]->url = RouteHelper::getProductRoute($pid, $this->cart[$i]['product']->$catlink);
+				$order->items[$i]->cat_url = RouteHelper::getCategoryRoute($this->cart[$i]['product']->$catlink);
 			}
 		} // end of item insertion
 

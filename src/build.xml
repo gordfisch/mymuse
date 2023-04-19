@@ -6,9 +6,9 @@
 <!-- /var/www/html/mymuseJ4/joomla-cms -->
 <!-- /var/www/html/avonlea/brucegandymusic -->
 <!-- /var/www/html/singsong/live -->
-        <property name="joomladir" value="/var/www/html/singsong/lives" override="true" />
+        <property name="joomladir" value="/var/www/html/mymuseJ4/joomla-cms" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/singsong/live/administrator/components/com_mymuse"
+                value="/var/www/html/mymuseJ4/joomla-cms/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
 
@@ -87,6 +87,7 @@
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.sys.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
 
+
                         
                 <!-- plugins -->
                 <!-- copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
@@ -118,6 +119,13 @@
                             todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 
                 <copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
                             todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 
+
+                <copy file="${src}/plugins/storage_s3/storage_s3.php"
+                            todir="${joomladir}/plugins/mymuse/storage_s3" /> 
+                <copy file="${src}/plugins/storage_s3/storage_s3.xml"
+                            todir="${joomladir}/plugins/mymuse/storage_s3" /> 
+                <copy file="${src}/plugins/storage_s3/mymuseStorage.php"
+                            todir="${joomladir}/plugins/mymuse/storage_s3" /> 
                 
 
                 <copy file="${src}/plugins/user_mymuseuser/language/en-GB/plg_user_mymuseuser.ini"

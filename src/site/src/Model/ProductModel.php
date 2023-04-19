@@ -1681,7 +1681,7 @@ class ProductModel extends ItemModel
 
 		if($prodsin){
 	  		//get the products
-	  		$query = "SELECT id, title, catid, list_image, product_release_date FROM #__mymuse_product
+	  		$query = "SELECT id, title, catid, artistid, list_image, product_release_date FROM #__mymuse_product
 			WHERE id IN ($prodsin) 
 	  		AND id != $productid
 	  		AND parentid = 0
@@ -1692,11 +1692,11 @@ class ProductModel extends ItemModel
 	  		$db->setQuery($query);
 	  		$recommends = $db->loadObjectList();
 
-	  		//$num = min($params->get('my_max_recommended'),count($prods));
+	  		$cat = $params->get('my_product_link', 'catid');
 
 	  		for($i = 0; $i<count($recommends); $i++){
-	  			$recommends[$i]->url = RouteHelper::getProductRoute ( $recommends[$i]->id, $recommends[$i]->catid );
-	  			$recommends[$i]->cat_url = RouteHelper::getCategoryRoute ( $recommends[$i]->catid  );
+	  			$recommends[$i]->url = RouteHelper::getProductRoute ( $recommends[$i]->id, $recommends[$i]->$cat);
+	  			$recommends[$i]->cat_url = RouteHelper::getCategoryRoute ( $recommends[$i]->$cat  );
 	  		}
 		}
 

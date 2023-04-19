@@ -7,16 +7,19 @@
  */
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 
 // no direct access
 defined('_JEXEC') or die;
+
+$catlink    = $this->params->get('my_product_link', 'catid');
 ?>
 <h3><?php echo Text::_('MYMUSE_MORE_PRODUCTS'); ?></h3>
 
 <ol>
 <?php foreach ($this->link_items as &$item) : ?>
 	<li>
-		<a href="<?php echo Route::_(MyMuseHelperRoute::getProductRoute($item->id, $item->catid)); ?>">
+		<a href="<?php echo Route::_(RouteHelper::getProductRoute($item->id, $item->$catlink)); ?>">
 			<?php echo $item->title; ?></a>
 	</li>
 <?php endforeach; ?>

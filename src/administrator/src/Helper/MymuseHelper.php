@@ -20,7 +20,7 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\Component\Mymuse\Administrator\Table\OrderTable;
-
+use Joomla\Component\Mymuse\Administrator\Table\OrderpaymentTable;
 
 define('TAX_REGEX',"[\'-\/\s\\\]");
 
@@ -505,30 +505,55 @@ class MymuseHelper extends ContentHelper
 	 * @since   5.0.0
 	 */
 	
+	/**
+	 * logPayment
+	 * 
+	 * @param $payment array
+	 *
+	 * @return string
+	 *
+	 * @since   5.0.0
+	 */
+	
 	public function logPayment($payment){
 		$db		= Factory::getDbo();
-		include_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_mymuse".DIRECTORY_SEPARATOR."tables".DIRECTORY_SEPARATOR."orderpayment.php");
-		$table = new MymuseTableorderpayment($db);
 		
-		if (!$table->bind($payment)) {
-            $this->setError($db->getErrorMsg());
-            return false;
-        }
-        
-		// Make sure the item payment is valid
-        if (!$table->check()) {
-            $this->setError($table->getError());
-            return false;
-        }
-        
-		// Store the payment table to the database
-        if (!$table->store()) {
-            $this->setError($db->getErrorMsg());
-            return false;
-        }
+		$table = new OrderpaymentTable($db);
+		
+
+		try 
+		{
+		    $table->bind($payment);
+		} 
+		catch (\InvalidArgumentException $e)
+		{
+		    $this->setError($e->getMessage());
+		    return false;
+		}
+
+		try 
+		{
+		    $table->check();
+		} 
+		catch (\InvalidArgumentException $e)
+		{
+		    $this->setError($e->getMessage());
+		    return false;
+		}
+
+		try 
+		{
+		    $table->store();
+		} 
+		catch (\InvalidArgumentException $e)
+		{
+		    $this->setError($e->getMessage());
+		    return false;
+		}
         return true;
-		
 	}
+
+
 	/**
 	 * getArtistAlias. alias from artist record
 	 * 

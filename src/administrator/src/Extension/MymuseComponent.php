@@ -24,6 +24,7 @@ use Joomla\Component\Mymuse\Administrator\Service\HTML\AdministratorService;
 use Joomla\Component\Mymuse\Administrator\Service\HTML\Icon;
 use Psr\Container\ContainerInterface;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Component\Router\RouterServiceTrait;
 use Joomla\CMS\Factory;
@@ -100,18 +101,19 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 		$this->getRegistry()->register('mymuseadministrator', new AdministratorService);
 		$this->getRegistry()->register('mymuseicon', new Icon($container->get(SiteApplication::class)));
 
-		/*
+		PluginHelper::importPlugin('mymuse');
 		$res = Factory::getApplication()->triggerEvent('onMymuseGetStorage', array('com_mymuse'));
 		if(isset($res[0]) && is_object($res[0])){
 			$GLOBALS['mymuseStorage'] = $res[0];
+			MymuseHelper::setParam('storage', $GLOBALS['mymuseStorage']->type);
+			//echo 's3';
 		}else{
 			//no plugin. load the default storage class
 			$GLOBALS['mymuseStorage'] = new MymuseStorage();
+			MymuseHelper::setParam('storage', 'regular');
+			//echo 'regular';
 		}
-		MyMuseHelper::setParam('storage', $GLOBALS['mymuseStorage']->type);
-		*/
-        MymuseHelper::setParam('storage', 'regular');
-
+		
         
         $Doc = Factory::getDocument();
         $Doc->addStyleSheet( Uri::base() . 'components/com_mymuse/assets/css/mymuse.css' );

@@ -369,7 +369,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
         $result['transaction_status'] 	= $_POST['payment_status'];
         $result['description'] 			= @$_POST['note'];
 	
-        $sendToPayPal = file_get_contents("php://input")."&cmd=_notify-validate";
+        $sendToPayPal = "cmd=_notify-validate&".file_get_contents("php://input");
 
 		$paypalpath = "/cgi-bin/webscr";
 
@@ -625,6 +625,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
         		}
         		if($params->get('my_debug')){
         			MymuseHelper::logMessage( $debug  );
+        			$debug = '';
         		}
 
         	}else{

@@ -144,6 +144,6 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolbarHelper::divider();
-		ToolbarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/coupons-new-edit');
+		ToolbarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/coupons-new-edit?tmpl=component');
 	}
 }

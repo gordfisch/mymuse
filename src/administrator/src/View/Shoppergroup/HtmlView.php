@@ -144,6 +144,8 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolbarHelper::divider();
-		ToolbarHelper::help('MYMUSE_SHOPPER_GROUP_NEW');
+		
+		
+		ToolBarHelper::help('', false, 'https://www.joomlamymuse.com/index.php/support/documentation/help-files-4-x/shoppergroups-new-edit?tmpl=component');
 	}
 }

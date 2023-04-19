@@ -39,6 +39,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\Mp3fileHelper;
 use Joomla\Component\Mymuse\Administrator\Model\ProductsModel;
+
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
 
 
@@ -244,7 +245,7 @@ class ProductModel extends AdminModel
 
 
 		$this->_params 		= MyMuseHelper::getParams();
-		//$this->storage 		= $GLOBALS['mymuseStorage'];
+		$this->storage 		= $GLOBALS['mymuseStorage'];
 
 
 
@@ -844,7 +845,7 @@ class ProductModel extends AdminModel
 
 			//get previews
 			$files = array();
-			$files = MymuseStorage::listFilesPreviews($site_path);
+			$files = $this->storage::listFilesPreviews($site_path);
 			$previews 	= array(  HTMLHelper::_('select.option',  '', '- '. Text::_( 'COM_MYMUSE_SELECT_FILE' ) .' -' ) );
 			foreach ( $files as $file ) {
 					$previews[] = HTMLHelper::_('select.option',  $file );
@@ -860,7 +861,7 @@ class ProductModel extends AdminModel
 			// get the download tracks lists
 			$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
 
-			$files = MymuseStorage::listFilesDownloads($directory);
+			$files = $this->storage::listFilesDownloads($directory);
 
 			$myfiles = array();
 

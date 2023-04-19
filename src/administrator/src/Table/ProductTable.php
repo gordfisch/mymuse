@@ -87,6 +87,12 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
      */
     public $parentid = 0;
 
+    /**
+	 * @var		object
+     * @since  4.0
+	 */
+	protected $storage = null;
+
       public $form_fields = array(    
   	'id',
     'title',
@@ -127,6 +133,8 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
         $this->$_product_digital	= Table::getInstance('Productdigital', 'MymuseTable', array());
         */
 		parent::__construct('#__mymuse_product', 'id', $db);
+
+		$this->storage 		= $GLOBALS['mymuseStorage'];
 
 
 	}
@@ -850,12 +858,12 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 					// create new dirs if needed
 					if (! $this->storage->fileExists ( $download_path )) {
 						if (! $this->storage->folderNew ( $download_path )) {
-							$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . $download_path );
+							$this->setError ( Text::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . $download_path );
 							return false;
 						}
 						if ($this->storage->type == 'regular') {
 							if (! $this->storage->fileCopy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $download_path . DIRECTORY_SEPARATOR . "index.html" )) {
-								$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . $download_path );
+								$this->setError ( Text::_ ( "COM_MYMUSE_COULD_NOT_COPY_INDEX" ) . $download_path );
 							}
 						}
 					}
@@ -868,12 +876,12 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 
 					if (! $this->storage->fileExists ( $preview_path )) {
 						if (! $this->storage->folderNew ( $preview_path )) {
-							$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . ' ' . $preview_path );
+							$this->setError ( Text::_ ( "COM_MYMUSE_COULD_NOT_MAKE_DIR" ) . ' ' . $preview_path );
 							return false;
 						}
 						if ($this->storage->type == 'regular') {
 							if (! $this->storage->fileCopy ( JPATH_ROOT . DIRECTORY_SEPARATOR . "administrator" . DIRECTORY_SEPARATOR . "components" . DIRECTORY_SEPARATOR . "com_mymuse" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "index.html", $preview_path . DIRECTORY_SEPARATOR . "index.html" )) {
-									$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . ' ' . $preview_path );
+									$this->setError ( Text::_ ( "COM_MYMUSE_COULD_NOT_COPY_INDEX" ) . ' ' . $preview_path );
 							}
 						}
 					}
@@ -915,7 +923,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 						$dest = $params->get ( 'my_download_dir' ) . DIRECTORY_SEPARATOR . $dest_artist_alias . DIRECTORY_SEPARATOR . $this->alias;
 
 						if (! $this->storage->folderMove ( $src, $dest )) {
-							$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
+							$this->setError ( Text::_ ( "COM_MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
 							return false;
 						}
 						$changed = 1;
@@ -927,7 +935,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 						$dest = ($this->storage->type != 'regular' ? '' : JPATH_ROOT . DIRECTORY_SEPARATOR) . $params->get ( 'my_preview_dir' ) . DIRECTORY_SEPARATOR . $dest_artist_alias . DIRECTORY_SEPARATOR . $this->alias;
 						//echo "ready for foldermove $src $dest"; exit;
 						if (! $this->storage->folderMove ( $src, $dest )) {
-							$this->setError ( Text::_ ( "MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
+							$this->setError ( Text::_ ( "COM_MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
 							return false;
 						}
 						$changed = 1;

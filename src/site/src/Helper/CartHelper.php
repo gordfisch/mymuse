@@ -835,11 +835,11 @@ class CartHelper
         // Build URL 
         if ($order->items[$i]->parentid){
           $pid = $order->items[$i]->parentid;
-          $aid = $order->items[$i]->artistid;
         }else{
           $pid = $order->items[$i]->id;
-          $aid = $order->items[$i]->catid;
         }
+        $cat = $params->get('my_product_link', 'catid');
+        $aid = $order->items[$i]->$cat;
 
         $order->items[$i]->url = RouteHelper::getProductRoute($pid, $aid);
         $order->items[$i]->cat_url = RouteHelper::getCategoryRoute($aid);
@@ -1008,8 +1008,8 @@ class CartHelper
           $pid = $recommends [$i]->id;
           $aid = $recommends [$i]->catid;
         }
-        $recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $aid );
-        $recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
+        $recommends[$i]->url = RouteHelper::getProductRoute ( $pid, $aid );
+        $recommends[$i]->cat_url = RouteHelper::getCategoryRoute ( $aid );
       }
     
       

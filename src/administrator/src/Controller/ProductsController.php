@@ -254,7 +254,10 @@ class ProductsController extends AdminController
     	$this->publish();
     }
 
-
+    function check()
+    {
+    	$this->setRedirect(Route::_('index.php?option=com_mymuse&view=products&layout=check', false));
+    }
 
     
 
