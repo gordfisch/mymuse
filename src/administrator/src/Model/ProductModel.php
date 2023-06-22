@@ -270,6 +270,12 @@ class ProductModel extends AdminModel
 		{
 			return false;
 		}
+		/*
+		$formats = $this->_params->get('my_formats');
+		foreach($format as  $f){
+
+		}
+		*/
 
 		return $form;
 	}

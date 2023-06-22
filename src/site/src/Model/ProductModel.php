@@ -728,7 +728,9 @@ class ProductModel extends ItemModel
 				
 			} // each track
 
-			$track->digital[0]->file_downloads = $file_downloads;
+			if(isset($track->digital[0])){
+				$track->digital[0]->file_downloads = $file_downloads;
+			}
 
 
 

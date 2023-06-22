@@ -126,7 +126,21 @@
                             todir="${joomladir}/plugins/mymuse/storage_s3" /> 
                 <copy file="${src}/plugins/storage_s3/mymuseStorage.php"
                             todir="${joomladir}/plugins/mymuse/storage_s3" /> 
-                
+
+                <copy file="${src}/plugins/payment_stripeideal/payment_stripeideal.php"
+                            todir="${joomladir}/plugins/mymuse/payment_stripeideal" /> 
+                <copy file="${src}/plugins/payment_stripeideal/payment_stripeideal.xml"
+                            todir="${joomladir}/plugins/mymuse/payment_stripeideal" /> 
+                <copy file="${src}/plugins/payment_stripeideal/composer.json"
+                            todir="${joomladir}/plugins/mymuse/payment_stripeideal" /> 
+                <copy file="${src}/plugins/payment_stripeideal/composer.lock"
+                            todir="${joomladir}/plugins/mymuse/payment_stripeideal" />
+                <copy file="${src}/plugins/payment_stripeideal/language/en-GB/plg_mymuse_payment_stripeideal.ini"
+                        todir="${joomladir}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/payment_stripeideal/language/en-GB/plg_mymuse_payment_stripeideal.sys.ini"
+                        todir="${joomladir}/administrator/language/en-GB" />
+
+
 
                 <copy file="${src}/plugins/user_mymuseuser/language/en-GB/plg_user_mymuseuser.ini"
                         todir="${joomladir}/administrator/language/en-GB" />

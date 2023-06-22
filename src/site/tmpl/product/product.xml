@@ -87,6 +87,21 @@
 				
 			</field>
 
+			<field
+				name="introtext_beside_image"
+				type="list"
+				label="COM_MYMUSE_INTROTEXT_BESIDE_IMAGE_LABEL"
+				description="COM_MYMUSE_INTROTEXT_BESIDE_IMAGE_DESC"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				parentclass="stack span-2"
+
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
 			<field name="show_readmore"
 				type="list"
 				useglobal="true"

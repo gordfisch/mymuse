@@ -29,7 +29,7 @@
 		<fieldset name="basic" addfieldprefix="Joomla\Component\Mymuse\Administrator\Field">
 			<field 
 				name="mycategories" 
-				type="categorytree" 
+				type="category" 
 				extension="com_mymuse" 
 				label="COM_MYMUSE_SELECT_CATEGORIES" 
 				multiple="true"

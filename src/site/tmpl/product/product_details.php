@@ -10,30 +10,30 @@ $product = $this->item;
 
 
 if( ($this->params->get('info_block_show'))) : ?>
-	<div class="product-details <?php echo $this->itemClass; ?>">
+	<div class="product-details <?php echo $productClass; ?>">
 
 		<?php if( $this->params->get("info_block_show_title",0) ) : ?>
 			<h3 class="product-details-title"><?php echo Text::_('COM_MYMUSE_PRODUCT_DETAILS'); ?></h3>
 		<?php endif; ?>
 
-		<?php if( $this->params->get("show_special_status",0) && $this->item->special_status) : ?>
-			<h4 class="pre-order-text"><?php echo Text::_($this->item->special_status); ?></h4>
+		<?php if( $this->params->get("show_special_status",0) && $product->special_status) : ?>
+			<h4 class="pre-order-text"><?php echo Text::_($product->special_status); ?></h4>
 		<?php endif; ?>
 
 
 
 		<ul class="product-detail-list">
 
-			<?php if( $this->params->get("show_artist",0) && $this->item->artistid ) : ?>
+			<?php if( $this->params->get("show_artist",0) && $product->artistid ) : ?>
         		<li class="product-detail-item mymuse-grid-1-2">
         			<div class="key artist">
         				<?php echo Text::_('COM_MYMUSE_ARTIST'); ?>
         			</div>
 	        		<div class="value">
 	        			<?php if( $this->params->get("link_artist",0) ) :
-		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($this->item->artistid)).'">'.$this->item->artist_title.'</a>';
+		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($product->artistid)).'">'.$product->artist_title.'</a>';
 		                else:
-		                    $title = $this->item->artist_title;
+		                    $title = $product->artist_title;
 		                endif;
 		            ?>
 		        	<?php echo $title; ?>
@@ -42,16 +42,16 @@ if( ($this->params->get('info_block_show'))) : ?>
 
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_category",0) && $this->item->catid ) : ?>
+		    <?php if( $this->params->get("show_category",0) && $product->catid ) : ?>
         		<li class="product-detail-item mymuse-grid-1-2">
         			<div class="key category">
         				<?php echo Text::_('COM_MYMUSE_CATEGORY'); ?>
         			</div>
 	        		<div class="value">
 	        			<?php if( $this->params->get("link_category",0) ) :
-		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($this->item->catid)).'">'.$this->item->category_title.'</a>';
+		        		 	$title = '<a href="'.Route::_(RouteHelper::getCategoryRoute($product->catid)).'">'.$product->category_title.'</a>';
 		                else:
-		                    $title = $this->item->category_title;
+		                    $title = $product->category_title;
 		                endif;
 		            ?>
 		        	<?php echo $title; ?>
@@ -63,18 +63,18 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    <?php if( $this->params->get("show_product_sku",0) ) : ?>
 		    	<li class="product-detail-item mymuse-grid-1-2">
             		<div class="key product-sku"><?php echo Text::_('COM_MYMUSE_CATALOG'); ?></div>
-					<div class="value"><?php echo $this->item->product_sku;?></div>
+					<div class="value"><?php echo $product->product_sku;?></div>
         		</li>
 
         	<?php endif; ?>
 
 		    <?php if($this->assocParam) : 
-		    $associations = $this->item->associations; ?>
+		    $associations = $product->associations; ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
 		    	<div class="icon-globe icon-fw key associations" aria-hidden="true"><?php echo Text::_('JASSOCIATIONS'); ?></div>
 		    	<div class="value">
 		    	<?php foreach ($associations as $association) : ?>
-		    		<?php if ($this->item->params->get('flags', 1) && $association['language']->image) : ?>
+		    		<?php if ($product->params->get('flags', 1) && $association['language']->image) : ?>
 		    			<?php $flag = HTMLHelper::_('image', 'mod_languages/' . $association['language']->image . '.gif', $association['language']->title_native, array('title' => $association['language']->title_native), true); ?>
 		    			<a href="<?php echo Route::_($association['item']); ?>"><?php echo $flag; ?></a>
 		    		<?php else : ?>
@@ -95,61 +95,61 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    if( $this->params->get("show_date",0) ) : 
 		    		$date_type = $this->params->get("show_which_date","release");
 		    		$date_string = 'COM_MYMUSE_DATE_'.strtoupper($date_type); 
-		    		if( $this->item->$date_type ) :
+		    		if( $product->$date_type ) :
 		    		?>
 				    <li class="product-detail-item mymuse-grid-1-2">
 				        <div class="key date"><?php echo Text::_($date_string); ?>:</div>
-				        <div class="value"><?php echo $this->item->$date_type; ?></div>
+				        <div class="value"><?php echo $product->$date_type; ?></div>
 				    </li>
 		    	<?php endif; ?>
 		    <?php endif; ?>
 
 
 		    <!-- recording details -->
-
-		    <?php if( $this->params->get("show_product_full_time",0) && $this->item->recording->get('product_full_time','0') ) : ?>
+<?php if(isset($product->recording) && is_object($product->recording)) : ?>
+		    <?php if( $this->params->get("show_product_full_time",0) && $product->recording->get('product_full_time','0') ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
 		        <div class="key full-time"><?php echo Text::_('COM_MYMUSE_PRODUCT_FULL_TIME_LABEL'); ?>:</div>
-		        <div class="value"><?php echo $this->item->recording->get('product_full_time','0'); ?></div>
+		        <div class="value"><?php echo $product->recording->get('product_full_time','0'); ?></div>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_studio",0) && $this->item->recording->get('product_studio','') ) : ?>
+		    <?php if( $this->params->get("show_product_studio",0) && $product->recording->get('product_studio','') ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
 		        <div class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_STUDIO_LABEL'); ?>:</div>
-		        <div class="value"><?php echo $this->item->recording->get('product_studio',''); ?></div>
+		        <div class="value"><?php echo $product->recording->get('product_studio',''); ?></div>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_publisher",0) && $this->item->recording->get('product_publisher','') ) : ?>
+		    <?php if( $this->params->get("show_product_publisher",0) && $product->recording->get('product_publisher','') ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
 		        <div class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_PUBLISHER_LABEL'); ?>:</div>
-		        <div class="value"><?php echo $this->item->recording->get('product_publisher',''); ?></div>
+		        <div class="value"><?php echo $product->recording->get('product_publisher',''); ?></div>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_producer",0) && $this->item->recording->get('product_producer','') ) : ?>
+		    <?php if( $this->params->get("show_product_producer",0) && $product->recording->get('product_producer','') ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
 		        <div class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_PRODUCER_LABEL'); ?>:</div>
-		        <div class="value"><?php echo $this->item->recording->get('product_producer',''); ?></div>
+		        <div class="value"><?php echo $product->recording->get('product_producer',''); ?></div>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_product_country",0) && $this->item->recording->get('product_country','') ) : ?>
+		    <?php if( $this->params->get("show_product_country",0) && $product->recording->get('product_country','') ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
 		        <div class="key hits"><?php echo Text::_('COM_MYMUSE_PRODUCT_COUNTRY_LABEL'); ?>:</div>
-		        <div class="value"><?php echo $this->item->recording->get('product_country',''); ?></div>
+		        <div class="value"><?php echo $product->recording->get('product_country',''); ?></div>
 		    </li>
 		    <?php endif; ?>
-
+<?php endif; ?>
 		   <?php if( $this->params->get("show_author",0) ) : ?>
 			<li class="product-detail-item mymuse-grid-1-2">
 		        <div class="key author"><?php echo Text::_('JAUTHOR'); ?>:</div>
 		        <div class="value">
-		        	<?php $author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author; ?>
-		        	<?php if (!empty($this->item->contactid) && $this->params->get('link_author') == true): ?>
+		        	<?php $author = $product->created_by_alias ? $product->created_by_alias : $product->author; ?>
+		        	<?php if (!empty($product->contactid) && $this->params->get('link_author') == true): ?>
 		        	<?php
-		        		$needle = 'index.php?option=com_contact&view=contact&id=' . $this->item->contactid;
+		        		$needle = 'index.php?option=com_contact&view=contact&id=' . $product->contactid;
 		        		$menu = JFactory::getApplication()->getMenu();
 		        		$item = $menu->getItems('link', $needle, true);
 		        		$cntlink = !empty($item) ? $needle . '&Itemid=' . $item->id : $needle;
@@ -165,27 +165,27 @@ if( ($this->params->get('info_block_show'))) : ?>
 		    <?php if( $this->params->get("show_hits",0) ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
 		        <div class="key hits"><?php echo Text::_('COM_MYMUSE_HITS_FILTER_LABEL'); ?>:</div>
-		        <div class="value"><?php echo $this->item->hits; ?></div>
+		        <div class="value"><?php echo $product->hits; ?></div>
 		    </li>
 		    <?php endif; ?>
 
-		    <?php if ($this->params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
-		    	<?php $this->item->tagLayout = new FileLayout('joomla.content.tags'); ?>
+		    <?php if ($this->params->get('show_tags', 1) && !empty($product->tags->itemTags)) : ?>
+		    	<?php $product->tagLayout = new FileLayout('joomla.content.tags'); ?>
 
-		    	<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
+		    	<?php echo $product->tagLayout->render($product->tags->itemTags); ?>
 		    <?php endif; ?>
 
-		    <?php if( $this->params->get("show_news_release_link",0) && $this->item->attribs->get('media_rls','') ) : ?>
+		    <?php if( $this->params->get("show_news_release_link",0) && $product->attribs->get('media_rls','') ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
-		        <div class="key news-release"><a href="<?php echo $this->item->attribs->get('media_rls',''); ?>"><?php echo Text::_('COM_MYMUSE_NEWS_RELEASE'); ?></a></div>
+		        <div class="key news-release"><a href="<?php echo $product->attribs->get('media_rls',''); ?>"><?php echo Text::_('COM_MYMUSE_NEWS_RELEASE'); ?></a></div>
 		        
 		    </li>
 		    <?php endif; ?>
 
 
-		    <?php if( $this->params->get("show_media_link",0) && $this->item->attribs->get('media_link','') ) : ?>
+		    <?php if( $this->params->get("show_media_link",0) && $product->attribs->get('media_link','') ) : ?>
 		    <li class="product-detail-item mymuse-grid-1-2">
-		        <div class="key media-link"><a href="<?php echo $this->item->attribs->get('media_link',''); ?>"><?php echo Text::_('COM_MYMUSE_MEDIA'); ?></a></div>
+		        <div class="key media-link"><a href="<?php echo $product->attribs->get('media_link',''); ?>"><?php echo Text::_('COM_MYMUSE_MEDIA'); ?></a></div>
 
 		    </li>
 		    <?php endif; ?>
@@ -263,28 +263,35 @@ if( ($this->params->get('info_block_show'))) : ?>
 	        <?php endif; ?>
 	    </ul>
 
-<!-- "show_vote"  -->
 
 		<?php  if ($product->introtext) : ?>
-		<div class="product-description">     
+			<?php if(!$this->params->get('introtext_beside_image', 1)) : ?>
+				</div>
+			<?php endif; ?>
 
-		    <?php echo $product->introtext ?>
+			<div class="product-description">     
 
-		    <?php if($product->introtext && $product->fulltext && !$this->params->get('show_readmore') && !$this->params->get('split_text')) :  
-		    	echo $product->fulltext;
-		    endif; ?>
+			    <?php echo $product->introtext ?>
 
-			<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore') && $this->params->get('split_text')) : ?>
-				<div><a href="#readmore" class="readon"><?php echo Text::_("COM_MYMUSE_READ_MORE"); ?>
-		        <?php 
-		        if ($this->params->get('show_readmore_title', 0) != 0) :
-		            echo HTMLHelper::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
-		        endif;
-		        ?></a></div>
-			 <?php endif; ?>
-		</div>
+			    <?php if($product->introtext && $product->fulltext && !$this->params->get('show_readmore') && !$this->params->get('split_text')) :  
+			    	echo $product->fulltext;
+			    endif; ?>
+
+				<?php if($product->introtext && $product->fulltext && $this->params->get('show_readmore') && $this->params->get('split_text')) : ?>
+					<div><a href="#readmore" class="readon"><?php echo Text::_("COM_MYMUSE_READ_MORE"); ?>
+			        <?php 
+			        if ($this->params->get('show_readmore_title', 0) != 0) :
+			            echo HTMLHelper::_('string.truncate', ($product->title), $this->params->get('readmore_limit'));
+			        endif;
+			        ?></a></div>
+				 <?php endif; ?>
+
+			</div>
+
+			<?php if($this->params->get('introtext_beside_image', 1)) : ?>
+				</div>
+			<?php endif; ?>
+
 		<?php endif; ?>
 
-
-		</div>
 <?php endif; ?>

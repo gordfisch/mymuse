@@ -1,5 +1,6 @@
 <?php
 use Joomla\CMS\Language\Text;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 ?>
 <!-- product edit_details.php -->
 
@@ -83,9 +84,14 @@ use Joomla\CMS\Language\Text;
 									$physical++;
 								}
 
-								if (preg_match("/$format->format_key/i",$field->name))
+								elseif (preg_match("/$format->format_key/i",$field->name))
 								{
 									echo $field->renderField();
+								}
+
+								else {
+
+
 								}
 							} 
 					

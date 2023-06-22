@@ -64,17 +64,17 @@ endif;
 							
 			  		<li class="items-container">
         				
-        				<div class="mytitle mycart-inner" data-name="<?php echo Text::_('MYMUSE_NAME'); ?>"><?php echo $item->title; ?></div>
+        				<div class="mytitle mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_NAME'); ?>"><?php echo $item->title; ?></div>
         			<?php foreach($product->attribute_sku as $a_sku){ ?>
 						<div class="my<?php echo $a_sku->name ?> attribute" data-name="<?php echo $item->attributes[$a_sku->name]; ?>" ><?php echo $item->attributes[$a_sku->name]; ?></div>
 					<?php } ?>
-						<div class="myprice mycart-inner" data-name="<?php echo Text::_('MYMUSE_COST'); ?>">
+						<div class="myprice mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_COST'); ?>">
 						<?php echo MyMuseHelper::printMoneyPublic($item->price); 
 					?></div>
         			<?php if ($this->params->get('product_show_quantity')) :?>
-						<div class="myquantity mycart-inner" data-name="<?php echo Text::_('MYMUSE_QUANTITY'); ?>"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></div>
+						<div class="myquantity mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_QUANTITY'); ?>"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></div>
 					<?php endif; ?>
-					<div class="myselect mycart-inner" data-name="<?php echo Text::_('MYMUSE_SELECT'); ?>"><a href="javascript:void(0)"
+					<div class="myselect mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_SELECT'); ?>"><a href="javascript:void(0)"
 					id="box_<?php echo $item->id; ?>"><img
 						id="img_<?php echo $item->id; ?>"
 						src="<?php

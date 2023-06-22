@@ -26,7 +26,7 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Administrator\Controller\ProductController;
 
 /**
- * View to edit a store.
+ * View to edit a product.
  *
  * @since  1.5
  */
@@ -93,11 +93,11 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null): void
 	{
 
-		$this->input = Factory::getApplication()->input;
+		$this->input 	= Factory::getApplication()->input;
 		$this->params 	= MyMuseHelper::getParams();
 		/** @var MymuseModel $model */
 		$model       	= $this->getModel();
-		$this->item  = $model->getItem();
+		$this->item  	= $model->getItem();
 
 
 		$this->form  	= $model->getForm();

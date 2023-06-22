@@ -226,7 +226,7 @@ class MymuseHelper extends ContentHelper
 			
 			//store params
 			$params = new Registry($store->params);
-			
+
 			//get component params
 			$cparams = ComponentHelper::getParams( 'com_mymuse' );
 			$params->merge( $cparams );
@@ -484,7 +484,7 @@ class MymuseHelper extends ContentHelper
 		 */
 		if($params->get('my_show_original_price')
 			&& ($price['product_discount'] > 0.00 
-			|| $price['product_shopper_group_discount_amount'] > 0.00)){
+			|| isset($price["product_shopper_group_discount_amount"]) && $price["product_shopper_group_discount_amount"] > 0)){
 				$string .= '<span class="discount">';
 				$string .= MyMuseHelper::printMoney($price['product_original_price']);
 				$string .= '</span> ';

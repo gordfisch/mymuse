@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		mymuse
- * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
+ * @copyright	Copyright © 2023 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
  * @author mail	info@joomlamymuse.com

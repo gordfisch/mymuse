@@ -10,20 +10,20 @@ Joomla will check all your extensions with a Pre-Update check.
 Update or deal with other extensions that need it.
 
 
-A. UPDATE JOOMLA FIRST
+A. PATH 1: UPDATE JOOMLA FIRST
 1) in Extensions->Manage search for mymuse and Disable all
 
 2) Update Joomla to version 4.
 
 3) Install MyMuse 5.
 
-4) 1) in Extensions->Manage search for mymuse and Enable all
+4) 1) in Extensions->Manage search for mymuse and Enable the component, modules and what plugins you want.
 
 5) Go to Components -> MyMuse -> MyMuse and update database records.
 Click on "MUST UPDATE DB"
 
 
-B. UPDATE MYMUSE FIRST THEN IMMEDIATELY UPDATE JOOMLA
+B. PATH 2: UPDATE MYMUSE FIRST THEN IMMEDIATELY UPDATE JOOMLA
 
 1) Go to Extensions -> Manage -> Install and install MyMuse 5
 You will see a screen "Convert to Mymuse 5 for Joomla 4"

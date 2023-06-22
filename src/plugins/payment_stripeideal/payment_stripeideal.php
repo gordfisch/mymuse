@@ -9,13 +9,32 @@
  * @website		http://www.joomlamymuse.com
  */
 // no direct access
-//defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.plugin.plugin');
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\ParameterType;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
+use Joomla\Component\Mymuse\Administrator\Table\OrderTable;
+
+/**
+* MyMuse PaymentStripeIdeal plugin
+*
+* @package 		MyMuse
+* @subpackage	mymuse
+*/
 
 require_once(__DIR__.'/vendor/autoload.php');
 
-class plgMymusePayment_Stripeideal extends JPlugin
+class plgMymusePayment_Stripeideal extends CMSPlugin 
 {
 	/**
 	 * Load the language file on instantiation.
@@ -35,12 +54,16 @@ class plgMymusePayment_Stripeideal extends JPlugin
 	 */
 	public function __construct(&$subject, $config)
 	{
-		$this->plgMyMusePayment_Stripeideal($subject, $config);
+		$this->plgMymusePayment_Stripeideal($subject, $config);
 	}
 	
-	function plgMyMusePayment_Stripeideal(&$subject, $config)  {
+	function plgMymusePayment_Stripeideal(&$subject, $config)  {
 		parent::__construct($subject, $config);
-		JHtml::_('script','https://js.stripe.com/v3/', false, true, false, false);
+
+		$document       = Factory::getDocument();
+		$document->addScript( 'https://js.stripe.com/v3/' );
+
+		$document->addScript( 'https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch' );
 		$this->stripe = array(
 				"secret_key"      => $this->params->get('my_stripe_private_key'),
 				"public_key" => $this->params->get('my_stripe_public_key')
@@ -49,7 +72,7 @@ class plgMymusePayment_Stripeideal extends JPlugin
 		\Stripe\Stripe::setApiKey($this->stripe['secret_key']);
 		\Stripe\Stripe::setAppInfo(
   "Joomla MyMuse Payments - Stripe",
-  "3.9.0",
+  "5.0.0",
   "https://www.joomlamymuse.com"
 );
 	}
@@ -70,8 +93,6 @@ class plgMymusePayment_Stripeideal extends JPlugin
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
 		$shopper->last_name 	= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
 	
-		JHtml::_('script','https://js.stripe.com/v3/', false, true, false, false);	
-		JHtml::_('script','https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch', false, true, false, false);
 		$intent = \Stripe\PaymentIntent::create([
 		    'amount' => $amount,
 		    'currency' => $currency,
@@ -246,7 +267,7 @@ if($this->params->get('my_stripe_payment') == "card" || $this->params->get('my_s
 	<div class="mymuse-payment-form">
 		<form action="'. $return_url.'" method="post" id="payment-form-card">
 			<label for="ideal-bank-element">
-			  '.JText::_('MYMUSE_STRIPE_CARD_LABEL_TEXT').'
+			  '.Text::_('COM_MYMUSE_STRIPE_CARD_LABEL_TEXT').'
 			</label>
 		    <div id="card-bank-element">
 		      <!-- A Stripe Element will be inserted here. -->
@@ -256,7 +277,7 @@ if($this->params->get('my_stripe_payment') == "card" || $this->params->get('my_s
 		  	
 		  <button id="submit" class="button uk-button ">
         	<div class="spinner hidden" id="spinner"></div>
-		  	<span id="button-text">'.JText::_('MYMUSE_STRIPE_IDEAL_SUBMIT_TEXT').'</span>
+		  	<span id="button-text">'.Text::_('COM_MYMUSE_STRIPE_IDEAL_SUBMIT_TEXT').'</span>
 		  </button>
 		  <div id="card-error" role="alert"></div>
 		  <div class="result-message hidden">
@@ -274,11 +295,11 @@ if($this->params->get('my_stripe_payment') == "ideal" || $this->params->get('my_
 	 	<div class="mymuse-payment-form">
 			<form action="'. $return_url.'" method="post" id="payment-form">
 				<label for="ideal-bank-element">
-			      '.JText::_('MYMUSE_STRIPE_IDEAL_LABEL_TEXT').'
+			      '.Text::_('COM_MYMUSE_STRIPE_IDEAL_LABEL_TEXT').'
 			    </label>
 			  <div>
 			    <label for="accountholder-name">
-			      '.JText::_('MYMUSE_STRIPE_NAME_TEXT').'
+			      '.Text::_('COM_MYMUSE_STRIPE_NAME_TEXT').'
 			    </label>
 			    <input id="accountholder-name"  name="accountholder-name" value="'.$shopper->name.'">
 			  </div>
@@ -289,7 +310,7 @@ if($this->params->get('my_stripe_payment') == "ideal" || $this->params->get('my_
 			    </div>
 			    <!-- Used to display form errors. -->
 			  	<div id="error-message" role="alert"></div>
-			  	<button class="button uk-button ">'.JText::_('MYMUSE_STRIPE_IDEAL_SUBMIT_TEXT').'</button>
+			  	<button class="button uk-button ">'.Text::_('COM_MYMUSE_STRIPE_IDEAL_SUBMIT_TEXT').'</button>
 			  </div>
 			</form>
 		</div>
@@ -342,13 +363,13 @@ Array
 			$debug .= "-------END-------";
 			if($params->get('my_debug')){
 				
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   			}
   			return $result;
 		}else{
 			$debug .= print_r($_REQUEST, true);
 			if($params->get('my_debug')){
-        		MyMuseHelper::logMessage( $debug  );
+        		MymuseHelper::logMessage( $debug  );
   			}
 		}
 
@@ -362,7 +383,7 @@ Array
 			$debug .= "Missing Invoice! \n";
 			$debug .= "-------END-------";
 			if($params->get('my_debug')){
-				MyMuseHelper::logMessage( $debug  );
+				MymuseHelper::logMessage( $debug  );
 			}
 			$result['error'] = "Missing Invoice!";
 			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
@@ -380,7 +401,7 @@ Array
 			$debug .= "1.2 !!!!Error no order object: ".$db->_errorMsg."\n\n";
 			$debug .= "-------END-------";
 			if($params->get('my_debug')){
-				MyMuseHelper::logMessage( $debug  );
+				MymuseHelper::logMessage( $debug  );
 			}
 			$result['error'] = "Could not find order!";
 			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
@@ -405,8 +426,8 @@ Array
         	$result ['order_id'] 	= $this_order->id;
         	$result ['order_number'] = $this_order->order_number;
         	
-        	$MyMuseHelper = new MyMuseHelper();
-            $MyMuseHelper->orderStatusUpdate($result['order_id'] , "C");
+        	$MymuseHelper = new MymuseHelper();
+            $MymuseHelper->orderStatusUpdate($result['order_id'] , "C");
             $date = date('Y-m-d h:i:s');
             $debug .= "$date 5. order COMPLETED at Stripe, update in DB\n\n";
             $result['order_completed'] = 1;
@@ -417,7 +438,7 @@ Array
 			$debug = "$date 5. Stripe iDeal, returned 'failed'\n\n";
 			$result['order_completed'] = 0;
 			if($params->get('my_debug')){
-				MyMuseHelper::logMessage( $debug  );
+				MymuseHelper::logMessage( $debug  );
 			}
 			$result['error'] = $debug;
 			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
@@ -427,7 +448,7 @@ Array
         $debug .= "$date Finished talking to Stripe \n\n";
 		$debug .= "-------END PLUGIN-------";
   		if($params->get('my_debug')){
-        	MyMuseHelper::logMessage( $debug  );
+        	MymuseHelper::logMessage( $debug  );
   		}
   		
 

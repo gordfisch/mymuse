@@ -218,14 +218,13 @@ span.discount {
 
 .mini-cart-top{
     width: 300px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
     padding: 4px;
 }
 .mini-cart-content{
-    border-radius: 8px;
+    border-radius: 4px;
     background: #fff none repeat scroll 0% 0%;
     padding: 0.4em;
+    border: 1px solid #d1d1d1;;
 }
 .mini-cart-cart, .mini-cart-text, .mini-cart-link {
     display: table-cell;

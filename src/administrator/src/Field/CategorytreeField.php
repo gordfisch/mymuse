@@ -61,19 +61,20 @@ class CategorytreeField extends ListField
 		$jinput = Factory::getApplication()->input;
 		//product id
 		$id = $jinput->get('id',0);
+
 		$arr = array();
 		$this->value = array();
 		if($id){
 			$db = Factory::getDBO();
-			$query = 'SELECT catid' .
-			' FROM #__mymuse_product_category_xref' .
-			' WHERE product_id='. $id ;
+			$query = 'SELECT id' .
+			' FROM #__categories' .
+			' WHERE extension = "com_mymuse" ';
 			$db->setQuery($query);
 
 			$cats = $db->loadObjectList();
 
 			foreach($cats as $cat){
-				$arr[$cat->catid] = $cat->catid;
+				$arr[$cat->id] = $cat->id;
 			}
 
 		}
@@ -104,7 +105,7 @@ class CategorytreeField extends ListField
 
 		// Get the field options.
 		$options = (array) $this->getOptions();
-		
+
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->element['readonly'] == 'true') {			
 			$html[] = '<select name="" '.trim($attr).'>';

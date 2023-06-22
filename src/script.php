@@ -420,6 +420,7 @@ class Com_MymuseInstallerScript
 
                 "UPDATE `#__mymuse_tax_rate` SET `checked_out` = NULL WHERE `checked_out` = '0'",
                 "UPDATE `#__mymuse_tax_rate` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+                "ALTER TABLE `#__mymuse_format` MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;"
 
 
             );
@@ -558,7 +559,7 @@ class Com_MymuseInstallerScript
         {
             $query = "
                 CREATE TABLE `#__mymuse_format` (
-                  `id` int NOT NULL,
+                  `id` int NOT NULL AUTO_INCREMENT,
                   `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                   `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                   `ordering` int NOT NULL DEFAULT '0'
@@ -1237,43 +1238,78 @@ END;
             $name = Text::_("COM_MYMUSE_UPDATING_MEDIA_MANAGER");
             $query = "SELECT params FROM #__extensions WHERE element='com_media'";
             $this->db->setQuery($query);
-            $media_params = json_decode($this->db->loadResult(), TRUE);
-            if($media_params){
-                if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
-                    $media_params['upload_extensions'] .= ",mp3,MP3";
-                }
-                if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
-                    $media_params['upload_mime'] .= ",audio/mpeg";
-                }
-                if (!stristr ( $media_params['ignore_extensions'], 'mp3' )) {
-                    $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
-                }
+            if($this->db->loadResult()){
+                $media_params = json_decode($this->db->loadResult(), TRUE);
+                if($media_params){
+                    if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
+                        $media_params['upload_extensions'] .= ",mp3,MP3";
+                    }
+                    if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
+                        $media_params['upload_mime'] .= ",audio/mpeg";
+                    }
+                    if (!stristr ( $media_params['ignore_extensions'], 'mp3' )) {
+                        $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
+                    }
 
-                if (!stristr ( $media_params['upload_extensions'], 'wav' )) {
-                    $media_params['upload_extensions'] .= ",wav,WAV";
-                }
-                if (!stristr ( $media_params['upload_mime'], 'audio/wav' )) {
-                    $media_params['upload_mime'] .= ",audio/wav";
-                }
-                if (!stristr ( $media_params['ignore_extensions'], 'wav' )) {
-                    $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",wav" : "wav";
-                }
+                    if (!stristr ( $media_params['upload_extensions'], 'wav' )) {
+                        $media_params['upload_extensions'] .= ",wav,WAV";
+                    }
+                    if (!stristr ( $media_params['upload_mime'], 'audio/wav' )) {
+                        $media_params['upload_mime'] .= ",audio/wav";
+                    }
+                    if (!stristr ( $media_params['ignore_extensions'], 'wav' )) {
+                        $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",wav" : "wav";
+                    }
 
-                $registry = new JRegistry;
-                $registry->loadArray($media_params);
-                $new_params = (string)$registry;
+                    $registry = new JRegistry;
+                    $registry->loadArray($media_params);
+                    $new_params = (string)$registry;
 
-                $query = "UPDATE #__extensions set params='$new_params' WHERE element='com_media'";
+                    $query = "UPDATE #__extensions set params='$new_params' WHERE element='com_media'";
 
-                $this->db->setQuery($query);
-                if(!$this->db->execute()){
-                    $alt = Text::_( "COM_MYMUSE_FAILED" );
-                    $astatus = 0;
-                    $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$this->db->_errorMsg;
+                    $this->db->setQuery($query);
+                    if(!$this->db->execute()){
+                        $alt = Text::_( "COM_MYMUSE_FAILED" );
+                        $astatus = 0;
+                        $message =  Text::_("COM_MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$this->db->_errorMsg;
+                    }else{
+                        $alt = Text::_( "COM_MYMUSE_INSTALLED" );
+                        $astatus = 1;
+                        $message =  Text::_("COM_MYMUSE_MEDIA_MANAGER_UPDATED");
+                    }
                 }else{
-                    $alt = Text::_( "COM_MYMUSE_INSTALLED" );
-                    $astatus = 1;
-                    $message =  Text::_("COM_MYMUSE_MEDIA_MANAGER_UPDATED");
+                    if(function_exists(json_last_error)){
+                        switch (json_last_error()) {
+                            case JSON_ERROR_NONE:
+                                $message = 'JSON - No errors';
+                                $astatus = 1;
+                                break;
+                            case JSON_ERROR_DEPTH:
+                                $message = 'JSON - Maximum stack depth exceeded';
+                                $astatus = 0;
+                                break;
+                            case JSON_ERROR_STATE_MISMATCH:
+                                $message = 'JSON - Underflow or the modes mismatch';
+                                $astatus = 0;
+                                break;
+                            case JSON_ERROR_CTRL_CHAR:
+                                $message = 'JSON - Unexpected control character found';
+                                $astatus = 0;
+                                break;
+                            case JSON_ERROR_SYNTAX:
+                                $message = 'JSON - Syntax error, malformed JSON';
+                                $astatus = 0;
+                                break;
+                            case JSON_ERROR_UTF8:
+                                $message = 'JSON - Malformed UTF-8 characters, possibly incorrectly encoded';
+                                $astatus = 0;
+                                break;
+                            default:
+                                $message = 'JSON - Unknown error';
+                                $astatus = 0;
+                                break;
+                        }
+                    }
                 }
             }
             $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
