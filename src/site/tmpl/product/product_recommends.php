@@ -10,6 +10,8 @@
  */
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 // no direct access
@@ -18,7 +20,6 @@ defined('_JEXEC') or die('Restricted access');
 
 if(isset(($this->item->recommends)) && is_countable($this->item->recommends) && count($this->item->recommends)) : 
 $cols = count($this->item->recommends);
-
 
 ?>
 
@@ -29,7 +30,7 @@ $cols = count($this->item->recommends);
 		<?php foreach($this->item->recommends as $item) : ?>
 			<?php if($item->list_image) :?>
 			<div class="related-item">
-			<a href="<?php echo $item->url; ?>"><img src="<?php echo $item->list_image; ?>"></a>
+			<a href="<?php echo RouteHelper::getProductRoute($item->id, $item->catid); ?>"><img src="<?php echo $item->list_image; ?>"></a>
 			</div>
 			<?php endif; ?>
 		<?php endforeach; ?>

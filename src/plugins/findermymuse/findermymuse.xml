@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="finder" method="upgrade">
+	<name>plg_finder_mymuse</name>
+	<author>Arboreta</author>
+	<creationDate>June 2023</creationDate>
+	<copyright>Copyright (C) 2023 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_FINDER_MYMUSE_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\Finder\Finder_mymuse</namespace>
+	<files>
+		<folder plugin="content">services</folder>
+		<folder>src</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/plg_finder_content.ini</language>
+		<language tag="en-GB">language/en-GB/plg_finder_content.sys.ini</language>
+	</languages>
+</extension>
