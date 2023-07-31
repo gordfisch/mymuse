@@ -9,12 +9,14 @@
  */
 // No direct access to this file
 
+use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\Registry\Registry;
+
 
 defined('_JEXEC') or die('Restricted access');
 /**
@@ -199,7 +201,7 @@ class Com_MymuseInstallerScript
 
         }
         
-//echo "convert = ".$this->convertTo4." old version = ".$this->old_version; exit;
+
         if($this->convertTo4 == 1){
 
             echo "<h3>Convert to Mymuse 5 for Joomla 4</h3>";
@@ -630,9 +632,6 @@ class Com_MymuseInstallerScript
 
         if($this->convertTo4){
 
-
-
-
             /* update store params */
             $query = "SELECT * from `#__mymuse_store` WHERE id='1'";
             $this->db->setQuery($query);
@@ -850,7 +849,7 @@ END;
                         'name' => (string) $plugin,
                         'type' => (string) $plugin['name'],
                         'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
-                        'installer' => new JInstaller,
+                        'installer' => new Installer,
                         'status' => false);
 
                 }
@@ -866,7 +865,7 @@ END;
                         'name' => (string) $module,
                         'type' => (string) $module['name'],
                         'folder' => $super->getPath('source').'/'.(string) $module['folder'],
-                        'installer' => new JInstaller,
+                        'installer' => new Installer,
                         'status' => false);
                 }
             }
@@ -882,12 +881,12 @@ END;
                 if ($extension['installer']->install($extension['folder'])) {
                     $extension['status'] = true;
                 }else{
-                    echo $extension['name']. "threw an error ".$extension['installer']->getError();
-                    $error = $extension['installer']->getError();
+                    $error =  $extension['name']. " threw an error ";
+                    Factory::getApplication()->enqueueMessage($error, 'error');
                     break;
                 }
             }
-
+/*
             // rollback on installation errors
             if ($error) {
                 $this->parent->abort(Text::_('Component').' '.Text::_('Install').': '.Text::_('Error'), 'component');
@@ -898,7 +897,7 @@ END;
                     }
                 }
             }
-
+*/
             if(count($this->convert_actions)){
                 ?>
                 <table class="adminlist">

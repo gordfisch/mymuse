@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.0" type="plugin" group="COM_MYMUSE">
+<extension version="3.0" type="plugin" group="mymuse">
 	<name>plg_mymuse_payment_stripe</name>
 	<author>Arboreta</author>
 	<creationDate>Sept 2023</creationDate>
