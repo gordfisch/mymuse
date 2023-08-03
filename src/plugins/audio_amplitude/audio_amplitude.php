@@ -132,8 +132,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 }
             }
             //MymuseHelper::print_pre($this->catalogs);
-            $preview_path   = $this->mparams->get('my_preview_dir', '/media/com_mymuse/previews/');
-            $playlist_path  = $this->params->get('playlist_path', '/media/com_mymuse/playlists/');
+            $preview_path   = $this->mparams->get('my_preview_dir', Uri::root().'media/com_mymuse/previews/');
+            $playlist_path  = $this->params->get('playlist_path', Uri::root().'media/com_mymuse/playlists/');
             $site_url       = rtrim( Uri::root(), '/');
             $document       = Factory::getDocument();
             $app            = Factory::getApplication();
@@ -281,8 +281,9 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     
     function onMyMuseAfterSave()
     {
+        $mycategories  = $this->params->get('mycategories', array());
 
-        if(!$mycategories  = $this->params->get('mycategories', array())){
+        if(!count($mycategories)){
             $this->text  = "Please set your categories in the Plugin Audio Amplitude";
             return $this->text;
         }
@@ -310,7 +311,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $this->text = '';
         $db         = Factory::getDBO();
         $top_cat    = $mycategories[0];
-        $query      = "SELECT id, alias from #__categories WHERE parent_id=$top_cat";
+        $query      = "SELECT id, alias from #__categories WHERE 
+        (parent_id=$top_cat OR id=$top_cat)";
 
 
         $db->setQuery($query);
@@ -327,7 +329,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
         $all                    = array();
         $all['songs'][]         = $first;
-        $allcats                = array();
+        $allcats                = $mycategories;
         $this->text .= "Making list for <br />";
         foreach($res as $r){
             $filename = $r->alias.".js";
@@ -392,6 +394,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                 $this->text .= "No tracks for $filename <br />";
             }
         }
+
         if(count($allcats) == 0){
             $this->text  = "Please check your categories in the Plugin Audio Amplitude";
             return $this->text;

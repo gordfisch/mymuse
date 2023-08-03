@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="installer" method="upgrade">
+    <name>Installer - Foo</name>
+    <creationDate>[DATE]</creationDate>
+	<author>[AUTHOR]</author>
+	<authorEmail>[AUTHOR_EMAIL]</authorEmail>
+	<authorUrl>[AUTHOR_URL]</authorUrl>
+	<copyright>[COPYRIGHT]</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<version>1.0</version>
+	<description>PLUGIN_INSTALLER_FOO_XML_DESCRIPTION</description>
+    <files>
+        <filename plugin="foo">foo.php</filename>        
+    </files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="download_id"
+					type="text"
+					label="Download ID"
+					description="Enter your Download ID which can be get from our website https://domain.com. Each Download ID can only be used on one site"
+					default=""
+					required="true"
+					filter="string"
+					size="50"
+				/>				
+			</fieldset>
+		</fields>
+	</config>
+</extension>

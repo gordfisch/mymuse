@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="installer" method="upgrade">
+    <name>Mymuse - Installer</name>
+    <creationDate>Jul 2023</creationDate>
+	<author>Arboreta</author>
+	<copyright>Copyright (C) 2023 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>1.0</version>
+	<description>Plugin Installer for MyMuse</description>
+    <files>
+        <filename plugin="mymuse_installer">mymuse_installer.php</filename>        
+    </files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="download_id"
+					type="text"
+					label="Download ID"
+					description="Enter your Download ID which can be get from our website https://joomlamymuse.com. Each Download ID can only be used on one site"
+					default=""
+					required="true"
+					filter="string"
+					size="50"
+				/>				
+			</fieldset>
+		</fields>
+	</config>
+</extension>

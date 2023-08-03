@@ -158,7 +158,7 @@
                 <copy file="${src}/plugins/user_mymuseuser/forms/profile.xml"
                         todir="${joomladir}/plugins/user/mymuseuser/forms" />
                 <copy file="${src}/plugins/user_mymuseuser/src/Field/TosField.php"
-                            todir="${joomladir}/plugins/user/mymuseuser/src/Field/" /> 
+                            todir="${joomladir}/plugins/user/mymuseuser/src/Field" /> 
                 
                 <copy file="${src}/plugins/user_mymusenoreg/mymusenoreg.xml"
                             todir="${joomladir}/plugins/user/mymusenoreg" /> 
@@ -167,12 +167,17 @@
                  <copy file="${src}/plugins/user_mymusenoreg/forms/profile.xml"
                             todir="${joomladir}/plugins/user/mymusenoreg/forms" />
                 <copy file="${src}/plugins/user_mymusenoreg/src/Field/TosField.php"
-                        todir="${joomladir}/plugins/user/mymusenoreg/src/Field/" /> 
+                        todir="${joomladir}/plugins/user/mymusenoreg/src/Field" /> 
 
                 <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.xml"
                             todir="${joomladir}/plugins/user/redirectonlogin" />
                 <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.php"
                             todir="${joomladir}/plugins/user/redirectonlogin" />
+
+                <copy file="${src}/plugins/mymuse_installer/mymuse_installer.xml"
+                            todir="${joomladir}/plugins/installer/mymuse_installer" />
+                <copy file="${src}/plugins/mymuse_installer/mymuse_installer.php"
+                            todir="${joomladir}/plugins/installer/mymuse_installer" />
 
                 <!--  modules -->
                 <copy todir="${joomladir}/modules/mod_mymuse_minicart">

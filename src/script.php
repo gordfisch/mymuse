@@ -1217,7 +1217,8 @@ END;
                 element='payment_offline' OR
                 element='shipping_standard' OR
                 element='audio_amplitude' OR
-                element='searchmymuse' 
+                element='searchmymuse' OR
+                element='mymuse_installer' 
                 ";
             $this->db->setQuery($query);
             if(!$this->db->execute()){
