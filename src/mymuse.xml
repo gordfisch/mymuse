@@ -8,7 +8,7 @@
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.com</authorUrl>
-	<version>5.1.2</version>
+	<version>5.1.3</version>
 
 	<description>COM_MYMUSE_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Mymuse</namespace>
