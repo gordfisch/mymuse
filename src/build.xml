@@ -88,6 +88,12 @@
                         todir="${joomladir}/administrator/language/en-GB" /> 
 
 
+                <copy file="${src}/plugins/products/language/en-GB/plg_finder_products.ini"
+                        todir="${joomladir}/administrator/language/en-GB" /> 
+                <copy file="${src}/plugins/products/language/en-GB/plg_finder_products.sys.ini"
+                        todir="${joomladir}/administrator/language/en-GB" />
+
+
                         
                 <!-- plugins -->
                 <!-- copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
@@ -178,6 +184,15 @@
                             todir="${joomladir}/plugins/installer/mymuse_installer" />
                 <copy file="${src}/plugins/mymuse_installer/mymuse_installer.php"
                             todir="${joomladir}/plugins/installer/mymuse_installer" />
+
+
+                <copy file="${src}/plugins/products/products.xml"
+                            todir="${joomladir}/plugins/finder/products" /> 
+                <copy file="${src}/plugins/products/services/provider.php"
+                            todir="${joomladir}/plugins/finder/products/services" />
+                 <copy file="${src}/plugins/products/src/Extension/Products.php"
+                            todir="${joomladir}/plugins/finder/products/src/Extension" />
+ 
 
                 <!--  modules -->
                 <copy todir="${joomladir}/modules/mod_mymuse_minicart">

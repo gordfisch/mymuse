@@ -11,7 +11,7 @@
 	<description>PLG_PRODUCTS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\Finder\Products</namespace>
 	<files>
-		<folder plugin="content">services</folder>
+		<folder plugin="products">services</folder>
 		<folder>src</folder>
 	</files>
 	<languages>

@@ -22,7 +22,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
-use Joomla\Component\Mymuse\Helper\RouteHelper;
+use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Categories\CategoryNode;
 
@@ -63,7 +63,8 @@ class plgSearchSearchMymuse extends CMSPlugin
     function onContentSearchAreas()
     {
         static $areas = array(
-            'mymuse' => 'MYMUSE_PRODUCTS'
+            'mymuse' => 'MYMUSE_PRODUCTS',
+            'categories' => 'MYMUSE_CATEGORIES'
         );
         return $areas;
         
@@ -90,7 +91,7 @@ class plgSearchSearchMymuse extends CMSPlugin
         $groups = implode(',', $user->getAuthorisedViewLevels());
         $tag 	= JFactory::getLanguage()->getTag();
         
-    
+   print_r($areas);
         $searchText = $text;
         if (is_array( $areas )) {
             if (!array_intersect( $areas, array_keys( $this->onContentSearchAreas() ) )) {
@@ -113,165 +114,174 @@ class plgSearchSearchMymuse extends CMSPlugin
         if ($text == '') {
             return array();
         }
-        $section    = Text::_('Search - Products');
-    
-        $wheres = array();
-        switch ($phrase) {
-            case 'exact':
-                $text		= $db->Quote( '%'.$db->escape( $text, true ).'%', false );
-                $wheres2 	= array();
-                $wheres2[] 	= 'a.title LIKE '.$text;
-                $wheres2[] 	= 'a.introtext LIKE '.$text;
-                $wheres2[] 	= 'a.fulltext LIKE '.$text;
-                $wheres2[] 	= 'a.metakey LIKE '.$text;
-                $wheres2[] 	= 'a.metadesc LIKE '.$text;
-                $wheres2[]  = 'c.title LIKE '.$text;
-                $wheres2[]  = 'c.description LIKE '.$text;
-                $where 		= '(' . implode( ') OR (', $wheres2 ) . ')';
-                break;
-    
-            case 'all':
-            case 'any':
-            default:
-                $words = explode( ' ', $text );
-                $wheres = array();
-                foreach ($words as $word) {
-                    $word		= $db->Quote( '%'.$db->escape( $word, true ).'%', false );
+
+        if (!$areas || array_intersect( $areas, ['mymuse'] ) ) {
+            $section    = Text::_('Search - Products');
+        
+            $wheres = array();
+            switch ($phrase) {
+                case 'exact':
+                    $text		= $db->Quote( '%'.$db->escape( $text, true ).'%', false );
                     $wheres2 	= array();
-                    $wheres2[] 	= 'a.title LIKE '.$word;
-                    $wheres2[] 	= 'a.introtext LIKE '.$word;
-                    $wheres2[] 	= 'a.fulltext LIKE '.$word;
-                    $wheres2[] 	= 'a.metakey LIKE '.$word;
-                    $wheres2[] 	= 'a.metadesc LIKE '.$word;
-                    $wheres2[]  = 'c.title LIKE '.$word;
-                    $wheres2[]  = 'c.description LIKE '.$word;
-                    $wheres[] 	= implode( ' OR ', $wheres2 );
-                }
-                $where = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
-                break;
-        }
-    
-        $morder = '';
-        switch ($ordering) {
-            case 'oldest':
-                $order = 'a.created ASC';
-                break;
-    
-            case 'popular':
-                $order = 'a.hits DESC';
-                break;
-    
-            case 'alpha':
-                $order = 'a.title ASC';
-                break;
-    
-            case 'category':
-                $order = 'b.title ASC, a.title ASC';
-                $morder = 'a.title ASC';
-                break;
-    
-            case 'newest':
+                    $wheres2[] 	= 'a.title LIKE '.$text;
+                    $wheres2[] 	= 'a.introtext LIKE '.$text;
+                    $wheres2[] 	= 'a.fulltext LIKE '.$text;
+                    $wheres2[] 	= 'a.metakey LIKE '.$text;
+                    $wheres2[] 	= 'a.metadesc LIKE '.$text;
+                    $wheres2[]  = 'c.title LIKE '.$text;
+                    $wheres2[]  = 'c.description LIKE '.$text;
+                    $where 		= '(' . implode( ') OR (', $wheres2 ) . ')';
+                    break;
+        
+                case 'all':
+                case 'any':
                 default:
-                $order = 'a.created DESC';
-                break;
-        }
-    
-        $rows = array();
-    
-        // search products
-        if ( $limit > 0 )
-        {
-            //CASE WHEN CHAR_LENGTH(p.title) THEN CONCAT_WS(": ",a.title,p.title) ELSE a.title END AS title,
-            $query = 'SELECT a.id, a.parentid, a.title as title, a.metakey,'
-            . ' a.catid, a.created AS created,'
-            . ' CONCAT(a.introtext, a.fulltext) AS text,'
-            . " CONCAT(".$db->Quote($section).",' : ', c.title) AS section,"
-            . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'
-            . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as catslug,'
-            . ' "2" AS browsernav'
-            . ' FROM #__mymuse_product AS a';
-            if($searchArtists){
-            	//main category only
-                 $query .= " INNER JOIN #__categories AS c ON c.id=a.catid";
-            }else{
-            	// any category
-            	$query .= " INNER JOIN #__categories AS c ON c.id=a.catid";
-                $query .= ' LEFT JOIN #__mymuse_product_category_xref AS x ON x.product_id=a.id'
-                . " LEFT JOIN #__categories AS cc ON c.id=x.catid";
+                    $words = explode( ' ', $text );
+                    $wheres = array();
+                    foreach ($words as $word) {
+                        $word		= $db->Quote( '%'.$db->escape( $word, true ).'%', false );
+                        $wheres2 	= array();
+                        $wheres2[] 	= 'a.title LIKE '.$word;
+                        $wheres2[] 	= 'a.introtext LIKE '.$word;
+                        $wheres2[] 	= 'a.fulltext LIKE '.$word;
+                        $wheres2[] 	= 'a.metakey LIKE '.$word;
+                        $wheres2[] 	= 'a.metadesc LIKE '.$word;
+                        $wheres2[]  = 'c.title LIKE '.$word;
+                        $wheres2[]  = 'c.description LIKE '.$word;
+                        $wheres[] 	= implode( ' OR ', $wheres2 );
+                    }
+                    $where = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
+                    break;
             }
-
-             
-            $query .=  ' WHERE ( '.$where.' )';
-            if(!$searchItems){
-            	$query .= " AND parentid = '0'";
+        
+            $morder = '';
+            switch ($ordering) {
+                case 'oldest':
+                    $order = 'a.created ASC';
+                    break;
+        
+                case 'popular':
+                    $order = 'a.hits DESC';
+                    break;
+        
+                case 'alpha':
+                    $order = 'a.title ASC';
+                    break;
+        
+                case 'category':
+                    $order = 'b.title ASC, a.title ASC';
+                    $morder = 'a.title ASC';
+                    break;
+        
+                case 'newest':
+                    default:
+                    $order = 'a.created DESC';
+                    break;
             }
-            
-            // Filter by language
-            if ($app->isClient('site') && $app->getLanguageFilter()) {
-            	$tag = JFactory::getLanguage()->getTag();
-            	$query .= ' AND a.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';
-            	$query .= ' AND c.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';
-            }
-            
-            $query .= ' AND a.state = 1'
-            . ' AND c.published = 1'
-            . ' AND a.access IN ('.$groups.') '
-            . ' AND ( a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' )'
-            . ' AND ( a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )'
-            . ' GROUP BY a.id'
-            . ' ORDER BY '. $order
-            ;
-
-            $db->setQuery( $query, 0, $limit );
-            $list = $db->loadObjectList();
-            $limit -= count($list);
-
-            if(count($list))
+        
+            $rows = array();
+        
+            // search products
+            if ( $limit > 0 )
             {
-                foreach($list as $key => $item)
-                {
-                    if($item->parentid > 0){
-                        $id = $item->parentid;
-                    }else{
-                        $id = $item->id;
-                    }
-                    if($this->params->get('link_categories_only')){
-                    	$list[$key]->href = RouteHelper::getCategoryRoute($item->catid);
-                    }else{
-                    	$list[$key]->href = RouteHelper::getProductRoute( $id, $item->catid );
-                    }
-                    
-                }
-                $rows[] = $list;
-            }
-            
-        }
-      
-        $section = Text::_("MYMUSE_CATEGORY");
-        //What about the categories
-        $query = 'SELECT a.title, a.description AS text, "" AS created, "'.$section.'" as section, "2" AS browsernav, a.id AS catid,  '
-        ." CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(':', a.id, a.alias) ELSE a.id END as slug "
-        ." FROM #__categories AS a "
-		." WHERE (a.title LIKE ".$db->Quote($text)." OR a.description LIKE ".$db->Quote($text).") "
-		.' AND a.published IN (1) '
-		." AND a.extension = 'com_mymuse' "
-		.' AND a.access IN ('.$groups.') '
-		." GROUP BY a.id "
-		." ORDER BY a.title DESC ";
-	
-		$db->setQuery( $query, 0, $limit );
-        $list2 = $db->loadObjectList();
+                //CASE WHEN CHAR_LENGTH(p.title) THEN CONCAT_WS(": ",a.title,p.title) ELSE a.title END AS title,
+                $query = 'SELECT DISTINCT a.id, a.parentid, 
+                CASE WHEN CHAR_LENGTH(p.title) THEN CONCAT_WS(": ",p.title,a.title) ELSE a.title END AS title,
 
-		if(count($list2)){
-			foreach($list2 as $key => $item)
-			{
-				$list2[$key]->href = RouteHelper::getCategoryRoute($item->catid);
-			}
-			$rows[] = $list2;
-		}
+                a.metakey,'
+                . ' a.catid, a.created AS created,'
+                . ' CONCAT(a.introtext, a.fulltext) AS text,'
+                . " CONCAT(".$db->Quote($section).",' : ', c.title) AS section,"
+                . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'
+                . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as catslug,'
+                . ' "2" AS browsernav'
+                . ' FROM #__mymuse_product AS a'
+                . ' LEFT JOIN #__mymuse_product as p ON a.parentid=p.id ';
+                if($searchArtists){
+                	//main category only
+                     $query .= " INNER JOIN #__categories AS c ON c.id=a.catid";
+                }else{
+                	// any category
+                	$query .= " INNER JOIN #__categories AS c ON c.id=a.catid";
+                    $query .= ' LEFT JOIN #__mymuse_product_category_xref AS x ON x.product_id=a.id'
+                    . " LEFT JOIN #__categories AS cc ON c.id=x.catid";
+                }
+
+                 
+                $query .=  ' WHERE ( '.$where.' )';
+                if(!$searchItems){
+                	$query .= " AND parentid = '0'";
+                }
+                
+                // Filter by language
+                if ($app->isClient('site') && $app->getLanguageFilter()) {
+                	$tag = JFactory::getLanguage()->getTag();
+                	$query .= ' AND a.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';
+                	$query .= ' AND c.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';
+                }
+                
+                $query .= ' AND a.state = 1 AND a.track_parentid = 0  '
+                . ' AND c.published = 1'
+                . ' AND a.access IN ('.$groups.') '
+                . ' AND ( a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' OR a.publish_up IS NULL )'
+                . ' AND ( a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' OR a.publish_down IS NULL  )'
+                . ' GROUP BY a.id'
+                . ' ORDER BY '. $order
+                ;
+
+                $db->setQuery( $query, 0, $limit );
+                $list = $db->loadObjectList();
+                $limit -= count($list);
+
+                if(count($list))
+                {
+                    foreach($list as $key => $item)
+                    {
+                        if($item->parentid > 0){
+                            $id = $item->parentid;
+                        }else{
+                            $id = $item->id;
+                        }
+                        if($this->params->get('link_categories_only')){
+                        	$list[$key]->href = RouteHelper::getCategoryRoute($item->catid);
+                        }else{
+                        	$list[$key]->href = RouteHelper::getProductRoute( $id, $item->catid );
+                        }
+                        
+                    }
+                    $rows[] = $list;
+                }
+                
+            }
+        }
+        if (!$areas || array_intersect( $areas, ['categories','mymuse'] ) ) {
+        
+            $section = Text::_("MYMUSE_CATEGORY");
+            //What about the categories
+            $query = 'SELECT a.title, a.description AS text, "" AS created, "'.$section.'" as section, "2" AS browsernav, a.id AS catid,  '
+            ." CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(':', a.id, a.alias) ELSE a.id END as slug "
+            ." FROM #__categories AS a "
+    		." WHERE (a.title LIKE ".$db->Quote('%'.$text.'%')." OR a.description LIKE ".$db->Quote('%'.$text.'%').") "
+    		.' AND a.published IN (1) '
+    		." AND a.extension = 'com_mymuse' "
+    		.' AND a.access IN ('.$groups.') '
+    		." GROUP BY a.id "
+    		." ORDER BY a.title DESC ";
+    
+    		$db->setQuery( $query, 0, $limit );
+            $list2 = $db->loadObjectList();
+
+    		if(count($list2)){
+    			foreach($list2 as $key => $item)
+    			{
+    				$list2[$key]->href = RouteHelper::getCategoryRoute($item->catid);
+    			}
+    			$rows[] = $list2;
+    		}
+        }
 
         $results = array();
-        if(count($rows))
+        if(is_countable($rows) && count($rows))
         {
             foreach($rows as $row)
             {

@@ -66,9 +66,9 @@ class CategorytreeField extends ListField
 		$this->value = array();
 		if($id){
 			$db = Factory::getDBO();
-			$query = 'SELECT id' .
-			' FROM #__categories' .
-			' WHERE extension = "com_mymuse" ';
+			$query = 'SELECT catid as id ' .
+			' FROM #__mymuse_product_category_xref' .
+			' WHERE product_id = '. $id .' ';
 			$db->setQuery($query);
 
 			$cats = $db->loadObjectList();

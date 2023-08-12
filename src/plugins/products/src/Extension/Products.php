@@ -157,6 +157,7 @@ final class Products extends Adapter
      */
     public function onFinderAfterSave($context, $row, $isNew): void
     {
+
         // We only want to handle articles here.
         if ($context === 'com_mymuse.product' || $context === 'com_mymuse.form') {
             // Check if the access levels are different.
@@ -227,7 +228,7 @@ final class Products extends Adapter
      */
     public function onFinderChangeState($context, $pks, $value)
     {
-        // We only want to handle articles here.
+        // We only want to handle products here.
         if ($context === 'com_mymuse.product' || $context === 'com_mymuse.form') {
             $this->itemStateChange($pks, $value);
         }
@@ -350,7 +351,8 @@ final class Products extends Adapter
 
         // Check if we can use the supplied SQL query.
         $query = $query instanceof DatabaseQuery ? $query : $db->getQuery(true)
-            ->select('a.id, a.title, a.alias, a.introtext AS summary, a.fulltext AS body')
+            ->select(' CASE WHEN a.track_parentid > 0 THEN a.track_parentid ELSE a.id END as id ')
+            ->select('a.title, a.alias, a.introtext AS summary, a.fulltext AS body')
             ->select('a.list_image')
             ->select('a.state, a.catid, a.created AS start_date, a.created_by')
             ->select('a.created_by_alias, a.modified, a.modified_by, a.attribs AS params')
@@ -378,9 +380,10 @@ final class Products extends Adapter
         $query->select($case_when_category_alias)
 
             ->select('u.name AS author')
-            ->from('#__content AS a')
+            ->from('#__mymuse_product AS a')
             ->join('LEFT', '#__categories AS c ON c.id = a.catid')
             ->join('LEFT', '#__users AS u ON u.id = a.created_by');
+           
 
         return $query;
     }

@@ -95,7 +95,6 @@
 		<language tag="en-GB">en-GB/com_mymuse.ini</language>
 	</languages>
 
-
 	<!-- Plugins -->
 	<plugins>
 		<plugin name="audio_amplitude" folder="plugins/audio_amplitude">MyMuse Audio Amplitude</plugin>
@@ -112,6 +111,7 @@
 		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Login Plugin</plugin>
 		<plugin name="payment_stripeideal" folder="plugins/payment_stripeideal">Payment StripeIdeal</plugin>
 		<plugin name="mymuse_installer" folder="plugins/mymuse_installer">Mymuse Installer</plugin>
+		<plugin name="products" folder="plugins/products">Finder Products</plugin>
 	</plugins>
 	<modules>
 		<module name="mod_mymuse_minicart" folder="modules/mod_mymuse_minicart" client="site">Mod MyMuse Minicart</module>

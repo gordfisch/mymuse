@@ -17,7 +17,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Finder\Content\Extension\Content;
+use Joomla\Plugin\Finder\Products\Extension\Products;
 
 return new class () implements ServiceProviderInterface {
     /**
