@@ -685,7 +685,8 @@ class Com_MymuseInstallerScript
                 element='shipping_standard' OR
                 element='audio_amplitude' OR
                 element='searchmymuse' OR
-                element='mymuseuser'
+                element='mymuseuser' OR
+                element='products'
                 ";
             $this->db->setQuery($query);
             if(!$this->db->execute()){
