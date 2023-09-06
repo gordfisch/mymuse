@@ -155,7 +155,8 @@ $htag    = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         <?php if ((int) $this->params->get('num_columns') > 1) : ?>
             <?php $blogClass .= (int) $this->params->get('multi_column_order', 0) === 0 ? ' masonry-' : ' columns-'; ?>
             <?php $blogClass .= (int) $this->params->get('num_columns'); ?>
-            <?php $blogItemClass = "uk-width-1-".(int) $this->params->get('num_columns')."@m"; ?>
+            <?php $blogItemClass = " uk-width-1-".(int) $this->params->get('num_columns')."@m"; ?>
+            <?php $blogItemClass .= " uk-width-1-2@s"; ?>
         <?php endif; ?>
         <div class="com-mymuse-category-blog__items blog-items <?php echo $blogClass; ?> uk-grid">
         <?php foreach ($this->intro_items as $key => &$item) : ?>

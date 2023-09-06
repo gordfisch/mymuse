@@ -94,6 +94,7 @@ class HtmlView extends BaseHtmlView
 	{
 
 		$this->input 	= Factory::getApplication()->input;
+		//MymuseHelper::print_pre($this->input);
 		$this->params 	= MyMuseHelper::getParams();
 		/** @var MymuseModel $model */
 		$model       	= $this->getModel();

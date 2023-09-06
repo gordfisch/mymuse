@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_mymuse
  *
- * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2023 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -25,7 +25,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\Component\Content\Administrator\Helper\ContentHelper;
 use Joomla\Utilities\ArrayHelper;
 
-HtmlHelper::_('behavior.multiselect');
+HTMLHelper::_('behavior.multiselect');
 
 $app       = Factory::getApplication();
 $user      = Factory::getUser();

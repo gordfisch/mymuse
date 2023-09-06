@@ -315,7 +315,7 @@ class CheckoutHelper
 		$order->reservation_fee 	= $this->cart_order->reservation_fee;
 		$order->non_res_total		= $this->cart_order->non_res_total;
 		$order->pay_now				= $this->cart_order->must_pay_now;
-		$order->extra 				= @$this->cart['extra'];
+		$order->extra 				= isset($this->cart['extra'])? $this->cart['extra'] : '';
 		
 
 		//save the order number in the session

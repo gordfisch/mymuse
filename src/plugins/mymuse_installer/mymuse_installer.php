@@ -30,8 +30,12 @@ class plgInstallerMymuse_installer extends CMSPlugin
 		{
 			return true;
 		}
+		// See if has been set in Joomla already
+		$downloadId = (string) $uri->getVar('dlid');
+		if(!$downloadId){
+			$downloadId = $this->params->get('download_id');
+		}
 
-		$downloadId = $this->params->get('download_id');
 
 		// Append the Download ID to the download URL
 		if (!empty($downloadId))

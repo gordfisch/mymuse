@@ -216,7 +216,7 @@ class ProductsModel extends ListModel
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$params      = $this->getState('params');
+		$params = $this->getState('params');
 
 		$conditionArchived    = MymuseComponent::CONDITION_ARCHIVED;
         $conditionUnpublished = MymuseComponent::CONDITION_UNPUBLISHED;
@@ -527,7 +527,7 @@ class ProductsModel extends ListModel
 		    $query->order($db->escape($orderCol));
 		}
 
- 		//echo $db->replacePrefix(($query->__toString())); //exit;
+ 		//echo $db->replacePrefix(($query->__toString()));
 		return $query;
 	}
 
@@ -547,6 +547,7 @@ class ProductsModel extends ListModel
 		if(!is_countable($items)){
 			return array();
 		}
+
 		$user   = Factory::getUser();
 		$userId = $user->get('id');
 		$guest  = $user->get('guest');
@@ -687,6 +688,7 @@ class ProductsModel extends ListModel
 
 			//echo "list -image ".$item->list_image."<br />";
 		}
+
 
 		return $items;
 

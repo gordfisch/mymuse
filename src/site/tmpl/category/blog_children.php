@@ -42,6 +42,17 @@ endif;
 
             ?>
             <div class="com-content-category-blog__child uk-width-1-<?php echo $cols; ?>@m uk-margin">
+
+                <?php if ($this->params->get('show_subcat_image') == 1 && $child->getParams()->get('image')) :?>
+                <div class="list-image"><a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($child->id));?>">
+                    <img src="<?php echo $child->getParams()->get('image'); ?>"
+                    <?php if ($this->params->get('category_image_height')) : ?>
+                        height="<?php echo $this->params->get('category_image_height'); ?>"
+                    <?php endif; ?> /></a>
+                </div>
+                
+                <?php endif; ?>
+
                 <?php if ($lang->isRtl()) : ?>
                 <h3 class="page-header item-title">
                     <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
@@ -58,33 +69,26 @@ endif;
                 </h3>
 
                 <?php else : ?>
+                <div class="feature-title">
+                    <h3 class="page-header item-title"><a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id, $child->language)); ?>">
+                        <?php echo $this->escape($child->title); ?></a>
+                        <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
+                            <span class="badge bg-info">
+                                <?php echo Text::_('COM_MYMUSE_NUM_ITEMS'); ?>&nbsp;
+                                <?php echo $child->getNumItems(true); ?>
+                            </span>
+                        <?php endif; ?>
 
-                <h3 class="page-header item-title"><a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id, $child->language)); ?>">
-                    <?php echo $this->escape($child->title); ?></a>
-                    <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
-                        <span class="badge bg-info">
-                            <?php echo Text::_('COM_MYMUSE_NUM_ITEMS'); ?>&nbsp;
-                            <?php echo $child->getNumItems(true); ?>
-                        </span>
-                    <?php endif; ?>
-
-                    <?php if ($this->maxLevel > 1 && count($child->getChildren()) > 0) : ?>
-                        <a href="#category-<?php echo $child->id; ?>" data-bs-toggle="collapse" class="btn btn-sm float-end" aria-label="<?php echo Text::_('JGLOBAL_EXPAND_CATEGORIES'); ?>"><span class="icon-plus" aria-hidden="true"></span></a>
-                    <?php endif; ?>
-                </h3>
-                <?php endif; ?>
-
-                <?php 
-
-                if ($this->params->get('show_subcat_image') == 1 && $child->getParams()->get('image')) :?>
-                <div class="subcat-image"><a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($child->id));?>">
-                    <img src="<?php echo $child->getParams()->get('image'); ?>"
-                    <?php if ($this->params->get('category_image_height')) : ?>
-                        height="<?php echo $this->params->get('category_image_height'); ?>"
-                    <?php endif; ?> /></a>
+                        <?php if ($this->maxLevel > 1 && count($child->getChildren()) > 0) : ?>
+                            <a href="#category-<?php echo $child->id; ?>" data-bs-toggle="collapse" class="btn btn-sm float-end" aria-label="<?php echo Text::_('JGLOBAL_EXPAND_CATEGORIES'); ?>"><span class="icon-plus" aria-hidden="true"></span></a>
+                        <?php endif; ?>
+                    </h3>
                 </div>
-                
                 <?php endif; ?>
+
+ 
+
+                
 
                 <?php if ($this->params->get('show_subcat_desc') == 1) : ?>
                     <?php if ($child->description) : ?>

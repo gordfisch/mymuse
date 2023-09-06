@@ -39,6 +39,10 @@
                 <include name="**" />
         </fileset>
 
+        <fileset dir="./modules/mod_mymuse_latest" id="mod_latest_files">
+                <include name="**" />
+        </fileset>
+
         <fileset dir="./tests" id="test_files">
                 <include name="**" />
         </fileset>
@@ -86,7 +90,6 @@
                         todir="${joomladir}/administrator/language/en-GB" /> 
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.sys.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
-
 
                 <copy file="${src}/plugins/products/language/en-GB/plg_finder_products.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
@@ -192,6 +195,7 @@
                             todir="${joomladir}/plugins/finder/products/services" />
                  <copy file="${src}/plugins/products/src/Extension/Products.php"
                             todir="${joomladir}/plugins/finder/products/src/Extension" />
+
  
 
                 <!--  modules -->
@@ -202,5 +206,14 @@
                 <copy todir="${joomladir}/modules/mod_mymuse_amplitude">
                         <fileset refid="mod_amplitude_files" />
                 </copy>
+
+                <copy todir="${joomladir}/modules/mod_mymuse_latest">
+                        <fileset refid="mod_latest_files" />
+                </copy>
+
+                <copy file="${src}/modules/mod_mymuse_latest/language/en-GB/mod_mymuse_latest.ini"
+                        todir="${joomladir}/language/en-GB" />
+                <copy file="${src}/modules/mod_mymuse_latest/language/en-GB/mod_mymuse_latest.sys.ini"
+                        todir="${joomladir}/language/en-GB" />
         </target>
 </project>

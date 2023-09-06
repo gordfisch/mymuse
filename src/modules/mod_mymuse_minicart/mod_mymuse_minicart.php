@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
@@ -31,7 +32,7 @@ $MyMuseCart 	=& Mymuse::getObject('Cart','helper');
 $cart 			=& $MyMuseCart->cart;
 $order 			= $MyMuseCart->buildOrder( 0 );
 $params			= MyMuseHelper::getParams();
-$jinput 		= JFactory::getApplication()->input;
+$jinput 		= Factory::getApplication()->input;
 $Itemid			= $jinput->get("Itemid", "", "string");
 $checkoutUrl 	= 'index.php?option=com_mymuse&task=checkout&Itemid='.$Itemid;
 
@@ -39,9 +40,9 @@ if(!$params->get('my_disable_css',0)){
 	// add css
 	$style = Uri::root().'components/com_mymuse/assets/css/mymuse.css';
 
-	$Doc = JFactory::getDocument();
+	$Doc = Factory::getDocument();
 	$Doc->addStyleSheet( $style );
 
 }
 
-require(JModuleHelper::getLayoutPath('mod_mymuse_minicart'));
+require(ModuleHelper::getLayoutPath('mod_mymuse_minicart'));

@@ -41,16 +41,16 @@
 	 			
 	 </field>
 <field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
-		<field name="discount_minimum_1" type="text" size="20" default="5" label="MYMUSE_DISCOUNT_MIMIMUM_1_LABEL" description="MYMUSE_DISCOUNT_MIMIMUM_1_DESC"/>
-		<field name="discount_1" type="text" size="20" default="10.00" label="MYMUSE_DISCOUNT_AMOUNT_1_LABEL" description="MYMUSE_DISCOUNT_AMOUNT_1_DESC"/>
+		<field name="discount_minimum_1" type="text" size="20" default="" label="MYMUSE_DISCOUNT_MIMIMUM_1_LABEL" description="MYMUSE_DISCOUNT_MIMIMUM_1_DESC"/>
+		<field name="discount_1" type="text" size="20" default="" label="MYMUSE_DISCOUNT_AMOUNT_1_LABEL" description="MYMUSE_DISCOUNT_AMOUNT_1_DESC"/>
 
 <field name="@spacer11" type="spacer" default="" label="" description="" />
-		<field name="discount_minimum_2" type="text" size="20" default="10" label="MYMUSE_DISCOUNT_MIMIMUM_2_LABEL" description="MYMUSE_DISCOUNT_MIMIMUM_1_DESC"/>
-		<field name="discount_2" type="text" size="20" default="25.00" label="MYMUSE_DISCOUNT_AMOUNT_2_LABEL" description="MYMUSE_DISCOUNT_AMOUNT_1_DESC"/>
+		<field name="discount_minimum_2" type="text" size="20" default="" label="MYMUSE_DISCOUNT_MIMIMUM_2_LABEL" description="MYMUSE_DISCOUNT_MIMIMUM_1_DESC"/>
+		<field name="discount_2" type="text" size="20" default="" label="MYMUSE_DISCOUNT_AMOUNT_2_LABEL" description="MYMUSE_DISCOUNT_AMOUNT_1_DESC"/>
 
 <field name="@spacer12" type="spacer" default="" label="" description="" />
-		<field name="discount_minimum_3" type="text" size="20" default="20" label="MYMUSE_DISCOUNT_MIMIMUM_3_LABEL" description="MYMUSE_DISCOUNT_MIMIMUM_1_DESC"/>
-		<field name="discount_3" type="text" size="20" default="75.00" label="MYMUSE_DISCOUNT_AMOUNT_3_LABEL" description="MYMUSE_DISCOUNT_AMOUNT_1_DESC"/>
+		<field name="discount_minimum_3" type="text" size="20" default="" label="MYMUSE_DISCOUNT_MIMIMUM_3_LABEL" description="MYMUSE_DISCOUNT_MIMIMUM_1_DESC"/>
+		<field name="discount_3" type="text" size="20" default="" label="MYMUSE_DISCOUNT_AMOUNT_3_LABEL" description="MYMUSE_DISCOUNT_AMOUNT_1_DESC"/>
 
 <field name="@spacer13" type="spacer" default="" label="" description="" />
 		<field name="discount_minimum_4" type="text" size="20" default="" label="MYMUSE_DISCOUNT_MIMIMUM_4_LABEL" description="MYMUSE_DISCOUNT_MIMIMUM_1_DESC"/>

@@ -16,7 +16,7 @@ echo $SUBVER
 echo -n "JVER = "
 echo $JVER
 
-version=5.1.4-$JVER-$SUBVER
+version=5.2.0-$JVER-$SUBVER
 
 cd src
 rm ../releases/com_mymuse-$version.zip
@@ -30,6 +30,7 @@ cp ../releases/com_mymuse-$version.zip ../joomla-cms/tests/Codeception/_data/com
 
 cd plugins
 zip -r  ../../releases/plugins/storage_s3.zip storage_s3
+zip -r  ../../releases/plugins/shipping_usps.zip shipping_usps
 
 echo -n "Look in releases "
 echo -n "NEW VERSION =  "

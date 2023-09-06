@@ -97,9 +97,17 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     }
 
     public function onGetPlaylist($load_js = true){
-        $arr = $this->getPlaylist();
+        $arr = $this->getPlaylist($load_js);
         return $arr[2];
     }
+
+    public function onGetFullPlaylist($load_js = true){
+        $arr = $this->getPlaylist($load_js);
+        return $arr;
+    }
+
+
+
     /**
      * getPlaylist
      * Gets playlist for amplitute player and creates two arrays to do indexing and printing
@@ -108,11 +116,12 @@ class plgMymuseAudio_amplitude extends CMSPlugin
      * @return array
      */
     public function getPlaylist($load_js = true){
+
         if(!$this->_playlist){
 
    
-            $db      = Factory::getDBO();
-            $mycategories           = $this->params->get('mycategories', array());
+            $db             = Factory::getDBO();
+            $mycategories   = $this->params->get('mycategories', array());
 
             foreach($mycategories as $key => $val){
                 $alias = '';
@@ -131,7 +140,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
                     }
                 }
             }
-            //MymuseHelper::print_pre($this->catalogs);
+
             $preview_path   = $this->mparams->get('my_preview_dir', Uri::root().'media/com_mymuse/previews/');
             $playlist_path  = $this->params->get('playlist_path', Uri::root().'media/com_mymuse/playlists/');
             $site_url       = rtrim( Uri::root(), '/');
@@ -159,7 +168,6 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             if(!$filename){
                 $filename = "catalog.js";
             }
-
             $path = JPATH_ROOT . $playlist_path . $filename;
             $js_path = $site_url . $playlist_path . $filename;
             if (! file_exists ( $path )) {

@@ -125,13 +125,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 		$this->typeAlias = 'com_mymuse.product';
 		$this->setColumnAlias('published', 'state');
         $this->storage = new MymuseStorage();
-        /*
 
-        
-        $this->$_product_data		= Table::getInstance('Productdata', 'MymuseTable', array());
-        $this->$_product_physical	= Table::getInstance('Productphysical', 'MymuseTable', array());
-        $this->$_product_digital	= Table::getInstance('Productdigital', 'MymuseTable', array());
-        */
 		parent::__construct('#__mymuse_product', 'id', $db);
 
 		$this->storage 		= $GLOBALS['mymuseStorage'];
@@ -610,6 +604,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 			if(isset($res[0])){
 				$app->enqueueMessage($res[0], 'Notice');
 			}
+			$this->checkin($this->id);
 			return true;
 		} //if subtype = file
 
@@ -672,6 +667,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 				if(isset($res[0])){
 					$app->enqueueMessage($res[0], 'Notice');
 				}
+				$this->checkin($this->id);
 				return true;
 
 			}else{
@@ -769,6 +765,7 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 				if(isset($res[0])){
 					$app->enqueueMessage($res[0], 'Notice');
 				}
+				$this->checkin($this->id);
 				return true;
 			}
 			

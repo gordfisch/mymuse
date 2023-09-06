@@ -216,7 +216,7 @@ endfor;
 			|| count($order->tax_array) > 0) : ?>
 			<!--  original subtotal -->
 				<li class="item-container summary cols-<?php echo $cols; ?>">
-			    	<div class="cart mymuse-mobile-hide"><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?></div>
+			    	<div class="cart"><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?></div>
 			    	<div></div><div></div>
 			        <div class="myoriginalsubtotal cart" data-name="<?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?>">
 			        	<span id="subtotal_before_discount">
@@ -230,7 +230,7 @@ endfor;
 			<?php //for shopper group discount 
 			if($order->shopper_group_discount > 0.00): ?>
 			    <li class="item-container summary cols-<?php echo $cols; ?>">
-			    	<div class="cart mymuse-mobile-hide" ><?php echo Text::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
+			    	<div class="cart" ><?php echo Text::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
 			    	<?php echo $order->shopper_group_name; ?> <?php echo $user->shopper_group->discount; ?> %</div>
 			    	<div></div><div></div>
 			        <div class="myshoppergroupdiscount cart" data-name="<?php echo Text::_('COM_MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>">
@@ -244,7 +244,7 @@ endfor;
 			<?php //for regular discount
 			if($order->discount > 0.00): ?>
 			    <li class="item-container summary cols-<?php echo $cols; ?>">
-			    	<div class="cart mymuse-mobile-hide" ><?php echo Text::_('COM_MYMUSE_DISCOUNT'); ?>
+			    	<div class="cart" ><?php echo Text::_('COM_MYMUSE_DISCOUNT'); ?>
 			    	</div>
 			    	<div></div><div></div>
 			        <div class="mydiscount cart" data-name="<?php echo Text::_('COM_MYMUSE_SHOPPING_DISCOUNT'); ?>">
@@ -259,7 +259,7 @@ endfor;
 			<?php //COUPONS
 			if($params->get("my_use_coupons") && @$order->coupon->id): ?>
 			    <li class="item-container summary cols-<?php echo $cols; ?>">
-			    	<div class="cart mymuse-mobile-hide" ><?php echo Text::_('COM_MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></div>
+			    	<div class="cart" ><?php echo Text::_('COM_MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></div>
 			    	<div></div><div></div>
 
 			        <div class="mycoupon cart" data-name="<?php echo Text::_('COM_MYMUSE_YOUR_COUPON'); ?>">
@@ -278,7 +278,7 @@ endfor;
 			    	$key = preg_replace("/_/"," ", $key);
 			    	?>
 			        <li class="item-container summary cols-<?php echo $cols; ?>">
-			        	<div class="cart mymuse-mobile-hide" ><?php echo Text::_('COM_MYMUSE_TAX'); ?> <?php echo $key; ?></div>
+			        	<div class="cart" ><?php echo Text::_('COM_MYMUSE_TAX'); ?> <?php echo $key; ?></div>
 			        	<div></div><div></div>
 			        	<div class="mytax cart" data-name="<?php echo $key; ?>">
 			        		<span id="tax<?php echo strtolower($pre_key); ?>"><?php echo MyMuseHelper::printMoney($val); ?>

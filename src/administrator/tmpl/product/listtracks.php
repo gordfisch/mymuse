@@ -1,10 +1,10 @@
 <?php
 /**
- * @version     $$
- * @package     com_mymuse3
- * @copyright   Copyright (C) 2011. All rights reserved.
+ * @package     Joomla.Administrator
+ * @subpackage  com_mymuse
+ *
+ * @copyright   Copyright (C) 2023 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Gord Fisch arboreta.ca
  */
 
 
@@ -40,7 +40,7 @@ $lists 	   = $this->lists;
 
 if ($saveOrder && !empty($this->tracks)) :
 
-	$saveOrderingUrl = 'index.php?option=com_mymuse&task=products.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+	$saveOrderingUrl = 'index.php?option=com_mymuse&task=product.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
 	HTMLHelper::_('draggablelist.draggable');
 endif ;
 
@@ -62,7 +62,18 @@ $this->vote 		= false;
 
 
 <h2><?php echo Text::_( 'COM_MYMUSE_TRACKS' ); ?></h2>
-
+<div class="control-group">
+				<div class="control-label"><?php echo Text::_( 'COM_MYMUSE_DOWNLOAD_PATH' ); ?>
+				</div>
+				<div class="controls"><?php echo $lists['download_dir']; ?>
+				</div>
+			</div>
+<div class="control-group">
+				<div class="control-label"><?php echo Text::_( 'COM_MYMUSE_PREVIEW_PATH' ); ?>
+				</div>
+				<div class="controls"><?php echo $lists['preview_dir']; ?>
+				</div>
+			</div>
 
 <form action="<?php echo Route::_('index.php?option=com_mymuse&view=product&layout=listtracks'); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="row">
@@ -89,18 +100,7 @@ $this->vote 		= false;
 				</div>
 				<div id="jp-title-li"></div>
 
-<div class="control-group">
-				<div class="control-label"><?php echo Text::_( 'COM_MYMUSE_DOWNLOAD_PATH' ); ?>
-				</div>
-				<div class="controls"><?php echo $lists['download_dir']; ?>
-				</div>
-			</div>
-<div class="control-group">
-				<div class="control-label"><?php echo Text::_( 'COM_MYMUSE_PREVIEW_PATH' ); ?>
-				</div>
-				<div class="controls"><?php echo $lists['preview_dir']; ?>
-				</div>
-			</div>
+
 
 				<table class="table itemList" id="trackList">
 					<caption id="captionTable" class="sr-only">
@@ -175,9 +175,9 @@ $this->vote 		= false;
 					<tbody <?php if ($saveOrder) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
 					<?php
 					$k = 0;
-					$config = JFactory::getConfig();
+					$config = Factory::getConfig();
 				    $tzoffset = $config->get('config.offset');
-				    $now = JFactory::getDate();
+				    $now = Factory::getDate();
 					for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
 					{
 						$track = &$this->tracks[$i];

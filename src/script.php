@@ -135,6 +135,8 @@ class Com_MymuseInstallerScript
      */
     public function preflight($type, $parent): bool
     {
+        $session  = Factory::getSession();
+        $session->set('com_mymuse.convertTo4', false);
 
 
         if ($type !== 'uninstall')
@@ -312,6 +314,84 @@ class Com_MymuseInstallerScript
                 Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
                 return false;
             }
+
+
+
+
+            //add this in preflight
+            $query = "SHOW COLUMNS FROM #__mymuse_format LIKE 'id'";
+            $this->db->setQuery($query);
+            try 
+            {
+                $this->db->loadObject();
+            }
+            catch (\Exception $e)
+            {
+                $query = "
+                    CREATE TABLE `#__mymuse_format` (
+                      `id` int NOT NULL,
+                      `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                      `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                      `ordering` int NOT NULL DEFAULT '0'
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+                $this->db->setQuery($query);
+                try
+                {
+                    $this->db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                    return false;
+                }
+
+                $query = "ALTER TABLE `#__mymuse_format`
+                    ADD PRIMARY KEY (`id`);";
+                    $this->db->setQuery($query);
+                try
+                {
+                    $this->db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                    return false;
+                }
+
+                $query = "ALTER TABLE `#__mymuse_format`
+                    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;";
+                    $this->db->setQuery($query);
+                try
+                {
+                    $this->db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                    return false;
+                }
+
+
+                $query = "INSERT INTO `#__mymuse_format` (`id`, `format_key`, `format_value`, `ordering`) VALUES
+                    (1, 'MP3', 'mp3', 1),
+                    (2, 'WAV', 'wav', 2);
+                    ";
+                $this->db->setQuery($query);
+                try
+                {
+                    $this->db->execute();
+                }
+                catch (\Exception $e)
+                {
+                    Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                    return false;
+                }
+            }
+
+
+
+
+
             $this->convert_actions [] = array (
                         'name' => "Removing old Update Sites: ",
                         'message' => "",
@@ -561,12 +641,38 @@ class Com_MymuseInstallerScript
         {
             $query = "
                 CREATE TABLE `#__mymuse_format` (
-                  `id` int NOT NULL AUTO_INCREMENT,
+                  `id` int NOT NULL,
                   `format_key` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                   `format_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                   `ordering` int NOT NULL DEFAULT '0'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
             $this->db->setQuery($query);
+            try
+            {
+                $this->db->execute();
+            }
+            catch (\Exception $e)
+            {
+                Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                return false;
+            }
+
+            $query = "ALTER TABLE `#__mymuse_format`
+                ADD PRIMARY KEY (`id`);";
+                $this->db->setQuery($query);
+            try
+            {
+                $this->db->execute();
+            }
+            catch (\Exception $e)
+            {
+                Factory::getApplication()->enqueueMessage($e->getMessage(). ' '.$query, 'error');
+                return false;
+            }
+
+            $query = "ALTER TABLE `#__mymuse_format`
+                MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;";
+                $this->db->setQuery($query);
             try
             {
                 $this->db->execute();
@@ -625,7 +731,7 @@ class Com_MymuseInstallerScript
         }
 
         
-        /*echo Text::_('COM_MYMUSE_INSTALLERSCRIPT_POSTFLIGHT');*/
+        //echo Text::_('COM_MYMUSE_INSTALLERSCRIPT_POSTFLIGHT');
         $app = Factory::getApplication();
         $manifest = $parent->getManifest();
 
@@ -951,7 +1057,7 @@ END;
                         </ol></td>
                 </tr>
             </table>
-
+            <h2>TYPE: <?php echo $type ?></h2>
             <h3><?php echo Text::_('Additional Extensions'); ?></h3>
             <table class="adminlist">
                 <thead>

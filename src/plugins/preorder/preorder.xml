@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="mymuse">
+	<name>plg_mymuse_preorder</name>
+	<author>Arboreta</author>
+	<creationDate>June 2023</creationDate>
+	<copyright>Copyright (C) 2023 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>5.0.0</version>
+	<description>COM_MYMUSE_PREORDER_DESC</description>
+	
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_preorder.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_preorder.sys.ini</language>
+	</languages>
+	
+	<files>
+		<filename plugin="preorder">preorder.php</filename>
+	</files>
+    
+    <config>
+	<fields  name="params">
+		<fieldset name="basic">
+        <field name="which_min" type="list" default="1" label="COM_MYMUSE_WHICH_MINIMUM" description="COM_MYMUSE_WHICH_MINIMUM_DESC">
+			<option value="price">COM_MYMUSE_PRICE</option>
+			<option value="number">COM_MYMUSE_NUMBER</option>
+		</field>
+        <field name="my_min" type="text"  size="4" default="" label="COM_MYMUSE_PREORDER_MIN_LABEL" description="COM_MYMUSE_PREORDER_MIN_DESC"/>
+        <field name="my_msg" type="textarea"  rows="2" cols="35" default="" label="COM_MYMUSE_PREORDER_MSG_LABEL" description="COM_MYMUSE_PREORDER_MSG_DESC"/>
+    </fieldset>
+	</fields>
+	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Payment PayPal">https://www.joomlamymuse.com/media/com_mymuse/mymuse-updates-preorder.xml</server>
+</updateservers>
+</extension>

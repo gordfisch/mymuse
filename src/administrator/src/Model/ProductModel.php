@@ -310,21 +310,21 @@ class ProductModel extends AdminModel
 	}
 
 
-	/**
-	 * A protected method to get a set of ordering conditions.
-	 *
-	 * @param   Table  $table  A record object.
-	 *
-	 * @return  array  An array of conditions to add to ordering queries.
-	 *
-	 * @since   1.6
-	 */
-	protected function getReorderConditions($table)
-	{
-		return [
-			$this->_db->quoteName('published') . ' >= 0',
-		];
-	}
+    /**
+     * A protected method to get a set of ordering conditions.
+     *
+     * @param   object  $table  A record object.
+     *
+     * @return  array  An array of conditions to add to ordering queries.
+     *
+     * @since   1.6
+     */
+    protected function getReorderConditions($table)
+    {
+        return [
+            $this->getDatabase()->quoteName('catid') . ' = ' . (int) $table->catid,
+        ];
+    }
 
 	/**
 	 * Prepare and sanitise the table data prior to saving.
@@ -496,7 +496,7 @@ class ProductModel extends AdminModel
 	      	$form->removeField('author_id', 'filter');
 	      	$this->filterForm = $form;
 
-				$model->setState('filter.published', $this->getState('filter.published'));
+			$model->setState('filter.published', $this->getState('filter.published'));
 	   		$model->setState('filter.access', $this->getState('filter.access'));
 	   		$model->setState('filter.language', $this->getState('filter.language'));
 	   		$model->setState('list.ordering', $this->getState('item.ordering'));

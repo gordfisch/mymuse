@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_mymuse
  *
- * @copyright   (C) 2006 Open Source Matters, Inc. <https://www.joomla.org>
+ * @copyright   Copyright (C) 2023 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -1216,7 +1216,10 @@ class ProductModel extends ItemModel
 	
 					$price_info [$format]["product_price"] = $product->attribs->get ( $key );
 					$product_price = $price_info [$format]["product_price"];
-					$price_info[$format]["product_original_price"] = round ( $price_info [$format]["product_price"], 2);
+					if(!$product_price){
+						$product_price = 0;
+					}
+					$price_info[$format]["product_original_price"] = round ( $product_price , 2);
 			
 					$price_info [$format]["product_shoppergroup_discount"] = $shoppergroup_discount;
 					$price_info [$format]["product_shoppergroup_discount_amount"] = $product_price * $shoppergroup_discount / 100;

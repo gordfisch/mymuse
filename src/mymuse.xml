@@ -8,7 +8,7 @@
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.com</authorUrl>
-	<version>5.1.4</version>
+	<version>5.2.0</version>
 
 	<description>COM_MYMUSE_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Mymuse</namespace>
@@ -116,6 +116,7 @@
 	<modules>
 		<module name="mod_mymuse_minicart" folder="modules/mod_mymuse_minicart" client="site">Mod MyMuse Minicart</module>
 		<module name="mod_mymuse_amplitude" folder="modules/mod_mymuse_amplitude" client="site">Mod MyMuse Amplitude</module>
+		<module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>
 	</modules>
 
 

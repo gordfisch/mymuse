@@ -93,6 +93,7 @@ class ProductController extends FormController
         $this->registerTask( 'additem', 'edititem' );
         $this->registerTask( 'applyitem', 'saveitem' );
         $this->registerTask( 'save2newitem', 'saveitem' );
+        $this->registerTask( 'cancel', 'cancelitem' );
         
         $this->registerTask( 'addfile', 'edititem' );
         $this->registerTask( 'editfile', 'edititem' );
@@ -116,7 +117,7 @@ class ProductController extends FormController
         $this->registerTask( 'deletevariation', 'saveitem' );
 
         $this->input       = Factory::getApplication()->input;
-        
+ 
         $type = $this->input->get('type');
         if(isset($type) && $type == "file"){
             $this->view_list = "product";
@@ -215,7 +216,7 @@ class ProductController extends FormController
                 return false;
             }
             $this->postSaveHook($model);
-                
+
             switch ($task )
             {
                 case 'apply_allfiles':
@@ -515,11 +516,16 @@ class ProductController extends FormController
     {
         // Checkin the item
         $model      = $this->getModel('product');
-        $model->checkin();
+        
 
         $this->input    = Factory::getApplication()->input;
+        $id             = $this->input->get('id');
         $parentid       = $this->input->get( 'parentid', '' );
-        $type           = $this->input->getr( 'type', '' );
+        $type           = $this->input->get( 'type', '' );
+        if($id){
+            $model->checkin($id);
+        }
+        
         $this->app->enqueueMessage(Text::_( 'COM_MYMUSE_ITEM_CANCELLED' ), 'notice');
 
         if($type == 'file'){

@@ -155,51 +155,17 @@ class DisplayController extends BaseController
 	function addEuroTax()
 	{
 		$msg = '';
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$tax_names = array('VAT__AT_','VAT__BE_','VAT__BG_','VAT__CY_','VAT__CZ_','VAT__HR_',
 		'VAT__DK_','VAT__EE_','VAT__FI_','VAT__FR_','VAT__DE_','VAT__GR_','VAT__HU_','VAT__IE_',
-		'VAT__IT_','VAT__LT_','VAT__LU_','VAT__MT_','VAT__NL_','VAT__PL_','VAT__PT_','VAT__RO_',
-		'VAT__SK_','VAT__SI_','VAT__ES_','VAT__SE_','VAT__GB_','VAT_Exempt');
+		'VAT__IT_','VAT__LV_','VAT__LT_','VAT__LU_','VAT__MT_','VAT__NL_','VAT__PL_','VAT__PT_','VAT__RO_',
+		'VAT__SK_','VAT__SI_','VAT__ES_','VAT__SE_','VAT_Exempt');
 		
-		
-		
-		
-		$query = "
-INSERT INTO `#__mymuse_tax_rate` ( `state`, `province`, `country`, `tax_rate`, `tax_applies_to`, `tax_name`, `tax_format`, `compounded`, `ordering`, `checked_out`, `checked_out_time`) VALUES
-(1, '', 'AUT', 0.2000, 'C', 'VAT (AT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'BEL', 0.2100, 'C', 'VAT (BE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'BGR', 0.2000, 'C', 'VAT (BG)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'CYP', 0.1900, 'C', 'VAT (CY)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'CZE', 0.2100, 'C', 'VAT (CZ)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'HRV', 0.2500, 'C', 'VAT (HR)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'DNK', 0.2500, 'C', 'VAT (DK)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'EST', 0.2000, 'C', 'VAT (EE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'FIN', 0.2400, 'C', 'VAT (FI)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'FRA', 0.2000, 'C', 'VAT (FR)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'DEU', 0.1900, 'C', 'VAT (DE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'GRC', 0.2300, 'C', 'VAT (GR)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'HUN', 0.2700, 'C', 'VAT (HU)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'IRL', 0.2300, 'C', 'VAT (IE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'ITA', 0.2200, 'C', 'VAT (IT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'LTU', 0.2100, 'C', 'VAT (LT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'LUX', 0.1700, 'C', 'VAT (LU)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'MLT', 0.1800, 'C', 'VAT (MT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'NLD', 0.2100, 'C', 'VAT (NL)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'POL', 0.2300, 'C', 'VAT (PL)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'PRT', 0.2300, 'C', 'VAT (PT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'ROM', 0.2400, 'C', 'VAT (RO)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'SVK', 0.2000, 'C', 'VAT (SK)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'SVN', 0.2200, 'C', 'VAT (SI)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'ESP', 0.2100, 'C', 'VAT (ES)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'SWE', 0.2500, 'C', 'VAT (SE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'GBR', 0.2000, 'C', 'VAT (GB)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
-(1, '', 'EUU', 0.0000, 'C', 'VAT Exempt', 'RATE', '0', 1, 0, '0000-00-00 00:00:00');
-	 		";
 		foreach($tax_names as $name){
-			$query = "ALTER TABLE `#__mymuse_order` ADD `$name` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00';";
+			$sub_query = "ALTER TABLE `#__mymuse_order` ADD `$name` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00';";
 	
-			$db->setQuery($query);
-			if($db->query()){
+			$db->setQuery($sub_query);
+			if($db->execute()){
 				$msg = "Added Euro Zone Taxes to Order Table. <br />";
 			}else{
 				$msg = "Error Adding Euro Zone Taxes to Order Table";
@@ -207,9 +173,45 @@ INSERT INTO `#__mymuse_tax_rate` ( `state`, `province`, `country`, `tax_rate`, `
 				return false;
 			}
 		}
+
+
+		$query = "
+INSERT INTO `#__mymuse_tax_rate` ( `province`, `country`, `tax_rate`, `tax_applies_to`, `tax_name`, `tax_format`, `compounded`, `ordering`, `checked_out`, `checked_out_time`) VALUES
+
+('', 'AUT', 0.2000, 'C', 'VAT (AT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'BEL', 0.2100, 'C', 'VAT (BE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'BGR', 0.2000, 'C', 'VAT (BG)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'CYP', 0.1900, 'C', 'VAT (CY)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'CZE', 0.2100, 'C', 'VAT (CZ)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'HRV', 0.2500, 'C', 'VAT (HR)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'DNK', 0.2500, 'C', 'VAT (DK)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'EST', 0.2000, 'C', 'VAT (EE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'FIN', 0.2400, 'C', 'VAT (FI)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'FRA', 0.2000, 'C', 'VAT (FR)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'DEU', 0.1900, 'C', 'VAT (DE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'GRC', 0.2400, 'C', 'VAT (GR)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'HUN', 0.2700, 'C', 'VAT (HU)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'IRL', 0.2300, 'C', 'VAT (IE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'ITA', 0.2200, 'C', 'VAT (IT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'LVA', 0.2100, 'C', 'VAT (LT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'LTU', 0.2100, 'C', 'VAT (LT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'LUX', 0.1600, 'C', 'VAT (LU)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'MLT', 0.1800, 'C', 'VAT (MT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'NLD', 0.2100, 'C', 'VAT (NL)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'NOR', 0.2500, 'C', 'VAT (NL)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'POL', 0.2300, 'C', 'VAT (PL)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'PRT', 0.2300, 'C', 'VAT (PT)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'ROM', 0.1900, 'C', 'VAT (RO)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'SVK', 0.2000, 'C', 'VAT (SK)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'SVN', 0.2200, 'C', 'VAT (SI)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'ESP', 0.2100, 'C', 'VAT (ES)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'SWE', 0.2500, 'C', 'VAT (SE)', 'RATE', '0', 1, 0, '0000-00-00 00:00:00'),
+('', 'EUU', 0.0000, 'C', 'VAT Exempt', 'RATE', '0', 1, 0, '0000-00-00 00:00:00');
+	 		";
+
 		
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$msg .= "Added Euro Zone Taxes to Tax Rate Table";
 		}else{
 			$msg .= "Error Adding Euro Zone Taxes to Tax Rate Table";

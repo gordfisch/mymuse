@@ -8,7 +8,7 @@
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
 	<version>1.0.0</version>
-	<description>PLG_PRODUCTS_XML_DESCRIPTION</description>
+	<description>PLG_FINDER_PRODUCTS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\Finder\Products</namespace>
 	<files>
 		<folder plugin="products">services</folder>
