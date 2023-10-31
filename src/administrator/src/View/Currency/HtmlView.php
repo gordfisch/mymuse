@@ -95,8 +95,6 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		$user       = Factory::getUser();
-		$userId     = $user->id;
 		$isNew      = ($this->item->id == 0);
 
 		$canDo = ContentHelper::getActions('com_mymuse', 'currency', $this->item->id);

@@ -108,7 +108,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		$app        			= Factory::getApplication();
-		$user       			= Factory::getUser();
+		$user       			= Factory::getApplication()->getIdentity();
 		$jinput 				= $app->input;
 
 		$this->item  			= $this->get('Item');

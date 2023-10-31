@@ -14,6 +14,7 @@ namespace Joomla\Component\Mymuse\Administrator\Table;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
@@ -210,9 +211,9 @@ class StoreTable extends Table implements VersionableTableInterface
 
     	if($my_noreg_password !== $myparams->get('my_noreg_password')){
     		
-    		$user	= Factory::getUser('buyer');
+    		$user	= Factory::getApplication()->getIdentity('buyer');
             if(!$user){
-                $Uparams = JComponentHelper::getParams('com_users');
+                $Uparams = ComponentHelper::getParams('com_users');
         		$data = array('name' => 'Guest Buyer',
         				'password'=>  $my_noreg_password,
         				'email' => 'guest@joomlamymuse.com',

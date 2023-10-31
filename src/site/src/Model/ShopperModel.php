@@ -72,7 +72,7 @@ class ShopperModel extends FormModel
 	 */
 	function __construct( )
 	{
-		$this->user	= Factory::getUser();
+		$this->user	= Factory::getApplication()->getIdentity();
 	}
 	
     
@@ -334,7 +334,7 @@ class ShopperModel extends FormModel
 		// Lets load the data if it doesn't already exist
         if ( $userid  )
         {
-			$user = Factory::getUser($userid);
+			$user = Factory::getApplication()->getIdentity($userid);
 			$this->_shopper = $user;
 			$this->_shopper->user_id = $userid;
 			$this->_shopper->perms = 1;
@@ -466,7 +466,7 @@ class ShopperModel extends FormModel
 		$app	= Factory::getApplication();
 		$params = MyMuseHelper::getParams();
 		$jinput = $app->input;
-		$user	= Factory::getUser();
+		$user	= $this->user;
 		$fields = MyMuseHelper::getNoRegFields();
 		$myparams = MyMuseHelper::getParams();
 		$application = Factory::getApplication();
@@ -593,7 +593,7 @@ class ShopperModel extends FormModel
 		$session->set("cart",$currentCart);
 		$MyMuseCart->cart = $currentCart;
 		
-		$user	= Factory::getUser('buyer');
+		$user	= Factory::getApplication()->getIdentity('buyer');
 		
 		//put values into session
 		if(isset($post['profile']['region']) && !isset($post['profile']['region_name']) ){
@@ -642,7 +642,7 @@ class ShopperModel extends FormModel
 	function getOrders()
 	{
 		$MyMuseCheckout =& Mymuse::getObject('checkout','helper');
-		$user		= Factory::getUser();
+		$user		= Factory::getApplication()->getIdentity();
 		$user_id 	= $user->get('id');
 		$db			= Factory::getDBO();
 		$query = "SELECT * from #__mymuse_order WHERE user_id=$user_id ORDER BY created DESC";
@@ -724,7 +724,7 @@ class ShopperModel extends FormModel
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$params	= ComponentHelper::getParams('com_users');
 		$myparams = MymuseHelper::getParams();
 

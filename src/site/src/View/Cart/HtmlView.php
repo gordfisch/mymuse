@@ -139,7 +139,7 @@ class HtmlView extends BaseHtmlView
 
         $this->MyMuseShopper  	=& Mymuse::getObject('Shopper','model');
         $this->shopper			= $this->MyMuseShopper->getShopper();
-        $this->user				= Factory::getUser();
+        $this->user				= Factory::getApplication()->getIdentity();
 
         $this->_db 				= Factory::getDBO();
     }
@@ -173,7 +173,7 @@ class HtmlView extends BaseHtmlView
 				$orderid = $this->_db->loadResult();
 			}
 			$order = $this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
-			$order->user = Factory::getUser($order->user_id);
+			$order->user = Factory::getApplication()->getIdentity($order->user_id);
 			
 			//if we are using no_reg
 			if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
@@ -1040,7 +1040,7 @@ class HtmlView extends BaseHtmlView
 		$jinput 		= $app->input;
 
 		$order 			= $this->MyMuseCheckout->getOrder($result['order_id']);
-		$order->user	= Factory::getUser($order->user_id);
+		$order->user	= Factory::getApplication()->getIdentity($order->user_id);
 			
 		//if we are using no_reg
 		if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){

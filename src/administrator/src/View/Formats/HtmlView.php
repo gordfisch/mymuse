@@ -121,7 +121,6 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		$canDo = $this->canDo;
-		$user  = Factory::getUser();
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');

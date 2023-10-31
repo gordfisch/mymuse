@@ -12,7 +12,7 @@ $listOrder	= $this->escape($this->state->get('item.ordering'));
 $listDirn	= $this->escape($this->state->get('item.direction'));
 $saveOrder	= $listOrder == 'a.ordering';
 
-$user 		= Factory::getUser();
+$user 		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $app		= Factory::getApplication();
 if ($saveOrder)

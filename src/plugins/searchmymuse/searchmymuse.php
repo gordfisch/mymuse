@@ -85,11 +85,11 @@ class plgSearchSearchMymuse extends CMSPlugin
 
     	require_once JPATH_ADMINISTRATOR . '/components/com_search/helpers/search.php';
     	
-        $db     = JFactory::getDbo();
-        $app    = JFactory::getApplication();
-        $user   = JFactory::getUser();
+        $db     = Factory::getDbo();
+        $app    = Factory::getApplication();
+        $user   = Factory::getApplication()->getIdentity();
         $groups = implode(',', $user->getAuthorisedViewLevels());
-        $tag 	= JFactory::getLanguage()->getTag();
+        $tag 	= Factory::getLanguage()->getTag();
         
    print_r($areas);
         $searchText = $text;
@@ -106,7 +106,7 @@ class plgSearchSearchMymuse extends CMSPlugin
         $limit 			= $this->params->get( 'search_limit', 		50 );
     
         $nullDate   = $db->getNullDate();
-        $date       = JFactory::getDate();
+        $date       = Factory::getDate();
         $now        = $date->toSql();
 
     
@@ -215,7 +215,7 @@ class plgSearchSearchMymuse extends CMSPlugin
                 
                 // Filter by language
                 if ($app->isClient('site') && $app->getLanguageFilter()) {
-                	$tag = JFactory::getLanguage()->getTag();
+                	$tag = Factory::getLanguage()->getTag();
                 	$query .= ' AND a.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';
                 	$query .= ' AND c.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')';
                 }

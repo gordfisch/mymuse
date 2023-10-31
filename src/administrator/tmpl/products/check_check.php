@@ -58,7 +58,7 @@ foreach($this->products as $product){
 			foreach($params->get('my_formats') as $format){
 				foreach($filenames as $key => $f){
 					foreach($f as $k => $i){
-						$full_path = $path.$format.DS.$k;
+						$full_path = $path.$format->format_value.DS.$k;
 						echo "<tr><td>----</td><td>Download</td><td class='".$f[$k]['class']."'>$full_path</td></tr>";
 					}
 				}

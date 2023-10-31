@@ -1272,7 +1272,7 @@ class ProductModel extends AdminModel
 		$input  		= Factory::getApplication()->input;
 		$filter 		= \JFilterInput::getInstance();
 		$db     		= $this->getDbo();
-		$user				= Factory::getUser();
+		$user			= Factory::getApplication()->getIdentity();
 
 
 		if (isset($data['metadata']) && isset($data['metadata']['author'])){

@@ -60,7 +60,7 @@ class ShopperHelper extends CMSObject
 	 */
 	function __construct( )
 	{
-		$this->user	= Factory::getUser();
+		$this->user	= Factory::getApplication()->getIdentity();
 		$this->getShopper();
 	}
 	
@@ -326,7 +326,7 @@ class ShopperHelper extends CMSObject
 		// Lets load the data if it doesn't already exist
         if ( $userid  )
         {
-			$user = Factory::getUser($userid);
+			$user = Factory::getApplication()->getIdentity($userid);
 			$this->_shopper = $user;
 			$this->_shopper->user_id = $userid;
 			$this->_shopper->perms = 1;
@@ -456,7 +456,7 @@ class ShopperHelper extends CMSObject
 		$app	= Factory::getApplication();
 		$params = MyMuseHelper::getParams();
 		$jinput = $app->input;
-		$user	= Factory::getUser();
+		$user	= Factory::getApplication()->getIdentity();
 		$fields = MyMuseHelper::getNoRegFields();
 		$myparams = MyMuseHelper::getParams();
 		$application = Factory::getApplication();
@@ -583,7 +583,7 @@ class ShopperHelper extends CMSObject
 		$session->set("cart",$currentCart);
 		$MyMuseCart->cart = $currentCart;
 		
-		$user	= Factory::getUser('buyer');
+		$user	= Factory::getApplication()->getIdentity('buyer');
 		
 		//put values into session
 		if(isset($post['profile']['region']) && !isset($post['profile']['region_name']) ){
@@ -632,7 +632,7 @@ class ShopperHelper extends CMSObject
 	function getOrders()
 	{
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-		$user		= Factory::getUser();
+		$user		= $this->user;
 		$user_id 	= $user->get('id');
 		$db			= Factory::getDBO();
 		$query = "SELECT * from #__mymuse_order WHERE user_id=$user_id ORDER BY created DESC";
@@ -708,7 +708,7 @@ class ShopperHelper extends CMSObject
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
-		$user = Factory::getUser();
+		$user = $this->user;
 		$params	= JComponentHelper::getParams('com_users');
 		$myparams = MyMuseHelper::getParams();
 

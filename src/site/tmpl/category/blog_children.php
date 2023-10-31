@@ -18,7 +18,7 @@ use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\View\Categories\HtmlView as CatsView;
 
 $lang   = Factory::getLanguage();
-$user   = Factory::getUser();
+$user   = Factory::getApplication()->getIdentity();
 $groups = $user->getAuthorisedViewLevels();
 $cols   = $this->params->get('subcat_columns', '');
 $blogClass = $this->params->get('blog_class', '');

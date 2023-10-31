@@ -96,9 +96,8 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar(): void
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
+		$userId  = Factory::getApplication()->getIdentity()->id;
 
-		$user       = Factory::getUser();
-		$userId     = $user->id;
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !(is_null($this->item->checked_out) || $this->item->checked_out == $userId);
 

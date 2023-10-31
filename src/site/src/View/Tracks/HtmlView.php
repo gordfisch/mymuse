@@ -52,7 +52,7 @@ class HtmlView extends BaseHtmlView
 	function display($tpl = null)
 	{
 		$app	= Factory::getApplication();
-		$user	= Factory::getUser();
+		$user	= Factory::getApplication()->getIdentity();
 		$db     = Factory::getDBO();
 		$jinput = $app->input;
 		//MymuseHelper::print_pre($jinput);
@@ -208,7 +208,7 @@ class HtmlView extends BaseHtmlView
 		$category->params->merge($cparams);
 
 		// Check whether category access level allows access.
-		$user	= Factory::getUser();
+		$user	= Factory::getApplication()->getIdentity();
 		$groups	= $user->getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups)) {
 			Factory::getApplication()->enqueueMessage(403, Text::_('JERROR_ALERTNOAUTHOR'));

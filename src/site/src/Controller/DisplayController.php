@@ -284,7 +284,7 @@ class DisplayController extends BaseController
 		$vName = $this->input->getCmd('view', 'categories');
 		$this->input->set('view', $vName);
 
-		$user = $this->app->getIdentity();
+		$user = Factory::getApplication()->getIdentity();
 
 		if ($user->get('id')
 			|| ($this->input->getMethod() === 'POST'
@@ -578,7 +578,7 @@ class DisplayController extends BaseController
 	{
 		
 
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$app = Factory::getApplication();
 
 		//no_reg and not logged in
@@ -915,7 +915,7 @@ class DisplayController extends BaseController
 
 		//get order
 		$db 			= Factory::getDBO();
-		$user			= Factory::getUser();
+		$user			= Factory::getApplication()->getIdentity();
 		$user_id 		= $user->get('id');
 		$orderid 		= $this->input->get('orderid', 0);
 		$session 		= Factory::getSession();
@@ -1092,7 +1092,7 @@ class DisplayController extends BaseController
 	{
 		//get order
 		$db 		= Factory::getDBO();
-		$user		= Factory::getUser();
+		$user		= Factory::getApplication()->getIdentity();
 		$user_id 	= $user->get('id');
 		$orderid 	= $this->input->get('orderid', 0);
 		$session 	= Factory::getSession();
@@ -1159,7 +1159,7 @@ class DisplayController extends BaseController
 		}else{
 			// get order
 			$db = Factory::getDBO ();
-			$user = Factory::getUser ();
+			$user = Factory::getApplication()->getIdentity();
 			$user_id = $user->get ( 'id' );
 			$id = $this->input->get ( 'id', 0 );
 			$session = Factory::getSession ();

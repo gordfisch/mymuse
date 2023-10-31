@@ -265,7 +265,7 @@ class CategorytreeField extends ListField
 		}
 
 		// Get the current user object.
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// For new items we want a list of categories you are allowed to create in.
 		if ($oldCat == 0)

@@ -93,7 +93,7 @@ class HtmlView extends BaseHtmlView
         $this->MyMuseCart  		= Mymuse::getObject('cart','helper');
         $this->MyMuseStore  	= Mymuse::getObject('store','model');
         $this->store 			= $this->MyMuseStore->_store;
-        $this->user				= Factory::getUser();
+        $this->user				= Factory::getApplication()->getIdentity();
 
     }
         

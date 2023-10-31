@@ -102,7 +102,7 @@ class Icon
 	 */
 	public static function edit($mymuse, $params, $attribs = array(), $legacy = false)
 	{
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$uri  = Uri::getInstance();
 
 		// Ignore if in a popup window.
@@ -126,7 +126,7 @@ class Icon
 			&& $mymuse->checked_out > 0
 			&& $mymuse->checked_out != $user->get('id'))
 		{
-			$checkoutUser = Factory::getUser($mymuse->checked_out);
+			$checkoutUser = Factory::getApplication()->getIdentity($mymuse->checked_out);
 			$date         = HTMLHelper::_('date', $mymuse->checked_out_time);
 			$tooltip      = Text::_('JLIB_HTML_CHECKED_OUT') . ' :: ' . Text::sprintf('COM_MYMUSE_CHECKED_OUT_BY', $checkoutUser->name)
 				. ' <br /> ' . $date;
@@ -170,7 +170,7 @@ class Icon
 		}
 		else
 		{
-			$author = $mymuse->created_by_alias ?: Factory::getUser($mymuse->created_by)->name;
+			$author = $mymuse->created_by_alias ?: Factory::getApplication()->getIdentity($mymuse->created_by)->name;
 		}
 
 		$overlib .= '&lt;br /&gt;';

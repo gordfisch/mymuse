@@ -94,15 +94,15 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar(): void
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
+		$userId  = Factory::getApplication()->getIdentity()->id;
 
-		$user       = Factory::getUser();
-		$userId     = $user->id;
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !(is_null($this->item->checked_out) || $this->item->checked_out == $userId);
 
 		$canDo = ContentHelper::getActions('com_mymuse', 'shoppergroup', $this->item->id);
-
-		ToolbarHelper::title(Text::_('COM_MYMUSE').' : '. $isNew ? Text::_('COM_MYMUSE_SHOPPERGROUP_NEW') : Text::_('COM_MYMUSE_SHOPPERGROUP_EDIT'), 'mymuse.png');
+		$title = Text::_('COM_MYMUSE').' ggg: '. $isNew ? Text::_('COM_MYMUSE_SHOPPERGROUP_NEW') : Text::_('COM_MYMUSE_SHOPPERGROUP_EDIT');
+		
+		ToolbarHelper::title($title, 'mymuse.png');
 
 		$toolbarButtons = [];
 

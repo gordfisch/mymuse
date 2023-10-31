@@ -538,7 +538,7 @@ class CartHelper
     
     public function couponadd() {
       $db       =  Factory::getDBO();
-      $user     =  Factory::getUser();
+      $user     =  Factory::getApplication()->getIdentity();
       $user_id  = $user->get('id');
       $app      = Factory::getApplication();
       $jinput   = $app->input;
@@ -646,7 +646,7 @@ class CartHelper
       $MyMuseCheckout = new CheckoutHelper;
       $MyMuseProduct  = MyMuse::getObject('Product','Model');
 
-      $user           = Factory::getUser();
+      $user           = Factory::getApplication()->getIdentity();
       $preview_tracks = array();
       $Itemid         = $jinput->get('Itemid', '');
       $db             = Factory::getDBO();

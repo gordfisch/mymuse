@@ -32,6 +32,11 @@ class Dispatcher extends ComponentDispatcher
 	 */
 	public function dispatch()
 	{
+		//include any custom code
+		if(file_exists(JPATH_COMPONENT.DIRECTORY_SEPARATOR."custom.php")){
+			require_once( JPATH_COMPONENT.DIRECTORY_SEPARATOR.'custom.php');
+		}
+		
 		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
 		$wa->useScript('jquery');
 		

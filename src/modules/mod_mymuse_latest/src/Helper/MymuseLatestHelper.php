@@ -54,7 +54,7 @@ class MymuseLatestHelper
 			$ordering = 'ordering';
         	$direction = "DESC";
 		}
-		$limit = $params->get('maximum_shown',5);
+		$limit = $params->get('display_num',5);
 
 		$model = ListModel::getInstance('Products', 'MyMuse', array());
 		/*$form = $model->getFilterForm(array(), true);

@@ -71,7 +71,7 @@ class ShoppergroupTable extends Table implements VersionableTableInterface
 	{
 		if (is_null($array['checked_out']))
 		{
-			$user = $user = Factory::getUser();
+			$user = Factory::getApplication()->getIdentity();
 			$array['checked_out'] = $user->id;
 		}
 		//print_r($array); exit;

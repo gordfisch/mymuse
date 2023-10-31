@@ -13,10 +13,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 jimport( 'joomla.application.component.view' );
 
-class myMuseViewReports extends JViewLegacy
+class myMuseViewReports extends BaseHtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -25,8 +27,8 @@ class myMuseViewReports extends JViewLegacy
 	function display($tpl = null){
 		global $params, $option;
 		
-		$jinput 	= JFactory::getApplication()->input;
-		$user   	= JFactory::getUser();
+		$jinput 	= Factory::getApplication()->input;
+		$user   	= Factory::getApplication()->getIdentity();
         $userid 	= $user->get('id');
         $profile 	= $user->get('profile');
 
@@ -58,9 +60,9 @@ class myMuseViewReports extends JViewLegacy
 			default:
 			{
 
-				$mainframe = JFactory::getApplication();
+				$mainframe = Factory::getApplication();
 				$option = 'com_mymuse';
-				$this->params = MyMuseHelper::getParams();
+				$this->params = MymuseHelper::getParams();
 				
 				// Get data from the model
 
@@ -92,7 +94,7 @@ class myMuseViewReports extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menus	= $app->getMenu();
 		$pathway = $app->getPathway();
 		$title = null;

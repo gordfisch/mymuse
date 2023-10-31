@@ -375,8 +375,8 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 		$current_preview = $input->get('current_preview', $this->file_preview ?? '');
 		$remove_preview = $input->get('remove_preview', '');
 		$date			= Factory::getDate();
-		$user			= Factory::getUser();
-		$db 			= Factory::getDBO();
+		$user			= Factory::getApplication()->getIdentity();
+		$db 			= Factory::getContainer()->get('DatabaseDriver');
 		PluginHelper::importPlugin('mymuse');
 
 		//removing one of the track formats

@@ -61,7 +61,7 @@ class HtmlView extends BaseHtmlView
 
 		$store 		= $this->get('Store');
 
-		$params 	= MyMuseHelper::getParams();
+		$params 	= MymuseHelper::getParams();
 		$this->params = $params;
 		$this->params->merge($state->params);
 
@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
 
 		$Itemid 	= $jinput->get('Itemid');
 
-		$user 		= Factory::getUser();
+		$user 		= Factory::getApplication()->getIdentity();
         $app        = Factory::getApplication();
         // make sure it's the same person who ordered!
         $MyMuseShopper 	=& Mymuse::getObject('shopper','model');
@@ -203,7 +203,7 @@ class HtmlView extends BaseHtmlView
      	
         	//are we using no-registration?
         	if($params->get('my_registration') == "no_reg"){
-				$fields = MyMuseHelper::getNoRegFields();
+				$fields = MymuseHelper::getNoRegFields();
 				
 				$registry = new Registry;
 				$registry->loadString($row->notes);
@@ -272,7 +272,7 @@ class HtmlView extends BaseHtmlView
 
 			$digital = json_decode($product->digital);
 
-			$download_path = MyMuseHelper::getDownloadPath($product->parentid,1);
+			$download_path = MymuseHelper::getDownloadPath($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
 			if(!$realname){
 				$realname = $digital->file_name;
@@ -303,7 +303,7 @@ class HtmlView extends BaseHtmlView
 
         		//$this->MyMuseProduct	= Mymuse::getObject('Product', 'model');
         		//$tracks = $this->MyMuseProduct->getTracks($product->id);
-        		//MyMuseHelper::print_pre($tracks); exit;
+        		//MymuseHelper::print_pre($tracks); exit;
 
         		$query = "SELECT id, digital from #__mymuse_product 
         		WHERE parentid='".$product->parentid."'
@@ -315,7 +315,7 @@ class HtmlView extends BaseHtmlView
         		$db->setQuery($query);
         		$prods = $db->loadObjectList();
 
-        		$path = MyMuseHelper::getDownloadPath($product->parentid, 1);
+        		$path = MymuseHelper::getDownloadPath($product->parentid, 1);
                 if(1 == $params->get('my_download_dir_format')){
                     $path .= $ext.DIRECTORY_SEPARATOR;
                 }
@@ -383,7 +383,7 @@ class HtmlView extends BaseHtmlView
     			return false;
     		}
 			
-    		$download_path = MyMuseHelper::getDownloadPath($order_item->product_id, 0);
+    		$download_path = MymuseHelper::getDownloadPath($order_item->product_id, 0);
             if(1 == $params->get('my_download_dir_format')){
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
                 $download_path .= $ext.DIRECTORY_SEPARATOR;
@@ -443,7 +443,7 @@ class HtmlView extends BaseHtmlView
         	$free = 0;
         	$owned = 0;
         	$db	= Factory::getDBO();
-        	$user = Factory::getUser();
+        	$user = Factory::getApplication()->getIdentity();
         	$user_id = $user->get('id');
         	$format = $jinput->get('format','');
 
@@ -546,7 +546,7 @@ class HtmlView extends BaseHtmlView
     		}
     		
 
-    		$download_dir = MyMuseHelper::getDownloadPath($product->parentid, 1);
+    		$download_dir = MymuseHelper::getDownloadPath($product->parentid, 1);
     		if(1 == $params->get('my_download_dir_format')){
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
                 $download_path .= $ext.DIRECTORY_SEPARATOR;
@@ -595,7 +595,7 @@ class HtmlView extends BaseHtmlView
         
         //JUST VIEW THE STORE
 		// Initialise variables.
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$app = Factory::getApplication();
 
 		$items 		= $this->get('Items');
@@ -728,7 +728,7 @@ class HtmlView extends BaseHtmlView
 		$user_id = $shopper->get('id');
 		$user_name = $shopper->get('name');
 		$user_email = $shopper->get('email');
-		$params 	= MyMuseHelper::getParams();
+		$params 	= MymuseHelper::getParams();
 
 
 		$product_id = $product->id;
@@ -760,7 +760,7 @@ class HtmlView extends BaseHtmlView
         $query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,`order_id`,`date`,`product_id`,`product_filename`)
                 VALUES ('$user_id',$user_name,$user_email,'$order_id', '$date','$product_id',$filename)";
         if($params->get('my_debug')){
-			MyMuseHelper::logMessage( "Download: $user_name : $filename" );
+			MymuseHelper::logMessage( "Download: $user_name : $filename" );
 		}
 		$db->setQuery($query);
 		try {

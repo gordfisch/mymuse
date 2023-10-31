@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
@@ -35,4 +36,4 @@ if(!$results){
     return;
 }
 $playlist   = $results[0];
-require(JModuleHelper::getLayoutPath('mod_mymuse_amplitude'));
+require(ModuleHelper::getLayoutPath('mod_mymuse_amplitude'));

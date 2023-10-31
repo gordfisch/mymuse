@@ -144,6 +144,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             $preview_path   = $this->mparams->get('my_preview_dir', Uri::root().'media/com_mymuse/previews/');
             $playlist_path  = $this->params->get('playlist_path', Uri::root().'media/com_mymuse/playlists/');
             $site_url       = rtrim( Uri::root(), '/');
+
             $document       = Factory::getDocument();
             $app            = Factory::getApplication();
             $menu           = $app->getMenu();
@@ -217,7 +218,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
         $document       = Factory::getDocument();
         $match          = 0;
-        $site_url       = $this->storage->getSiteUrl();
+        //$site_url       = $this->storage->getSiteUrl();
+        $site_url       = rtrim( Uri::root(), '/');
 
         $preview_path   = $this->my_preview_dir;
         if($preview_path){
@@ -235,7 +237,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         if($type == 'singleplayer'){
             return '';
         }
-
+//MymuseHelper::print_pre($this->indexes);
         //SINGLE PLAYER MAKE PLAY BUTTONS//
         if($type=='single'){
             //get index
@@ -247,6 +249,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             }else{
                 $preview = $site_url.$preview_path.$track->file_preview;
             }
+//echo "preview = ".$preview."<br />";
             
             if(isset($this->indexes[$preview])){
 
@@ -326,7 +329,8 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $db->setQuery($query);
         $res        = $db->loadObjectList();
         $local_uri = rtrim(Uri::root(),'/');
-        $root_uri = $this->storage->getSiteUrl();
+        //$root_uri = $this->storage->getSiteUrl();
+        $root_uri = rtrim( Uri::root(), '/');
         
         $first                  = new \StdClass;
         $first->name            = " ";

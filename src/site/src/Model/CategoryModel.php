@@ -161,7 +161,7 @@ class CategoryModel extends ListModel
 		$mergedParams->merge($params);
 
 		$this->setState('params', $mergedParams);
-		$user  = Factory::getUser();
+		$user  = Factory::getApplication()->getIdentity();
 
 		$asset = 'com_mymuse';
 

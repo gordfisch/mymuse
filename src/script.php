@@ -440,6 +440,7 @@ class Com_MymuseInstallerScript
                 "UPDATE `#__mymuse_product` SET `publish_down` = NULL WHERE `publish_down` = '0000-00-00 00:00:00'",
                 "UPDATE `#__mymuse_product` SET `checked_out` = NULL WHERE `checked_out` = '0'",
                 "UPDATE `#__mymuse_product` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
+                "ALTER TABLE `#__mymuse_product` MODIFY `product_sku` VARCHAR(254) NOT NULL;",
 
                 "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",

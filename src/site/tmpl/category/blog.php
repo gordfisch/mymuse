@@ -16,9 +16,16 @@ use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 $app = Factory::getApplication();
+
+PluginHelper::importPlugin('mymuse');
+$res    = $app->triggerEvent('onGetFullPlaylist',array(true));
+$arr = $res[0];
+$this->indexes = isset($arr[0])? $arr[0] : array();
+$this->playlist = isset($arr[1]? $arr[1] : array();
 
 $category = $this->category;
 $uri = JUri::getInstance(); 

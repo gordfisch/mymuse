@@ -68,7 +68,7 @@ class ProductModel extends ItemModel
 		$params = MymuseHelper::getParams();
 		$this->setState('params', $params);
 
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// If $pk is set then authorise on complete asset, else on component only
 		$asset = empty($pk) ? 'com_mymuse' : 'com_mymuse.product.' . $pk;
@@ -100,7 +100,7 @@ class ProductModel extends ItemModel
 	 */
 	public function getItem($pk = null, $variation=0)
 	{
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$params = MymuseHelper::getParams();
 		$app = Factory::getApplication();
 		$db = $this->getDbo();
@@ -329,7 +329,7 @@ class ProductModel extends ItemModel
 				else
 				{
 					// If no access filter is set, the layout takes some responsibility for display of limited information.
-					$user = Factory::getUser();
+					$user = Factory::getApplication()->getIdentity();
 					$groups = $user->getAuthorisedViewLevels();
 
 					if ($data->catid == 0 || $data->category_access === null)
@@ -480,6 +480,7 @@ class ProductModel extends ItemModel
 			$mparams = $active->getParams();
 			$orderby_track = $mparams->get('orderby_track', 'alpha');
 			$order_track_date = $mparams->get('order_track_date','');
+			//MymuseHelper::print_pre($active);
 			$ordering = QueryHelper::orderbyProduct($orderby_track, $order_track_date);
 		}
 
@@ -488,7 +489,7 @@ class ProductModel extends ItemModel
 		}
 
 		$secondaryOrder = $this->getState('list.secondaryOrder', '');
-		
+	
 
 		/** TRACK QUERY */
 		$track_query = $db->getQuery(true);
@@ -1181,7 +1182,8 @@ class ProductModel extends ItemModel
 				
 					$price_info [$format]["product_price"] = $product->attribs->get ( $key );
 					$product_price = $price_info [$format]["product_price"];
-					$price_info[$format]["product_original_price"] = round ( $price_info [$format]["product_price"], 2);
+					$price_info[$format]["product_original_price"] = isset($price_info [$format]["product_price"])? round ( $price_info [$format]["product_price"], 2) : '';
+		
 						
 					$price_info [$format]["product_shoppergroup_discount"] = $shoppergroup_discount;
 					$price_info [$format]["product_shoppergroup_discount_amount"] = $product_price * $shoppergroup_discount / 100;
@@ -1265,7 +1267,7 @@ class ProductModel extends ItemModel
 			}
 			$product_price = $price_info ["product_price"];
 
-			$price_info["product_original_price"] = round ( $price_info ["product_price"], 2);
+			$price_info["product_original_price"] = isset($price_info ["product_price"])? round ( $price_info ["product_price"], 2) : 0;
 
 			$price_info ["product_shoppergroup_discount"] = $shoppergroup_discount;
 

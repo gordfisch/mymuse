@@ -112,7 +112,7 @@ class StoreModel extends ProductsModel
 
 		$this->setState('filter.frontpage', true);
 
-		$user		= Factory::getUser();
+		$user	= Factory::getApplication()->getIdentity();
 		if ((!$user->authorise('core.edit.state', 'com_mymuse')) &&  (!$user->authorise('core.edit', 'com_mymuse'))){
 			// filter on published for those who do not have edit or edit.state rights.
 			$this->setState('filter.published', 1);

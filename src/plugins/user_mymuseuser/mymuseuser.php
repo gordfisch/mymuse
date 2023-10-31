@@ -447,7 +447,7 @@ class plgUserMymuseuser extends CMSPlugin
 	function onUserAfterSave($data, $isNew, $result, $error)
 	{
 		$userId	= ArrayHelper::getValue($data, 'id', 0, 'int');
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$session = Factory::getSession();
 
 		if ($userId && $result && isset($data['profile']) && (count($data['profile'])))
@@ -661,7 +661,7 @@ class plgUserMymuseuser extends CMSPlugin
    protected function _getUser($user, $options = array())
    {
    	$instance = JUser::getInstance();
-   	if ($id = intval(JUserHelper::getUserId($user['username'])))  {
+   	if ($id = intval(UserHelper::getUserId($user['username'])))  {
    		$instance->load($id);
    		return $instance;
    	}

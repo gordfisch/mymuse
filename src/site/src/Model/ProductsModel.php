@@ -548,7 +548,7 @@ class ProductsModel extends ListModel
 			return array();
 		}
 
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 		$userId = $user->get('id');
 		$guest  = $user->get('guest');
 		$groups = $user->getAuthorisedViewLevels();

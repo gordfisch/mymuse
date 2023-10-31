@@ -87,8 +87,7 @@ $this->itemClass = "uk-width-1-".$cols."@m";
 </section>
 <?php endif; ?>
 
-<?php
- if(is_countable($product->tracks) && count($product->tracks) && $this->params->get('product_show_tracks', 1)) : ?>
+<?php if(is_countable($product->tracks) && count($product->tracks) && $this->params->get('product_show_tracks', 1) ) : ?>
  <section id="product-tracks">
 	<?php echo $this->loadTemplate('tracks'); ?>
 </section>

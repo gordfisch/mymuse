@@ -633,17 +633,20 @@ class ProductsModel extends ListModel
 					if($params->get('my_download_dir_format')){
 						foreach($params->get('my_formats') as $format){
 							foreach($filenames as $f){
-								
-								$full_path = $path.$format.DS.$f;
-								//echo $full_path."<br/>";
-								if($this->storage->fileExists($full_path)){
-									$item->download[$f]['class'] = "alert alert-success";
-									$item->download[$f]['result'] = Text::_('MYMUSE_FOUND');
-								}else{
-									$item->download[$f]['class'] = "alert alert-danger";
-									$item->download[$f]['result'] = Text::_('MYMUSE_NOT_FOUND');
-									$missing[] = $full_path;
+								$extension = pathinfo($f, PATHINFO_EXTENSION);
+								if($extension == $format->format_value){
+									$full_path = $path.$format->format_value.DS.$f;
+									//echo $full_path."<br/>";
+									if($this->storage->fileExists($full_path)){
+										$item->download[$f]['class'] = "alert alert-success";
+										$item->download[$f]['result'] = Text::_('MYMUSE_FOUND');
+									}else{
+										$item->download[$f]['class'] = "alert alert-danger";
+										$item->download[$f]['result'] = Text::_('MYMUSE_NOT_FOUND');
+										$missing[] = $full_path;
+									}
 								}
+								
 							}
 						}
 					}else{

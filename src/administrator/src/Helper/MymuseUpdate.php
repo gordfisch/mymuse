@@ -67,7 +67,7 @@ class MymuseUpdate extends ContentHelper
 		}
 		
 		$url .= "index.php";
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$userid = $user->get('id');
 	
 		$token = Session::getFormToken();
@@ -153,7 +153,7 @@ class MymuseUpdate extends ContentHelper
 		$query = "DELETE from #__mymuse_product WHERE product_sku = ".$db->quote($p->product_sku);
 		$db->setQuery($query);
 		$db->execute();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$userid = $user->get('id');
 	if($p->parentid){
 		//MymuseHelper::print_pre($p); MymuseHelper::print_pre($_FILES); 
@@ -385,7 +385,7 @@ class MymuseUpdate extends ContentHelper
 
 		$db->setQuery($query);
 		$db->query();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$userid = $user->get('id');
 	
 

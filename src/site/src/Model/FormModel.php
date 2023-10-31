@@ -106,7 +106,7 @@ class FormModel extends \Joomla\Component\Mymuse\Administrator\Model\ArticleMode
 		$value->params = new Registry($value->attribs);
 
 		// Compute selected asset permissions.
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 		$userId = $user->get('id');
 		$asset  = 'com_mymuse.product.' . $value->id;
 
