@@ -371,65 +371,65 @@
             </field>
     </fieldset>
         
-        <fieldset name="physical" label="COM_MYMUSE_PHYSICAL_LABEL">
-            <field
-                    name="my_use_shipping"
-                    type="radio"
-                    label="COM_MYMUSE_USE_SHIPPING_LABEL"
-                    description="COM_MYMUSE_USE_SHIPPING_DESC"
-                    class="btn-group btn-group-yesno"
-                  
-                    default="0">
-                    <option value="0">COM_MYMUSE_NO</option>
-                    <option value="1">COM_MYMUSE_YES</option>
-            </field>
-            <field
-                    name="my_add_shipping_auto"
-                    type="radio"
-                    label="COM_MYMUSE_ADD_SHIPPING_AUTO_LABEL"
-                    description="COM_MYMUSE_ADD_SHIPPING_AUTO_DESC"
-                    class="btn-group btn-group-yesno"
+    <fieldset name="physical" label="COM_MYMUSE_PHYSICAL_LABEL">
+        <field
+                name="my_use_shipping"
+                type="radio"
+                label="COM_MYMUSE_USE_SHIPPING_LABEL"
+                description="COM_MYMUSE_USE_SHIPPING_DESC"
+                class="btn-group btn-group-yesno"
+              
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
+        </field>
+        <field
+                name="my_add_shipping_auto"
+                type="radio"
+                label="COM_MYMUSE_ADD_SHIPPING_AUTO_LABEL"
+                description="COM_MYMUSE_ADD_SHIPPING_AUTO_DESC"
+                class="btn-group btn-group-yesno"
 
-                    default="0">
-                    <option value="0">COM_MYMUSE_NO</option>
-                    <option value="1">COM_MYMUSE_YES</option>
-            </field>
-            
-            <field
-                    name="my_use_stock"
-                    type="radio"
-                    label="COM_MYMUSE_USE_STOCK_LABEL"
-                    description="COM_MYMUSE_USE_STOCK_DESC"
-                    class="btn-group btn-group-yesno"
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
+        </field>
+        
+        <field
+                name="my_use_stock"
+                type="radio"
+                label="COM_MYMUSE_USE_STOCK_LABEL"
+                description="COM_MYMUSE_USE_STOCK_DESC"
+                class="btn-group btn-group-yesno"
 
-                    default="0">
-                    <option value="0">COM_MYMUSE_NO</option>
-                    <option value="1">COM_MYMUSE_YES</option>
-            </field>
-            <field
-                    name="my_check_stock"
-                    type="radio"
-                    label="COM_MYMUSE_CHECK_STOCK_LABEL"
-                    description="COM_MYMUSE_CHECK_STOCK_DESC"
-                    class="btn-group btn-group-yesno"
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
+        </field>
+        <field
+                name="my_check_stock"
+                type="radio"
+                label="COM_MYMUSE_CHECK_STOCK_LABEL"
+                description="COM_MYMUSE_CHECK_STOCK_DESC"
+                class="btn-group btn-group-yesno"
 
-                    default="0">
-                    <option value="0">COM_MYMUSE_NO</option>
-                    <option value="1">COM_MYMUSE_YES</option>
-            </field>
-            <field
-                    name="my_add_stock_zero"
-                    type="radio"
-                    label="COM_MYMUSE_ADD_STOCK_ZERO_LABEL"
-                    description="COM_MYMUSE_ADD_STOCK_ZERO_DESC"
-                    class="btn-group btn-group-yesno"
-   
-                    default="0">
-                    <option value="0">COM_MYMUSE_NO</option>
-                    <option value="1">COM_MYMUSE_YES</option>
-            </field>
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
+        </field>
+        <field
+                name="my_add_stock_zero"
+                type="radio"
+                label="COM_MYMUSE_ADD_STOCK_ZERO_LABEL"
+                description="COM_MYMUSE_ADD_STOCK_ZERO_DESC"
+                class="btn-group btn-group-yesno"
 
-        </fieldset>
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>
+        </field>
+
+    </fieldset>
     <fieldset name="store" label="COM_MYMUSE_STORE_OPTIONS_LABEL">
             
         <field 
@@ -573,16 +573,7 @@
                 default="2000"
                 size="4"
                 />
-        <field
-                name="my_show_cart_preview"
-                type="radio"
-                label="COM_MYMUSE_SHOW_CART_PREVIEW_LABEL"
-                description="COM_MYMUSE_SHOW_CART_PREVIEW_DESC"
-                class="btn-group btn-group-yesno"
-                default="0">
-                <option value="0">COM_MYMUSE_NO</option>
-                <option value="1">COM_MYMUSE_YES</option>>
-        </field>
+        
 
     </fieldset>
     <fieldset name="store2" label="COM_MYMUSE_STORE_OPTIONS2_LABEL">
@@ -708,16 +699,7 @@
         </field>
         
         
-        <field
-                name="my_show_sku"
-                type="radio"
-                label="COM_MYMUSE_SHOW_SKU_LABEL"
-                description="COM_MYMUSE_SHOW_SKU_DESC"
-                class="btn-group btn-group-yesno"
-                default="0">
-                <option value="0">COM_MYMUSE_NO</option>
-                <option value="1">COM_MYMUSE_YES</option>>
-        </field>
+        
         
         <field
                 name="my_default_shopper_group_id"
@@ -738,6 +720,63 @@
                 description="MYMUSE_ORDER_TEXT_DESC" 
                 filter="raw"
         />
+    </fieldset>
+
+    <fieldset name="cart" label="COM_MYMUSE_CART_OPTIONS">
+        <field
+                name="my_show_sku"
+                type="radio"
+                label="COM_MYMUSE_SHOW_SKU_LABEL"
+                description="COM_MYMUSE_SHOW_SKU_DESC"
+                class="btn-group btn-group-yesno"
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
+        </field>
+        <field
+                name="my_show_cart_preview"
+                type="radio"
+                label="COM_MYMUSE_SHOW_CART_PREVIEW_LABEL"
+                description="COM_MYMUSE_SHOW_CART_PREVIEW_DESC"
+                class="btn-group btn-group-yesno"
+                default="0">
+                <option value="0">COM_MYMUSE_NO</option>
+                <option value="1">COM_MYMUSE_YES</option>>
+        </field>
+
+        <field type="spacer" name="spacerdetails" label="COM_MYMUSE_CART_PRODUCT_TITLE" /> 
+
+        <field name="cart_show_artist_title" 
+            type="radio"
+            default="0"
+            class="btn-group btn-group-yesno"
+            label="COM_MYMUSE_CART_SHOW_ARTIST_TITLE"
+
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="cart_show_album_title" 
+            type="radio"
+            default="1"
+            class="btn-group btn-group-yesno"
+            label="COM_MYMUSE_CART_SHOW_ALBUM_TITLE"
+
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="cart_show_filename" 
+            type="radio"
+            default="0"
+            class="btn-group btn-group-yesno"
+            label="COM_MYMUSE_CART_SHOW_FILENAME"
+ 
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+          
     </fieldset>
 
     <fieldset name="reports" label="COM_MYMUSE_FRONT_END_SALES_REPORTS_LABEL">

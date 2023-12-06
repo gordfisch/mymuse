@@ -100,7 +100,7 @@ class HtmlView extends BaseHtmlView
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 		$this->canDo         = MymuseHelper::getActions('com_mymuse');
-		$this->db            = Factory::getDbo();
+		$this->db            = Factory::getContainer()->get('DatabaseDriver');
 
 		$this->lists		= $this->get('Lists');
 		$this->parent 		= $this->get('Parent');

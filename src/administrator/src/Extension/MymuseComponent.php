@@ -99,7 +99,7 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 	public function boot(ContainerInterface $container)
 	{
 		$this->getRegistry()->register('mymuseadministrator', new AdministratorService);
-		$this->getRegistry()->register('mymuseicon', new Icon($container->get(SiteApplication::class)));
+		//$this->getRegistry()->register('mymuseicon', new Icon($container->get(SiteApplication::class)));
 
 		PluginHelper::importPlugin('mymuse');
 		$res = Factory::getApplication()->triggerEvent('onMymuseGetStorage', array('com_mymuse'));
@@ -114,11 +114,7 @@ class MymuseComponent extends MVCComponent implements BootableExtensionInterface
 			//echo 'regular';
 		}
 		
-        
-        $Doc = Factory::getDocument();
-        $Doc->addStyleSheet( Uri::base() . 'components/com_mymuse/assets/css/mymuse.css' );
-
-
+       
         $session  = Factory::getSession();
         if($must_updrade =  $session->get('com_mymuse.convertTo4', false)){
 			echo "<h1>SESSION SET MUST UPGRADE</h1>";

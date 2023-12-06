@@ -123,7 +123,7 @@ class CartHelper
     $variation      = $jinput->get('variation',array(), 'ARRAY');
     $item_quantity  = $jinput->get('item_quantity',array(), 'ARRAY');
 
-    $db = Factory::getDBO();   
+    $db = Factory::getContainer()->get('DatabaseDriver');   
 
     if(!$productid){
         $this->error = Text::_("COM_MYMUSE_PLEASE_SELECT_PRODUCT");
@@ -347,7 +347,7 @@ class CartHelper
       $notes    = $jinput->get('notes', '', 'RAW');
 
  
-      $db  = Factory::getDBO();;
+      $db  = Factory::getContainer()->get('DatabaseDriver');
         if(!@$productid){
             $this->error = Text::_('COM_MYMUSE_CANT_UPDATE_CART');
             return false;
@@ -537,7 +537,7 @@ class CartHelper
 
     
     public function couponadd() {
-      $db       =  Factory::getDBO();
+      $db       =  Factory::getContainer()->get('DatabaseDriver');
       $user     =  Factory::getApplication()->getIdentity();
       $user_id  = $user->get('id');
       $app      = Factory::getApplication();
@@ -649,7 +649,7 @@ class CartHelper
       $user           = Factory::getApplication()->getIdentity();
       $preview_tracks = array();
       $Itemid         = $jinput->get('Itemid', '');
-      $db             = Factory::getDBO();
+      $db             = Factory::getContainer()->get('DatabaseDriver');
   
 
       // just check that there is an order_item
@@ -957,7 +957,7 @@ class CartHelper
    */
   public function getRecommended()
   {
-    $db     = Factory::getDBO();
+    $db     = Factory::getContainer()->get('DatabaseDriver');
     $params   = MyMuseHelper::getParams();
     $prods    = array();
     $recommends = array();
@@ -1030,7 +1030,7 @@ class CartHelper
   public function getProduct($id=null, $variation=0)
   {
     
-    $params   = MyMuseHelper::getParams();;
+    $params   = MyMuseHelper::getParams();
     
     
     if(!$id){
@@ -1038,7 +1038,7 @@ class CartHelper
       return false;
     }
 
-    $db = Factory::getDBO();
+    $db = Factory::getContainer()->get('DatabaseDriver');
     $model= new ProductModel();
 
     if(!$row = $model->getItem($id, $variation)){

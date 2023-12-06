@@ -18,6 +18,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Site\Service\Mymuse;
+use Joomla\Component\Mymuse\Site\Helper\QueryHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Administrator\Model\ProductsModel;
 
@@ -32,31 +33,29 @@ class MymuseLatestHelper
 	{
 		$ordering = 'a.id'; 
 		$direction = 'desc';
-		$search = $params->get('type_search');
+		$order_date = $params->get('order_date');
+		$orderby_sec= $params->get('orderby_sec');
 
 		$product_ids = $params->get('product_ids', 0);
-		if($product_ids && $search == 'order'){
-        	$search =  " FIELD(p.id, $product_ids)";
-        }elseif($search == 'order'){
-        	$search = 'p.ordering ASC';
 
-        	$ordering = 'ordering';
-        	$direction = "ASC";
-			
-		}elseif($search == 'rorder'){
-			$search = 'p.ordering DESC';
-
-			$ordering = 'ordering';
-        	$direction = "DESC";
+		if($product_ids){
+        	$ordering = " FIELD(a.id, $product_ids)";
+        	$direction = " ";
+        	$filter_subcats = '';
+        	$max_category_levels = 1;
 		}else{
-			$search .= ' DESC';
-
-			$ordering = 'ordering';
-        	$direction = "DESC";
+			$ordering = QueryHelper::orderbySecondary($orderby_sec, $order_date );
+			$direction = " ";
+			$filter_subcats = 'true';
+			$max_category_levels = 10;
 		}
 		$limit = $params->get('display_num',5);
 
-		$model = ListModel::getInstance('Products', 'MyMuse', array());
+		$cat_id = $params->get('id', 0);
+
+
+		//echo "ordering = $ordering <br />direction = $direction<br />";
+		$model = ListModel::getInstance('Products', 'Mymuse', array('ignore_request' => true));
 		/*$form = $model->getFilterForm(array(), true);
 		$form->removeField('stage', 'filter');
 		$form->removeField('category_id', 'filter');
@@ -66,6 +65,12 @@ class MymuseLatestHelper
 		$this->filterForm = $form;
 		*/
 		$model->setState('filter.published', 1);
+		if($cat_id){
+			$model->setState('filter.category_id', $cat_id);
+		}
+		if($product_ids){
+			$model->setState('filter.product_ids', $product_ids);
+		}
    		//$model->setState('filter.access', $this->getState('filter.access'));
    		//$model->setState('filter.language', $this->getState('filter.language'));
    		$model->setState('list.ordering', $ordering);
@@ -73,8 +78,8 @@ class MymuseLatestHelper
    		$model->setState('list.limit', $limit);
    		$model->setState('list.direction', $direction);
    		//$model->setState('list.filter', $this->getState('list.filter'));
-   		//$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
-   		//$model->setState('filter.max_category_levels', $this->setState('filter.max_category_levels'));
+   		$model->setState('filter.subcategories', $filter_subcats);
+   		$model->setState('filter.max_category_levels', $max_category_levels);
    		//$model->setState('list.links', $this->getState('list.links'));
    		
    		//$model->setState('filter.parentid', $id);
@@ -93,9 +98,9 @@ class MymuseLatestHelper
 		}
 	
 		
+//MymuseHelper::print_pre($results); exit;
 
-
-		$db 			= Factory::getDBO();
+		$db 			= Factory::getContainer()->get('DatabaseDriver');
 		$jnow			= Factory::getDate();
 		$now			= $jnow->toSql();
 		$nullDate		= $db->getNullDate();
@@ -111,49 +116,7 @@ class MymuseLatestHelper
 		$datenow = Factory::getDate();
 		
 		$my_artistid = $params->get('my_artistid');
-		
-
-/*		
-		
-			$query = 'SELECT p.id, p.title, p.product_release_date, p.product_sku, p.alias, p.catid,
-					p.list_image, p.parentid, p.hits,
-			c.id as artist_id, c.title as artist_name, s.sales as sales
-			from #__mymuse_product as p
-			LEFT JOIN #__categories as c on c.id=p.artistid
-			
-			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
-			(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
-			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
-			FROM #__mymuse_order_item as i
-			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-			GROUP BY i.product_id, i.product_name )
-			as x GROUP BY x.product_id, x.product_name, x.all_id) as s ON s.product_id = p.id
-			
-			WHERE c.published=1
-			AND p.state=1
-			AND p.parentid = 0
-			AND ( (p.publish_up IS NULL OR p.publish_up = '.$db->Quote($nullDate).') OR p.publish_up <= '.$db->Quote($now).' )
-			AND ( (p.publish_down IS NULL OR p.publish_down = '.$db->Quote($nullDate).') OR p.publish_down >= '.$db->Quote($now).' )
-            ';
-            if($my_artistid && !$product_ids){
-                $query .=  ' AND artistid='.$my_artistid;
-            }
-			if($product_ids && !$my_artistid){
-                $query .=  ' AND p.id IN('.$product_ids.')';
-            }
-            if($product_ids && $my_artistid){
-                $query .=  ' AND (p.id IN('.$product_ids.') OR artistid='.$my_artistid.')';
-            }
-            $query .= ' GROUP BY s.sales, p.id';
-			$query .= ' ORDER BY '.$search.', artist_name ASC LIMIT 0,'.$maximum_shown;
-
-//echo 'module query '.$db->replacePrefix((string) $query)."";
-
-		$db->setQuery($query);
-		if(!$results = $db->loadObjectList()){
-			return $results;
-		}
-*/		
+				
 	
 		for($i=0; $i < count($results); $i++){
 			$id = ($results[$i]->parentid)? $results[$i]->parentid : $results[$i]->id;

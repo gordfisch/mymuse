@@ -42,7 +42,7 @@ class CountriesField extends ListField {
 		$query = 'SELECT `id` AS value, `country_name` AS text FROM `#__mymuse_country`
                		ORDER BY `country_name` ASC ';
           
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$db->setQuery($query);
 		$values = $db->loadObjectList();
 		foreach ($values as $v) {

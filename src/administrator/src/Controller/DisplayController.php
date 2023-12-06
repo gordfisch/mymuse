@@ -80,7 +80,7 @@ class DisplayController extends BaseController
 	function addGenres()
 	{
 		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
-		$db = JFactory::getDBO();
+		$db = JFactory::getContainer()->get('DatabaseDriver');
 	
 		$query = "SELECT id from #__categories WHERE title='Genres'";
 		$db->setQuery($query);
@@ -155,7 +155,7 @@ class DisplayController extends BaseController
 	function addEuroTax()
 	{
 		$msg = '';
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$tax_names = array('VAT__AT_','VAT__BE_','VAT__BG_','VAT__CY_','VAT__CZ_','VAT__HR_',
 		'VAT__DK_','VAT__EE_','VAT__FI_','VAT__FR_','VAT__DE_','VAT__GR_','VAT__HU_','VAT__IE_',
 		'VAT__IT_','VAT__LV_','VAT__LT_','VAT__LU_','VAT__MT_','VAT__NL_','VAT__PL_','VAT__PT_','VAT__RO_',

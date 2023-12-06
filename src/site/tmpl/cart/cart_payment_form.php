@@ -18,10 +18,10 @@ if($this->params->get('my_order_msg',0)){
 
 $results = $this->results;
 ?>
-<table class="mymuse_cart">
-	<tr>
+<div class="mymuse_cart payment-buttons">
+
 	<?php foreach($results as $r){ ?>
-		<td valign="top"><?php echo $r; ?></td>
+		<div class="payment-button"><?php echo $r; ?></div>
 	<?php } ?>
-	</tr>
-</table>
+
+</div>

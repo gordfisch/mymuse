@@ -133,7 +133,7 @@ class ProductattributeskusModel extends ListModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -181,7 +181,7 @@ class ProductattributeskusModel extends ListModel
 	{
 		$app = Factory::getApplication();
 		$lists['products'] 		= array();
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query 	= "SELECT id as value,title as text FROM #__mymuse_product WHERE parentid='0'";
 		$db->setQuery($query);
 		$products = $db->loadObjectList();
@@ -197,7 +197,7 @@ class ProductattributeskusModel extends ListModel
 		$app = Factory::getApplication();
 		$parentid = $this->getState('filter.product');
 		if($parentid){
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT * from #__mymuse_product WHERE id=$parentid";
 			$db->setQuery($query);
 			$parent = $db->loadObject();
@@ -209,7 +209,7 @@ class ProductattributeskusModel extends ListModel
 	function delete()
 	{
 
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$input 	= Factory::getApplication()->input;
 		$cid 	= $input->post->get( 'cid', array() );
 		if(!isset($cid[0])){

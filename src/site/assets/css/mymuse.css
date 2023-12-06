@@ -205,7 +205,9 @@ span.discount {
     text-decoration: line-through;
     color: red;
 }
-
+.payment-button {
+    display: inline-block;
+}
 /* Minicart on page */
 #parent {
     float:left;
@@ -224,7 +226,7 @@ span.discount {
     border-radius: 4px;
     background: #fff none repeat scroll 0% 0%;
     padding: 0.4em;
-    border: 1px solid #d1d1d1;;
+    border: 1px solid #d1d1d1;
 }
 .mini-cart-cart, .mini-cart-text, .mini-cart-link {
     display: table-cell;

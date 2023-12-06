@@ -85,6 +85,7 @@ class HtmlView extends BaseHtmlView
     	parent::__construct();
     	
         $layout = Factory::getApplication()->input->get('layout', 'register');
+
         parent::setLayout($layout);  
 
         $this->MyMuseShopper  	=& Mymuse::getObject('Shopper','model');

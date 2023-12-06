@@ -154,7 +154,7 @@ class HtmlView extends CategoriesView
 			}
 			$catids = implode(",",$catid);
 
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$nullDate	= $db->Quote($db->getNullDate());
 			$nowDate	= $db->Quote(Factory::getDate()->toSql());
 			
@@ -185,7 +185,7 @@ class HtmlView extends CategoriesView
 		function _getTrackCount($category)
 		{
 			$total = 0;
-			$db = JFactory::getDBO();
+			$db = JFactory::getContainer()->get('DatabaseDriver');
 			$nullDate	= $db->Quote($db->getNullDate());
 			$nowDate	= $db->Quote(JFactory::getDate()->toSql());
 			$catid[] = $category->id;

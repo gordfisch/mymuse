@@ -92,7 +92,7 @@ class ShopperModel extends FormModel
         	$user	= $this->user;
         	$jinput = Factory::getApplication()->input;
         	$task 	= $jinput->get('task');
-        	$db 	= Factory::getDBO();
+        	$db 	= Factory::getContainer()->get('DatabaseDriver');
         	$session = Factory::getSession();
         	$guestcheckout = $session->get('guestcheckout');
         	$MyMuseCart		= Mymuse::getObject('Cart');
@@ -128,7 +128,7 @@ class ShopperModel extends FormModel
         		if(!$this->makeNoRegister()){
         			return false;
         		}
-        		$registry = new JRegistry;
+        		$registry = new Registry;
         		$registry->loadString($notes);
         		$fields = MyMuseHelper::getNoRegFields();
 
@@ -342,7 +342,7 @@ class ShopperModel extends FormModel
 			// Load the profile data from the database.
 			$myparams = MyMuseHelper::getParams();
 			$profile_key = $myparams->get('my_profile_key', 'mymuse');
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			if($params->get('my_registration') == "full" && $profile_key != ''){
 				$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 						' WHERE user_id = '.(int) $userid." AND profile_key LIKE '$profile_key.%'" .
@@ -404,7 +404,7 @@ class ShopperModel extends FormModel
 		$myparams = MyMuseHelper::getParams();
 		$profile_key = $myparams->get('my_profile_key', 'mymuse');
 		$userId = $shopper->get('id');
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
@@ -524,7 +524,7 @@ class ShopperModel extends FormModel
 		if($user->get('id')){
 			//return true;
 		}
-		$db	= Factory::getDBO();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query = "SELECT * FROM #__users WHERE username='buyer'";
 		$db->setQuery($query);
 		$guest = $db->loadObject();
@@ -597,7 +597,7 @@ class ShopperModel extends FormModel
 		
 		//put values into session
 		if(isset($post['profile']['region']) && !isset($post['profile']['region_name']) ){
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 		
 			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['profile']['region']."'";
 			$db->setQuery($query);
@@ -607,7 +607,7 @@ class ShopperModel extends FormModel
 		}
 		
 		if(isset($post['profile']['shipping_region']) && !isset($post['profile']['shipping_region_name']) ){
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 		
 			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['profile']['shipping_region']."'";
 			$db->setQuery($query);
@@ -644,7 +644,7 @@ class ShopperModel extends FormModel
 		$MyMuseCheckout =& Mymuse::getObject('checkout','helper');
 		$user		= Factory::getApplication()->getIdentity();
 		$user_id 	= $user->get('id');
-		$db			= Factory::getDBO();
+		$db			= Factory::getContainer()->get('DatabaseDriver');
 		$query = "SELECT * from #__mymuse_order WHERE user_id=$user_id ORDER BY created DESC";
 		$db->setQuery($query);
 		$orders = $db->loadObjectList();
@@ -677,7 +677,7 @@ class ShopperModel extends FormModel
 		'email2' => 'guest@joomlamymuse.com' 
  		);
  		$config = Factory::getConfig();
- 		$db		= Factory::getDbo();
+ 		$db		= Factory::getContainer()->get('DatabaseDriver');
  		$params = ComponentHelper::getParams('com_users');
  		
  		// Initialise the table with User.
@@ -731,7 +731,7 @@ class ShopperModel extends FormModel
 		if($user->get('id')){
 			return true;
 		}
-		$db	= Factory::getDBO();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query = "SELECT * FROM #__users WHERE username='buyer'";
 		$db->setQuery($query);
 		$guest = $db->loadObject();
@@ -898,7 +898,7 @@ class ShopperModel extends FormModel
 		if(!$id){
 			return;
 		}
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = 'SELECT a.*, u.title as shopper_group_name '
 				. ' FROM #__mymuse_shopper_group as a'
 				. ' LEFT JOIN #__usergroups as u ON u.id = a.usergroups_id '

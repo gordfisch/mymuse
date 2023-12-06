@@ -48,7 +48,7 @@ class AdministratorService
             }
 
             // Get the associated menu items
-            $db = Factory::getDbo();
+            $db = Factory::getContainer()->get('DatabaseDriver');
             $query = $db->getQuery(true)
                 ->select(
                     [

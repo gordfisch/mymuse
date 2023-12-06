@@ -23,8 +23,37 @@ $tracks     =& $this->item->tracks;
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 $catlink    = $this->params->get('my_product_link', 'catid');
-$user       = JFactory::getUser();
+$user       = JFactory::getApplication()->getIdentity();
 //echo '$listDirn ='.$listDirn. ' $listOrder = '.$listOrder;
+
+$cols = 1;
+if($this->params->get('product_show_artist', 0)) :
+  $cols++;
+endif;
+if($this->params->get('product_show_filetime', 0)) :
+  $cols++;
+endif;
+if($this->params->get('product_show_filesize', 0)) :
+  $cols++;
+endif;
+if($this->params->get('product_show_sales', 0)) : 
+  $cols++;
+endif;
+if($this->params->get('product_show_downloads', 0)) : 
+  $cols++;
+endif;
+if($this->params->get('product_show_cost_column', 1)) :
+  $cols++;
+endif;
+if(is_countable($this->formats) && count($this->formats) > 1) :
+  $cols++;
+endif;
+if($this->params->get('product_show_select_column', 1) && $this->available) :
+  $cols++;
+endif;
+if($this->params->get('product_show_preview_column', 1)) : 
+  $cols++;
+endif;
 
 if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_tracks', 1)) :
 ?>
@@ -64,42 +93,10 @@ if(is_countable($tracks) && count($tracks) && $this->params->get('product_show_t
       id="product_player" 
       <?php endif; ?>>
 
-      <div class="track-count"><?php echo count($tracks); 
-        if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
-            <?php echo $word; ?> Total</div>
-        <?php endif; ?>
+      
       <!-- END PLAYER -->
   
-<?php
-$cols = 1;
-if($this->params->get('product_show_artist', 0)) :
-  $cols++;
-endif;
-if($this->params->get('product_show_filetime', 0)) :
-  $cols++;
-endif;
-if($this->params->get('product_show_filesize', 0)) :
-  $cols++;
-endif;
-if($this->params->get('product_show_sales', 0)) : 
-  $cols++;
-endif;
-if($this->params->get('product_show_downloads', 0)) : 
-  $cols++;
-endif;
-if($this->params->get('product_show_cost_column', 1)) :
-  $cols++;
-endif;
-if(count($this->formats) > 1) :
-  $cols++;
-endif;
-if($this->params->get('product_show_select_column', 1) && $this->available) :
-  $cols++;
-endif;
-if($this->params->get('product_show_preview_column', 1)) : 
-  $cols++;
-endif;
-?>
+
 <style>
 
 .jp-gui {
@@ -109,7 +106,10 @@ endif;
 
 <!-- TRACKS -->
 <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="trackForm" id="trackForm" class="">
-
+<div class="track-count"><?php echo count($tracks); 
+        if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
+            <?php echo $word; ?> Total</div>
+        <?php endif; ?>
 <div class="mymuse-cart ">
 
     <ul class="mymuse-container list-products">
@@ -146,7 +146,7 @@ endif;
           <?php echo Text::_('COM_MYMUSE_CART_PRICE'); ?></div>
         <?php endif; ?>
           
-          <?php if(count($this->formats) > 1) :?>
+          <?php if(is_countable($this->formats) && count($this->formats) > 1) :?>
         <div class="mymuse-header format"><?php echo Text::_('COM_MYMUSE_FORMAT'); ?></div>
         <?php endif;?>
           
@@ -165,7 +165,7 @@ endif;
   foreach($tracks as $track) : 
 
   
-    if($track->product_allfiles == 1 && $this->all_tracks->shown) :
+    if($track->product_allfiles == 1 && (isset($this->all_tracks->shown) && $this->all_tracks->shown) ) :
       continue;
     endif;
 
@@ -253,7 +253,7 @@ endif;
     
     <?php  if($this->params->get('product_show_cost_column', 1)) :?>
       <div class="mycart-inner price" data-name="<?php echo Text::_('COM_MYMUSE_CART_PRICE'); ?>">
-      <?php 
+    <?php 
 
                 if("1" == $this->params->get('my_price_by_product')) :
                   $first = 1;
@@ -318,14 +318,14 @@ endif;
                 echo MymuseHelper::printMoneyPublic($track->price);
                 
               endif; ?></div>
-    <?php endif; ?>
+      <?php endif; ?>
       
-      <?php if(count($this->formats) > 1) :?>
-        <div class="mycart-inner format"><?php if(isset($track->variation_select)) :
-                    echo $track->variation_select;
-                   endif;
-                ?></div>
-    <?php endif;?>
+      <?php if(is_countable($this->formats) && count($this->formats) > 1) :?>
+              <div class="mycart-inner format" data-name="<?php echo Text::_('COM_MYMUSE_FORMAT'); ?>"><?php if(isset($track->variation_select)) :
+                          echo $track->variation_select;
+                         endif;
+              ?></div>
+      <?php endif;?>
       
       <?php  if($this->params->get('product_show_select_column', 1) && $this->available) :?>
         <div class="mycart-inner select" data-name="<?php echo Text::_('COM_MYMUSE_SELECT'); ?>"><?php if($track->digital || $track->product_allfiles) :?>

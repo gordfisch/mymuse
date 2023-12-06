@@ -542,7 +542,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `track_parentid` int UNSIGNED NOT NULL DEFAULT '0',
   `catid` int NOT NULL,
   `artistid` int NOT NULL,
-  `product_sku` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `product_sku` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `title_alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `introtext` mediumtext COLLATE utf8mb4_unicode_ci,
   `fulltext` mediumtext COLLATE utf8mb4_unicode_ci,

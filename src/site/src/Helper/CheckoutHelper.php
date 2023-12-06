@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Administrator\Table\OrderTable;
 use Joomla\Component\Mymuse\Administrator\Table\OrderitemTable;
 use Joomla\Component\Mymuse\Administrator\Table\OrderpaymentTable;
@@ -98,7 +99,7 @@ class CheckoutHelper
 
 	function __construct()
 	{
-		$this->_db 	= Factory::getDBO();
+		$this->_db 	= Factory::getContainer()->get('DatabaseDriver');
 		$this->MyMuseShopper	=& Mymuse::getObject('Shopper','model');
 		$this->MyMuseStore  	=& Mymuse::getObject('Store','model');
 		$this->MyMuseCart  		=& Mymuse::getObject('Cart','helper');
@@ -880,9 +881,9 @@ class CheckoutHelper
 			$Itemid = $jinput->get("Itemid",$params->get('mymuse_default_itemid'));
 			
 			if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
-				$order->downloadlink = Route::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number);
+				$order->downloadlink = Route::_(URI::root()."index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number);
 			}else{
-				$order->downloadlink = Route::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
+				$order->downloadlink = Route::_(URI::root()."index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
 			}
 		}else{
 			$order->downloadlink = '';

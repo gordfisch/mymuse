@@ -25,6 +25,7 @@ $user 		= $this->user;
 $params 	= $this->params;
 $task		= $this->task;
 $got_flash  = 0;
+$got_variation = 0;
 $post_order = array('confirm','makepayment','thankyou','vieworder', 'notify');
 $notes_required = $params->get('my_notes_required',0);
 
@@ -32,6 +33,17 @@ HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
+for ($i=0;$i<count($order->items); $i++) : 
+    if(!isset($order->items[$i])) :
+        continue;
+    endif;
+    if(isset($order_item[$i]->flash)) :
+        $got_flash = 1;
+    endif;
+    if(isset($order_item[$i]->variation_select)) :
+        $got_variation = 1;
+    endif;
+endfor;
 
 
 $cols = 4;
@@ -46,20 +58,6 @@ endif;
 if(@$order->do_html): 
 	$cols++;  
 endif;
-
-
-
-for ($i=0;$i<count($order->items); $i++) : 
-    if(!isset($order->items[$i])) :
-        continue;
-    endif;
-    if(isset($order_item[$i]->flash)) :
-        $got_flash = 1;
-    endif;
-    if(isset($order_item[$i]->variation_select)) :
-        $got_variation = 1;
-    endif;
-endfor;
 
 ?>
 
@@ -80,9 +78,7 @@ endfor;
 			</div>
 		<?php endif; ?>
 		<?php if($params->get('product_player_type') == "playlist") : ?>
-			<div id="product_player" ><?php echo $product->flash; ?>
-			</div>
-			
+			<div id="product_player" ><?php echo $product->flash; ?></div>
 		<?php endif; ?>
 		<div style="clear: both"></div>
 		
@@ -94,45 +90,46 @@ endfor;
 <section>
     <ul class="mymuse-container mymuse-cart">
     <li class="item-container cols-<?php echo $cols; ?>">
-	
 
-		<div class="mytitle mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_TITLE'); ?></div>
-
-	<?php if($params->get("my_show_cart_preview") && $got_flash) : ?>  
-		<div class="mypreviews mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_PREVIEWS'); ?></div>
-	<?php endif; ?>	
+		<div class="mytitle mymuse-header "><?php echo Text::_('COM_MYMUSE_TITLE'); ?></div>
 		
 
 	<?php if($params->get("my_show_sku")): ?>
-		<div class="mysku mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_CART_SKU'); ?></div>
+		<div class="mysku mymuse-header "><?php echo Text::_('COM_MYMUSE_CART_SKU'); ?></div>
 	<?php endif; ?>
 
-		<div class="myprice mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_CART_PRICE'); ?></div>
+		<div class="myprice mymuse-header "><?php echo Text::_('COM_MYMUSE_CART_PRICE'); ?></div>
 	
-		<div class="myquantity mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_CART_QUANTITY'); ?></div>
+		<div class="myquantity mymuse-header "><?php echo Text::_('COM_MYMUSE_CART_QUANTITY'); ?></div>
 	
-		<div class="mysubtotal mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?></div>
+		<div class="mysubtotal mymuse-header "><?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?></div>
 
 	<?php if(@$order->do_html): ?>
-		<div class="myaction mymuse-cart-top "><?php echo Text::_('COM_MYMUSE_CART_ACTION'); ?>&nbsp;<?php echo $order->update_form; ?></div>		    
+		<div class="myaction mymuse-header "><?php echo Text::_('COM_MYMUSE_CART_ACTION'); ?>&nbsp;<?php echo $order->update_form; ?></div>		    
+	<?php endif; ?>
+	<?php if($params->get("my_show_cart_preview") && $got_flash): ?>  
+		<div class="mypreviews mymuse-header "><?php echo Text::_('COM_MYMUSE_PREVIEWS'); ?></div>
 	<?php endif; ?>
 	</li>
 		<?php
 		  // LOOP THRU order_items
 		  for ($i=0;$i<count($order_item); $i++) : ?>
+
 		  	<li class="item-container cols-<?php echo $cols; ?>">
+
 		        <div class="mytitle mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_TITLE'); ?>">
-		        <?php if(isset($order_item[$i]->artist->title) && $params->get('my_show_category_name')): ?>
+
+		        <?php if($params->get('cart_show_artist_title') && isset($order_item[$i]->artist->title)): ?>
 		        	 <?php echo $order_item[$i]->artist->title; ?> : 
 		        <?php endif; ?>
 		        
-		        <?php if(isset($order_item[$i]->parent_title)): ?>
+		        <?php if($params->get('cart_show_album_title') && isset($order_item[$i]->parent_title)): ?>
 		        	 <?php echo $order_item[$i]->parent_title; ?> :
 		        <?php endif; ?>
 
 		        <?php echo $order_item[$i]->title; ?>
 
-		        <?php if(isset($order_item[$i]->file_name) && $order_item[$i]->file_name != ''): ?>
+		        <?php if($params->get('cart_show_filename') && isset($order_item[$i]->file_name) && $order_item[$i]->file_name != ''): ?>
 		        	 <br /><?php echo $order_item[$i]->file_name; ?> 
 		        <?php endif; ?>
 
@@ -154,10 +151,7 @@ endfor;
 		        <?php endif; ?>
 		        </div>
 
-		    <?php if($params->get("my_show_cart_preview") && $got_flash): ?>  
-			        <div class="mypreviews tracks jp-gui ui-widget mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_PREVIEWS'); ?>"><?php 
-	                echo isset($order_item[$i]->flash)?  $order_item[$i]->flash : ''; ?></div>
-			<?php endif; ?>	
+		    
 
 		    <?php if($params->get("my_show_sku")): ?>
 		        <div class="mysku mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_SKU'); ?>"><?php echo $order_item[$i]->product_sku; ?></div>
@@ -181,7 +175,6 @@ endfor;
 		   <?php if($order->do_html && $order_item[$i]->quantity): ?>
 		        <div class="myquantity mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_QUANTITY'); ?>"> <input class="inputbox" type="text" size="4" maxlength="4" name="quantity[<?php echo $order_item[$i]->id ?>]" id="quantity<?php echo $order_item[$i]->id ?>"
 		        value="<?php echo $order_item[$i]->quantity;?>"   />&nbsp;</div>
-		        
 		    <?php else: ?>
 		        <div class="myquantity mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_QUANTITY'); ?>"><?php echo $order_item[$i]->quantity; 
 		        	if($params->get('my_add_stock_zero',0) && $order_item[$i]->quantity == 0) :
@@ -189,6 +182,7 @@ endfor;
 		        	endif;
 		        ?></div>
 		    <?php endif; ?>  
+
 		        <div class="mysubtotal mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_CART_SUBTOTAL'); ?>">
 		        	<span id="product_item_subtotal_<?php echo $i ?>">
 		        	<?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?>
@@ -200,6 +194,11 @@ endfor;
 		        	<div><a href="<?php echo $order_item[$i]->delete_url; ?>"><span class="btn btn-danger" ><?php echo Text::_('COM_MYMUSE_DELETE'); ?></span></a> <a href="javascript:void(0)" onclick="document.getElementById('adminForm').submit()">
 				<span class="btn btn-info" ><?php echo Text::_('COM_MYMUSE_UPDATE'); ?></span></a></div></div>
 		    <?php endif; ?>
+
+	  		<?php if($params->get("my_show_cart_preview") && $got_flash): ?>  
+		        <div class="mypreviews tracks jp-gui ui-widget mycart-inner" data-name="<?php echo Text::_('COM_MYMUSE_PREVIEWS'); ?>"><?php 
+                echo isset($order_item[$i]->flash)?  $order_item[$i]->flash : ''; ?></div>
+			<?php endif; ?>	
 
 			</li>
 		<?php endfor; ?>
@@ -330,9 +329,10 @@ endfor;
 			    <?php if(@$order->do_html): ?><div class="cart">&nbsp;</div><?php endif; ?>
 			
 			</li>
+			<?php endif; ?>
 			
 
-			<?php  if($order->non_res_total > 0): ?>
+			<?php  if($order->reservation_fee > 0 && $order->non_res_total > 0): ?>
 				<li class="item-container summary cols-<?php echo $cols; ?>" data-name="<?php echo Text::_('COM_MYMUSE_OTHER_CHARGES'); ?>">
 			    	<div class="cart"><?php echo Text::_('COM_MYMUSE_OTHER_CHARGES') ?>:</div>
 			    	<div></div><div></div>
@@ -346,6 +346,7 @@ endfor;
 				
 			<?php endif; ?>
 
+			<?php if (isset($order->must_pay_now) && $order->must_pay_now > 0) : ?>
 				<li class="item-container summary cols-<?php echo $cols; ?>">
 			    	<div class="cart" data-name="<?php echo Text::_('COM_MYMUSE_PAYNOW'); ?>"><?php echo Text::_('COM_MYMUSE_PAYNOW') ?>:</div>
 			    	<div></div><div></div>

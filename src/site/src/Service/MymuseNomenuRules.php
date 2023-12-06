@@ -83,7 +83,7 @@ class MymuseNomenuRules implements RulesInterface
     public function __construct(RouterView $router)
     {
         $this->router = $router;
-        $this->dbo = $dbo = Factory::getDBO();
+        $this->dbo = $dbo = Factory::getContainer()->get('DatabaseDriver');
 
         $this->params = MymuseHelper::getParams('com_mymuse');
         if($this->params->get('my_use_alias')){

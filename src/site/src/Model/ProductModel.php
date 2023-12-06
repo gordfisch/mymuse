@@ -103,7 +103,7 @@ class ProductModel extends ItemModel
 		$user = Factory::getApplication()->getIdentity();
 		$params = MymuseHelper::getParams();
 		$app = Factory::getApplication();
-		$db = $this->getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$pk = (int) ($pk ?: $this->getState('product.id'));
 
@@ -458,7 +458,7 @@ class ProductModel extends ItemModel
 
 		$params = MymuseHelper::getParams();
 		$app = Factory::getApplication();
-		$db = $this->getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$alpha 		= $this->getState('list.alpha','');
 		$searchword = $this->getState('list.searchword','');
 		
@@ -539,6 +539,7 @@ class ProductModel extends ItemModel
 					$db->quoteName('p.product_allfiles'),
 					$db->quoteName('p.product_release_date'),
 					$db->quoteName('p.file_preview'),
+					$db->quoteName('p.file_time'),
 					$db->quoteName('p.special_status'),
 					$db->quoteName('p.product_in_stock'),
 					$db->quoteName('p.recording'),
@@ -1004,7 +1005,7 @@ class ProductModel extends ItemModel
 
 		$params = MymuseHelper::getParams();
 		$app = Factory::getApplication();
-		$db = $this->getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		/* PHYSICAL CHILD ITEMS  PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS PHYSICAL CHILD ITEMS  */
 		$query = "SELECT * FROM #__mymuse_product as p
@@ -1072,7 +1073,7 @@ class ProductModel extends ItemModel
 		if(is_array($product->price)){
 			//return ($product->price); 
 		}
-		$db	= Factory::getDBO();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$shoppergroup_discount = 0;
 		$discount = 0;
 		$price_info = array();
@@ -1461,7 +1462,7 @@ class ProductModel extends ItemModel
 			$userIP = IpHelper::getIp();
 
 			// Initialize variables.
-			$db    = $this->getDbo();
+			$db    = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 
 			// Create the base select statement.
@@ -1600,7 +1601,7 @@ class ProductModel extends ItemModel
      */
 	function getAttributes($item_id="",$product_id="",$attribute_name="") {
 
-	  	$db = Factory::getDBO();
+	  	$db = Factory::getContainer()->get('DatabaseDriver');
 	    if ($item_id and $product_id) {
 	      $q  = "SELECT * FROM #__mymuse_product_attribute as pa, #__mymuse_product_attribute_sku as pas  \n";
 	      $q .= "WHERE pa.product_id = '$item_id'  \n";
@@ -1659,7 +1660,7 @@ class ProductModel extends ItemModel
 	*/
 	function getRecommended()
 	{
-		$db 		= Factory::getDBO();
+		$db 		= Factory::getContainer()->get('DatabaseDriver');
 		$params 	= MyMuseHelper::getParams();
 		$prods 		= array();
 		$recommends = array();

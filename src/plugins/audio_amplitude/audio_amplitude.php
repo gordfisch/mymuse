@@ -25,6 +25,7 @@ use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseStorage;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
@@ -120,7 +121,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         if(!$this->_playlist){
 
    
-            $db             = Factory::getDBO();
+            $db             = Factory::getContainer()->get('DatabaseDriver');
             $mycategories   = $this->params->get('mycategories', array());
 
             foreach($mycategories as $key => $val){
@@ -200,6 +201,11 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             $arr[1] = $playarray ['songs'];
             $arr[2] = $js_path;
             $this->_playlist = $arr;
+
+             if($load_js){
+                //echo "Adding Script $js_path"; //exit;
+                 $document->addScript( $js_path );
+            }
         }
 
         return $this->_playlist;
@@ -260,16 +266,15 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             
 
             $html = '
-<div class="amplitude-song-container">
-
-    <div class="amplitude-song-container amplitude-play-pause" data-amplitude-song-index="'.$index.'">
+    <div class="amplitude-song-container amplitude-play-pause" amplitude-song-index="'.$index.'"
+    data-amplitude-song-index="'.$index.'"
+    >
         <div class="play-pause" amplitude-main-play-pause="true"></div>
         <div class="playlist-meta">
             <div class="now-playing-title" style="display:none;">'.$this->playlist[$index]['name'].'</div>
             <div class="album-information" style="display:none;">'.$this->playlist[$index]['artist'].'</div>
         </div>
     </div>
-</div>
 ';
 
             return $html;
@@ -320,7 +325,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
 
         $this->text = '';
-        $db         = Factory::getDBO();
+        $db         = Factory::getContainer()->get('DatabaseDriver');
         $top_cat    = $mycategories[0];
         $query      = "SELECT id, alias from #__categories WHERE 
         (parent_id=$top_cat OR id=$top_cat)";
@@ -480,7 +485,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
     
     function _getQuery($catin)
     {
-        $db = Factory::getDBO();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $root_uri = Uri::root();
         $root_uri = rtrim($root_uri,'/');
 
@@ -518,7 +523,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
         $root_uri = rtrim($root_uri,'/');
         $preview_path   = $root_uri . $this->params->get('preview_path', '/media/com_mymuse/previews/');
 
-        $db = Factory::getDBO();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         //$db->setQuery("SELECT params FROM #__modules WHERE title='Latest Releases (MyMuse)' AND module='mod_mymuse_latest_nexgen'");
         $db->setQuery("SELECT params FROM `#__modules` WHERE `params` LIKE '%\"homepage\":\"1\"%' ");
 
@@ -529,7 +534,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
 
 
         if($this->mparams_string = $db->loadResult()){
-            $moduleParams = new JRegistry();
+            $moduleParams = new Registry();
             $moduleParams->loadString($this->mparams_string);
             $product_ids    = $moduleParams->get('product_ids','');
             $homepage       = $moduleParams->get('homepage',0);
@@ -545,7 +550,7 @@ class plgMymuseAudio_amplitude extends CMSPlugin
             $options = array();
             $options['countItems'] = 1;
             
-            $categories = JCategories::getInstance('Mymuse', $options);
+            $categories = Categories::getInstance('Mymuse', $options);
 
             $this_cat = $categories->get($my_artistid);
 

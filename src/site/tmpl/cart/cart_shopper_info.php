@@ -164,7 +164,7 @@ if($params->get('my_use_shipping') && isset($this->order->need_shipping)
             }
             else
             {
-                MymuseHelper::print_pre($shopper->profile);
+                //MymuseHelper::print_pre($shopper->profile);
         ?>
 
 

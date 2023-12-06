@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
         		return false;
         	}
 
-        	$db	= Factory::getDBO();
+        	$db	= Factory::getContainer()->get('DatabaseDriver');
         	$query = "SELECT * FROM #__mymuse_order WHERE order_number = '$id'";
         	$db->setQuery($query);
         	$row = $db->loadObject();
@@ -176,7 +176,7 @@ class HtmlView extends BaseHtmlView
         	}
 
         	
-        	$db	= Factory::getDBO();
+        	$db	= Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT * FROM #__mymuse_order WHERE order_number = '$id'";
 			$db->setQuery($query);
 			$row = $db->loadObject();
@@ -442,7 +442,7 @@ class HtmlView extends BaseHtmlView
         	$mymuse = $jinput->get('mymuse',0);
         	$free = 0;
         	$owned = 0;
-        	$db	= Factory::getDBO();
+        	$db	= Factory::getContainer()->get('DatabaseDriver');
         	$user = Factory::getApplication()->getIdentity();
         	$user_id = $user->get('id');
         	$format = $jinput->get('format','');
@@ -723,7 +723,7 @@ class HtmlView extends BaseHtmlView
 
 	protected  function _logDownload($shopper, $product, $order_item = '')
 	{
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$user_id = $shopper->get('id');
 		$user_name = $shopper->get('name');

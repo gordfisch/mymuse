@@ -19,6 +19,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableModelTrait;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
@@ -157,7 +158,7 @@ class OrderModel extends AdminModel
 		}
 		$params = MyMuseHelper::getParams();
 		$this->setState('order.id',$input->get('id'));
-		$db = FActory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		
 		
 		$app 	= Factory::getApplication();
@@ -201,6 +202,7 @@ class OrderModel extends AdminModel
 				$item->notes = $notes;
 			
 			}else{
+
 				// Load the profile data from the database.
 				$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 						' WHERE user_id = '.(int) $item->user_id .
@@ -304,9 +306,11 @@ class OrderModel extends AdminModel
   				$query = "SELECT * FROM #__mymuse_downloads
   				WHERE order_id=".$item->id;
   				
-  				$db = FActory::getDBO();
+  				$db = Factory::getContainer()->get('DatabaseDriver');
   				$db->setQuery( $query );
   				$item->downloads = $db->loadObjectList();
+
+  				$item->downloadlink = Route::_($item->downloadlink);
   			}
   			
   		
@@ -427,7 +431,7 @@ class OrderModel extends AdminModel
 
 			// Set ordering to the last item if not set
 			if (@$table->ordering === '') {
-				$db = JFactory::getDbo();
+				$db = JFactory::getContainer()->get('DatabaseDriver');
 				$db->setQuery('SELECT MAX(ordering) FROM #__mymuse_order');
 				$max = $db->loadResult();
 				$table->ordering = $max+1;
@@ -474,7 +478,7 @@ class OrderModel extends AdminModel
     		$this->setError(Text::_('COM_MYMUSE_ORDER_ID_NOT_FOUND'));
     		return false;
     	}
-    	$db = Factory::getDBO();
+    	$db = Factory::getContainer()->get('DatabaseDriver');
 
     	$query = "SELECT order_status FROM #__mymuse_order WHERE id=$id";
     	$db->setQuery($query);

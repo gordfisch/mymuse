@@ -55,7 +55,7 @@ class RecommendtreeField extends ListField {
 		$id = Factory::getApplication()->input->get('id',0);
 		
 		if($id){
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = 'SELECT recommend_id' .
 			' FROM #__mymuse_product_recommend_xref' .
 			' WHERE product_id='. $id ;
@@ -160,7 +160,7 @@ class RecommendtreeField extends ListField {
 			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option', 'com_content');
 		}
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true)
 			->select('a.id AS value, a.title AS text, a.level, a.published')
 			->from('#__categories AS a')
@@ -330,7 +330,7 @@ class RecommendtreeField extends ListField {
 	function getCategoriesTree()
 	{
 		global $mymusecats;
-		$db		= Factory::getDBO();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query 	= "SELECT lft,rgt FROM #__categories WHERE id=1 ";
 		$db->setQuery($query);
 		$obj 	= $db->loadObject();

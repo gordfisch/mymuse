@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
 use Joomla\CMS\Factory;
@@ -86,7 +87,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 	{
 
 		$app 		= Factory::getApplication();
-		$db			= Factory::getDBO();
+		$db			= Factory::getContainer()->get('DatabaseDriver');
 		if(isset($shopper->profile['country'])){
 			// Paypal wants the country_2_code
 			$query = "SELECT country_2_code from #__mymuse_country WHERE country_3_code='".$shopper->profile['country']."'";
@@ -166,17 +167,17 @@ class plgMymusePayment_Paypal extends CMSPlugin
 			$order->items[0]->title = Text::_('MYMUSE_REGISTRATION_FEE');
 			$order->tax_total = 0.00;
 		}
-		//$path = JURI::root(true);
+		//$path = Uri::root(true);
 		$return = 'index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid;
-		$return = JURI::root().$return;
+		$return = Uri::root().$return;
 		
-		$path = JURI::root(true);
-		$return = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid);
-		$return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$return);
+		$path = Uri::root(true);
+		$return = Route::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid);
+		$return = rtrim(Uri::root(),"/").preg_replace("#$path#",'',$return);
 		
 		
-		$cancel_return = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
-		$cancel_return = rtrim(JURI::root(),"/").$cancel_return;
+		$cancel_return = Route::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
+		$cancel_return = rtrim(Uri::root(),"/").$cancel_return;
 		
 		$string = '
 		<form action="'.PAYPAL_URL.'" method="post" name="adminFormPayPal" >
@@ -184,7 +185,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 		<input type="hidden" name="tax_cart"        value="'. $order->tax_total.'" />
 		<input type="hidden" name="return"          value="'. $return.'" />
 		<input type="hidden" name="cancel_return"   value="'. $cancel_return.'" />
-		<input type="hidden" name="notify_url"      value="'. JURI::root().'index.php?option=com_mymuse&task=notify" />
+		<input type="hidden" name="notify_url"      value="'. Uri::root().'index.php?option=com_mymuse&task=notify" />
 		
 		<input type="hidden" name="cmd"             value="_cart" />
 		<input type="hidden" name="upload"          value="1" />
@@ -300,7 +301,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 
 		$app 	= Factory::getApplication();
 
-		$db	= Factory::getDBO();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nPayPal notify PLUGIN\n";
 
@@ -439,9 +440,6 @@ class plgMymusePayment_Paypal extends CMSPlugin
         			MymuseHelper::logMessage( $debug. print_r($result,true)  );
   				}
   				
-  				
-            	
-            	
   				// SAVE ORDER AFTER
   				/*
             	if($params->get('my_saveorder','') == "after"){
@@ -665,7 +663,7 @@ class plgMymusePayment_Paypal extends CMSPlugin
 		if($ids){
 			$good = 0;
 			$product_ids = explode(',', $ids);
-			$db			= Factory::getDBO();
+			$db			= Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT * FROM `#__mymuse_order_item`
                     WHERE `order_id`='".$this->order_id."'";
         	$date = date('Y-m-d h:i:s');

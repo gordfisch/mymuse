@@ -65,7 +65,7 @@ class CategorytreeField extends ListField
 		$arr = array();
 		$this->value = array();
 		if($id){
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = 'SELECT catid as id ' .
 			' FROM #__mymuse_product_category_xref' .
 			' WHERE product_id = '. $id .' ';
@@ -156,7 +156,7 @@ class CategorytreeField extends ListField
 		$options 	= array();
 		$published 	= $this->element['published'] ? $this->element['published'] : array(0, 1);
 		$name 		= (string) $this->element['name'];
-		$db 		= Factory::getDbo();
+		$db 		= Factory::getContainer()->get('DatabaseDriver');
 
 		// Let's get the id for the current item, either category or content item.
 		$jinput 	= Factory::getApplication()->input;
@@ -348,7 +348,7 @@ class CategorytreeField extends ListField
 	function getCategoriesTree()
 	{
 		global $mymusecats;
-		$db		= Factory::getDBO();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query 	= "SELECT lft,rgt FROM #__categories WHERE id=1 ";
 		$db->setQuery($query);
 		$obj 	= $db->loadObject();

@@ -31,6 +31,8 @@ $this->assocParam   = (Associations::isEnabled() && $this->params->get('show_ass
 $store 				= $this->store;
 $cart 				= $this->cart;
 $product 			=& $this->item;
+$plus_button 		= "components/com_mymuse/assets/images/plus-button-30.png";
+$minus_button 		= "components/com_mymuse/assets/images/minus-button-30.png";
 
 //MymuseHelper::print_pre($product);
 
@@ -61,7 +63,7 @@ $this->available  		= ($this->item->special_status == "COM_MYMUSE_NO_LONGER_AVAI
 
 //get artist URL if exists
 $this->item->artist_link = '';
-$db = Factory::getDBO();
+$db = Factory::getContainer()->get('DatabaseDriver');
 $app = Factory::getApplication();
 $artist = ApplicationHelper::stringURLSafe($this->item->artist_title);
 $this->item->artist_link = '';
@@ -105,6 +107,7 @@ if("1" == $this->params->get('my_price_by_product')){//price by product
 }
 
 $this->all_tracks = 0;
+
 if(count((is_countable($tracks)?$tracks:[]))){
     foreach($tracks as $track){ 
         if($track->product_allfiles == 1){
@@ -256,9 +259,9 @@ jQuery(document).ready(function($){
                 action = res.action;
                 //alert(res.msg);
                 if(action == "deleted" || action == "failed"){
-                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
+                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().$plus_button.'");
                 }else{
-                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
+                    $("#cart_image_'.$product->id.'").attr("src","'.URI::root().$minus_button.'");
                 }
                 if(idx){
                     if(idx == 1){
@@ -307,9 +310,9 @@ if(count(is_countable($items)?$items:[]) && $items_select){
 
                 //alert(res.msg);
                 if(action == "deleted" || action == "failed"){
-                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
+                    $("#cart_image").attr("src","'.URI::root().$plus_button.'");
                 }else{
-                    $("#cart_image").attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
+                    $("#cart_image").attr("src","'.URI::root().$minus_button.'");
                 }
 
                 if(idx){
@@ -359,9 +362,9 @@ if(count(is_countable($items)?$items:[]) && !$items_select){
 
 		                //alert(res.msg);
 		                if(action == "deleted" || action == "failed"){
-		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
+		                    $("#img_'.$item->id.'").attr("src","'.URI::root().$plus_button.'");
 		                }else{
-		                    $("#img_'.$item->id.'").attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
+		                    $("#img_'.$item->id.'").attr("src","'.URI::root().$minus_button.'");
 		                }
 
 		                if(idx){
@@ -417,9 +420,9 @@ if(is_countable($tracks)){
 		                action = res.action;
 		                //alert(res.msg);
 		                if(action == "deleted" || action == "failed"){
-		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/plus-button-30.png");
+		                    $("#img_"+id).attr("src","'.URI::root().$plus_button.'");
 		                }else{
-		                    $("#img_"+id).attr("src","'.URI::root().'components/com_mymuse/assets/images/minus-button-30.png");
+		                    $("#img_"+id).attr("src","'.URI::root().$minus_button.'");
 		                }
 		                if(idx){
 		                    if(idx == 1){

@@ -44,7 +44,7 @@ endif;
             <div class="com-content-category-blog__child uk-width-1-<?php echo $cols; ?>@m uk-margin">
 
                 <?php if ($this->params->get('show_subcat_image') == 1 && $child->getParams()->get('image')) :?>
-                <div class="list-image"><a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($child->id));?>">
+                <div class="list-image"><a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id));?>">
                     <img src="<?php echo $child->getParams()->get('image'); ?>"
                     <?php if ($this->params->get('category_image_height')) : ?>
                         height="<?php echo $this->params->get('category_image_height'); ?>"

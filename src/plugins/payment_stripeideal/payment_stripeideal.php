@@ -340,7 +340,7 @@ Array
     [redirect_status] => succeeded
 )
 */
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getContainer()->get('DatabaseDriver');
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nStripe notify PLUGIN\n";
 		$result = array();

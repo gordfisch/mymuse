@@ -57,6 +57,7 @@ $link = RouteHelper::getProductRoute($this->item->id, $this->item->$cat, $this->
     </div>
 
 
+<?php if($this->params->get('category_product_show_title', 1)) : ?>
     <div class="feature-title">
         <h3>
             <?php if ($params->get('category_link_titles') && $params->get('access-view')) : ?>
@@ -67,6 +68,7 @@ $link = RouteHelper::getProductRoute($this->item->id, $this->item->$cat, $this->
             <?php endif; ?>
         </h3>
     </div>
+ <?php endif; ?>   
     
 
     <?php // @todo Not that elegant would be nice to group the params ?>

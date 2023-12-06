@@ -76,7 +76,7 @@ class StoreTable extends Table implements VersionableTableInterface
 	 */
 	public function bind($array, $ignore = '')
 	{
-		
+
 		if (isset($array['params']) && is_array($array['params'])) {
 			$registry = new Registry();
 			$registry->loadArray($array['params']);
@@ -89,7 +89,7 @@ class StoreTable extends Table implements VersionableTableInterface
 		}
 
 		if (isset($array['metadata']) && is_array($array['metadata'])) {
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string)$registry;
 		}elseif (isset($array['metadata'])) {
@@ -285,7 +285,7 @@ class StoreTable extends Table implements VersionableTableInterface
 	public function enablePlugin($name, $enable = 1)
 	{
 		// Enable plugin
-		$db  = Factory::getDbo();
+		$db  = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 		$query->update('#__extensions');
 		$query->set($db->quoteName('enabled') . " = $enable");
@@ -314,7 +314,7 @@ class StoreTable extends Table implements VersionableTableInterface
     function change_encoding($my_encode_filenames = 0)
     {
     
-    	$db = Factory::getDBO();
+    	$db = Factory::getContainer()->get('DatabaseDriver');
     	$params = MyMuseHelper::getParams();
     	$app = Factory::getApplication();
   

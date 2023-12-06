@@ -36,7 +36,7 @@ $jinput 		= Factory::getApplication()->input;
 $Itemid			= $jinput->get("Itemid", "", "string");
 $checkoutUrl 	= 'index.php?option=com_mymuse&task=checkout&Itemid='.$Itemid;
 
-if(!$params->get('my_disable_css',0)){
+if(0 == $params->get('my_disable_css',0)){
 	// add css
 	$style = Uri::root().'components/com_mymuse/assets/css/mymuse.css';
 

@@ -136,7 +136,7 @@ class FormatsModel extends ListModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -183,7 +183,7 @@ class FormatsModel extends ListModel
 		 */
 		public function delete(&$pks) {
 
-			$db = $this->getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 
 			$query->delete('`#__mymuse_format`');

@@ -90,8 +90,8 @@ class plgUserMymusenoreg extends CMSPlugin
     	$lang = Factory::getLanguage();
     	$lang->load('plg_user_mymusenoreg', JPATH_ADMINISTRATOR);
 
-    	$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-    	$wa->useScript('jquery');
+    	//$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+    	//$wa->useScript('jquery');
     }
 
     /**
@@ -113,7 +113,7 @@ class plgUserMymusenoreg extends CMSPlugin
     	$myparams = MymuseHelper::getParams();
     	$profile_key = $myparams->get('my_profile_key', 'mymuse');
     	$userId = $instance->id;
-    	$db = Factory::getDbo();
+    	$db = Factory::getContainer()->get('DatabaseDriver');
     	$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
     			' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
     			' ORDER BY ordering';
@@ -181,7 +181,7 @@ class plgUserMymusenoreg extends CMSPlugin
 			if (!isset($data->profile) and $userId > 0) {
 
 				// Load the profile data from the database.
-				$db = Factory::getDbo();
+				$db = Factory::getContainer()->get('DatabaseDriver');
 				$db->setQuery(
 					'SELECT profile_key, profile_value FROM #__user_profiles' .
 					' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
@@ -422,7 +422,7 @@ class plgUserMymusenoreg extends CMSPlugin
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
 					}
 				if($field == 'country'){
-					$db = Factory::getDBO();
+					$db = Factory::getContainer()->get('DatabaseDriver');
 					$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 					$db->setQuery($query);
 					$store = $db->loadObject();
@@ -507,7 +507,7 @@ class plgUserMymusenoreg extends CMSPlugin
 					}
 					if($field == 'shipping_country'){
 						/*
-						$db = Factory::getDBO();
+						$db = Factory::getContainer()->get('DatabaseDriver');
 						$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 						$db->setQuery($query);
 						$store = $db->loadObject();
@@ -641,7 +641,7 @@ class plgUserMymusenoreg extends CMSPlugin
      */
    function listCountryState($country_select='', $state_select='', $store_country='') {
 
-		$db	= Factory::getDBO();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		//echo "country = $country_select state = $state_select"; exit;
 		$javascript = "onchange=\"changeDynaList( 'state', countrystates, document.adminForm.country.options[document.adminForm.country.selectedIndex].value, 0, 0);\"";
 		
@@ -764,7 +764,7 @@ class plgUserMymusenoreg extends CMSPlugin
    		if(!$id){
    			return '';
    		}
-   		$db = Factory::getDBO();
+   		$db = Factory::getContainer()->get('DatabaseDriver');
    		$query = "SELECT state_name FROM #__mymuse_state WHERE id=$id";
    		$db->setQuery($query);
    		$name = $db->loadResult();

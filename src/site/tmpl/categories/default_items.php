@@ -18,6 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 use Joomla\Component\Mymuse\Site\Helper\RouteHelper;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Content\Administrator\Extension\ContentComponent;
@@ -30,7 +31,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
 <div class="mymuse-categories">
 <ul>
 <?php foreach($this->items[$this->parent->id] as $id => $item) : 
-$item_params = new JRegistry();
+$item_params = new Registry();
 $item_params->loadString($item->params);
 if($this->params->get('category_layout') == "_:tracks"){
 	$item->numitems = $this->_getTrackCount($item);

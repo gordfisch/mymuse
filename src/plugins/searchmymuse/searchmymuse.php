@@ -85,7 +85,7 @@ class plgSearchSearchMymuse extends CMSPlugin
 
     	require_once JPATH_ADMINISTRATOR . '/components/com_search/helpers/search.php';
     	
-        $db     = Factory::getDbo();
+        $db     = Factory::getContainer()->get('DatabaseDriver');
         $app    = Factory::getApplication();
         $user   = Factory::getApplication()->getIdentity();
         $groups = implode(',', $user->getAuthorisedViewLevels());

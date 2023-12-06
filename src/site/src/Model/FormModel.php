@@ -287,7 +287,7 @@ class FormModel extends \Joomla\Component\Mymuse\Administrator\Model\ArticleMode
 			{
 				$categoryId = (int) $params->get('catid');
 
-				$db    = $this->getDbo();
+				$db    = Factory::getContainer()->get('DatabaseDriver');
 				$query = $db->getQuery(true)
 					->select($db->quoteName('language'))
 					->from($db->quoteName('#__categories'))

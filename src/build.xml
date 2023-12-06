@@ -136,6 +136,20 @@
                 <copy file="${src}/plugins/storage_s3/mymuseStorage.php"
                             todir="${joomladir}/plugins/mymuse/storage_s3" /> 
 
+                <copy file="${src}/plugins/shipping_usps/shipping_usps.php"
+                            todir="${joomladir}/plugins/mymuse/shipping_usps" /> 
+                <copy file="${src}/plugins/shipping_usps/shipping_usps.xml"
+                            todir="${joomladir}/plugins/mymuse/shipping_usps" /> 
+                <copy file="${src}/plugins/shipping_usps/api/laff-pack.php"
+                            todir="${joomladir}/plugins/mymuse/shipping_usps/api" /> 
+                <copy file="${src}/plugins/shipping_usps/api/mm_ship.php"
+                            todir="${joomladir}/plugins/mymuse/shipping_usps/api" />
+                <copy file="${src}/plugins/shipping_usps/language/en-GB/plg_mymuse_shipping_usps.ini"
+                        todir="${joomladir}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/shipping_usps/language/en-GB/plg_mymuse_shipping_usps.sys.ini"
+                        todir="${joomladir}/administrator/language/en-GB" />
+
+
                 <copy file="${src}/plugins/payment_stripeideal/payment_stripeideal.php"
                             todir="${joomladir}/plugins/mymuse/payment_stripeideal" /> 
                 <copy file="${src}/plugins/payment_stripeideal/payment_stripeideal.xml"

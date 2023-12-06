@@ -30,7 +30,12 @@ $cols = count($this->item->recommends);
 		<?php foreach($this->item->recommends as $item) : ?>
 			<?php if($item->list_image) :?>
 			<div class="related-item">
-			<a href="<?php echo RouteHelper::getProductRoute($item->id, $item->catid); ?>"><img src="<?php echo $item->list_image; ?>"></a>
+			<a href="<?php echo RouteHelper::getProductRoute($item->id, $item->catid); ?>"><img
+				src="<?php echo $item->list_image; ?>"
+				id="img_<?php echo $item->id; ?>"
+        		alt="<?php echo $item->title;?>" 
+        		title="<?php echo $item->title;?>"
+				></a>
 			</div>
 			<?php endif; ?>
 		<?php endforeach; ?>

@@ -216,7 +216,7 @@ class MymuseHelper extends ContentHelper
 	public static function getParams($store=0, $new = 0)
 	{
 		if(!self::$_params || $new){
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 
 			if(!$store){
 				$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
@@ -329,7 +329,7 @@ class MymuseHelper extends ContentHelper
 	 */
 	public static function getStore($id=1)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = "SELECT * from `#__mymuse_store` WHERE id='$id'";
 		$db->setQuery($query);
 		$store = $db->loadObject();
@@ -398,7 +398,7 @@ class MymuseHelper extends ContentHelper
 
 		if(!$code){
 			jimport( 'joomla.html.parameter' );
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 			$db->setQuery($query);
 			$store = $db->loadObject();
@@ -406,7 +406,7 @@ class MymuseHelper extends ContentHelper
 			$code = $params->get('currency');
 
 		}
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = "SELECT * from #__mymuse_currency WHERE currency_code = '".$code."'";
 
 		$db->setQuery($query);
@@ -516,7 +516,7 @@ class MymuseHelper extends ContentHelper
 	 */
 	
 	public function logPayment($payment){
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		
 		$table = new OrderpaymentTable($db);
 		
@@ -567,7 +567,7 @@ class MymuseHelper extends ContentHelper
 	
 	public static function getArtistAlias($id,$parent=0){
 		
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		if(!$parent){ //not the parent, find the parent
 			
 			$query = "SELECT parentid from #__mymuse_product
@@ -615,7 +615,7 @@ class MymuseHelper extends ContentHelper
 	function getArtistId($id,$parent=0){
 
 		
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		if(!$parent){ //not the parent, find the parent
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
@@ -652,7 +652,7 @@ class MymuseHelper extends ContentHelper
 	
 	public static function getAlbumAlias($id,$parent=0){
 		
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		if(!$parent){ //not the parent, find the parent
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
@@ -785,7 +785,7 @@ class MymuseHelper extends ContentHelper
 	 */
 	public static function getStatusName($code){
 		
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$q = "SELECT name FROM #__mymuse_order_status WHERE ";
 		$q .= "code = '".$code."' ";
 		$db->setQuery($q);
@@ -889,7 +889,7 @@ class MymuseHelper extends ContentHelper
 		if(!$id){
 			return false;
 		}
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$q = "SELECT product_in_stock from #__mymuse_product WHERE id=$id";
 		$db->setQuery($q);
@@ -1044,7 +1044,7 @@ class MymuseHelper extends ContentHelper
 		}
 
 		$id = (int)$id;
-		$db = Factory::getDbo ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$q = 'SELECT `' . $db->escape ($fld) . '` AS fld FROM `#__mymuse_country` WHERE id = ' . (int)$id;
 		$db->setQuery ($q);
@@ -1075,7 +1075,7 @@ class MymuseHelper extends ContentHelper
 				$fieldname = 'country_name';
 			}
 		}
-		$db = Factory::getDbo ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$q = 'SELECT `id` FROM `#__mymuse_country` WHERE `' . $fieldname . '` = "' . $db->escape ($name) . '"';
 
 		$db->setQuery ($q);
@@ -1097,7 +1097,7 @@ class MymuseHelper extends ContentHelper
 		if (empty($id)) {
 			return '';
 		}
-		$db = Factory::getDbo ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$q = 'SELECT ' . $db->escape ($fld) . ' AS fld FROM `#__mymuse_state` WHERE id = "' . (int)$id . '"';
 		$db->setQuery ($q);
 		$r = $db->loadObject ();
@@ -1118,7 +1118,7 @@ class MymuseHelper extends ContentHelper
 		if (empty($name)) {
 			return 0;
 		}
-		$db = Factory::getDbo ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		if (strlen ($name) === 2) {
 			$fieldname = 'state_2_code';
 		} else {
@@ -1275,7 +1275,7 @@ class MymuseHelper extends ContentHelper
 
 		$datenow 	= Factory::getDate();
 		$params		= $self::getParams();
-		$db			= Factory::getDBO();
+		$db			= Factory::getContainer()->get('DatabaseDriver');
 		$order 		= new OrderTable($db);
 		$order->load( $id );
 		$order->order_status = $status;

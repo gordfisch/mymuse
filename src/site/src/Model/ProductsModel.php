@@ -240,6 +240,10 @@ class ProductsModel extends ListModel
 
 		if (is_numeric($published)) {
 			$query->where('a.state = '.(int) $published);
+		}elseif( is_array($published)) {
+			$str = implode(',',$published);
+			$query->where("(a.state IN ($str))");
+
 		} else if ($published === '') {
 			$query->where('(a.state IN (0, 1))');
 		}
@@ -511,7 +515,7 @@ class ProductsModel extends ListModel
 		$query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author");
 		$query->select("ua.email AS author_email");
 
-		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+		$query->join('LEFT', '`#__users` AS `ua` ON `ua`.`id` = `a`.`created_by`');
 
 	
 
@@ -527,7 +531,7 @@ class ProductsModel extends ListModel
 		    $query->order($db->escape($orderCol));
 		}
 
- 		//echo $db->replacePrefix(($query->__toString()));
+ 		// echo "<!-- Query  ". $db->replacePrefix(($query->__toString())). " -->";
 		return $query;
 	}
 
@@ -548,7 +552,7 @@ class ProductsModel extends ListModel
 			return array();
 		}
 
-		$user   = Factory::getApplication()->getIdentity();
+		$user   = Factory::getUser();
 		$userId = $user->get('id');
 		$guest  = $user->get('guest');
 		$groups = $user->getAuthorisedViewLevels();
@@ -685,8 +689,13 @@ class ProductsModel extends ListModel
 			{
 				$item->associations = AssociationHelper::displayAssociations($item->id);
 			}
+			//get first track of this product
+			$query = "SELECT file_preview FROM #__mymuse_product WHERE parentid =".$item->id." ORDER BY ordering ASC";
+			$db->setQuery($query);
+			if(!$item->preview = $db->loadResult()){
+				$item->preview = '';
+			}
 
-			//echo "list -image ".$item->list_image."<br />";
 		}
 
 

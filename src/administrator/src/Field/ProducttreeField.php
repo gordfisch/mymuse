@@ -45,7 +45,7 @@ class ProducttreeField extends SqlField
 			return'';
 		}
 		// do the SQL
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query="SELECT 0 AS id, '- None selected' AS name 
 		UNION ALL SELECT id, title as name FROM #__mymuse_product WHERE parentid='0'
 				AND id NOT IN ($id) ORDER BY NAME asc";

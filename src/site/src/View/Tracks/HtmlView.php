@@ -53,7 +53,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app	= Factory::getApplication();
 		$user	= Factory::getApplication()->getIdentity();
-		$db     = Factory::getDBO();
+		$db     = Factory::getContainer()->get('DatabaseDriver');
 		$jinput = $app->input;
 		//MymuseHelper::print_pre($jinput);
 		$app 	= Factory::getApplication();

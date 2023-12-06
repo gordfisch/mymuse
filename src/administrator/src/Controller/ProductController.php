@@ -151,7 +151,7 @@ class ProductController extends FormController
         $this->parentid     = isset($post['parentid'])? $post['parentid'] : 0;
         $form               = $post['jform'];
         $this->product_sku  = isset($form['product_sku'])? $form['product_sku'] : '';
-        $db                 = Factory::getDBO();
+        $db                 = Factory::getContainer()->get('DatabaseDriver');
         $task               = $this->input->get('task');
 
         $type               = $post['type'];
@@ -406,7 +406,7 @@ class ProductController extends FormController
     function create_items ()
     {
 
-        $db             = Factory::getDBO();
+        $db             = Factory::getContainer()->get('DatabaseDriver');
         $id             = $this->input->get('id');
         $model          = $this->getModel('product');
         $num_items      = 1;
@@ -601,7 +601,7 @@ class ProductController extends FormController
     
         // Get the model
         $model = $this->getModel();
-        //$model = $this->getModel('Products', 'MyMuseModel', array('ignore_request' => true));;
+        //$model = $this->getModel('Products', 'MyMuseModel', array('ignore_request' => true));
     
         // Save the ordering
         $return = $model->saveorder($pks, $order);
@@ -726,7 +726,7 @@ class ProductController extends FormController
         $my_limit   = $params->get('my_update_limit', 200);
         $limit      = $input->get('limit',$my_limit);
         $type       = $input->get('type','physical');
-        $db                         = Factory::getDBO();
+        $db                         = Factory::getContainer()->get('DatabaseDriver');
         $this->storage = new MymuseStorage();
 
 
@@ -756,7 +756,6 @@ class ProductController extends FormController
                     "ALTER TABLE `#__mymuse_product` DROP `product_studio`;",
                     "ALTER TABLE `#__mymuse_product` DROP `product_publisher`;",
                     "ALTER TABLE `#__mymuse_product` DROP `file_length`;",
-                    "ALTER TABLE `#__mymuse_product` DROP `file_time`;",
                     "ALTER TABLE `#__mymuse_product` DROP `file_name`;",
                     "ALTER TABLE `#__mymuse_product` DROP `file_downloads`;",
                     "ALTER TABLE `#__mymuse_product` DROP `file_contents`;",
@@ -789,10 +788,7 @@ class ProductController extends FormController
                     echo "<br />".$query;
                     
                 }
- 
 
-                
-              
                 return true;
             }elseif($res[0] == "physical-continue"){
                 $limitstart = $limitstart + $limit;

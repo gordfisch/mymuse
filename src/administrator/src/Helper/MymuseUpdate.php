@@ -60,7 +60,7 @@ class MymuseUpdate extends ContentHelper
 	function makeCategory($title='', $parent_id=1, $description='', $image='', $alias = '')
 	{
 		
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$url = Uri::base();
 		if(!preg_match('/administrator/', $url)){
 			$url .= 'administrator/';
@@ -147,7 +147,7 @@ class MymuseUpdate extends ContentHelper
 				echo "Did not have an SKU";
 		}
 		//Add a main product
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$app = Factory::getApplication();
 		$token = Session::getFormToken();
 		$query = "DELETE from #__mymuse_product WHERE product_sku = ".$db->quote($p->product_sku);
@@ -306,7 +306,7 @@ class MymuseUpdate extends ContentHelper
 	{
 	
 		//Add a main product
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$app = Factory::getApplication();
 		$token = Session::getFormToken();
 	
@@ -379,7 +379,7 @@ class MymuseUpdate extends ContentHelper
 	function makeProductObject($p)
 	{
 		$input 	= Factory::getApplication()->input;
-		$db 	= Factory::getDBO();
+		$db 	= Factory::getContainer()->get('DatabaseDriver');
 		$token 	= Session::getFormToken();
 		$query 	= "DELETE from #__mymuse_product WHERE product_sku = ".$db->quote($p->product_sku);
 
@@ -533,7 +533,7 @@ class MymuseUpdate extends ContentHelper
 			Factory::getApplication()->enqueueMessage($this->error, 'error');
 			return false;
 		}
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$url = Uri::base()."index.php";
 		$token = Session::getFormToken();
 		$cookie = session_name()."=".session_id();

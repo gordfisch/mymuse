@@ -30,7 +30,8 @@ if (!class_exists('MMShippingPlugin')) {
 * This is the Shipping class to call the USPS API for shipping costs
 */
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 class plgMymuseShipping_usps extends MMShippingPlugin
 {
@@ -98,7 +99,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 		$this->usps_flat_rate_priority_express_avail = -1;
 		$this->_makeMethods();
 
-		$params 							= MyMuseHelper::getParams();
+		$params 							= MymuseHelper::getParams();
 		$pcurrency 							= $params->get('my_currency_code', 0);
 		$this->currency 					= ($pcurrency != 0)? $pcurrency : $this->currency;
 
@@ -108,7 +109,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 		$this->source_address->country_id 	= $this->getCountryIDByName($this->source_address->country);
 		$this->source_address->state_name	= $params->get('province');
 		$this->source_address->state_id 	= $this->getStateIDByName($this->source_address->state_name);
-		$session 							= JFactory::getSession();
+		$session 							= Factory::getSession();
 		$profile							= $session->get('myprofile');
 
 
@@ -223,7 +224,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 	protected function logInfo ($text, $type = 'message', $doLog=false) {
 		$doLog = 1;
 		if ((isset($this->_debug) and $this->_debug) OR $doLog) {
-			MyMuseHelper::logMessage( $text  );
+			MymuseHelper::logMessage( $text  );
 		}
 	}
 
@@ -377,7 +378,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 			if($cat_cond == false) $this->logInfo(' FALSE Reason: products did not pass category conditions.');
 		}
 
-		$allconditions = (int)$orderWeightcond + (int)$zip_cond + (int)$country_cond + (int)$orderamount_cond + (int)$cat_cond;;
+		$allconditions = (int)$orderWeightcond + (int)$zip_cond + (int)$country_cond + (int)$orderamount_cond + (int)$cat_cond;
 		$fitbox_cond = true; //default
 		do if($allconditions === 5){
 			//Create shipping containers
@@ -623,7 +624,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 		}
 
 		$id = (int)$id;
-		$db = JFactory::getDBO ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$q = 'SELECT `' . $db->escape ($fld) . '` AS fld FROM `#__mymuse_country` WHERE id = ' . (int)$id;
 		$db->setQuery ($q);
@@ -652,7 +653,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 				$fieldname = 'country_name';
 			}
 		}
-		$db = JFactory::getDBO ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$q = 'SELECT `id` FROM `#__mymuse_country` WHERE `' . $fieldname . '` = "' . $db->escape ($name) . '"';
 
 		$db->setQuery ($q);
@@ -672,7 +673,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 		if (empty($id)) {
 			return '';
 		}
-		$db = JFactory::getDBO ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$q = 'SELECT ' . $db->escape ($fld) . ' AS fld FROM `#__mymuse_state` WHERE id = "' . (int)$id . '"';
 		$db->setQuery ($q);
 		$r = $db->loadObject ();
@@ -691,7 +692,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 		if (empty($name)) {
 			return 0;
 		}
-		$db = JFactory::getDBO ();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		if (strlen ($name) === 2) {
 			$fieldname = 'state_2_code';
 		} else {
@@ -850,7 +851,7 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 	* @return currency
 	*/
 	private function _getUSPSRates($order_weight, $cart, $destaddress, $cartvalue, $usps_service_code, $usps_container_name) {
-		$app 			= JFactory::getApplication();
+		$app 			= Factory::getApplication();
 		$dest_zip 		= trim($destaddress->zip);
 		$dest_countryid = $destaddress->country_id;
 		$dest_stateid 	= (isset($destaddress->state_id) ? $destaddress->state_id : 0);
@@ -862,9 +863,13 @@ class plgMymuseShipping_usps extends MMShippingPlugin
 		
 		$this->logInfo('****USPS API CALL: Total cart weight='.$order_weight.'lbs zipcode from='.$source_zip.' zipcode to='.$dest_zip.' countryid='.$dest_countryid.' service='.$usps_service_code.' container='.$usps_container_name.'****');
 		//Store variables to cart which are used to determine if another call to USPS API is required on future requests.
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		require_once( JPATH_COMPONENT.DIRECTORY_SEPARATOR.'mymuse.class.php');
-		$MyMuseCart = MyMuse::getObject('cart','helpers');
+
+
+		$MyMuseCart = Mymuse::getObject('cart','helper');
+
+
 		$MyMuseCart->usps_ship_weight  = $order_weight;
 		$MyMuseCart->usps_ship_source_zip = $source_zip;
 		$MyMuseCart->usps_ship_dest_zip = $dest_zip;

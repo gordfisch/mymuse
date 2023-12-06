@@ -655,7 +655,7 @@ class ProductModel extends AdminModel
    		$this->_itemPagination = $model->getPagination();
    		
    		//get attributes
-   		$db = Factory::getDBO();
+   		$db = Factory::getContainer()->get('DatabaseDriver');
    		for($i = 0; $i<count($this->_items); $i++){
 
    			// Convert the attribs field to an array.
@@ -949,7 +949,7 @@ class ProductModel extends AdminModel
 	 */
 	function getAttributes(){
 
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$this->_attribute_skus = $this->getAttributeskus();
 
@@ -978,7 +978,7 @@ class ProductModel extends AdminModel
 	 * @return array
 	 */
 	function getAttributeskus(){
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$app 	= Factory::getApplication();
 		$input 	= $app->input;
 		$pid	= $input->get( 'parentid', null );
@@ -1015,7 +1015,7 @@ class ProductModel extends AdminModel
 		$input 				= Factory::getApplication()->input;
 		$post 				= $input->post->getArray();
 		$itemid				= $input->get('itemid','');
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$attribute_values		= $input->getVar('attribute_value', array());
 		$attribute_names		= $input->getVar('attribute_name', array());
@@ -1271,7 +1271,7 @@ class ProductModel extends AdminModel
 	{
 		$input  		= Factory::getApplication()->input;
 		$filter 		= \JFilterInput::getInstance();
-		$db     		= $this->getDbo();
+		$db     		= Factory::getContainer()->get('DatabaseDriver');
 		$user			= Factory::getApplication()->getIdentity();
 
 
@@ -1339,7 +1339,7 @@ class ProductModel extends AdminModel
 
    		$process 				= 0;
    		$input      		= Factory::getApplication()->input;
-	   	$db 						= Factory::getDBO();
+	   	$db 						= Factory::getContainer()->get('DatabaseDriver');
 	   	$this->table 		= $this->getTable();
 	   	$formats 				= array();
 	   	$my_return			= array();
@@ -1499,7 +1499,7 @@ class ProductModel extends AdminModel
 
    function getChildTracks($cid) 
    {
-   	$db = Factory::getDBO();
+   	$db = Factory::getContainer()->get('DatabaseDriver');
    	$res = array();
    	foreach($cid as $id){
    		$query = "SELECT id from #__mymuse_product WHERE track_parentid=$id";

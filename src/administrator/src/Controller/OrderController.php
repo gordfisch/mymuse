@@ -44,7 +44,6 @@ class OrderController extends FormController
 		{
 	    	$input 		= Factory::getApplication()->input;
 	    	$input->set('jform[checked_out]','0');
-	    	//MymuseHelper::print_pre($input); exit;
 	    	$post 		= $input->post->getArray();
 			$form 		= $post['jform'];
 			$old_status = $input->get('old_status','');
@@ -63,7 +62,7 @@ class OrderController extends FormController
 					if ($form['order_status'] == "C" && $params->get('my_use_stock') && 
 						(isset($form['update_on_confirm']) && $form['update_on_confirm'] == "1") ){
 
-						$db = Factory::getDBO();
+						$db = Factory::getContainer()->get('DatabaseDriver');
 
 						$query = "SELECT oi.*, p.product_physical, p.title, p.product_in_stock as product_product_in_stock FROM #__mymuse_order_item as oi 
 						LEFT JOIN #__mymuse_product 
@@ -130,9 +129,6 @@ class OrderController extends FormController
 			$input->set( 'view', 'order' );
 			$input->set( 'task', 'mailcustomer'  );
 
-
-			
-
 			$MyMuseStore  	=& Mymuse::getObject('store','model');
 			$store 			= $MyMuseStore->getStore();
 			$model 			= $this->getModel();
@@ -145,17 +141,14 @@ class OrderController extends FormController
 			$base_dir = JPATH_SITE;
 			
 			$language->load($extension, $base_dir, $language_tag, true);
+			$this->subject = Text::_('COM_MYMUSE_ORDER_STATUS_CHANGED');
 
-			
-			
-
-			//include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
 			$input->set( 'layout', 'order');
 			ob_start();
 			$this->display();
 			$message= ob_get_contents();
 			ob_end_clean();
-//MymuseHelper::print_pre($message); exit;
+
 			//if using no_reg
 			if($params->get('my_registration') == "no_reg"){
 				$registry = new Registry;
@@ -219,7 +212,7 @@ class OrderController extends FormController
 				$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='. $id );
 				return false;
 			}
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT * FROM #__mymuse_order_item WHERE id=$order_item_id";
 			$db->setQuery($query);
 			$order_item = $db->loadObject();
@@ -284,7 +277,7 @@ class OrderController extends FormController
     function alertPreorders()
     {   
 
-        $db = Factory::getDBO();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $input = Factory::getApplication()->input;
         $id = $input->get( 'id','','INT' );
         $app = Factory::getApplication();
@@ -391,8 +384,8 @@ class OrderController extends FormController
 		$user_email 	= $order->user->email;
 	
 		// SEND MAIL TO BUYER
-		$subject = text::_('COM_MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
-		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+		$this->subject = text::_('COM_MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
+		$subject = html_entity_decode($this->subject, ENT_QUOTES,'UTF-8');
 	
 		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
 		$mailfrom = $params->get('contact_email');

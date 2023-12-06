@@ -342,7 +342,7 @@ class CategoryModel extends ListModel
 		$productOrderby   = $params->get('orderby_sec', 'rdate');
 		$productOrderDate = $params->get('order_date');
 		$categoryOrderby  = $params->def('orderby_pri', '');
-		$secondary        = QueryHelper::orderbySecondary($productOrderby, $productOrderDate, $db) . ', ';
+		$secondary        = QueryHelper::orderbySecondary($productOrderby, $productOrderDate, Factory::getContainer()->get('DatabaseDriver')) . ', ';
 		$primary          = QueryHelper::orderbyPrimary($categoryOrderby);
 
 		$orderby .= $primary . ' ' . $secondary . ' a.created ';

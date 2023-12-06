@@ -38,6 +38,7 @@ $fieldsetsInContact 	= ['contact', 'contact2'];
 $fieldsetsInDownloads 	= ['downloads', 'directories'];
 $fieldsetsInPhysical 	= ['physical'];
 $fieldsetsInStore 		= ['store', 'store2'];
+$fieldsetsInCart		= ['cart'];
 $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $fieldsetsInDownloads);
 
 
@@ -144,6 +145,21 @@ $this->ignore_fieldsets = array_merge($fieldsetsInStore, $fieldsetsInContact, $f
 						</div>
 					<?php endforeach; ?>
 					
+				</div>
+			<?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'cart', Text::_('COM_MYMUSE_CART_OPTIONS')); ?>
+				<div class="row">
+				<?php foreach ($fieldsetsInCart as $fieldset) : ?>
+						<div class="col-12 col-lg-6">
+						<fieldset id="fieldset-<?php echo $fieldset; ?>" class="options-form">
+							<legend><?php echo Text::_($this->form->getFieldsets()[$fieldset]->label); ?></legend>
+							<div>
+							<?php echo $this->form->renderFieldset($fieldset); ?>
+							</div>
+						</fieldset>
+						</div>
+				<?php endforeach; ?>
 				</div>
 			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 

@@ -71,7 +71,7 @@ class OrderstatusField extends SqlField
 		$html[] = '<select id="jform_'.$this->name.'" name="'.$this->name.'" '.trim($attr).'>';
 		$filter_order_status = Factory::getApplication()->input->get('filter_order_status','0');
 		// do the SQL
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query="SELECT 0 AS id, 'None selected' AS name 
 		UNION ALL SELECT code as id, name FROM #__mymuse_order_status";
 		$db->setQuery($query);

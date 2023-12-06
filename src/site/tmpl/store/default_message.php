@@ -13,8 +13,4 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-		<table class="contentpaneopen mm_store">
-			<tr>
-				<td valign="top"><div class="message"><?php echo $this->message; ?></div> </td>
-			<tr>
-		</table>
+<div class="message"><?php echo $this->message; ?></div>

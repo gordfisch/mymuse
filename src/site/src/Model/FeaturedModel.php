@@ -108,7 +108,7 @@ class FeaturedModel extends ArticlesModel
 		$productOrderDate = $params->get('order_date');
 		$categoryOrderby  = $params->def('orderby_pri', '');
 
-		$secondary = QueryHelper::orderbySecondary($productOrderby, $productOrderDate, $this->getDbo());
+		$secondary = QueryHelper::orderbySecondary($productOrderby, $productOrderDate, Factory::getContainer()->get('DatabaseDriver'););
 		$primary   = QueryHelper::orderbyPrimary($categoryOrderby);
 
 		$this->setState('list.ordering', $primary . $secondary . ', a.created DESC');

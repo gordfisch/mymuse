@@ -109,7 +109,7 @@ class ShoppergroupModel extends AdminModel
 			}
 		}
 		if(isset($data->usergroups_id)){
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT title from #__usergroups WHERE id = ".$data->usergroups_id;
 			//echo $query;
 			$db->setQuery($query);

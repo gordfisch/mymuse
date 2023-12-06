@@ -133,7 +133,7 @@ class OrdersModel extends ListModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -223,7 +223,7 @@ class OrdersModel extends ListModel
 	 */
 	public function publish(&$pks, $value = 1) {
 
-		$db = $this->getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		$query->update('`#__mymuse_coupon`');

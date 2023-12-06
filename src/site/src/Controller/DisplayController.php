@@ -60,7 +60,7 @@ class DisplayController extends BaseController
 	 *
 	 * @var object
 	 */
-	var $itemId = null;
+	var $Itemid = null;
 
 	/**
 	 * original_task
@@ -141,10 +141,10 @@ class DisplayController extends BaseController
 	public function __construct($config = array(), MVCFactoryInterface $factory = null, $app = null, $input = null)
 	{
 		
-
+		$this->params = MymuseHelper::getParams();
 		$this->input = Factory::getApplication()->input;
 
-		$this->itemId = $this->input->get('itemId')? $this->input->get('itemId') : '';
+		$this->Itemid = $this->input->get('Itemid')? $this->input->get('Itemid') : $this->params->get('top_menu_item','');
 
 		// Product frontpage Editor pagebreak proxying:
 		if ($this->input->get('view') === 'product' && $this->input->get('layout') === 'pagebreak')
@@ -157,13 +157,13 @@ class DisplayController extends BaseController
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
 
-		$this->params = MymuseHelper::getParams();
+		
 		$lang 	= Factory::getLanguage();
 		$rtl 	= $lang->get('rtl');
 
 		$Doc = Factory::getDocument();
 
-		if(!$this->params->get('my_disable_css',0)){
+		if(0 == $this->params->get('my_disable_css',0)){
 			$Doc->addStyleSheet( Uri::base() . 'components/com_mymuse/assets/css/mymuse.css' );
 		}
 		if($rtl){
@@ -341,7 +341,7 @@ class DisplayController extends BaseController
 			$v_array[$productid] = $variation;
 			$input->set('variation', $v_array);
 			$variation = $v_array;
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT title from #__mymuse_product WHERE id =$productid";
 			$db->setQuery($query);
 			$title = $db->loadResult();
@@ -414,7 +414,7 @@ class DisplayController extends BaseController
 			$tax_total = 0.00;
 			
 			
-			$db = Factory::getDBO();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = "SELECT title from #__mymuse_product WHERE id =$productid";
 			$db->setQuery($query);
 			$title = $db->loadResult();
@@ -562,7 +562,6 @@ class DisplayController extends BaseController
 		}else{
 			// Redirect back to the registration screen.
 			// enqueued messages will display
-			echo "got here"; exit;
 			$this->setRedirect( Route::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid));
 			return false;
 		}
@@ -588,7 +587,7 @@ class DisplayController extends BaseController
 
 
         	if( !$plugin || !is_object($plugin) ){
-       
+      
         		//plugin is not on, try to login as buyer
         		if(!$this->MyMuseShopper->saveNoReg()){
         			echo $this->MyMuseShopper->getError();
@@ -604,9 +603,8 @@ class DisplayController extends BaseController
         	}else{
         		$url = Route::_(URI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
         		$return = base64_encode($url);
-
-        		//$msg = Text::_("COM_MYMUSE_PLEASE_COMPLETE_THE_FORM");
         		$this->setRedirect( Route::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid));
+        		 
         		return true;
         	}
         }
@@ -614,6 +612,7 @@ class DisplayController extends BaseController
         //no_reg, logged in but no form yet
         if($user->get('id') && ($this->params->get('my_registration') == "no_reg") && !$this->shopper->perms){
         	//$msg = Text::_("COM_MYMUSE_PLEASE_COMPLETE_THE_FORM");
+
         	$this->setRedirect( Route::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid) );
         	return false;
         	
@@ -699,7 +698,7 @@ class DisplayController extends BaseController
 		if(!isset($this->shopper->perms)){
 			$url = Route::_(URI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
         	$return = base64_encode($url);
-			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
+			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");
         	$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( Route::_('index.php?option=com_users&view='.$rpage.'&return='.$return), $msg );
             return false;
@@ -748,7 +747,7 @@ class DisplayController extends BaseController
 		if(!$this->shopper->perms){
 			$url = Route::_(URI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
         	$return = base64_encode($url);
-			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
+			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");
         	$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return, $msg );
             return false;
@@ -854,7 +853,7 @@ class DisplayController extends BaseController
 		if(!$this->shopper->perms){
 			$url = Route::_(URI::base().'index.php?option=com_mymuse&view=cart&layout=cart&Itemid='.$this->Itemid);
         	$return = base64_encode($url);
-			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
+			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");
         	$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( Route::_('index.php?option=com_users&view='.$rpage.'&return='.$return), $msg );
             return false;
@@ -914,7 +913,7 @@ class DisplayController extends BaseController
 		$session->set("process_payment","");
 
 		//get order
-		$db 			= Factory::getDBO();
+		$db 			= Factory::getContainer()->get('DatabaseDriver');
 		$user			= Factory::getApplication()->getIdentity();
 		$user_id 		= $user->get('id');
 		$orderid 		= $this->input->get('orderid', 0);
@@ -1091,7 +1090,7 @@ class DisplayController extends BaseController
 	public function vieworder()
 	{
 		//get order
-		$db 		= Factory::getDBO();
+		$db 		= Factory::getContainer()->get('DatabaseDriver');
 		$user		= Factory::getApplication()->getIdentity();
 		$user_id 	= $user->get('id');
 		$orderid 	= $this->input->get('orderid', 0);
@@ -1103,10 +1102,10 @@ class DisplayController extends BaseController
 		if(!$user_id ){
 			// not a user!!
 			if($this->params->get('my_registration') == "no_reg"){
-				$msg = Text::_("JGLOBAL_AUTH_ACCESS_DENIED");;
-				$this->setRedirect( Route('index.php'), $msg );
+				$msg = Text::_("JGLOBAL_AUTH_ACCESS_DENIED");
+				$this->setRedirect( Route::_('index.php'), $msg );
 			}else{
-				$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
+				$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");
         		$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         		$this->setRedirect( Route::_('index.php?option=com_users&view='.$rpage.'&return='.$return), $msg );
             return false;
@@ -1158,7 +1157,7 @@ class DisplayController extends BaseController
 			//there won't be an order
 		}else{
 			// get order
-			$db = Factory::getDBO ();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$user = Factory::getApplication()->getIdentity();
 			$user_id = $user->get ( 'id' );
 			$id = $this->input->get ( 'id', 0 );
@@ -1200,9 +1199,9 @@ class DisplayController extends BaseController
 		$current = $uri->toString();
 
 		if(!$shopper->perms){
-			$url = $current;;
+			$url = $current;
 			$return = base64_encode($url);
-			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
+			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");
 			$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return, $msg );
 			return false;
@@ -1240,7 +1239,7 @@ class DisplayController extends BaseController
 		if(!isset($shopper->perms)){
 			$url = URI::root()."index.php?option=com_mymuse&view=cart&layout=cart";
 			$return = base64_encode($url);
-			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
+			$msg = Text::_("COM_MYMUSE_PLEASE_LOGIN_OR_REGISTER");
 			$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return, $msg );
 			return false;
@@ -1288,7 +1287,7 @@ class DisplayController extends BaseController
 	 */
 	public function rate()
 	{
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$index = $this->input->get('index', '');
 		$productid = $this->input->get('productid', '');
 		$rating = $this->input->get('user_rating', '');
@@ -1318,7 +1317,7 @@ class DisplayController extends BaseController
 	 */
 	public function rateajax()
 	{
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$index = $this->input->get('index', '');
 		$cat_prod = $this->input->get('cat_prod', '');
 		/**

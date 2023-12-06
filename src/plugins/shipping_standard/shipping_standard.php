@@ -75,7 +75,7 @@ class  plgMymuseShipping_Standard extends CMSPlugin
 	function onListMyMuseShipping($shopper, $store, $order, $params)
 	{
 		// loading plugin parameters
-        $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
+        $this->_plugin = PluginHelper::getPlugin('mymuse', 'shipping_standard');
         $result = array();
 		$translate = $this->params->get('translate');
         $j = 0;
@@ -141,11 +141,11 @@ class  plgMymuseShipping_Standard extends CMSPlugin
      function onCaclulateMyMuseShipping($order, $shipmethodid)
      {
         // loading plugin parameters
-        $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
+        $this->_plugin = PluginHelper::getPlugin('mymuse', 'shipping_standard');
 		$translate = $this->params->get ( 'translate' );
         $cost = 0.00;
 
-        $result = new JObject;
+        $result = new CMSObject;
         $result->id = $shipmethodid;
         $carrier    = "ship_carrier_".$shipmethodid;
         $method     = "ship_method_".$shipmethodid;

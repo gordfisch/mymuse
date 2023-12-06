@@ -58,8 +58,8 @@ class plgUserMymuseuser extends CMSPlugin
 		$lang = Factory::getLanguage();
 		$lang->load('plg_user_mymuseuser', JPATH_ADMINISTRATOR);
 
-		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-		$wa->useScript('jquery');
+		//$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+		//$wa->useScript('jquery');
 	}
 	
 	/**
@@ -84,7 +84,7 @@ class plgUserMymuseuser extends CMSPlugin
 		$myparams = MymuseHelper::getParams();
 		$profile_key = $myparams->get('my_profile_key', 'mymuse');
 		$userId = $instance->id;
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
@@ -148,7 +148,7 @@ class plgUserMymuseuser extends CMSPlugin
 			if (!isset($data->profile) and $userId > 0) {
 
 				// Load the profile data from the database.
-				$db = Factory::getDbo();
+				$db = Factory::getContainer()->get('DatabaseDriver');
 				$query = 
 					'SELECT profile_key, profile_value FROM #__user_profiles' .
 					' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
@@ -336,11 +336,11 @@ class plgUserMymuseuser extends CMSPlugin
 					}
 					if($field == 'country'){
 						//set default same as store
-						$db = Factory::getDBO();
+						$db = Factory::getContainer()->get('DatabaseDriver');
 						$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 						$db->setQuery($query);
 						$store = $db->loadObject();
-						$sparams = new JRegistry($store->params);
+						$sparams = new Registry($store->params);
 						$country_2_code = $sparams->get('country');
 						$query = "SELECT country_3_code FROM #__mymuse_country WHERE country_2_code='$country_2_code'";
 						$db->setQuery($query);
@@ -462,7 +462,7 @@ class plgUserMymuseuser extends CMSPlugin
 					$data['profile']['dob'] = $date->format('Y-m-d');
 				}
 
-				$db = Factory::getDbo();
+				$db = Factory::getContainer()->get('DatabaseDriver');
 				$db->setQuery(
 					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
 					" AND profile_key LIKE '$profile_key.%'"
@@ -558,7 +558,7 @@ class plgUserMymuseuser extends CMSPlugin
 				$myparams = MymuseHelper::getParams();
 				$profile_key = $myparams->get('my_profile_key', 'mymuse');
 				
-				$db = Factory::getDbo();
+				$db = Factory::getContainer()->get('DatabaseDriver');
 				$db->setQuery(
 					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
 					" AND profile_key LIKE '$profile_key.%'"
@@ -589,7 +589,7 @@ class plgUserMymuseuser extends CMSPlugin
      */
    function listCountryState($country_select='', $state_select='', $store_country='') {
 
-		$db	= Factory::getDBO();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		//echo "country = $country_select state = $state_select"; exit;
 		$javascript = "onchange=\"changeDynaList( 'state', countrystates, document.adminForm.country.options[document.adminForm.country.selectedIndex].value, 0, 0);\"";
 		
@@ -711,7 +711,7 @@ class plgUserMymuseuser extends CMSPlugin
    		if(!$id){
    			return '';
    		}
-   		$db = Factory::getDBO();
+   		$db = Factory::getContainer()->get('DatabaseDriver');
    		$query = "SELECT state_name FROM #__mymuse_state WHERE id=$id";
    		$db->setQuery($query);
    		$name = $db->loadResult();

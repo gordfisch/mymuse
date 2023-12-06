@@ -117,7 +117,7 @@ class ReportsModel extends ListModel
 
   		if (!count($this->_cats)) {
 
-            $db  = $this->getDbo();
+            $db  = Factory::getContainer()->get('DatabaseDriver');
             if($catid > 0){
 
                 $query = "SELECT * FROM #__categories WHERE id='$catid'";
@@ -163,7 +163,7 @@ class ReportsModel extends ListModel
     	// Initialise variables.
     	$app = Factory::getApplication('administrator');
         $input = $app->input;
-    	$db	 = $this->getDbo();
+    	$db	 = Factory::getContainer()->get('DatabaseDriver');
     	
         // List state information.
     	parent::populateState('a.id', 'asc');
@@ -247,7 +247,7 @@ class ReportsModel extends ListModel
     protected function getListQuery()
     {
     	// Create a new query object.
-    	$db		= $this->getDbo();
+    	$db		= Factory::getContainer()->get('DatabaseDriver');
     	$query	= $db->getQuery(true);
     
     	// Select the required fields from the table.
@@ -445,7 +445,7 @@ class ReportsModel extends ListModel
   		$this->_db->setQuery( $query );
         $res = $this->_db->loadObjectList();
 
-        return $res;;
+        return $res;
   	}
   	
   	/**
@@ -473,7 +473,7 @@ class ReportsModel extends ListModel
   		}
   		$prodids   = $this->getState('list.prodids');
 
-        $db     = $this->getDbo();
+        $db     = Factory::getContainer()->get('DatabaseDriver');
         $query  = $db->getQuery(true);
     
         // Select the required fields from the table.
@@ -538,7 +538,7 @@ class ReportsModel extends ListModel
   		$this->_db->setQuery($query);
   		$res = $this->_db->loadObjectList();
   		
-  		$category[] = HTMLHelper::_('select.option', '0', Text::_( 'MYMUSE_SELECT_CATEGORY' ), 'id', 'title');;
+  		$category[] = HTMLHelper::_('select.option', '0', Text::_( 'MYMUSE_SELECT_CATEGORY' ), 'id', 'title');
   		for($i=0;$i<count($res);$i++){
   			$category[] = $res[$i];
   		}
@@ -621,7 +621,7 @@ class ReportsModel extends ListModel
     protected function getDownloadsQuery()
     {
     	// Create a new query object.
-    	$db		= $this->getDbo();
+    	$db		= Factory::getContainer()->get('DatabaseDriver');
     	$query	= $db->getQuery(true);
    	
     	// Select the required fields from the table.
@@ -669,7 +669,7 @@ class ReportsModel extends ListModel
      */
     public function getDownloads()
     {
-    	$db    = $this->getDbo();
+    	$db    = Factory::getContainer()->get('DatabaseDriver');
     	$query = $this->getDownloadsQuery();
     	$db->setQuery($query);
     	$res   = $db->loadObjectList();
@@ -684,7 +684,7 @@ class ReportsModel extends ListModel
     protected function getOrderTableQuery()
     {
     	// Create a new query object.
-    	$db		= $this->getDbo();
+    	$db		= Factory::getContainer()->get('DatabaseDriver');
     	$query	= $db->getQuery(true);
 
     	
@@ -738,7 +738,7 @@ class ReportsModel extends ListModel
     protected function getItemTableQuery()
     {
     	// Create a new query object.
-    	$db		= $this->getDbo();
+    	$db		= Factory::getContainer()->get('DatabaseDriver');
     	$query	= $db->getQuery(true);
     
     	// Select the required fields from the table.	
@@ -825,7 +825,7 @@ class ReportsModel extends ListModel
     {
 
 
-     	$db = Factory::getDBO();
+     	$db = Factory::getContainer()->get('DatabaseDriver');
      	if($table == "mymuse_order"){
      		$query =  $this->getOrderTableQuery ();
      	}elseif($table == "mymuse_order_item"){

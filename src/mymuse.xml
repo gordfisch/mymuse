@@ -105,7 +105,7 @@
 		<plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
 		<plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
 		<plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
-		<!--  plugin name="shipping_usps" folder="plugins/shipping_usps">Shipping USPS</plugin -->
+		<plugin name="shipping_usps" folder="plugins/shipping_usps">Shipping USPS</plugin>
 		<plugin name="mymuseuser" folder="plugins/user_mymuseuser">MyMuse User Profile</plugin>
 		<plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
 		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Login Plugin</plugin>

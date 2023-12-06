@@ -77,7 +77,7 @@ class TaxrateTable extends Table implements VersionableTableInterface
 		}
 		$input  = Factory::getApplication()->input;
 		$form   = $input->get('jform', array(), 'ARRAY');
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 
 		$regex = TAX_REGEX;

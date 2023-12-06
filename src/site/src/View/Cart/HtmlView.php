@@ -141,7 +141,7 @@ class HtmlView extends BaseHtmlView
         $this->shopper			= $this->MyMuseShopper->getShopper();
         $this->user				= Factory::getApplication()->getIdentity();
 
-        $this->_db 				= Factory::getDBO();
+        $this->_db 				= Factory::getContainer()->get('DatabaseDriver');
     }
         
 
@@ -531,7 +531,7 @@ class HtmlView extends BaseHtmlView
 		if(2 == $params->get('my_price_by_product',0)){
 			$session = Factory::getSession();
 			$my_licence = $session->get("my_licence",0);
-			$this->assignRef('my_licence', $my_licence);
+			$this->my_licence = $my_licence;
 			$my_licence_text = '';
 			for ($i = 0; $i < 5; $i++){
 				if(null != $params->get('my_license_'.$i.'_name')
@@ -679,7 +679,7 @@ class HtmlView extends BaseHtmlView
 			elseif($params->get('my_shop_test')){
 				$task = "makepayment";
 				$button = Text::_('COM_MYMUSE_TEST_STORE');
-				$this->assignRef('button', $button);
+				$this->button = $button;
 				ob_start();
 				parent::display("next_form");
 				$makepayment_form = ob_get_contents();
@@ -993,7 +993,7 @@ class HtmlView extends BaseHtmlView
         				!($order->items[$i]->attribs['special_status'] == "coming_soon")
         			){
         				if (!$MymuseHelper->updateStock($order->items[$i]->product->id, $order->items[$i]->quantity)) {
-        					$this->_db= Factory::getDBO();
+        					$this->_db= Factory::getContainer()->get('DatabaseDriver');
         					$debug .= "$date Could not update stock\n".$this->_db->getErrorMsg()."\n";
         				}
         				$debug .= "$date Subtracted ".$order->items[$i]->quantity. " From ".$order->items[$i]->product->title."\n\n";
@@ -1182,10 +1182,10 @@ class HtmlView extends BaseHtmlView
 		$this->heading = $heading;
 		$this->message = $message;
 		
-		$subject =  $this->store->title." - ".Text::_('COM_MYMUSE_ORDER_CONFIRMATION');
+		$this->subject =  $this->store->title." - ".Text::_('COM_MYMUSE_ORDER_CONFIRMATION');
 		
 
-		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+		$subject = html_entity_decode($this->subject, ENT_QUOTES,'UTF-8');
 		$download_header = '';
 		 
 		if($params->get('my_debug')){
@@ -1269,7 +1269,7 @@ class HtmlView extends BaseHtmlView
 				$mailfrom,
 				$fromname );
 		$mailer->setSender($sender);
-		
+
 		//recipient
 		$recipient = array($user_email);
 		$mailer->addRecipient($recipient);

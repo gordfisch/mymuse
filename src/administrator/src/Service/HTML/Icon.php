@@ -181,7 +181,7 @@ class Icon
 		$icon = $mymuse->published ? 'edit' : 'eye-slash';
 
 		if (strtotime($mymuse->publish_up) > strtotime(Factory::getDate())
-			|| ((strtotime($mymuse->publish_down) < strtotime(Factory::getDate())) && $mymuse->publish_down != Factory::getDbo()->getNullDate()))
+			|| ((strtotime($mymuse->publish_down) < strtotime(Factory::getDate())) && $mymuse->publish_down != Factory::getContainer()->get('DatabaseDriver');->getNullDate()))
 		{
 			$icon = 'eye-slash';
 		}

@@ -42,7 +42,7 @@ class CountryField extends ListField {
 		$query = 'SELECT `country_2_code` AS value, `country_name` AS text FROM `#__mymuse_country`
                		ORDER BY `country_name` ASC ';
           
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$db->setQuery($query);
 		$values = $db->loadObjectList();
 		$options[] = HTMLHelper::_('select.option', '', Text::_('COM_MYMUSE_SELECT_COUNTRY'));

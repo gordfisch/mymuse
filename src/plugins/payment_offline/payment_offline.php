@@ -15,6 +15,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
 use Joomla\CMS\Factory;
@@ -66,7 +67,7 @@ class plgMymusePayment_Offline extends CMSPlugin
 			return $string;
 		}
 		$string .= '
-		<form action="'.JRoute::_('index.php?task=thankyou&view=cart').'" method="post" name="adminFormPayOffline">
+		<form action="'.Route::_('index.php?task=thankyou&view=cart').'" method="post" name="adminFormPayOffline">
 		<input type="hidden" name="option" value="com_mymuse">
 		<input type="hidden" name="notifyCustomer" value="1">
 		<input type="hidden" name="id" value="'.$order->id.'">

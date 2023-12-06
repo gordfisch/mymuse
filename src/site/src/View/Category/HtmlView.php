@@ -285,7 +285,7 @@ class HtmlView extends CategoryView
 	function _getProductCount($category)
 	{
 		$total 		= 0;
-		$db 		= Factory::getDBO();
+		$db 		= Factory::getContainer()->get('DatabaseDriver');
 		$nullDate	= $db->Quote($db->getNullDate());
 		$nowDate	= $db->Quote(Factory::getDate()->toSql());
 		
@@ -317,7 +317,7 @@ class HtmlView extends CategoryView
 	function _getTrackCount(&$category)
 	{
 		$total 		= 0;
-		$db 		= Factory::getDBO();
+		$db 		= Factory::getContainer()->get('DatabaseDriver');
 		$nullDate	= $db->Quote($db->getNullDate());
 		$nowDate	= $db->Quote(Factory::getDate()->toSql());
 		$catid[] 	= $category->id;

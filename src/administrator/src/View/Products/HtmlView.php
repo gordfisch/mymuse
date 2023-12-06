@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Object\CMSObject;
+use Joomla\Registry\Registry;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Database\DatabaseDriver;
@@ -100,7 +101,7 @@ class HtmlView extends BaseHtmlView
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 		$this->canDo         = MymuseHelper::getActions('com_mymuse');
-		$this->db            = Factory::getDbo();
+		$this->db            = Factory::getContainer()->get('DatabaseDriver');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -245,7 +246,7 @@ class HtmlView extends BaseHtmlView
 	*/
 	function getSubCats(&$items)
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		for($i=0; $i < count($items); $i++){
 			$query = "SELECT c.title FROM #__mymuse_product_category_xref as x
 			LEFT JOIN #__categories as c on x.catid=c.id
@@ -259,8 +260,8 @@ class HtmlView extends BaseHtmlView
 			}
 			$items[$i]->subcats = preg_replace("/,$/","",$items[$i]->subcats);
 			
-			$registry = new JRegistry;
-			$items[$i]->attribs = $registry->loadString($items[$i]->attribs);
+			$items[$i]->attribs = new Registry($items[$i]->attribs);
+        
 		}
 		 
 	}

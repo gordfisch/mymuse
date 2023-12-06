@@ -23,11 +23,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 $app = Factory::getApplication();
-
-
 $uri 		= Uri::getInstance(); 
 $cat_uri 	= $uri->toString();
-
 
 $description = ($this->store->description != '')? $this->store->description : $this->store->title;
 $document    = Factory::getDocument();

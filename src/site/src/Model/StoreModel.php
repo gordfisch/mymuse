@@ -39,7 +39,7 @@ class StoreModel extends ProductsModel
 	function getItem($pk = 1)
 	{
 		static $_store;
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		if($_store == null){
 			$query = "SELECT * from #__mymuse_store WHERE id='1'";
@@ -54,7 +54,7 @@ class StoreModel extends ProductsModel
 	static function getStore()
 	{
 		static $_store; 
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		if($_store == null){
 			$query = "SELECT * from #__mymuse_store WHERE id='1'";

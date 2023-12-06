@@ -147,7 +147,7 @@ class ProductattributeskuModel extends AdminModel
 			$this->setRedirect( 'index.php?option=com_mymuse' );
 		}
 
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = "SELECT * from #__mymuse_product WHERE id=$parentid";
 		$db->setQuery($query);
 		$parent = $db->loadObject();
@@ -167,7 +167,7 @@ class ProductattributeskuModel extends AdminModel
 
 			// Set ordering to the last item if not set
 			if (@$table->ordering === '') {
-				$db = Factory::getDbo();
+				$db = Factory::getContainer()->get('DatabaseDriver');
 				$db->setQuery('SELECT MAX(ordering) FROM #__mymuse_product_attribute_sku');
 				$max = $db->loadResult();
 				$table->ordering = $max+1;

@@ -114,7 +114,7 @@ class Com_MymuseInstallerScript
 
     public function __construct() {
         if(version_compare(JVERSION, '4.0.0', '<')){
-            $this->db = JFactory::getDBO();
+            $this->db = JFactory::getContainer()->get('DatabaseDriver');
         }else{
             $this->db = Factory::getContainer()->get('DatabaseDriver');
         }
@@ -406,9 +406,9 @@ class Com_MymuseInstallerScript
                 "ALTER TABLE `#__mymuse_product` MODIFY `catid` int NOT NULL AFTER `track_parentid`;",
 
                 "ALTER TABLE `#__mymuse_product` MODIFY `artistid` int NOT NULL AFTER `catid`;",
-                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `artistid`;",
-                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `physical`;",
-                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(1024) COLLATE utf8mb4_unicode_ci AFTER `digital`;",
+                "ALTER TABLE `#__mymuse_product` ADD `physical` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `artistid`;",
+                "ALTER TABLE `#__mymuse_product` ADD `digital` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry' AFTER `physical`;",
+                "ALTER TABLE `#__mymuse_product` ADD`recording` varchar(2048) COLLATE utf8mb4_unicode_ci AFTER `digital`;",
 
                 "ALTER TABLE `#__mymuse_product` CHANGE `product_made_date` `product_release_date` date DEFAULT NULL;",
 
@@ -417,7 +417,7 @@ class Com_MymuseInstallerScript
                 "ALTER TABLE `#__mymuse_product` ADD`updated` char(1) NOT NULL default '0';",
                 "ALTER TABLE `#__mymuse_product` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `checked_out_time` datetime DEFAULT NULL;",
-                "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(1024) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
+                "ALTER TABLE `#__mymuse_product` MODIFY `attribs` varchar(2048) COLLATE utf8mb4_unicode_ci default NULL  COMMENT 'Registry';",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metakey` text COLLATE utf8mb4_unicode_ci;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metadesc` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;",
                 "ALTER TABLE `#__mymuse_product` MODIFY `metadata` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Registry.';",
@@ -440,7 +440,7 @@ class Com_MymuseInstallerScript
                 "UPDATE `#__mymuse_product` SET `publish_down` = NULL WHERE `publish_down` = '0000-00-00 00:00:00'",
                 "UPDATE `#__mymuse_product` SET `checked_out` = NULL WHERE `checked_out` = '0'",
                 "UPDATE `#__mymuse_product` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00'",
-                "ALTER TABLE `#__mymuse_product` MODIFY `product_sku` VARCHAR(254) NOT NULL;",
+                "ALTER TABLE `#__mymuse_product` MODIFY `product_sku` VARCHAR(255) NOT NULL;",
 
                 "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out` int UNSIGNED DEFAULT NULL;",
                 "ALTER TABLE `#__mymuse_shopper_group` MODIFY `checked_out_time` datetime DEFAULT NULL;",
@@ -1264,7 +1264,7 @@ END;
             $store_params = json_decode($this->db->loadResult(), TRUE);
             if($store_params){
                 $store_params['my_download_dir'] = $download_dir;
-                $registry = new JRegistry;
+                $registry = new Registry;
                 $registry->loadArray($store_params);
                 $new_params = (string)$registry;
 
@@ -1369,7 +1369,7 @@ END;
                         $media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",wav" : "wav";
                     }
 
-                    $registry = new JRegistry;
+                    $registry = new Registry;
                     $registry->loadArray($media_params);
                     $new_params = (string)$registry;
 

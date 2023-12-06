@@ -82,7 +82,7 @@ class HtmlView extends BaseHtmlView
 		$this->pagination    = $this->get('Pagination');
 		$this->state         = $this->get('State');
 		$this->canDo         = MymuseHelper::getActions('com_mymuse');
-		$this->db            = Factory::getDbo();
+		$this->db            = Factory::getContainer()->get('DatabaseDriver');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

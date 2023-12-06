@@ -251,7 +251,7 @@ class TracksModel extends ProductsModel
 	{
 
 		$tracks  = parent::getItems();
-		$db 	 = $this->getDbo();
+		$db 	 = Factory::getContainer()->get('DatabaseDriver');
 		$params 	= MymuseHelper::getParams();
 		$app 		= Factory::getApplication();
 		$ordering 	= $this->getState('list.ordering', 'a.title');
@@ -757,7 +757,7 @@ class TracksModel extends ProductsModel
 	{
 		$params 	= MymuseHelper::getParams();
 		$app 		= Factory::getApplication();
-		$db 		= $this->getDbo();
+		$db 		= Factory::getContainer()->get('DatabaseDriver');
 		$searchword = $this->getState('filter.search','');
 		$listDirn	= $this->getState('list.direction', 'ASC');
 		$ordering 	= $this->getState('list.ordering', 'a.title');

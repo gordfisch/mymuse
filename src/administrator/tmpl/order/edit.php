@@ -126,7 +126,7 @@ if($print){
 								if($this->item->user->profile['region'] && !is_numeric($this->item->user->profile['region'])){
 									$this->item->user->profile['region_name'] = $this->item->user->profile['region'];
 								}else{
-									$db = JFactory::getDBO();
+									$db = JFactory::getContainer()->get('DatabaseDriver');
 									$query = "SELECT * FROM #__mymuse_state WHERE id='".$this->item->user->profile['region']."'";
 									$db->setQuery($query);
 									if($row = $db->loadObject()){
@@ -214,7 +214,7 @@ if($print){
 								if(!is_numeric($this->item->user->profile['shipping_region'])){
 									$this->item->user->profile['shipping_region_name'] = $this->item->user->profile['shipping_region'];
 								}else{
-									$db = JFactory::getDBO();
+									$db = JFactory::getContainer()->get('DatabaseDriver');
 									$query = "SELECT * FROM #__mymuse_state WHERE id='".$this->item->user->profile['shipping_region']."'";
 									$db->setQuery($query);
 									if($row = $db->loadObject()){

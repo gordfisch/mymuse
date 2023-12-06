@@ -56,7 +56,7 @@ endif;
         		<?php echo Text::_('COM_MYMUSE_NAME'); ?>
         </div>
 
-        <?php  if($params->get('product_show_filetime', 0)) :?>
+        <?php  if($params->get('product_show_filetime', 0) && is_object($product->recording)) :?>
           <div class="mymuse-header time" >
           <?php echo Text::_('COM_MYMUSE_TIME'); ?></div>
         <?php endif; ?>
@@ -82,7 +82,7 @@ endif;
         		<?php echo $product->title; ?>
         </div>
 
-        <?php  if($params->get('product_show_filetime', 0)) :?>
+        <?php  if($params->get('product_show_filetime', 0)  && is_object($product->recording)) :?>
           <div class="mycart-inner  mytime" data-name="<?php echo Text::_('COM_MYMUSE_TIME'); ?>">
           <?php echo $product->recording->get('product_full_time','0'); ?></div>
         <?php endif; ?>
