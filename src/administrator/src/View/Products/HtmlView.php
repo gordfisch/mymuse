@@ -24,7 +24,7 @@ use Joomla\Database\DatabaseDriver;
 use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
 /**
- * View class for a list of taxrates.
+ * View class for a list of products.
  *
  * @since  1.6
  */

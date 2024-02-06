@@ -33,10 +33,9 @@ class MymuseController extends AdminController
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 
 		// Load the submenu.
-		$view = JFactory::getApplication()->input->get('view', 'mymuse');
+		$view = Factory::getApplication()->input->get('view', 'mymuse');
 
 		if($view != "product"){
 			MymuseHelper::addSubmenu($view);

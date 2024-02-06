@@ -68,10 +68,10 @@ use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 <script src="<?php echo $js_path; ?>"></script>
 <script src="<?php echo $playlist; ?>"></script>
 <script>
-  window.onkeydown = function(e) {
+/*  window.onkeydown = function(e) {
     return !(e.keyCode == 32);
 };
-
+*/
 /*
   Handles a click on the song played progress bar.
 */

@@ -22,8 +22,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Http\Response;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 
+use Joomla\Component\Mymuse\Administrator\Helper\MymuseHelper;
 use Joomla\Component\Mymuse\Site\Helper\AssociationHelper;
 use Joomla\Component\Mymuse\Site\Helper\CartHelper;
 use Joomla\Component\Mymuse\Site\Helper\CheckoutHelper;
