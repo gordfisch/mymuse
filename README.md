@@ -25,25 +25,25 @@ Sell your tunes online. Sell your merchandise. A component for Joomla. This is a
 ### Testing with Linux ###
 Install Joomla dev inside MyMuse
 
-    Clone the repository:
+Clone the repository:
 
-git clone https://github.com/joomla/joomla-cms.git joomla
+	git clone https://github.com/joomla/joomla-cms.git joomla
 
-    Go to the joomla folder:
+Go to the joomla folder:
 
-cd joomla
+	cd joomla
 
-    Go to the 4.2-dev branch:
+Go to the 4.2-dev branch:
 
-git checkout 4.2-dev
+	git checkout 4.2-dev
 
-    Install all the needed composer packages:
+Install all the needed composer packages:
 
-composer install
+	composer install
 
-    Install all the needed npm packages:
+Install all the needed npm packages:
 
-npm ci
+	npm ci
 
 
 If your web root is /var/www/html and you clone the repository there, you can reach the test install at
@@ -62,9 +62,9 @@ Mail tests may require using smtpauth if you cannot mail from localhost.
 #### Testing with Codeception and Joomla Browser ####
 You need 'composer' installed
 
-$ cd joomla
+	$ cd joomla
 
-$ composer install
+	$ composer install
 
 We use the chrome webdriver we have put into joomla/bin
 
