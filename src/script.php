@@ -4,7 +4,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_fmymuse
  *
- * @copyright   Copyright (C) 2020 Arboreta Internet Services. All rights reserved.
+ * @copyright   Copyright (C) 2024 Arboreta Internet Services. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access to this file
@@ -32,14 +32,14 @@ class Com_MymuseInstallerScript
      * @var    string
      * @since  5.0.0
      */
-    private $minimumJoomlaVersion = '3.10.11';
+    private $minimumJoomlaVersion = '5.0.1';
     /**
      * Target Joomla version
      *
      * @var    string
      * @since  5.0.0
      */
-    private $targetJoomlaVersion = '4.2.3';
+    private $targetJoomlaVersion = '5.0.1';
     /**
      * Minimum PHP version to check
      *
@@ -902,7 +902,7 @@ END;
         if($this->convertTo4 ){
 
             
-            $defaults = '{"product_layout":"_:product","show_minicart":"1","show_title":"1","link_titles":"","product_show_product_image":"1","info_block_show":"1","info_block_show_title":"1","split_text":"1","show_readmore":"1","show_readmore_title":"1","show_artist":"1","link_artist":"0","show_category":"1","link_category":"1","show_associations":"0","show_author":"0","link_author":"0","show_date":"1","show_which_date":"product_release_date","show_hits":"0","show_tags":"0","show_product_sku":"1","show_special_status":"0","show_news_release_link":"0","show_media_link":"0","show_product_full_time":"0","show_product_studio":"0","show_product_publisher":"0","show_product_producer":"0","show_product_country":"0","product_show_quantity":"0","product_item_selectbox":"0","show_player":"1","product_show_tracks":"1","orderby_track":"order","order_track_date":"published","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_downloads":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_recommends":"1","show_category_recommends":"1","show_base_description":"0","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","category_layout":"_:blog","show_category_title":"1","show_description":"1","show_description_image":"1","maxLevel":"0","show_empty_categories":"0","show_no_articles":"0","show_category_heading_title_text":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"0","show_cat_tags":"0","num_leading_products":"0","blog_class_leading":"","num_intro_products":"10","blog_class":"","num_columns":"4","multi_column_order":"1","blog_product_introtext":"1","num_links":"100","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","category_show_product_image":"1","category_product_show_title":"1","category_link_titles":"1","category_show_intro_text":"1","category_show_readmore":"0","category_show_readmore_title":"1","readmore_limit":100,"list_show_artist":"1","list_show_album":"1","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"0","list_show_author":"1","list_show_sales":"0","list_show_discount":"0","product_artist_alternate_itemid":"4","show_featured":"show","link_intro_image":"1","orderby_pri":"order","orderby_sec":"order","order_date":"published","display_num":"10","show_pagination":"2","show_pagination_results":"1","group_by":"","custom_fields_enable":0,"sef_ids":0,"show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","downloadid":""}'; // JSON format for the parameters
+            $defaults = '{"product_layout":"_:product","show_minicart":"1","show_title":"1","link_titles":"","product_show_product_image":"1","info_block_show":"1","info_block_show_title":"1","split_text":"1","show_readmore":"1","show_readmore_title":"1","show_artist":"1","link_artist":"0","show_category":"1","link_category":"1","show_associations":"0","show_author":"0","link_author":"0","show_date":"1","show_which_date":"product_release_date","show_hits":"0","show_tags":"0","show_product_sku":"1","show_special_status":"0","show_news_release_link":"0","show_media_link":"0","show_product_full_time":"0","show_product_studio":"0","show_product_publisher":"0","show_product_producer":"0","show_product_country":"0","product_show_quantity":"0","product_item_selectbox":"0","show_player":"1","product_show_tracks":"1","orderby_track":"order","order_track_date":"published","product_show_select_column":"1","product_show_filesize":"1","product_show_filetime":"0","product_show_downloads":"0","product_show_cost_column":"1","product_show_preview_column":"1","product_show_cartadd":"1","show_recommends":"1","show_category_recommends":"1","show_base_description":"0","categories_description":"","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"0","show_cat_num_articles_cat":"0","show_cat_subcat_image":"0","category_layout":"_:blog","show_category_title":"1","show_description":"1","show_description_image":"1","maxLevel":"0","show_empty_categories":"0","show_no_articles":"0","show_category_heading_title_text":"1","show_subcat_image":"0","show_subcat_desc":"0","subcat_desc_truncate":"","show_cat_num_articles":"0","show_cat_tags":"0","num_leading_products":"1","blog_class_leading":"","num_intro_products":"10","blog_class":"","num_columns":"3","multi_column_order":"1","blog_product_introtext":"1","num_links":"100","show_subcategory_content":"-1","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","category_show_product_image":"1","category_product_show_title":"1","category_link_titles":"1","category_show_intro_text":"1","category_show_readmore":"0","category_show_readmore_title":"1","readmore_limit":100,"list_show_artist":"1","list_show_album":"1","list_show_date":"0","date_format":"Y-m-d","list_show_hits":"1","list_show_price":"0","list_show_author":"1","list_show_sales":"0","list_show_discount":"0","product_artist_alternate_itemid":"4","show_featured":"show","link_intro_image":"1","orderby_pri":"order","orderby_sec":"order","order_date":"published","display_num":"10","show_pagination":"2","show_pagination_results":"1","group_by":"","custom_fields_enable":0,"sef_ids":0,"show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0","downloadid":""}'; // JSON format for the parameters
             
             /*
             $query = $this->db->getQuery(true);

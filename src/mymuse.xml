@@ -2,13 +2,13 @@
 <extension type="component" method="upgrade">
 
 	<name>com_mymuse</name>
-	<creationDate>Mar 2023</creationDate>
-	<copyright>Copyright (C) 2023. All rights reserved.</copyright>
+	<creationDate>Feb 2024</creationDate>
+	<copyright>Copyright (C) 2024. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.com</authorUrl>
-	<version>5.2.1</version>
+	<version>5.5.0</version>
 
 	<description>COM_MYMUSE_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Mymuse</namespace>
@@ -98,7 +98,6 @@
 	<!-- Plugins -->
 	<plugins>
 		<plugin name="audio_amplitude" folder="plugins/audio_amplitude">MyMuse Audio Amplitude</plugin>
-		<!-- plugin name="audio_jplayer" folder="plugins/audio_jplayer">MyMuse Audio HTML5 jPlayer</plugin --> 
 		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
 		<plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
 		<plugin name="payment_paypal" folder="plugins/payment_paypal">Payment Paypal</plugin>
