@@ -1,7 +1,7 @@
 *.sublime*
 .idea/
 vendor
-joomla/*
+joomla-cms/*
 *installation*
 
 
