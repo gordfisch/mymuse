@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- this is a phing build file -->
-<project name="MyMuseJ4" basedir="." default="copy_to_mymuseJ4_in_joomla">
-        <property name="myversion" value="4.2" override="true" />
+<project name="mymuseJ5" basedir="." default="copy_to_mymuseJ5_in_joomla">
+        <property name="myversion" value="4.5" override="true" />
 
-<!-- /var/www/html/mymuseJ4/joomla-cms -->
+<!-- /var/www/html/mymuseJ5/joomla-cms -->
 <!-- /var/www/html/avonlea/brucegandymusic -->
 <!-- /var/www/html/singsong/live -->
-        <property name="joomladir" value="/var/www/html/mymuseJ4/joomla-cms" override="true" />
+        <property name="joomladir" value="/var/www/html/mymuseJ5/joomla-cms" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymuseJ4/joomla-cms/administrator/components/com_mymuse"
+                value="/var/www/html/mymuseJ5/joomla-cms/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
 
@@ -49,7 +49,7 @@
 
  
         <!-- Copy Target -->
-        <target name="copy_to_mymuseJ4_in_joomla" description="copy target">
+        <target name="copy_to_mymuseJ5_in_joomla" description="copy target">
                 <echo>Copying files from working dir to mymuse...
                 </echo>
 
@@ -129,12 +129,6 @@
                 <copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
                             todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 
 
-                <copy file="${src}/plugins/storage_s3/storage_s3.php"
-                            todir="${joomladir}/plugins/mymuse/storage_s3" /> 
-                <copy file="${src}/plugins/storage_s3/storage_s3.xml"
-                            todir="${joomladir}/plugins/mymuse/storage_s3" /> 
-                <copy file="${src}/plugins/storage_s3/mymuseStorage.php"
-                            todir="${joomladir}/plugins/mymuse/storage_s3" /> 
 
                 <copy file="${src}/plugins/shipping_usps/shipping_usps.php"
                             todir="${joomladir}/plugins/mymuse/shipping_usps" /> 

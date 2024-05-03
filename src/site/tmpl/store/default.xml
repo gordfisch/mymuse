@@ -8,11 +8,13 @@
 <fields name="params">
 	<fieldset name="store_product" label="COM_MYMUSE_FEATURED_LAYOUT_OPTIONS">
 						
-<field 
+		<field 
 			name="num_leading_products"
-			type="text"
+			type="number"
 			label="COM_MYMUSE_NUM_LEADING_PRODUCTS_LABEL"
 			filter="integer"
+			validate="number"
+			min="0"
 			useglobal="true"
 			parentclass="stack span-1"
 			>
@@ -30,10 +32,11 @@
 
 		<field 
 			name="num_intro_products"
-			type="text"
+			type="number"
 			label="COM_MYMUSE_NUM_INTRO_PRODUCTS_LABEL"
 			filter="integer"
 			useglobal="true"
+			min="0"
 			parentclass="stack span-1"
 			>
 		</field>
@@ -50,9 +53,11 @@
 
 		<field 
 			name="num_columns"
-			type="text"
+			type="number"
 			label="COM_MYMUSE_NUM_COLUMNS_LABEL"
 			filter="integer"
+			validate="number"
+			min="0"
 			parentclass="stack span-1-inline"
 			useglobal="true"
 			>

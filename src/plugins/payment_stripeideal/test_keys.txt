@@ -1,0 +1,14 @@
+Publishable key
+	
+pk_test_0gvp6EzAOCyWCHIAl0L4yXSU
+
+
+Secret key
+	
+sk_test_upEL0UR7TtsKPQUZBU1vWJcR
+
+
+
+
+
+whsec_UQEc6wwuJYGCklFgwAUMicAAz7zZ5fSv
