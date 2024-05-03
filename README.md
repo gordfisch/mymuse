@@ -1,6 +1,6 @@
-# MyMuse for Joomla #
+# MyMuse for Joomla 5 #
 
-Sell your tunes online. Sell your merchandise. A component for Joomla. This is a test site. Find the official release at http://www.joomlamymuse.com
+Sell your tunes online. Sell your merchandise. A component for Joomla 5. This is a test site. Find the official release at http://www.joomlamymuse.com
 
 ## The component files are in the src directory ##
 
@@ -22,6 +22,11 @@ Sell your tunes online. Sell your merchandise. A component for Joomla. This is a
 * com_mymuse-*****.zip - the latest build
 * com_mymuse-latest.zip - copy of the latest build
 
+### Set up local environment ##
+- Clone the repository:
+```bash
+git clone https://github.com/gordfisch/mymuseJ5.git
+
 ### Testing with Linux ###
 Install Joomla dev inside MyMuse
 
@@ -31,7 +36,7 @@ Clone the repository:
 
 Go to the joomla folder:
 
-	cd joomla
+	cd joomla-cms
 
 Go to the 4.2-dev branch:
 
@@ -47,9 +52,9 @@ Install all the needed npm packages:
 
 
 If your web root is /var/www/html and you clone the repository there, you can reach the test install at
-http://localhost/mymuse/joomla
+http://localhost/mymuse/joomla-cms
 
-To install, rename installation.dist to installation and go to http://localhost/mymuse/joomla
+To install, rename installation.dist to installation and go to http://localhost/mymuse/joomla-cms
 
 Tests assume the admin account is user: admin, pass: admin. Database prefix is: bf7gn_
 Edit the files joomla/tests/acceptance.suite.yml and reports.suite.yml with database credentials.

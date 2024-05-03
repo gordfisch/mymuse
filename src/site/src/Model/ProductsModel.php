@@ -547,6 +547,7 @@ class ProductsModel extends ListModel
 	 */
 	public function getItems()
 	{
+		$db		= $this->getDbo();
 		$items  = parent::getItems();
 		if(!is_countable($items)){
 			return array();

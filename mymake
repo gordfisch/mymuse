@@ -26,15 +26,15 @@ elif  [[ $1 = "test" ]]; then
 	echo " Going testing..."
 
 	if  [[ $2 = "basic" ]]; then
-		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/01-basic
+		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/02-basic/MyMuseBasicCest
 	else
-		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/01-basic
+		libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/02-basic/MyMuseBasicCest
 	fi
 
 elif  [[ $1 = "all" ]]; then
 	./make_component.sh
 	cd joomla-cms
-	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/01-basic
+	libraries/vendor/bin/codecept --steps run acceptance tests/Codeception/acceptance/com_mymuse/02-basic
 else
 	echo "What no options? webdriver, phing, phing watch, component or test [sub-test] or test reports"
 	echo "sub-tests: AdminLoginCest, MyMuseBasicCest, MyMuseEeStockCest, MyMuseGgShippingCest, "

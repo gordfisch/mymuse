@@ -145,7 +145,7 @@
                     size="22"
                     translateformat="true"
                     showtime="true"
-                    filter="user_utc"
+                    filter="unset"
             />
 
             <field
@@ -193,7 +193,7 @@
                     translateformat="true"
                     showtime="true"
                     size="22"
-                    filter="user_utc"
+                    filter="unset"
             />
 
             <field
@@ -203,7 +203,7 @@
                     translateformat="true"
                     showtime="true"
                     size="22"
-                    filter="user_utc"
+                    filter="unset"
             />
             <field
                     name="version"

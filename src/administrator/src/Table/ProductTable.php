@@ -837,7 +837,6 @@ class ProductTable extends Table implements VersionableTableInterface, TaggableT
 
 
 
-
 			// if it is the parent. Parentid will be 0
 	        //make dirs if necessary
 

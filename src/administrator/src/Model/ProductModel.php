@@ -380,7 +380,7 @@ class ProductModel extends AdminModel
 
 			if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 				$pk = 0;
-        $id = 0;
+        		$id = 0;
 				$input->set('id',0);
 				
 			}

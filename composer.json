@@ -5,5 +5,10 @@
     "prefer-stable": true,
 	"require": {
 		"phing/phing": "^3.0"
+	},
+	"config": {
+		"allow-plugins": {
+			"phing/phing-composer-configurator": true
+		}
 	}
 }
