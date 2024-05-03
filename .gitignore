@@ -1,8 +1,9 @@
 *.sublime*
 .idea/
 vendor
-joomla/*
+*joomla-cms*
 *installation*
 
 
 src/tests/Codeception/acceptance.suite.yml
+src/plugins/payment_stripeideal/test_keys.txt
