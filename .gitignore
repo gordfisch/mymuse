@@ -4,5 +4,5 @@ vendor
 joomla-cms/*
 *installation*
 
-
+src/plugins/payment_stripeideal/test_keys.txt
 src/tests/Codeception/acceptance.suite.yml
