@@ -2,7 +2,7 @@
 <extension type="component" method="upgrade">
 
 	<name>com_mymuse</name>
-	<creationDate>Feb 2024</creationDate>
+	<creationDate>May 2024</creationDate>
 	<copyright>Copyright (C) 2024. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
