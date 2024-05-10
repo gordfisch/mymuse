@@ -27,20 +27,25 @@ Sell your tunes online. Sell your merchandise. A component for Joomla 5. This is
 ```bash
 git clone https://github.com/gordfisch/mymuseJ5.git
 
-### Testing with Linux ###
+
+Install all the needed composer packages for mymuse:
+
+	composer install
+
+### Testing with Joomla  ###
 Install Joomla dev inside MyMuse
 
 Clone the repository:
 
-	git clone https://github.com/joomla/joomla-cms.git joomla
+	git clone https://github.com/joomla/joomla-cms.git joomla-cms
 
 Go to the joomla folder:
 
 	cd joomla-cms
 
-Go to the 4.2-dev branch:
+Go to the 5* branch:
 
-	git checkout 4.2-dev
+	git checkout 5.2-dev
 
 Install all the needed composer packages:
 
