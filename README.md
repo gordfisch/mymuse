@@ -59,12 +59,10 @@ Install all the needed npm packages:
 If your web root is /var/www/html and you clone the repository there, you can reach the test install at
 http://localhost/mymuse/joomla-cms
 
-To install, rename installation.dist to installation and go to http://localhost/mymuse/joomla-cms
+To install, go to http://localhost/mymuse/joomla-cms
 
-Tests assume the admin account is user: admin, pass: admin. Database prefix is: bf7gn_
-Edit the files joomla/tests/acceptance.suite.yml and reports.suite.yml with database credentials.
-
-You can also consult configuration.dist.php.
+Tests follow the instructions at https://github.com/joomla/joomla-cms/
+Edit the file cypress.config.dist.js. Save as cypress.config.js
 
 Mail tests may require using smtpauth if you cannot mail from localhost.
 
