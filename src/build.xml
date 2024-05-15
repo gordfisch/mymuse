@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- this is a phing build file -->
-<project name="mymuseJ5" basedir="." default="copy_to_mymuseJ5_in_joomla">
-        <property name="myversion" value="4.5" override="true" />
+<project name="mymuse" basedir="." default="copy_to_mymuse_in_joomla">
+        <property name="myversion" value="5.0" override="true" />
 
-<!-- /var/www/html/mymuseJ5/joomla-cms -->
-<!-- /var/www/html/avonlea/brucegandymusic -->
-<!-- /var/www/html/singsong/live -->
-        <property name="joomladir" value="/var/www/html/mymuseJ5/joomla-cms" override="true" />
+<!-- /var/www/html/mymuse/joomla-cms -->
+
+        <property name="joomladir" value="/var/www/html/mymuseJ/joomla-cms" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymuseJ5/joomla-cms/administrator/components/com_mymuse"
+                value="/var/www/html/mymuse/joomla-cms/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
 
@@ -49,7 +48,7 @@
 
  
         <!-- Copy Target -->
-        <target name="copy_to_mymuseJ5_in_joomla" description="copy target">
+        <target name="copy_to_mymuse_in_joomla" description="copy target">
                 <echo>Copying files from working dir to mymuse...
                 </echo>
 
@@ -68,6 +67,8 @@
                 <copy todir="${joomladir}/tests">
                        <fileset refid="test_files" />
                 </copy>
+                <copy file="${src}/cypress.config.js"
+                        todir="${joomladir}" />
                 
                 <!--  languages -->
 
@@ -80,11 +81,6 @@
                 <copy file="${src}/site/language/en-GB/com_mymuse.ini"
                         todir="${joomladir}/language/en-GB" />
 
-                <!-- copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.ini"
-                        todir="${joomladir}/administrator/language/en-GB" /> 
-                <copy file="${src}/plugins/audio_jplayer/language/en-GB/plg_mymuse_audio_jplayer.sys.ini"
-                        todir="${joomladir}/administrator/language/en-GB" /> 
-                -->
 
                 <copy file="${src}/plugins/audio_amplitude/language/en-GB/plg_mymuse_audio_amplitude.ini"
                         todir="${joomladir}/administrator/language/en-GB" /> 
@@ -96,33 +92,6 @@
                 <copy file="${src}/plugins/products/language/en-GB/plg_finder_products.sys.ini"
                         todir="${joomladir}/administrator/language/en-GB" />
 
-
-                        
-                <!-- plugins -->
-                <!-- copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
-                            todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
-                <copy file="${src}/plugins/audio_jplayer/audio_jplayer.xml"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
-                <copy file="${src}/plugins/audio_jplayer/Jplayer.swf"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer" /> 
-                <copy file="${src}/plugins/audio_jplayer/js/jplayer.playlist.min.js"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/js" /> 
-                <copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.inspector.js"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/js" /> 
-                <copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.min.js"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/js" /> 
-                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.css"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
-                 <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.orig.css"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
-                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.rtl.css"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
-                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.jpg"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
-                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.seeking.gif"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" />
-                <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.video.play.png"
-                                todir="${joomladir}/plugins/mymuse/audio_jplayer/skin" / -->
 
                 <copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
                             todir="${joomladir}/plugins/mymuse/audio_amplitude" /> 

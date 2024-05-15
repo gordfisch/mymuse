@@ -25,11 +25,11 @@ rm ../releases/com_mymuse-$version.zip
 zip -r  ../releases/com_mymuse-$version.zip * -x *build.xml*  *rerun* tests/\* '*plugins/storage_s3/*'
 
 cp ../releases/com_mymuse-$version.zip ../releases/com_mymuse-latest.zip
-cp ../releases/com_mymuse-$version.zip ../joomla-cms/tests/Codeception/_data/com_mymuse-latest.zip
+cp ../releases/com_mymuse-$version.zip ../joomla-cms/tests/System/data/com_mymuse-latest.zip
 
 
 cd plugins
-zip -r  ../../releases/plugins/storage_s3.zip storage_s3
+#zip -r  ../../releases/plugins/storage_s3.zip storage_s3
 zip -r  ../../releases/plugins/shipping_usps.zip shipping_usps
 
 echo -n "Look in releases "
