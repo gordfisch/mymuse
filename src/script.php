@@ -16,7 +16,6 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\Registry\Registry;
-use Joomla\Component\Categories\Administrator\Model\CategoryModel;
 
 
 defined('_JEXEC') or die('Restricted access');
@@ -45,7 +44,7 @@ class Com_MymuseInstallerScript
      * Minimum PHP version to check
      *
      * @var    string
-     * @since  5.0.0
+     * @since  5.0.q0
      */
     private $minimumPHPVersion = JOOMLA_MINIMUM_PHP;
 
@@ -814,31 +813,6 @@ class Com_MymuseInstallerScript
 
         if($this->convertTo4 || $type == 'install'){
 
-            //install Uncategorized category
-            $query = "SELECT id FROM #__categories WHERE extension='com_mymuse' AND title='Uncagtegorized'";
-            $this->db->setQuery($query);
-            if(!$res = $this->db->loadResult()) {
-                //we need to add the uncategorized category
-                Factory::getApplication()->getInput()->set('extension', 'com_mymuse');
-                Factory::getApplication()->getInput()->set('parent_id', '1');
-                $catModel = new CategoryModel;
-                $data['extension'] = 'com_mymuse';
-                $data['parent_id'] = '1';
-                $data['path'] = 'uncategorised';
-                $data['title'] = 'Uncategorised';
-                $data['alias'] = 'uncategorised';
-                if(!$catModel->save($data)){
-                    $alt = Text::_( "COM_MYMUSE_UNCATEGORIZED_CATEGORY" );
-                    $astatus = 0;
-                    $message =  Text::_("COM_MYMUSE_UNCATEGORIZED_CATEGORY_ERROR").' '.$catModel->getError();
-                }else{
-                    $alt = Text::_( "COM_MYMUSE_UNCATEGORIZED_CATEGORY" );
-                    $astatus = 1;
-                    $message =  Text::_("COM_MYMUSE_UNCATEGORIZED_CATEGORY_SUCCESS");
-                }
-                $this->convert_actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-            }
-
             //Content Types for custom fields
             $query = "SELECT type_id FROM #__content_types WHERE type_title='MyMuse Category'";
             $this->db->setQuery($query);
@@ -1367,7 +1341,7 @@ END;
             $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 
         
-/*NOT NEEDED IN JOOMLA 5 
+
             //UPDATE MEDIA MANAGER TO ALLOW MP3's
             $name = Text::_("COM_MYMUSE_UPDATING_MEDIA_MANAGER");
             $query = "SELECT params FROM #__extensions WHERE element='com_media'";
@@ -1448,7 +1422,7 @@ END;
             }
             $this->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
         }
-*/
+
 
 
         if(count($this->actions)){

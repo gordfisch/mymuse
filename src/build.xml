@@ -5,7 +5,7 @@
 
 <!-- /var/www/html/mymuse/joomla-cms -->
 
-        <property name="joomladir" value="/var/www/html/mymuseJ/joomla-cms" override="true" />
+        <property name="joomladir" value="/var/www/html/mymuse/joomla-cms" override="true" />
         <property name="testadmincomp"
                 value="/var/www/html/mymuse/joomla-cms/administrator/components/com_mymuse"
                 override="true" />
